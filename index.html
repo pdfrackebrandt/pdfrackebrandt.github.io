@@ -142,32 +142,39 @@ p{margin:0}
   border:1px solid var(--rule);
 }
 
-/* ---------- lattice ---------- */
+/* ---------- phase portrait ---------- */
 .lattice{margin-block:clamp(40px,6vw,64px) 0}
 .lattice-frame{
   background:var(--canvas-bg);
   border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
   position:relative;overflow:hidden;
 }
-#field{display:block;width:100%;height:clamp(220px,26vw,300px);touch-action:pan-y}
-.lattice-axis{
-  display:flex;justify-content:space-between;gap:12px;padding:9px 2px 0;
+#field{display:block;width:100%;height:clamp(320px,40vw,460px);touch-action:none;cursor:grab}
+#field.dragging{cursor:grabbing}
+.viewhint{
+  position:absolute;right:10px;bottom:8px;pointer-events:none;
   font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);
+  opacity:.75;transition:opacity .3s;
 }
-.lattice-controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding-top:18px}
+.lattice-frame.touched .viewhint{opacity:0}
+.lattice-controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding-top:16px}
 .ctl{display:flex;align-items:center;gap:11px;font-family:var(--f-mono);font-size:var(--step--1);color:var(--muted)}
 .ctl label{white-space:nowrap}
 input[type=range]{
-  -webkit-appearance:none;appearance:none;width:clamp(110px,20vw,180px);
+  -webkit-appearance:none;appearance:none;width:clamp(110px,20vw,170px);
   height:2px;background:var(--rule);border-radius:2px;outline-offset:6px;
 }
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
 input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
-.readout{font-variant-numeric:tabular-nums;color:var(--ink);min-width:5.5ch}
-.regime-key{display:flex;gap:15px;flex-wrap:wrap;font-family:var(--f-mono);font-size:var(--step--1);color:var(--muted)}
-.regime-key i{display:inline-block;width:9px;height:13px;margin-right:6px;vertical-align:-2px}
+.readout{font-variant-numeric:tabular-nums;color:var(--ink);min-width:4.5ch}
+.btn{
+  font-family:var(--f-mono);font-size:var(--step--1);color:var(--muted);
+  background:none;border:1px solid var(--rule);padding:4px 11px;cursor:pointer;
+  transition:color .15s,border-color .15s;
+}
+.btn:hover{color:var(--accent);border-color:var(--accent)}
 .caption{margin-top:18px;font-size:var(--step--1);line-height:1.7;color:var(--muted)}
-.caption b{color:var(--ink-soft);font-weight:500}
+.caption b{color:var(--ink-soft);font-weight:600}
 
 /* ---------- sections ---------- */
 main{display:flex;flex-direction:column;gap:clamp(46px,7vw,72px);padding-block:clamp(48px,7vw,76px) 0}
@@ -294,31 +301,25 @@ footer{
   </header>
 
   <div class="lattice">
-    <div class="lattice-frame">
-      <canvas id="field" aria-label="Interactive lattice of polities running a Hopf bifurcation model; regime cycling emerges left to right as the demographic transition speed rises."></canvas>
-    </div>
-    <div class="lattice-axis">
-      <span>θ low, shocks damp out</span>
-      <span>bifurcation</span>
-      <span>θ high, regimes cycle</span>
+    <div class="lattice-frame" id="frame">
+      <canvas id="field" aria-label="Rotatable three dimensional phase portrait: a political system spiralling while the birth rate falls, settling below the tipping point and flaring into a permanent cycle above it."></canvas>
+      <span class="viewhint">drag to rotate</span>
     </div>
     <div class="lattice-controls">
       <div class="ctl">
-        <label for="theta">Transition speed θ</label>
-        <input id="theta" type="range" min="0" max="100" value="46">
-        <span class="readout" id="theta-out">0.46</span>
+        <label for="theta">Speed</label>
+        <input id="theta" type="range" min="20" max="180" value="100">
+        <span class="readout" id="theta-out">1.0&#215;</span>
       </div>
-      <div class="regime-key">
-        <span><i style="background:var(--r1)"></i>Trough</span>
-        <span><i style="background:var(--r2)"></i>Mid</span>
-        <span><i style="background:var(--r3)"></i>Crest</span>
-      </div>
+      <div class="ctl"><span id="tread">t = 0.0</span></div>
+      <button class="btn" id="replay" type="button">Replay</button>
+      <button class="btn" id="shock" type="button">Shock it</button>
     </div>
-    <p class="caption">Every column is a country. <b>Move your mouse across them.</b> On the left your shock fades out and the constitution survives. On the right it never fades: the country starts cycling through regimes forever. The slider moves the tipping point between the two.</p>
+    <p class="caption">One country, drawn in three dimensions. It circles as its birth rate falls, bottom to top. Low down the spiral tightens and dies: shocks fade and the constitution holds. Past the <b>tipping point</b>, marked by the flat square, the spiral flares open and never closes again: the country cycles through regimes indefinitely. <b>Drag to turn it.</b></p>
     <details class="more">
       <summary>What the model actually is</summary>
       <div class="more-body">
-        <p>Each column integrates the normal form of a Hopf bifurcation, coupled to its neighbours. &#952; is the speed of a country's demographic transition. Below the critical value the fixed point is a stable spiral and perturbations decay; above it the fixed point loses stability and a limit cycle appears, so a perturbation is absorbed into the cycle instead of dying. Your pointer injects a Gaussian perturbation. These are the equations from paper 00, running live rather than illustrated.</p>
+        <p>The normal form of a Hopf bifurcation, integrated live. Horizontal axes are the two state variables; the vertical axis is &#952;, the speed of the demographic transition, which drifts slowly upward so the system passes through the bifurcation rather than sitting at a fixed value. For &#952; &lt; 0 the origin is a stable spiral. At &#952; = 0 a pair of eigenvalues crosses the imaginary axis and the origin loses stability, throwing off a limit cycle of radius &#8730;&#952;. The faint horizontal rings are that predicted radius; the trajectory locks onto them with a lag, which is the delay effect characteristic of slow passage through a bifurcation. These are the equations from paper 00.</p>
       </div>
     </details>
   </div>
@@ -431,156 +432,182 @@ footer{
 </div>
 <script>
 (function(){
-  var cv = document.getElementById('field');
-  if(!cv) return;
-  var ctx = cv.getContext('2d', {alpha:false});
-  var slider = document.getElementById('theta');
-  var out = document.getElementById('theta-out');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cv=document.getElementById('field'); if(!cv) return;
+  var ctx=cv.getContext('2d');
+  var frame=document.getElementById('frame');
+  var slider=document.getElementById('theta'), sOut=document.getElementById('theta-out');
+  var tRead=document.getElementById('tread');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var CELL = 14, GAP = 2, ROWS = 20;
-  var N = 0, W = 0, H = 0, dpr = 1, cw = 0, ch = 0, ox = 0;
-  var x = null, y = null, om = null, mu = null, hot = null;
-  var theta = 0.46, thr = 0;
-  var raf = null;
+  var W=0,H=0,dpr=1,C={};
+  var AZ=-0.70, EL=0.42;
+  var XR=1.5, TH0=-0.5, TH1=1.8, ZS=(2*XR)/(TH1-TH0);
+  var OM=3.2, EPS=0.04, SPEED=1;
+  var x=1.3,y=0,th=TH0,tt=0,pts=[];
 
-  function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
-  var C = {};
-  function readTokens(){
-    C.bg = css('--canvas-bg') || '#F3F4F5';
-    C.line = css('--canvas-line') || '#DCE0E3';
-    C.r1 = css('--r1'); C.r2 = css('--r2'); C.r3 = css('--r3');
-    C.sig = css('--signal');
+  function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+  function tokens(){
+    C.bg=css('--canvas-bg')||'#F7F8F9'; C.faint=css('--faint');
+    C.rule=css('--canvas-line'); C.accent=css('--accent');
+    C.sig=css('--signal'); C.muted=css('--muted');
   }
-
-  function alloc(n){
-    x = new Float32Array(n); y = new Float32Array(n);
-    om = new Float32Array(n); mu = new Float32Array(n); hot = new Float32Array(n);
-    for(var i=0;i<n;i++){
-      x[i] = (Math.random()-0.5)*0.02;
-      y[i] = (Math.random()-0.5)*0.02;
-      om[i] = 0.85 + 0.55*(i/(n-1||1));
-    }
+  function proj(a,b,c){
+    var ca=Math.cos(AZ),sa=Math.sin(AZ),se=Math.sin(EL),ce=Math.cos(EL);
+    return [a*ca+b*sa, (-a*sa+b*ca)*se + (c*ZS)*ce];
   }
-
-  function setMu(){
-    for(var i=0;i<N;i++){
-      mu[i] = -0.62 + 1.20*(i/(N-1||1)) + (theta-0.5)*0.86;
-    }
-    thr = -1;
-    for(var j=0;j<N;j++){ if(mu[j] >= 0){ thr = j; break; } }
+  var sc=1,ox=0,oy=0,mid=[0,0];
+  function to2(a,b,c){var q=proj(a,b,c); return [ox+q[0]*sc, oy-q[1]*sc];}
+  function fit(){
+    var pts2=[],i,j,k;
+    for(i=0;i<2;i++) for(j=0;j<2;j++) for(k=0;k<2;k++)
+      pts2.push(proj(i?XR:-XR, j?XR:-XR, k?TH1:TH0));
+    var xs=pts2.map(function(q){return q[0];}), ys=pts2.map(function(q){return q[1];});
+    var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs);
+    var y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
+    sc=Math.min((W-120)/(x1-x0),(H-64)/(y1-y0));
+    ox=W/2-((x0+x1)/2)*sc; oy=H/2+((y0+y1)/2)*sc;
+    mid=[W/2,H/2];
   }
-
+  function out(p,px){
+    var dx=p[0]-mid[0], dy=p[1]-mid[1], d=Math.hypot(dx,dy)||1;
+    return [p[0]+dx/d*px, p[1]+dy/d*px];
+  }
   function resize(){
-    var rect = cv.getBoundingClientRect();
-    if(rect.width < 2) return;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = Math.round(rect.width); H = Math.round(rect.height);
-    cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-
-    CELL = W < 520 ? 9 : (W < 820 ? 11 : 14);
-    GAP = W < 520 ? 1 : 2;
-    ROWS = W < 520 ? 16 : 20;
-    var n = Math.max(12, Math.floor(W / CELL));
-    cw = CELL - GAP;
-    ch = Math.max(3, Math.floor(H / ROWS) - GAP);
-    ox = Math.round((W - n*CELL) / 2);
-    if(n !== N){ N = n; alloc(N); }
-    setMu();
-    if(reduce){ for(var k=0;k<900;k++) step(); draw(); }
+    var r=cv.getBoundingClientRect(); if(r.width<2) return;
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=Math.round(r.width);H=Math.round(r.height);
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0); fit();
+  }
+  function seg(a,b,col,w,dash){
+    ctx.beginPath();ctx.setLineDash(dash||[]);
+    ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);
+    ctx.strokeStyle=col;ctx.lineWidth=w||1;ctx.stroke();ctx.setLineDash([]);
+  }
+  function txt(t,p,col,al){
+    ctx.fillStyle=col;ctx.font='11px "IBM Plex Mono",monospace';
+    ctx.textAlign=al||'center';ctx.textBaseline='middle';ctx.fillText(t,p[0],p[1]);
   }
 
-  function step(){
-    var D = 0.075, dt = 0.085, i, r2, lx, rx, ly, ry, dx, dy;
-    var nx = step.nx || (step.nx = new Float32Array(4096));
-    for(i=0;i<N;i++){
-      lx = x[i>0?i-1:0]; rx = x[i<N-1?i+1:N-1];
-      ly = y[i>0?i-1:0]; ry = y[i<N-1?i+1:N-1];
-      r2 = x[i]*x[i] + y[i]*y[i];
-      dx = mu[i]*x[i] - om[i]*y[i] - r2*x[i] + D*(lx+rx-2*x[i]);
-      dy = om[i]*x[i] + mu[i]*y[i] - r2*y[i] + D*(ly+ry-2*y[i]);
-      x[i] += dt*dx + (Math.random()-0.5)*0.0016;
-      y[i] += dt*dy + (Math.random()-0.5)*0.0016;
-      if(hot[i] > 0) hot[i] *= 0.94;
+  function axes(){
+    var c=[to2(-XR,-XR,TH0),to2(XR,-XR,TH0),to2(XR,XR,TH0),to2(-XR,XR,TH0)];
+    for(var i=0;i<4;i++) seg(c[i],c[(i+1)%4],C.rule,1);
+    // pick the two base edges nearest the viewer for ticks
+    var mids=[[0,-XR],[XR,0],[0,XR],[-XR,0]].map(function(m){return to2(m[0],m[1],TH0);});
+    var lo=0,hi=0;
+    for(i=1;i<4;i++){ if(mids[i][1]>mids[lo][1]) lo=i; }
+    hi=(lo+1)%4; if(mids[(lo+3)%4][1]>mids[hi][1]) hi=(lo+3)%4;
+    [[lo,'x'],[hi,'y']].forEach(function(e){
+      var side=e[0], nm=e[1];
+      for(var v=-1;v<=1;v++){
+        var a = side===0?[v,-XR] : side===1?[XR,v] : side===2?[v,XR] : [-XR,v];
+        var pA=to2(a[0],a[1],TH0);
+        seg(pA,out(pA,6),C.rule,1);
+        txt(String(v),out(pA,19),C.faint);
+      }
+      txt(nm,out(mids[side],42),C.muted);
+    });
+    // theta axis on the leftmost vertical edge
+    var corners=[[-XR,-XR],[XR,-XR],[XR,XR],[-XR,XR]];
+    var li=0,bestx=Infinity;
+    corners.forEach(function(cc,i){var q=to2(cc[0],cc[1],TH0); if(q[0]<bestx){bestx=q[0];li=i;}});
+    var cc=corners[li];
+    seg(to2(cc[0],cc[1],TH0),to2(cc[0],cc[1],TH1),C.rule,1);
+    for(var k=0;k<=4;k++){
+      var v=TH0+(TH1-TH0)*k/4, p=to2(cc[0],cc[1],v);
+      seg(p,[p[0]-6,p[1]],C.rule,1);
+      txt(v.toFixed(1),[p[0]-12,p[1]],C.faint,'right');
     }
+    var tp=to2(cc[0],cc[1],TH1);
+    txt('\u03b8',[tp[0]-12,tp[1]-16],C.muted,'right');
+  }
+
+  function rings(){
+    ctx.strokeStyle=C.faint;ctx.lineWidth=1;ctx.globalAlpha=.2;
+    for(var k=1;k<=4;k++){
+      var v=TH1*k/4,r=Math.sqrt(v);
+      ctx.beginPath();
+      for(var a=0;a<=56;a++){
+        var an=a/56*6.2832,q=to2(r*Math.cos(an),r*Math.sin(an),v);
+        a?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);
+      }
+      ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+
+  function plane(){
+    var q=[to2(-XR,-XR,0),to2(XR,-XR,0),to2(XR,XR,0),to2(-XR,XR,0)];
+    ctx.beginPath();ctx.setLineDash([3,4]);
+    ctx.moveTo(q[0][0],q[0][1]);for(var i=1;i<4;i++)ctx.lineTo(q[i][0],q[i][1]);
+    ctx.closePath();ctx.strokeStyle=C.faint;ctx.globalAlpha=.55;ctx.lineWidth=1;ctx.stroke();
+    ctx.globalAlpha=1;ctx.setLineDash([]);
+    var e=to2(0,-XR,0); txt('tipping point',out(e,26),C.faint);
+  }
+
+  function trail(){
+    if(pts.length>1){
+      ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle=C.accent;ctx.lineWidth=1.6;
+      var n=pts.length,i,stepn=Math.max(1,Math.floor(n/900));
+      for(i=stepn;i<n;i+=stepn){
+        var a=to2(pts[i-stepn][0],pts[i-stepn][1],pts[i-stepn][2]);
+        var b=to2(pts[i][0],pts[i][1],pts[i][2]);
+        ctx.globalAlpha=0.34+0.66*(i/n);
+        ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
+      }
+      ctx.globalAlpha=1;
+    }
+    var h=to2(x,y,th);
+    ctx.beginPath();ctx.arc(h[0],h[1],3.8,0,6.2832);ctx.fillStyle=C.sig;ctx.fill();
   }
 
   function draw(){
-    ctx.fillStyle = C.bg;
-    ctx.fillRect(0,0,W,H);
-
-    // bifurcation hairline
-    if(thr >= 0 && thr < N){
-      ctx.fillStyle = C.line;
-      ctx.fillRect(ox + thr*CELL - 1, 0, 1, H);
+    ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
+    axes();rings();plane();trail();
+    if(tRead)tRead.textContent='t = '+tt.toFixed(1);
+  }
+  function step(){
+    var dt=0.01,i;
+    for(i=0;i<5;i++){
+      var r2=x*x+y*y;
+      var dx=th*x-OM*y-r2*x, dy=OM*x+th*y-r2*y;
+      x+=dt*dx+(Math.random()-0.5)*0.004;
+      y+=dt*dy+(Math.random()-0.5)*0.004;
+      th+=dt*EPS*SPEED; tt+=dt;
     }
-
-    var A = 1.05, i, j, lvl, e, top;
-    for(i=0;i<N;i++){
-      var amp = Math.sqrt(x[i]*x[i] + y[i]*y[i]) / A;
-      var u = 0.55*amp + 0.55*(x[i]/A);
-      if(u > 1) u = 1; if(u < 0) u = 0;
-      lvl = Math.floor(ROWS * (0.22 + 0.74*u));
-      if(lvl < 0) lvl = 0; if(lvl > ROWS-1) lvl = ROWS-1;
-      var px = ox + i*CELL;
-      for(j=0;j<=lvl;j++){
-        e = j/(ROWS-1);
-        ctx.fillStyle = e < 0.30 ? C.r1 : (e < 0.62 ? C.r2 : C.r3);
-        top = H - (j+1)*(ch+GAP);
-        ctx.fillRect(px, top, cw, ch);
-      }
-      if(hot[i] > 0.02){
-        ctx.globalAlpha = Math.min(hot[i], 0.85);
-        ctx.fillStyle = C.sig;
-        top = H - (lvl+1)*(ch+GAP);
-        ctx.fillRect(px, top, cw, ch);
-        ctx.globalAlpha = 1;
-      }
-    }
+    pts.push([x,y,th]);
+    if(th>TH1) reset();
   }
+  function reset(){x=1.3;y=0;th=TH0;tt=0;pts=[];}
 
-  function loop(){
-    step(); step();
-    draw();
-    raf = requestAnimationFrame(loop);
-  }
+  tokens();resize();
+  new ResizeObserver(resize).observe(cv);
+  if(slider)slider.addEventListener('input',function(){
+    SPEED=slider.value/100;sOut.textContent=SPEED.toFixed(1)+'\u00d7';
+  });
+  var rb=document.getElementById('replay');if(rb)rb.addEventListener('click',reset);
+  var sb=document.getElementById('shock');if(sb)sb.addEventListener('click',function(){
+    var a=Math.random()*6.2832;x+=0.6*Math.cos(a);y+=0.6*Math.sin(a);
+  });
+  var drag=false,lx=0,ly=0;
+  cv.addEventListener('pointerdown',function(e){
+    drag=true;lx=e.clientX;ly=e.clientY;cv.classList.add('dragging');
+    frame.classList.add('touched');cv.setPointerCapture(e.pointerId);
+  });
+  cv.addEventListener('pointermove',function(e){
+    if(!drag)return;
+    AZ-=(e.clientX-lx)*0.008;
+    EL=Math.max(0.08,Math.min(1.3,EL+(e.clientY-ly)*0.005));
+    lx=e.clientX;ly=e.clientY;fit();if(reduce)draw();
+  });
+  function end(){drag=false;cv.classList.remove('dragging');}
+  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+  var mq=window.matchMedia('(prefers-color-scheme: dark)');
+  if(mq.addEventListener)mq.addEventListener('change',tokens);
 
-  function kick(clientX){
-    var rect = cv.getBoundingClientRect();
-    var i = Math.round((clientX - rect.left - ox) / CELL);
-    if(i < 0 || i >= N) return;
-    for(var d=-3; d<=3; d++){
-      var k = i+d; if(k<0||k>=N) continue;
-      var w = Math.exp(-(d*d)/3.2);
-      x[k] += 0.85*w;
-      hot[k] = Math.max(hot[k], w);
-    }
-  }
-
-  readTokens();
-  resize();
-
-  var ro = new ResizeObserver(function(){ resize(); });
-  ro.observe(cv);
-
-  if(slider){
-    slider.addEventListener('input', function(){
-      theta = slider.value/100;
-      out.textContent = theta.toFixed(2);
-      setMu();
-      if(reduce){ for(var k=0;k<500;k++) step(); draw(); }
-    });
-    out.textContent = theta.toFixed(2);
-  }
-
-  if(!reduce){
-    cv.addEventListener('pointermove', function(e){ kick(e.clientX); });
-    cv.addEventListener('pointerdown', function(e){ kick(e.clientX); kick(e.clientX); });
-    var mq = window.matchMedia('(prefers-color-scheme: dark)');
-    if(mq.addEventListener) mq.addEventListener('change', readTokens);
-    loop();
-  }
+  for(var w=0;w<470;w++) step();          // open with a trail already drawn
+  if(reduce){ for(var k=0;k<560;k++) step(); draw(); }
+  else (function loop(){step();draw();requestAnimationFrame(loop);})();
 })();
 </script>
 
