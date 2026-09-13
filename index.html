@@ -195,6 +195,7 @@ section{scroll-margin-top:24px}
 
 .ventures{display:flex;flex-direction:column;margin-top:26px}
 .venture{display:flex;flex-direction:column;gap:9px;padding-block:22px;border-top:1px solid var(--rule-soft)}
+.ventures .venture:first-child{border-top:none;padding-top:2px}
 .venture:last-child{border-bottom:1px solid var(--rule-soft)}
 .venture-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 13px}
 .venture h3{font-size:var(--step-1);font-weight:600}
@@ -222,6 +223,28 @@ footer{
   display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:space-between;
   font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);
 }
+/* ---------- disclosure ---------- */
+.more{margin-top:11px}
+.more summary{
+  font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);
+  cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:8px;
+  transition:color .15s;user-select:none;
+}
+.more summary::-webkit-details-marker{display:none}
+.more summary::before{
+  content:"+";display:inline-flex;align-items:center;justify-content:center;
+  width:15px;height:15px;border:1px solid var(--rule);font-size:.72rem;line-height:1;
+}
+.more[open] summary::before{content:"\2013"}
+.more summary:hover{color:var(--accent)}
+.more summary:hover::before{border-color:var(--accent)}
+.more-body{
+  margin-top:12px;padding-left:15px;border-left:1px solid var(--rule);
+  font-size:var(--step--1);line-height:1.72;color:var(--muted);
+  display:flex;flex-direction:column;gap:11px;
+}
+.claim{font-size:var(--step-0);line-height:1.6;color:var(--ink-soft)}
+.lede-sm{font-size:var(--step--1);color:var(--muted);line-height:1.7}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important}}
 </style>
 </head>
@@ -255,9 +278,9 @@ footer{
       </nav>
 
       <div class="bio">
-        <p>I'm an incoming <strong>MPhil Economics</strong> student at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, at <a href="https://www.merton.ox.ac.uk/">Merton College</a>, continuing to the DPhil. I work on <strong>constitutional mechanism design</strong>: the formal conditions under which a constitution stays worth obeying once the generation that ratified it is gone, and what becomes of a republic when those conditions fail.</p>
-        <p>Classical political theory says regimes turn in a circle, what Polybius called <em>anacyclosis</em>. Modern political economy says institutions are chosen. My work asks when both hold at once, using axiomatic social choice and nonlinear dynamics, with Latin America as the empirical setting.</p>
-        <p>Before Oxford I read Economics at the <a href="https://www.manchester.ac.uk/">University of Manchester</a>, graduating with First Class Honours and the Stellify Award, and co-founded the Manchester Trading Society. Outside the research I co-founded <a href="#building">Punto</a> and build <a href="#building">Frontier</a>. I grew up between Lima and Hannover.</p>
+        <p>I'm an incoming <strong>MPhil Economics</strong> student at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, at <a href="https://www.merton.ox.ac.uk/">Merton College</a>, continuing to the DPhil. I study why constitutions fail.</p>
+        <p>Not why governments fall. Why the rulebook itself stops being worth following, decades after everyone agreed to it. I build mathematical models of when that happens, and test them against Latin America, where constitutions are rewritten often enough to measure how long they last.</p>
+        <p class="lede-sm">Before Oxford: Economics at the <a href="https://www.manchester.ac.uk/">University of Manchester</a>, First Class and the Stellify Award. I grew up between Lima and Hannover.</p>
       </div>
 
       <nav class="quicklinks" aria-label="Sections">
@@ -291,7 +314,13 @@ footer{
         <span><i style="background:var(--r3)"></i>Crest</span>
       </div>
     </div>
-    <p class="caption">Each column is a polity running the normal form of a Hopf bifurcation, coupled to its neighbours, with the demographic transition speed <b>θ</b> rising from left to right. Below the threshold every disturbance decays and the constitution holds. Above it a limit cycle appears, and a shock no longer settles: it becomes the cycle. <b>Move across the field to inject one.</b> The equations are those of paper 00, running live.</p>
+    <p class="caption">Every column is a country. <b>Move your mouse across them.</b> On the left your shock fades out and the constitution survives. On the right it never fades: the country starts cycling through regimes forever. The slider moves the tipping point between the two.</p>
+    <details class="more">
+      <summary>What the model actually is</summary>
+      <div class="more-body">
+        <p>Each column integrates the normal form of a Hopf bifurcation, coupled to its neighbours. &#952; is the speed of a country's demographic transition. Below the critical value the fixed point is a stable spiral and perturbations decay; above it the fixed point loses stability and a limit cycle appears, so a perturbation is absorbed into the cycle instead of dying. Your pointer injects a Gaussian perturbation. These are the equations from paper 00, running live rather than illustrated.</p>
+      </div>
+    </details>
   </div>
 
   <main id="main">
@@ -299,52 +328,75 @@ footer{
     <section id="research">
       <div class="sec-head"><span class="sec-num">01</span><h2>Research</h2></div>
       <div class="prose">
-        <p>Latin America is the empirical setting because constitutions there are rewritten often enough that constitutional mortality is observable rather than hypothetical.</p>
+        <p>Three questions, in the order I need to answer them.</p>
       </div>
 
       <div class="papers">
         <article class="paper">
           <span class="paper-id">00</span>
           <div class="paper-body">
-            <h3>Anacyclosis as a Hopf bifurcation</h3>
-            <p>Regime cycling recovered as a limit cycle in a dynamic political economy model, with the speed of the demographic transition as the bifurcation parameter. Below the threshold the polity spirals into a stable constitutional equilibrium. Above it, that equilibrium loses stability and the regime sequence turns periodic. Validated against V-Dem.</p>
+            <h3>Why regimes go round in circles</h3>
+            <p class="claim">Democracies decay into something worse, and so does whatever replaces them. Polybius noticed the loop in 150 BC. I show it is what the mathematics predicts once a country's birth rate falls fast enough, so the cycle is a property of the system and not a run of bad luck.</p>
+            <details class="more">
+              <summary>The technical version</summary>
+              <div class="more-body">
+                <p>Regime cycling recovered as a limit cycle in a dynamic political economy model, with the speed of the demographic transition &#952; as the bifurcation parameter. Below &#952;*, the polity spirals into a stable constitutional equilibrium. Above it, that equilibrium loses stability through a Hopf bifurcation and the regime sequence turns periodic. Tested against V-Dem.</p>
+              </div>
+            </details>
             <div class="paper-tags"><span class="tag live">In progress</span><span class="tag">Nonlinear dynamics</span><span class="tag">V-Dem</span></div>
           </div>
         </article>
+
         <article class="paper">
           <span class="paper-id">01</span>
           <div class="paper-body">
-            <h3>A constitutional impossibility theorem</h3>
-            <p>Five axioms (stability, non-capture, openness, commitment efficiency, anonymity) are shown to be mutually incompatible in an overlapping-generations economy with heterogeneous patience and multidimensional policy. Epistocratic bicameralism is characterised as the unique escape. A companion convergence result shows the constitution self-obsolesces as the patience distribution shifts.</p>
-            <div class="paper-tags"><span class="tag live">Draft</span><span class="tag">Axiomatic social choice</span><span class="tag">OLG</span></div>
+            <h3>Why no constitution can do everything</h3>
+            <p class="claim">Write down five things you want from a constitution: it should be stable, hard to capture, open to newcomers, able to bind the future, and treat everyone alike. You cannot have all five. I prove that, then find the design that gives up the least.</p>
+            <details class="more">
+              <summary>The technical version</summary>
+              <div class="more-body">
+                <p>Five axioms (stability, non-capture, openness, commitment efficiency, anonymity) shown mutually incompatible in an overlapping-generations economy with heterogeneous patience and multidimensional policy. Epistocratic bicameralism characterised as the unique escape. A companion convergence result shows the constitution self-obsolesces as the patience distribution shifts.</p>
+              </div>
+            </details>
+            <div class="paper-tags"><span class="tag live">Draft</span><span class="tag">Social choice</span><span class="tag">OLG</span></div>
           </div>
         </article>
+
         <article class="paper">
           <span class="paper-id">02</span>
           <div class="paper-body">
-            <h3>Constitutional mortality in Latin America</h3>
-            <p>The causal companion. Regression discontinuity around constitutional reform thresholds, using close elections and the bifurcation threshold itself as cutoffs, testing whether the cycling predicted by 00 shows up as a discontinuity in constitutional survival.</p>
+            <h3>Checking it against Latin America</h3>
+            <p class="claim">Theory is cheap. Latin America has rewritten its constitutions often enough that you can actually count how long they survive, so I use near-tied elections as a natural experiment to see whether the prediction holds.</p>
+            <details class="more">
+              <summary>The technical version</summary>
+              <div class="more-body">
+                <p>Regression discontinuity around constitutional reform thresholds, using close elections and the bifurcation threshold itself as cutoffs, testing whether the cycling predicted by 00 appears as a discontinuity in constitutional survival.</p>
+              </div>
+            </details>
             <div class="paper-tags"><span class="tag">Early</span><span class="tag">Causal inference</span><span class="tag">Latin America</span></div>
           </div>
         </article>
       </div>
 
-      <p class="drawer">Two further papers sit at memo stage: a torus paper on quasi-periodic constitutional dynamics, embedding the impossibility result of 01 in the cycling of 00, and a quantum social choice extension built on a novel intergenerational consistency axiom.</p>
+      <p class="drawer">Two more at memo stage: quasi-periodic dynamics when 00 and 01 interact, and a quantum social choice extension.</p>
     </section>
 
     <section id="building">
       <div class="sec-head"><span class="sec-num">02</span><h2>Building</h2></div>
-      <div class="prose">
-        <p>Two things outside the research. Both exist because the research needed them or paid for them.</p>
-      </div>
       <div class="ventures">
         <article class="venture">
-          <div class="venture-top"><h3>Frontier</h3><span class="venture-role">Solo, research infrastructure</span></div>
-          <p>An overnight research pipeline: verification-gated agents with hard quality floors, which halt instead of returning a degraded answer. Current work is a pre-registered study on whether cross-model disagreement predicts extraction error when an LLM reads a paper into a causal identification spec. That reading step is the bottleneck now that the identification algorithms themselves are solved.</p>
+          <div class="venture-top"><h3>Frontier</h3><span class="venture-role">Solo</span></div>
+          <p class="claim">Research agents that run overnight and refuse to answer when they are not sure. Most tools guess; this one stops.</p>
+          <details class="more">
+            <summary>What I am testing</summary>
+            <div class="more-body">
+              <p>A pre-registered study on whether disagreement between models predicts extraction error when an LLM reads a paper into a causal identification spec. The identification algorithms are solved; reading the paper correctly is the bottleneck.</p>
+            </div>
+          </details>
         </article>
         <article class="venture">
-          <div class="venture-top"><h3>Punto</h3><span class="venture-role">Co-founder, board level</span></div>
-          <p>A Flutter wellness and productivity app, incorporated as a German UG. It started as an alarm that had to earn the right to wake you. My role is strategic. Operations sit with my co-founder.</p>
+          <div class="venture-top"><h3>Punto</h3><span class="venture-role">Co-founder</span></div>
+          <p class="claim">A wellness app that started as an alarm clock which had to earn the right to wake you. Built in Flutter, incorporated in Germany. I set direction; my co-founder runs it.</p>
         </article>
       </div>
     </section>
@@ -355,7 +407,7 @@ footer{
         <div class="cv-group">
           <div class="cv-label">Education</div>
           <div class="cv-row"><span class="cv-year">2026 on</span><span class="cv-detail"><strong>MPhil Economics, University of Oxford</strong><span>Merton College. Continuing to the DPhil.</span></span></div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>BSc Economics, University of Manchester</strong><span>First Class Honours. Stellify Award. Dissertation on commodity volatility, in Python on Bloomberg data.</span></span></div>
+          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>BSc Economics, University of Manchester</strong><span>First Class Honours. Stellify Award. Dissertation on commodity volatility.</span></span></div>
         </div>
         <div class="cv-group">
           <div class="cv-label">Positions</div>
@@ -365,12 +417,11 @@ footer{
         </div>
         <div class="cv-group">
           <div class="cv-label">Other</div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Manchester Trading Society</strong><span>Co-founder. Grew it from seven members to over five hundred.</span></span></div>
+          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Manchester Trading Society</strong><span>Co-founder. Seven members to over five hundred.</span></span></div>
           <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Languages</strong><span>Spanish, German, English.</span></span></div>
         </div>
       </div>
     </section>
-
   </main>
 
   <footer>
