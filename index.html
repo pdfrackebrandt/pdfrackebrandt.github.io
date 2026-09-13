@@ -34,6 +34,19 @@
       '--f-display:"Instrument Serif",Georgia,"Times New Roman",serif;\n  --f-body:Inter,system-ui,Helvetica,Arial,sans-serif;\n  --f-mono:Inter,system-ui,Helvetica,Arial,sans-serif;'
     );
 
+    t=t.replace(
+      'a{color:var(--link);text-decoration:underline;text-decoration-thickness:.5px;text-underline-offset:2.5px;text-decoration-color:color-mix(in srgb,var(--link) 45%,transparent);transition:color .15s,text-decoration-color .15s}',
+      'a{color:var(--link);text-decoration:none;transition:color .15s}'
+    );
+    t=t.replace(
+      'a:hover{color:var(--accent);text-decoration-color:var(--accent)}',
+      'a:hover{color:var(--accent)}'
+    );
+    t=t.replace(
+      '.quicklinks a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}',
+      '.quicklinks a:hover{color:var(--accent)}'
+    );
+
     if(t.indexOf('.sec-kicker')<0){
       t=t.replace(
         '.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}',
