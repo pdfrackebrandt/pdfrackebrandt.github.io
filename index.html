@@ -37,8 +37,8 @@ img{max-width:100%}
   --signal:#8C2F39;
   --accent:#22557E;
   --link:#1C3C5A;
-  --canvas-bg:#F7F8F9;
-  --canvas-line:#E4E8EB;
+  --canvas-bg:#FCFCFD;
+  --canvas-line:#D2D8DE;
 
   --f-display:"Newsreader","Iowan Old Style",Georgia,serif;
   --f-body:"Newsreader","Iowan Old Style",Georgia,"Times New Roman",serif;
@@ -66,8 +66,8 @@ img{max-width:100%}
     --signal:#C7565F;
     --accent:#84B8E2;
     --link:#AFC9DE;
-    --canvas-bg:#141A20;
-    --canvas-line:#1F272E;
+    --canvas-bg:#101418;
+    --canvas-line:#2C353D;
   }
 }
 :root[data-theme="dark"]{
@@ -85,8 +85,8 @@ img{max-width:100%}
   --signal:#C7565F;
   --accent:#84B8E2;
   --link:#AFC9DE;
-  --canvas-bg:#141A20;
-  --canvas-line:#1F272E;
+  --canvas-bg:#101418;
+  --canvas-line:#2C353D;
 }
 
 *{box-sizing:border-box}
@@ -144,11 +144,7 @@ p{margin:0}
 
 /* ---------- phase portrait ---------- */
 .lattice{margin-block:clamp(40px,6vw,64px) 0}
-.lattice-frame{
-  background:var(--canvas-bg);
-  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  position:relative;overflow:hidden;
-}
+.lattice-frame{background:var(--canvas-bg);position:relative;overflow:hidden}
 #field{display:block;width:100%;height:clamp(320px,40vw,460px);touch-action:none;cursor:grab}
 #field.dragging{cursor:grabbing}
 .viewhint{
@@ -173,7 +169,18 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
   transition:color .15s,border-color .15s;
 }
 .btn:hover{color:var(--accent);border-color:var(--accent)}
-.caption{margin-top:18px;font-size:var(--step--1);line-height:1.7;color:var(--muted)}
+.legend{
+  list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px 22px;
+  font-family:var(--f-mono);font-size:var(--step--1);color:var(--muted);
+}
+.legend li{display:flex;align-items:center;gap:8px}
+.sw{display:inline-block;width:18px;height:10px;flex:none;position:relative}
+.sw.ln{border-top:2px solid var(--accent);height:0}
+.sw.dt{width:9px;height:9px;border-radius:50%;background:var(--signal)}
+.sw.ds{border-top:1px dashed var(--faint);height:0}
+.sw.rg{border-top:1px solid var(--faint);height:0;opacity:.6}
+.caption{margin-top:20px;font-size:var(--step--1);line-height:1.75;color:var(--muted);display:flex;flex-direction:column;gap:13px}
+.caption p{margin:0}
 .caption b{color:var(--ink-soft);font-weight:600}
 
 /* ---------- sections ---------- */
@@ -306,16 +313,31 @@ footer{
       <span class="viewhint">drag to rotate</span>
     </div>
     <div class="lattice-controls">
+      <button class="btn" id="pause" type="button" aria-pressed="false">Pause</button>
+      <button class="btn" id="shock" type="button">Shock it</button>
+      <button class="btn" id="replay" type="button">Replay</button>
       <div class="ctl">
         <label for="theta">Speed</label>
         <input id="theta" type="range" min="20" max="180" value="100">
         <span class="readout" id="theta-out">1.0&#215;</span>
       </div>
       <div class="ctl"><span id="tread">t = 0.0</span></div>
-      <button class="btn" id="replay" type="button">Replay</button>
-      <button class="btn" id="shock" type="button">Shock it</button>
     </div>
-    <p class="caption">One country, drawn in three dimensions. It circles as its birth rate falls, bottom to top. Low down the spiral tightens and dies: shocks fade and the constitution holds. Past the <b>tipping point</b>, marked by the flat square, the spiral flares open and never closes again: the country cycles through regimes indefinitely. <b>Drag to turn it.</b></p>
+
+    <ul class="legend">
+      <li><span class="sw ln"></span>the country's path</li>
+      <li><span class="sw dt"></span>where it is now</li>
+      <li><span class="sw ds"></span>the tipping point</li>
+      <li><span class="sw rg"></span>how wide the swings end up</li>
+    </ul>
+
+    <div class="caption">
+      <p><b>What this is.</b> Think of a country's politics as a wobble. Parties swap, crises arrive, protests happen, and normally things settle back down. The blue line is that wobble, traced out over decades. A wide loop means big political swings. A tight loop means calm.</p>
+      <p><b>Why it climbs.</b> The line rises because the country's birth rate is falling, and that is the only thing changing here. Fewer children means the average voter keeps getting older, and older voters want different things from a constitution than younger ones do.</p>
+      <p><b>Low down, the loop shrinks to nothing.</b> A crisis hits, the system absorbs it, life returns to normal. That is a constitution doing its job.</p>
+      <p><b>Higher up it stops shrinking.</b> Past the dashed square the loop widens instead, and never closes again. A crisis no longer fades. The country swings from one kind of government to the next, then the next, and keeps going round. Rome did this. So has most of Latin America.</p>
+      <p><b>Test it yourself.</b> Press <b>Shock it</b> while the dot is near the bottom and the wobble dies out. Press it near the top and it never does. That difference is the entire argument.</p>
+    </div>
     <details class="more">
       <summary>What the model actually is</summary>
       <div class="more-body">
@@ -585,7 +607,15 @@ footer{
   if(slider)slider.addEventListener('input',function(){
     SPEED=slider.value/100;sOut.textContent=SPEED.toFixed(1)+'\u00d7';
   });
-  var rb=document.getElementById('replay');if(rb)rb.addEventListener('click',reset);
+  var paused=false;
+  var pb=document.getElementById('pause');
+  if(pb)pb.addEventListener('click',function(){
+    paused=!paused;
+    pb.textContent=paused?'Play':'Pause';
+    pb.setAttribute('aria-pressed',String(paused));
+    if(!paused) loop();
+  });
+  var rb=document.getElementById('replay');if(rb)rb.addEventListener('click',function(){reset();draw();});
   var sb=document.getElementById('shock');if(sb)sb.addEventListener('click',function(){
     var a=Math.random()*6.2832;x+=0.6*Math.cos(a);y+=0.6*Math.sin(a);
   });
@@ -606,8 +636,9 @@ footer{
   if(mq.addEventListener)mq.addEventListener('change',tokens);
 
   for(var w=0;w<470;w++) step();          // open with a trail already drawn
-  if(reduce){ for(var k=0;k<560;k++) step(); draw(); }
-  else (function loop(){step();draw();requestAnimationFrame(loop);})();
+  if(reduce){ for(var k=0;k<560;k++) step(); draw(); paused=true; if(pb){pb.textContent='Play';} }
+  function loop(){ if(paused) return; step(); draw(); requestAnimationFrame(loop); }
+  if(!reduce) loop();
 })();
 </script>
 
