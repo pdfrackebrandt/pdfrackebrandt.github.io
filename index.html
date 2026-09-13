@@ -15,7 +15,7 @@
 <title>Pedro F. Rackebrandt</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap">
 <style>
 html,body{margin:0}
 img{max-width:100%}
@@ -40,15 +40,15 @@ img{max-width:100%}
   --canvas-bg:#FCFCFD;
   --canvas-line:#D2D8DE;
 
-  --f-display:"Newsreader","Iowan Old Style",Georgia,serif;
-  --f-body:"Newsreader","Iowan Old Style",Georgia,"Times New Roman",serif;
-  --f-mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,"DejaVu Sans Mono",monospace;
+  --f-display:Lato,Verdana,Helvetica,Arial,sans-serif;
+  --f-body:Lato,Verdana,Helvetica,Arial,sans-serif;
+  --f-mono:Lato,Verdana,Helvetica,Arial,sans-serif;
 
-  --step--1:0.80rem;
-  --step-0:1.115rem;
-  --step-1:1.235rem;
-  --step-2:1.5rem;
-  --step-name:clamp(1.95rem,1.35rem + 1.95vw,2.62rem);
+  --step--1:0.8125rem;
+  --step-0:0.875rem;
+  --step-1:1rem;
+  --step-2:1.375rem;
+  --step-name:2rem;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -94,7 +94,7 @@ img{max-width:100%}
 .skip:focus{left:12px;top:12px;background:var(--surface);color:var(--ink);padding:8px 14px;border:1px solid var(--rule)}
 body{
   margin:0;background:var(--paper);color:var(--ink);
-  font-family:var(--f-body);font-size:var(--step-0);line-height:1.72;
+  font-family:var(--f-body);font-size:var(--step-0);line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
 a{color:var(--link);text-decoration:underline;text-decoration-thickness:.5px;text-underline-offset:2.5px;text-decoration-color:color-mix(in srgb,var(--link) 45%,transparent);transition:color .15s,text-decoration-color .15s}
@@ -103,7 +103,7 @@ a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offs
 h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0}
 p{margin:0}
 
-.wrap{max-width:58rem;margin:0 auto;padding-inline:clamp(20px,5vw,40px)}
+.wrap{max-width:62rem;margin:0 auto;padding-inline:clamp(20px,5vw,40px)}
 
 /* ---------- intro ---------- */
 .intro{
@@ -115,7 +115,7 @@ p{margin:0}
 }
 .intro-text{display:flex;flex-direction:column;gap:20px;min-width:0}
 .name{
-  font-size:var(--step-name);line-height:1.04;letter-spacing:-0.012em;text-align:center;font-weight:400;
+  font-size:var(--step-name);line-height:1.15;letter-spacing:0;text-align:center;font-weight:400;
 }
 .socials{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
 .socials a{
@@ -127,7 +127,7 @@ p{margin:0}
 .socials a{text-decoration:none}
 .socials svg{width:19px;height:19px;display:block}
 .bio{display:flex;flex-direction:column;gap:15px;color:var(--ink-soft)}
-.bio em{font-family:var(--f-display);font-style:italic;font-size:1.06em}
+.bio em{font-style:italic}
 .quicklinks{
   display:flex;justify-content:center;flex-wrap:wrap;gap:6px 4px;
   padding-top:6px;font-family:var(--f-mono);font-size:var(--step--1);
@@ -189,10 +189,10 @@ section{scroll-margin-top:24px}
   display:flex;align-items:baseline;gap:13px;
   padding-bottom:13px;margin-bottom:24px;border-bottom:1px solid var(--rule);
 }
-.sec-head h2{font-size:var(--step-2);letter-spacing:-0.004em;font-weight:500}
+.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}
 .sec-num{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint)}
 .prose{display:flex;flex-direction:column;gap:16px;color:var(--ink-soft)}
-.prose em{font-family:var(--f-display);font-style:italic;font-size:1.06em}
+.prose em{font-style:italic}
 
 .papers{display:flex;flex-direction:column;margin-top:28px}
 .paper{display:grid;grid-template-columns:1fr;gap:18px;padding-block:26px;border-top:1px solid var(--rule-soft)}
@@ -207,10 +207,11 @@ section{scroll-margin-top:24px}
 .paper:last-child{border-bottom:1px solid var(--rule-soft)}
 .paper-id{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);font-variant-numeric:tabular-nums;flex:none}
 .paper-body{display:flex;flex-direction:column;gap:8px;min-width:0}
-.paper h3{font-size:var(--step-1);line-height:1.34;font-weight:600}
+.paper h3{font-size:var(--step-1);line-height:1.35;font-weight:700}
 .paper p{font-size:var(--step--1);line-height:1.68;color:var(--muted)}
+.paper p.claim{font-size:var(--step-0);line-height:1.6;color:var(--ink-soft)}
 .paper-tags{display:flex;flex-wrap:wrap;gap:7px 9px;margin-top:2px}
-.tag{font-family:var(--f-mono);font-size:0.72rem;color:var(--muted);border:1px solid var(--rule);padding:2px 8px;border-radius:0}
+.tag{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:.02em;color:var(--muted);border:1px solid var(--rule);padding:2px 8px;border-radius:0}
 .tag.live{color:var(--signal);border-color:color-mix(in srgb,var(--signal) 35%,transparent)}
 .drawer{margin-top:22px;font-size:var(--step--1);color:var(--muted);line-height:1.7;padding-left:16px;border-left:2px solid var(--rule)}
 
@@ -219,7 +220,7 @@ section{scroll-margin-top:24px}
 .ventures .venture:first-child{border-top:none;padding-top:2px}
 .venture:last-child{border-bottom:1px solid var(--rule-soft)}
 .venture-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 13px}
-.venture h3{font-size:var(--step-1);font-weight:600}
+.venture h3{font-size:var(--step-1);font-weight:700}
 .venture-role{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint)}
 .venture p{font-size:var(--step--1);line-height:1.68;color:var(--muted)}
 
@@ -230,7 +231,7 @@ section{scroll-margin-top:24px}
 .cv-row{display:grid;grid-template-columns:7rem 1fr;gap:4px 18px;padding-block:8px}
 .cv-year{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);font-variant-numeric:tabular-nums;padding-top:.22em;white-space:nowrap}
 .cv-detail{display:flex;flex-direction:column;gap:3px;min-width:0}
-.cv-detail strong{font-weight:600;font-size:var(--step-0)}
+.cv-detail strong{font-weight:700;font-size:var(--step-0)}
 .cv-detail span{font-size:var(--step--1);color:var(--muted);line-height:1.62}
 @media (max-width:520px){.cv-row,.paper{grid-template-columns:1fr}.cv-year,.paper-id{padding-top:0}}
 
@@ -312,8 +313,8 @@ footer{
 
       <div class="bio">
         <p>I'm an incoming <strong>MPhil Economics</strong> student at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, at <a href="https://www.merton.ox.ac.uk/">Merton College</a>, continuing to the DPhil. I study why constitutions fail.</p>
-        <p>Not why governments fall. Why the rulebook itself stops being worth following, decades after everyone agreed to it. I build mathematical models of when that happens, and test them against Latin America, where constitutions are rewritten often enough to measure how long they last.</p>
-        <p class="lede-sm">Before Oxford: Economics at the <a href="https://www.manchester.ac.uk/">University of Manchester</a>, First Class and the Stellify Award. I grew up between Lima and Hannover.</p>
+        <p>Not why governments fall, but why the rulebook stops being worth following decades after everyone agreed to it. I build formal models of when that happens and test them against Latin America.</p>
+        <p class="lede-sm">Before Oxford: Economics at <a href="https://www.manchester.ac.uk/">Manchester</a>, First Class and the Stellify Award. I grew up between Lima and Hannover.</p>
       </div>
 
       <nav class="quicklinks" aria-label="Sections">
@@ -351,7 +352,7 @@ footer{
           </div>
           <div class="paper-body">
             <div class="paper-head"><span class="paper-id">00</span><h3>Why regimes go round in circles</h3></div>
-            <p class="claim">Democracies decay into something worse, and so does whatever replaces them. Polybius noticed the loop in 150 BC. I show it is what the mathematics predicts once a country's birth rate falls fast enough, so the cycle is a property of the system and not a run of bad luck.</p>
+            <p class="claim">Democracies decay and so does whatever replaces them; I show the loop Polybius described in 150 BC is what the mathematics predicts once a country's birth rate falls fast enough, not a run of bad luck.</p>
             <details class="more">
               <summary>How to read the figure</summary>
               <div class="more-body">
@@ -381,7 +382,7 @@ footer{
           </div>
           <div class="paper-body">
             <div class="paper-head"><span class="paper-id">01</span><h3>Why no constitution can do everything</h3></div>
-            <p class="claim">Write down five things you want from a constitution: it should be stable, hard to capture, open to newcomers, able to bind the future, and treat everyone alike. You cannot have all five. I prove that, then find the design that gives up the least.</p>
+            <p class="claim">Five things you want from a constitution cannot all hold at once, and I prove it: stable, hard to capture, open to newcomers, binding on the future, equal for everyone. Give one up on the left and see what survives.</p>
             <details class="more">
               <summary>How to read the figure</summary>
               <div class="more-body">
@@ -405,7 +406,7 @@ footer{
           </div>
           <div class="paper-body">
             <div class="paper-head"><span class="paper-id">02</span><h3>Checking it against Latin America</h3></div>
-            <p class="claim">Theory is cheap. Latin America has rewritten its constitutions often enough that you can actually count how long they survive, so I use near-tied elections as a natural experiment to see whether the prediction holds.</p>
+            <p class="claim">Latin America rewrites constitutions often enough to count how long they last, so near-tied elections give a natural experiment for whether the predicted jump is really there.</p>
             <details class="more">
               <summary>How to read the figure</summary>
               <div class="more-body">
@@ -432,7 +433,7 @@ footer{
       <div class="ventures">
         <article class="venture">
           <div class="venture-top"><h3>Frontier</h3><span class="venture-role">Solo</span></div>
-          <p class="claim">Research agents that run overnight and refuse to answer when they are not sure. Most tools guess; this one stops.</p>
+          <p class="claim">Research agents that run overnight and stop rather than guess when they are not sure.</p>
           <details class="more">
             <summary>What I am testing</summary>
             <div class="more-body">
@@ -442,7 +443,7 @@ footer{
         </article>
         <article class="venture">
           <div class="venture-top"><h3>Punto</h3><span class="venture-role">Co-founder</span></div>
-          <p class="claim">A wellness app that started as an alarm clock which had to earn the right to wake you. Built in Flutter, incorporated in Germany. I set direction; my co-founder runs it.</p>
+          <p class="claim">A wellness app that began as an alarm clock which had to earn the right to wake you. Flutter, incorporated in Germany; I set direction, my co-founder runs it.</p>
         </article>
       </div>
     </section>
@@ -453,7 +454,7 @@ footer{
         <div class="cv-group">
           <div class="cv-label">Education</div>
           <div class="cv-row"><span class="cv-year">2026 on</span><span class="cv-detail"><strong>MPhil Economics, University of Oxford</strong><span>Merton College. Continuing to the DPhil.</span></span></div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>BSc Economics, University of Manchester</strong><span>First Class Honours. Stellify Award. Dissertation on commodity volatility.</span></span></div>
+          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>BSc Economics, University of Manchester</strong><span>First Class Honours. Stellify Award.</span></span></div>
         </div>
         <div class="cv-group">
           <div class="cv-label">Positions</div>
@@ -463,7 +464,7 @@ footer{
         </div>
         <div class="cv-group">
           <div class="cv-label">Other</div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Manchester Trading Society</strong><span>Co-founder. Seven members to over five hundred.</span></span></div>
+          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Manchester Trading Society</strong><span>Co-founder. Seven members to five hundred.</span></span></div>
           <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Languages</strong><span>Spanish, German, English.</span></span></div>
         </div>
       </div>
@@ -531,7 +532,7 @@ footer{
     ctx.strokeStyle=col;ctx.lineWidth=w||1;ctx.stroke();ctx.setLineDash([]);
   }
   function txt(t,p,col,al){
-    ctx.fillStyle=col;ctx.font=(W<420?'9px':'11px')+' "IBM Plex Mono",monospace';
+    ctx.fillStyle=col;ctx.font=(W<420?'9.5px':'11px')+' Lato,Helvetica,Arial,sans-serif';
     ctx.textAlign=al||'center';ctx.textBaseline='middle';ctx.fillText(t,p[0],p[1]);
   }
 
@@ -694,7 +695,7 @@ footer{
     var ly=CY+(R+24)*Math.sin(-Math.PI/2+i*2*Math.PI/5);
     t.setAttribute('x',lx); t.setAttribute('y',ly+4);
     t.setAttribute('text-anchor', Math.abs(lx-CX)<12?'middle':(lx>CX?'start':'end'));
-    t.setAttribute('font-family','"IBM Plex Mono",monospace'); t.setAttribute('font-size','10.5');
+    t.setAttribute('font-family','Lato,Helvetica,Arial,sans-serif'); t.setAttribute('font-size','10.5');
     t.textContent=a.n;
     g.appendChild(hit); g.appendChild(c); g.appendChild(t); svg.appendChild(g);
     try{
@@ -771,7 +772,7 @@ footer{
     svg.appendChild(el('circle',{cx:MIDX,cy:B-86,r:3,fill:sig}));
     function txt(t,x,y,col,anchor,size){
       var e=el('text',{x:x,y:y,fill:col,'text-anchor':anchor||'middle',
-        'font-family':'"IBM Plex Mono",monospace','font-size':size||9.5});
+        'font-family':'Lato,Helvetica,Arial,sans-serif','font-size':size||9.5});
       e.textContent=t; svg.appendChild(e); return e;
     }
     txt('the jump',MIDX+8,B-64,sig,'start');
