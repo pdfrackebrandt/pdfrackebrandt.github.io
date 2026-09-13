@@ -34,6 +34,11 @@
       '--f-display:"Instrument Serif",Georgia,"Times New Roman",serif;\n  --f-body:Inter,system-ui,Helvetica,Arial,sans-serif;\n  --f-mono:Inter,system-ui,Helvetica,Arial,sans-serif;'
     );
 
+    t=t.replace('--link:#1C3C5A;','--link:#0c2e4a;');
+    t=t.replace('--accent:#22557E;','--accent:#061d30;');
+    t=t.replaceAll('--link:#AFC9DE;','--link:#8ca8c4;');
+    t=t.replaceAll('--accent:#84B8E2;','--accent:#c5d4e3;');
+
     t=t.replace(
       'a{color:var(--link);text-decoration:underline;text-decoration-thickness:.5px;text-underline-offset:2.5px;text-decoration-color:color-mix(in srgb,var(--link) 45%,transparent);transition:color .15s,text-decoration-color .15s}',
       'a{color:var(--link);text-decoration:none;transition:color .15s}'
@@ -45,6 +50,15 @@
     t=t.replace(
       '.quicklinks a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}',
       '.quicklinks a:hover{color:var(--accent)}'
+    );
+
+    t=t.replace(
+      'I study MPhil Economics at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton College</a>. I like to learn about frontier AI and economics.',
+      'I study MPhil Economics at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton College</a>. As an undergraduate at the <a href="https://www.manchester.ac.uk/">University of Manchester</a>, I used volatility to measure price dislocation in commodity markets.'
+    );
+    t=t.replace(
+      'As an undergraduate at the <a href="https://www.manchester.ac.uk/">University of Manchester</a> I used volatility to measure price dislocation in commodity markets. I then spent time in institutional brokerage before returning to research.',
+      'I later worked in institutional brokerage. I now work on political economy and on AI systems that automate research and operations.'
     );
 
     if(t.indexOf('.sec-kicker')<0){
