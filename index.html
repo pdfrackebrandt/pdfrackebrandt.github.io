@@ -23,8 +23,8 @@ img{max-width:100%}
 </style>
 <style>
 :root{
-  --paper:#FCFCFD;
-  --surface:#F4F5F7;
+  --paper:#FFFFFF;
+  --surface:#F4F4F5;
   --ink:#1A1D22;
   --ink-soft:#3A424B;
   --muted:#616B76;
@@ -37,7 +37,7 @@ img{max-width:100%}
   --signal:#8C2F39;
   --accent:#22557E;
   --link:#1C3C5A;
-  --canvas-bg:#FCFCFD;
+  --canvas-bg:#FFFFFF;
   --canvas-line:#D2D8DE;
 
   --f-display:Lato,Verdana,Helvetica,Arial,sans-serif;
@@ -185,17 +185,14 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 /* ---------- sections ---------- */
 main{display:flex;flex-direction:column;gap:clamp(46px,7vw,72px);padding-block:clamp(48px,7vw,76px) 0}
 section{scroll-margin-top:24px}
-.sec-head{
-  display:flex;align-items:baseline;gap:13px;
-  padding-bottom:13px;margin-bottom:24px;border-bottom:1px solid var(--rule);
-}
+.sec-head{display:flex;align-items:baseline;margin-bottom:20px}
 .sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}
-.sec-num{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint)}
+
 .prose{display:flex;flex-direction:column;gap:16px;color:var(--ink-soft)}
 .prose em{font-style:italic}
 
 .papers{display:flex;flex-direction:column;margin-top:28px}
-.paper{display:grid;grid-template-columns:1fr;gap:18px;padding-block:26px;border-top:1px solid var(--rule-soft)}
+.paper{display:grid;grid-template-columns:1fr;gap:18px;padding-block:22px 34px}
 @media (min-width:720px){
   .paper{grid-template-columns:306px minmax(0,1fr);gap:30px}
 }
@@ -203,9 +200,9 @@ section{scroll-margin-top:24px}
 .fig-note{font-family:var(--f-mono);font-size:0.72rem;color:var(--faint)}
 .fig-controls{display:flex;flex-wrap:wrap;gap:6px}
 .fig-controls .btn{padding:3px 8px;font-size:0.72rem}
-.paper-head{display:flex;align-items:baseline;gap:12px}
-.paper:last-child{border-bottom:1px solid var(--rule-soft)}
-.paper-id{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);font-variant-numeric:tabular-nums;flex:none}
+.paper-head{display:flex;align-items:baseline}
+
+
 .paper-body{display:flex;flex-direction:column;gap:8px;min-width:0}
 .paper h3{font-size:var(--step-1);line-height:1.35;font-weight:700}
 .paper p{font-size:var(--step--1);line-height:1.68;color:var(--muted)}
@@ -216,24 +213,23 @@ section{scroll-margin-top:24px}
 .drawer{margin-top:22px;font-size:var(--step--1);color:var(--muted);line-height:1.7;padding-left:16px;border-left:2px solid var(--rule)}
 
 .ventures{display:flex;flex-direction:column;margin-top:26px}
-.venture{display:flex;flex-direction:column;gap:9px;padding-block:22px;border-top:1px solid var(--rule-soft)}
-.ventures .venture:first-child{border-top:none;padding-top:2px}
-.venture:last-child{border-bottom:1px solid var(--rule-soft)}
+.venture{display:flex;flex-direction:column;gap:9px;padding-block:6px 24px}
+
 .venture-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 13px}
 .venture h3{font-size:var(--step-1);font-weight:700}
 .venture-role{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint)}
 .venture p{font-size:var(--step--1);line-height:1.68;color:var(--muted)}
 
 .cv{display:flex;flex-direction:column;margin-top:26px}
-.cv-group{padding-block:20px;border-top:1px solid var(--rule-soft)}
-.cv-group:last-child{border-bottom:1px solid var(--rule-soft)}
+.cv-group{padding-block:4px 22px}
+
 .cv-label{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);margin-bottom:12px}
 .cv-row{display:grid;grid-template-columns:7rem 1fr;gap:4px 18px;padding-block:8px}
 .cv-year{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);font-variant-numeric:tabular-nums;padding-top:.22em;white-space:nowrap}
 .cv-detail{display:flex;flex-direction:column;gap:3px;min-width:0}
 .cv-detail strong{font-weight:700;font-size:var(--step-0)}
 .cv-detail span{font-size:var(--step--1);color:var(--muted);line-height:1.62}
-@media (max-width:520px){.cv-row,.paper{grid-template-columns:1fr}.cv-year,.paper-id{padding-top:0}}
+@media (max-width:520px){.cv-row{grid-template-columns:1fr}.cv-year{padding-top:0}}
 
 .contact-list{display:flex;flex-direction:column;margin-top:24px}
 .contact-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:5px 18px;padding-block:13px;border-top:1px solid var(--rule-soft)}
@@ -241,7 +237,7 @@ section{scroll-margin-top:24px}
 .contact-row .k{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint)}
 
 footer{
-  margin-top:clamp(60px,9vw,100px);padding-block:22px 36px;border-top:1px solid var(--rule);
+  margin-top:clamp(60px,9vw,100px);padding-block:22px 36px;
   display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:space-between;
   font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);
 }
@@ -320,7 +316,7 @@ footer{
   <main id="main">
 
     <section id="research">
-      <div class="sec-head"><span class="sec-num">01</span><h2>Research</h2></div>
+      <div class="sec-head"><h2>Research</h2></div>
       <div class="papers">
 
         <article class="paper">
@@ -337,7 +333,7 @@ footer{
             <span class="fig-note" id="tread">t = 0.0</span>
           </div>
           <div class="paper-body">
-            <div class="paper-head"><span class="paper-id">00</span><h3>Why regimes go round in circles</h3></div>
+            <div class="paper-head"><h3>Why regimes go round in circles</h3></div>
             <p class="claim">Democracies decay and so does whatever replaces them; I show the loop Polybius described in 150 BC is what the mathematics predicts once a country's birth rate falls fast enough, not a run of bad luck.</p>
             <details class="more">
               <summary>How to read the figure</summary>
@@ -367,7 +363,7 @@ footer{
             </div>
           </div>
           <div class="paper-body">
-            <div class="paper-head"><span class="paper-id">01</span><h3>Why no constitution can do everything</h3></div>
+            <div class="paper-head"><h3>Why no constitution can do everything</h3></div>
             <p class="claim">Five things you want from a constitution cannot all hold at once, and I prove it: stable, hard to capture, open to newcomers, binding on the future, equal for everyone. Give one up on the left and see what survives.</p>
             <details class="more">
               <summary>How to read the figure</summary>
@@ -391,7 +387,7 @@ footer{
             <span class="fig-note">Schematic, not data</span>
           </div>
           <div class="paper-body">
-            <div class="paper-head"><span class="paper-id">02</span><h3>Checking it against Latin America</h3></div>
+            <div class="paper-head"><h3>Checking it against Latin America</h3></div>
             <p class="claim">Latin America rewrites constitutions often enough to count how long they last, so near-tied elections give a natural experiment for whether the predicted jump is really there.</p>
             <details class="more">
               <summary>How to read the figure</summary>
@@ -402,7 +398,7 @@ footer{
             <details class="more">
               <summary>The technical version</summary>
               <div class="more-body">
-                <p>Regression discontinuity around constitutional reform thresholds, using close elections and the bifurcation threshold itself as cutoffs, testing whether the cycling predicted by 00 appears as a discontinuity in constitutional survival.</p>
+                <p>Regression discontinuity around constitutional reform thresholds, using close elections and the bifurcation threshold itself as cutoffs, testing whether the cycling predicted by the first paper appears as a discontinuity in constitutional survival.</p>
               </div>
             </details>
             <div class="paper-tags"><span class="tag">Early</span><span class="tag">Causal inference</span><span class="tag">Latin America</span></div>
@@ -411,11 +407,11 @@ footer{
 
       </div>
 
-      <p class="drawer">Two more at memo stage: quasi-periodic dynamics when 00 and 01 interact, and a quantum social choice extension.</p>
+      <p class="drawer">Two more at memo stage: quasi-periodic dynamics when the first two interact, and a quantum social choice extension.</p>
     </section>
 
     <section id="building">
-      <div class="sec-head"><span class="sec-num">02</span><h2>Building</h2></div>
+      <div class="sec-head"><h2>Building</h2></div>
       <div class="ventures">
         <article class="venture">
           <div class="venture-top"><h3>Frontier</h3><span class="venture-role">Solo</span></div>
@@ -435,7 +431,7 @@ footer{
     </section>
 
     <section id="cv">
-      <div class="sec-head"><span class="sec-num">03</span><h2>CV</h2></div>
+      <div class="sec-head"><h2>CV</h2></div>
       <div class="cv">
         <div class="cv-group">
           <div class="cv-label">Education</div>
