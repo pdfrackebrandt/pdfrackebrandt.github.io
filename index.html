@@ -274,7 +274,6 @@ footer{
 .axiom-out.clash b{color:var(--signal)}
 .ax-node{cursor:pointer}
 .ax-node:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.rd{display:block;width:100%;height:auto}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important}}
 </style>
 </head>
@@ -381,33 +380,9 @@ footer{
           </div>
         </article>
 
-        <article class="paper">
-          <div class="paper-fig">
-            <svg class="rd" viewBox="0 0 306 196" role="img" aria-label="Schematic of a regression discontinuity: constitutional survival plotted against vote margin, with a jump at the threshold."></svg>
-            <span class="fig-note">Schematic, not data</span>
-          </div>
-          <div class="paper-body">
-            <div class="paper-head"><h3>Checking it against Latin America</h3></div>
-            <p class="claim">Latin America rewrites constitutions often enough to count how long they last, so near-tied elections give a natural experiment for whether the predicted jump is really there.</p>
-            <details class="more">
-              <summary>How to read the figure</summary>
-              <div class="more-body">
-                <p>An election decided by half a percent is close to a coin flip, so the countries just either side of the line are alike in everything except who won. If constitutional survival jumps as you step across that line, the winner caused the jump. A smooth curve through the line would mean the prediction fails. The drawing shows the shape a result would take, not a result.</p>
-              </div>
-            </details>
-            <details class="more">
-              <summary>The technical version</summary>
-              <div class="more-body">
-                <p>Regression discontinuity around constitutional reform thresholds, using close elections and the bifurcation threshold itself as cutoffs, testing whether the cycling predicted by the first paper appears as a discontinuity in constitutional survival.</p>
-              </div>
-            </details>
-            <div class="paper-tags"><span class="tag">Early</span><span class="tag">Causal inference</span><span class="tag">Latin America</span></div>
-          </div>
-        </article>
 
       </div>
 
-      <p class="drawer">Two more at memo stage: quasi-periodic dynamics when the first two interact, and a quantum social choice extension.</p>
     </section>
 
     <section id="building">
@@ -729,46 +704,6 @@ footer{
   if(mq.addEventListener) mq.addEventListener('change',render);
 })();
 
-/* ---------- paper 02: regression discontinuity schematic ---------- */
-(function(){
-  var svg=document.querySelector('svg.rd'); if(!svg) return;
-  var NS='http://www.w3.org/2000/svg';
-  function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
-  function el(n,at){var e=document.createElementNS(NS,n);for(var k in at)e.setAttribute(k,at[k]);return e;}
-  function render(){
-    while(svg.firstChild) svg.removeChild(svg.firstChild);
-    var rule=css('--rule'), faint=css('--faint'), accent=css('--accent'), sig=css('--signal'), muted=css('--muted');
-    var L=34,R=292,T=16,B=158, MIDX=(L+R)/2;
-    svg.appendChild(el('line',{x1:L,y1:B,x2:R,y2:B,stroke:rule,'stroke-width':1}));
-    svg.appendChild(el('line',{x1:L,y1:T,x2:L,y2:B,stroke:rule,'stroke-width':1}));
-    svg.appendChild(el('line',{x1:MIDX,y1:T,x2:MIDX,y2:B,stroke:faint,'stroke-width':1,'stroke-dasharray':'3 4'}));
-    // two fitted trends with a gap at the threshold
-    var dl='',dr='',i,x,y;
-    for(i=0;i<=40;i++){ x=L+(MIDX-L)*i/40; y=B-26-((x-L)/(MIDX-L))*22; dl+=(i?' L':'M')+x+' '+y; }
-    for(i=0;i<=40;i++){ x=MIDX+(R-MIDX)*i/40; y=B-86-((x-MIDX)/(R-MIDX))*26; dr+=(i?' L':'M')+x+' '+y; }
-    svg.appendChild(el('path',{d:dl,fill:'none',stroke:accent,'stroke-width':1.8}));
-    svg.appendChild(el('path',{d:dr,fill:'none',stroke:accent,'stroke-width':1.8}));
-    // the jump
-    svg.appendChild(el('line',{x1:MIDX,y1:B-48,x2:MIDX,y2:B-86,stroke:sig,'stroke-width':2}));
-    svg.appendChild(el('circle',{cx:MIDX,cy:B-48,r:3,fill:sig}));
-    svg.appendChild(el('circle',{cx:MIDX,cy:B-86,r:3,fill:sig}));
-    function txt(t,x,y,col,anchor,size){
-      var e=el('text',{x:x,y:y,fill:col,'text-anchor':anchor||'middle',
-        'font-family':'Lato,Helvetica,Arial,sans-serif','font-size':size||9.5});
-      e.textContent=t; svg.appendChild(e); return e;
-    }
-    txt('the jump',MIDX+8,B-64,sig,'start');
-    txt('lost narrowly',L+6,B+14,faint,'start');
-    txt('won narrowly',R-6,B+14,faint,'end');
-    txt('threshold',MIDX,T+8,faint);
-    txt('how long the constitution lasts',L-6,(T+B)/2,muted,'middle',9.5)
-      .setAttribute('transform','rotate(-90 '+(L-6)+' '+((T+B)/2)+')');
-    txt('vote margin',MIDX,B+34,muted);
-  }
-  render();
-  var mq=window.matchMedia('(prefers-color-scheme: dark)');
-  if(mq.addEventListener) mq.addEventListener('change',render);
-})();
 </script>
 
 </body>
