@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Pedro F. Rackebrandt. Constitutional mechanism design, political economy and regime dynamics. Incoming MPhil Economics, Merton College, Oxford.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Pedro F. Rackebrandt">
+<meta property="og:description" content="Constitutional mechanism design, political economy and regime dynamics.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rackebrandt.pe/">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://rackebrandt.pe/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231F4E79'/%3E%3Crect x='5' y='19' width='4' height='7' fill='%23D8C79B'/%3E%3Crect x='11' y='13' width='4' height='13' fill='%23E9EBEC'/%3E%3Crect x='17' y='17' width='4' height='9' fill='%236E8EA0'/%3E%3Crect x='23' y='8' width='4' height='18' fill='%23E9EBEC'/%3E%3C/svg%3E">
+<title>Pedro F. Rackebrandt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<style>
+:root{
+  --paper:#E9EBEC;
+  --surface:#F3F4F5;
+  --ink:#15181C;
+  --ink-soft:#333A42;
+  --muted:#5C6570;
+  --faint:#8A939C;
+  --rule:#D3D8DC;
+  --rule-soft:#DFE3E6;
+  --r1:#D8C79B;
+  --r2:#6E8EA0;
+  --r3:#1F4E79;
+  --signal:#8C2F39;
+  --accent:#1F4E79;
+  --canvas-bg:#F3F4F5;
+  --canvas-line:#DCE0E3;
+
+  --f-display:"Newsreader","Iowan Old Style",Georgia,serif;
+  --f-body:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,"DejaVu Sans Mono",monospace;
+
+  --step--1:0.795rem;
+  --step-0:1rem;
+  --step-1:1.16rem;
+  --step-2:1.45rem;
+  --step-3:1.95rem;
+  --step-4:clamp(2.1rem,1.4rem + 2.6vw,3.3rem);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1114;
+    --surface:#151A1F;
+    --ink:#E4E7EA;
+    --ink-soft:#C3C9CE;
+    --muted:#8E979F;
+    --faint:#6A737B;
+    --rule:#262D34;
+    --rule-soft:#1D242A;
+    --r1:#C4AF7C;
+    --r2:#5E8397;
+    --r3:#4E8BC4;
+    --signal:#C7565F;
+    --accent:#7FB3DE;
+    --canvas-bg:#12171C;
+    --canvas-line:#1E252B;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1114;
+  --surface:#151A1F;
+  --ink:#E4E7EA;
+  --ink-soft:#C3C9CE;
+  --muted:#8E979F;
+  --faint:#6A737B;
+  --rule:#262D34;
+  --rule-soft:#1D242A;
+  --r1:#C4AF7C;
+  --r2:#5E8397;
+  --r3:#4E8BC4;
+  --signal:#C7565F;
+  --accent:#7FB3DE;
+  --canvas-bg:#12171C;
+  --canvas-line:#1E252B;
+}
+
+*{box-sizing:border-box}
+.skip{position:absolute;left:-9999px;top:0;z-index:20}
+.skip:focus{left:12px;top:12px;background:var(--surface);color:var(--ink);padding:8px 14px;border:1px solid var(--rule)}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:var(--step-0);
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent);transition:border-color .15s,color .15s}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0}
+p{margin:0}
+
+.wrap{
+  max-width:1140px;
+  margin:0 auto;
+  padding-inline:clamp(20px,4.5vw,60px);
+  padding-block:0;
+}
+
+/* ---------- masthead ---------- */
+.masthead{
+  display:flex;flex-wrap:wrap;gap:18px 28px;
+  align-items:baseline;justify-content:space-between;
+  padding-block:34px 0;
+}
+.wordmark{
+  font-family:var(--f-display);
+  font-size:var(--step-1);
+  letter-spacing:.005em;
+}
+.wordmark span{color:var(--muted)}
+.topnav{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--f-mono);font-size:var(--step--1);letter-spacing:.07em;}
+.topnav a{color:var(--muted);border-bottom:none}
+.topnav a:hover{color:var(--ink)}
+
+/* ---------- hero ---------- */
+.hero{padding-block:clamp(34px,5vw,62px) 0;max-width:38rem}
+.eyebrow{
+  font-family:var(--f-mono);font-size:var(--step--1);
+  letter-spacing:.05em;color:var(--muted);
+  display:block;margin-bottom:20px;
+}
+.hero h1{
+  font-size:var(--step-4);
+  line-height:1.06;
+  letter-spacing:-0.018em;
+  margin-bottom:24px;
+}
+.hero h1 em{font-style:italic;color:var(--ink-soft)}
+.lede{font-size:var(--step-1);color:var(--ink-soft);line-height:1.58;max-width:34rem}
+.hero-meta{
+  display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:26px;
+  font-family:var(--f-mono);font-size:var(--step--1);color:var(--muted);
+}
+.hero-meta a{color:var(--muted);border-bottom:1px solid var(--rule)}
+.hero-meta a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* ---------- lattice ---------- */
+.lattice{margin-block:clamp(32px,4.5vw,52px) 0}
+.lattice-frame{
+  background:var(--canvas-bg);
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  position:relative;
+  overflow:hidden;
+}
+#field{display:block;width:100%;height:clamp(260px,34vw,400px);touch-action:pan-y}
+.lattice-axis{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:10px 2px 0;
+  font-family:var(--f-mono);font-size:var(--step--1);
+  letter-spacing:.03em;color:var(--faint);
+}
+.lattice-controls{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;
+  padding-top:20px;
+}
+.ctl{display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:var(--step--1);color:var(--muted)}
+.ctl label{letter-spacing:.03em;white-space:nowrap}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:clamp(120px,22vw,200px);height:2px;background:var(--rule);
+  border-radius:2px;outline-offset:6px;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:13px;height:13px;border-radius:50%;
+  background:var(--accent);cursor:pointer;border:none;
+}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+.readout{font-variant-numeric:tabular-nums;color:var(--ink);min-width:5.5ch}
+.regime-key{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--f-mono);font-size:var(--step--1);letter-spacing:.03em;color:var(--muted)}
+.regime-key i{display:inline-block;width:9px;height:13px;margin-right:6px;vertical-align:-2px}
+.caption{
+  max-width:42rem;margin-top:22px;
+  font-size:var(--step--1);line-height:1.7;color:var(--muted);
+}
+.caption b{color:var(--ink-soft);font-weight:500}
+
+/* ---------- body grid ---------- */
+.body-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:0;
+  padding-block:clamp(52px,7vw,92px) 0;
+}
+.rail{display:none}
+@media (min-width:900px){
+  .body-grid{grid-template-columns:170px minmax(0,1fr);gap:0 64px}
+  .rail{display:block}
+}
+.rail-inner{
+  position:sticky;top:32px;
+  display:flex;flex-direction:column;gap:9px;
+  font-family:var(--f-mono);font-size:var(--step--1);
+  letter-spacing:.03em;
+}
+.rail-inner a{color:var(--faint);border-bottom:none}
+.rail-inner a:hover{color:var(--ink)}
+.rail-inner .rail-head{color:var(--ink);letter-spacing:.04em;margin-bottom:4px}
+
+.column{max-width:42rem;min-width:0;display:flex;flex-direction:column;gap:clamp(56px,8vw,88px)}
+section{scroll-margin-top:28px}
+.sec-head{
+  display:flex;align-items:baseline;gap:14px;
+  padding-bottom:16px;margin-bottom:28px;
+  border-bottom:1px solid var(--rule);
+}
+.sec-head h2{font-size:var(--step-2);letter-spacing:-0.01em}
+.sec-num{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);letter-spacing:.08em}
+.prose{display:flex;flex-direction:column;gap:18px;color:var(--ink-soft)}
+.prose em{font-family:var(--f-display);font-style:italic;font-size:1.05em}
+
+/* ---------- papers ---------- */
+.papers{display:flex;flex-direction:column;margin-top:34px}
+.paper{
+  display:grid;grid-template-columns:auto 1fr;gap:4px 20px;
+  padding-block:24px;
+  border-top:1px solid var(--rule-soft);
+}
+.paper:last-child{border-bottom:1px solid var(--rule-soft)}
+.paper-id{
+  font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);
+  padding-top:.42em;font-variant-numeric:tabular-nums;
+}
+.paper-body{display:flex;flex-direction:column;gap:9px;min-width:0}
+.paper h3{font-size:var(--step-1);line-height:1.3;font-weight:500}
+.paper p{font-size:var(--step--1);line-height:1.68;color:var(--muted)}
+.paper-tags{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:3px}
+.tag{
+  font-family:var(--f-mono);font-size:0.72rem;letter-spacing:.03em;
+  color:var(--muted);border:1px solid var(--rule);padding:2px 8px;
+}
+.tag.live{color:var(--signal);border-color:color-mix(in srgb,var(--signal) 40%,transparent)}
+.drawer{
+  margin-top:26px;font-size:var(--step--1);color:var(--muted);line-height:1.7;
+  padding-left:18px;border-left:2px solid var(--rule);
+}
+
+/* ---------- ventures ---------- */
+.ventures{display:flex;flex-direction:column;gap:0;margin-top:30px}
+.venture{
+  display:grid;grid-template-columns:1fr;gap:10px;
+  padding-block:26px;border-top:1px solid var(--rule-soft);
+}
+.venture:last-child{border-bottom:1px solid var(--rule-soft)}
+.venture-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px}
+.venture h3{font-size:var(--step-1);font-weight:500}
+.venture-role{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);letter-spacing:.05em}
+.venture p{font-size:var(--step--1);line-height:1.68;color:var(--muted)}
+
+/* ---------- cv ---------- */
+.cv{display:flex;flex-direction:column;margin-top:30px}
+.cv-group{padding-block:22px;border-top:1px solid var(--rule-soft)}
+.cv-group:last-child{border-bottom:1px solid var(--rule-soft)}
+.cv-label{
+  font-family:var(--f-mono);font-size:var(--step--1);letter-spacing:.04em;
+  color:var(--faint);margin-bottom:14px;
+}
+.cv-row{
+  display:grid;grid-template-columns:auto 1fr;gap:4px 20px;
+  padding-block:9px;
+}
+.cv-year{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);font-variant-numeric:tabular-nums;padding-top:.2em;white-space:nowrap;min-width:5.5rem}
+.cv-detail{display:flex;flex-direction:column;gap:3px;min-width:0}
+.cv-detail strong{font-weight:500;font-size:var(--step-0)}
+.cv-detail span{font-size:var(--step--1);color:var(--muted);line-height:1.6}
+@media (max-width:520px){
+  .cv-row,.paper{grid-template-columns:1fr}
+  .cv-year,.paper-id{padding-top:0}
+}
+
+/* ---------- contact ---------- */
+.contact-list{display:flex;flex-direction:column;margin-top:26px}
+.contact-row{
+  display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 20px;
+  padding-block:15px;border-top:1px solid var(--rule-soft);
+}
+.contact-row:last-child{border-bottom:1px solid var(--rule-soft)}
+.contact-row .k{font-family:var(--f-mono);font-size:var(--step--1);letter-spacing:.03em;color:var(--faint)}
+.contact-row .v{font-size:var(--step-0)}
+
+footer{
+  margin-top:clamp(70px,10vw,120px);
+  padding-block:26px 40px;
+  border-top:1px solid var(--rule);
+  display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;
+  font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body>
+
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="wordmark">Pedro F. Rackebrandt <span>/ Economics</span></div>
+    <nav class="topnav">
+      <a href="#research">Research</a>
+      <a href="#building">Building</a>
+      <a href="#cv">CV</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <div class="hero">
+      <span class="eyebrow">Constitutional political economy</span>
+      <h1>Which constitutions outlive <em>the generation that wrote them?</em></h1>
+      <p class="lede">I work on constitutional mechanism design: the formal conditions under which a constitution stays worth obeying once the people who ratified it are gone, and what becomes of a republic when those conditions fail.</p>
+      <div class="hero-meta">
+        <span>Incoming MPhil Economics, Merton College, Oxford</span>
+        <a href="https://orcid.org/0009-0002-4896-2287">ORCID</a>
+        <a href="https://x.com/pdfrackebrandt">X</a>
+        <a href="https://github.com/pdfrackebrandt">GitHub</a>
+      </div>
+    </div>
+
+    <div class="lattice">
+      <div class="lattice-frame">
+        <canvas id="field" aria-label="Interactive lattice of polities running a Hopf bifurcation model; regime cycling emerges left to right as the demographic transition speed rises."></canvas>
+      </div>
+      <div class="lattice-axis">
+        <span>θ low, shocks damp out</span>
+        <span>bifurcation</span>
+        <span>θ high, regimes cycle</span>
+      </div>
+      <div class="lattice-controls">
+        <div class="ctl">
+          <label for="theta">Transition speed θ</label>
+          <input id="theta" type="range" min="0" max="100" value="46">
+          <span class="readout" id="theta-out">0.46</span>
+        </div>
+        <div class="regime-key">
+          <span><i style="background:var(--r1)"></i>Trough</span>
+          <span><i style="background:var(--r2)"></i>Mid</span>
+          <span><i style="background:var(--r3)"></i>Crest</span>
+        </div>
+      </div>
+      <p class="caption">Each column is a polity running the normal form of a Hopf bifurcation, coupled to its neighbours. The demographic transition speed <b>θ</b> rises from left to right. Below the threshold every disturbance decays and the constitution holds. Above it a limit cycle appears, and a shock no longer settles: it becomes the cycle. <b>Move across the field to inject one.</b> The equations are those of paper 00, running live.</p>
+    </div>
+
+    <div class="body-grid">
+      <nav class="rail" aria-label="Section index">
+        <div class="rail-inner">
+          <span class="rail-head">Index</span>
+          <a href="#research">01 Research</a>
+          <a href="#building">02 Building</a>
+          <a href="#cv">03 CV</a>
+          <a href="#contact">04 Contact</a>
+        </div>
+      </nav>
+
+      <div class="column">
+
+        <section id="research">
+          <div class="sec-head"><span class="sec-num">01</span><h2>Research</h2></div>
+          <div class="prose">
+            <p>Classical political theory says regimes turn in a circle. Polybius called it <em>anacyclosis</em>: monarchy decays into tyranny, aristocracy into oligarchy, democracy into mob rule, and the wheel comes round. Modern political economy says institutions are chosen, by people who can see the wheel coming.</p>
+            <p>My work asks when both hold at once: when the cycle is an equilibrium object, and what a constitution would have to look like to step off it. The formal apparatus is axiomatic social choice and dynamical systems. The empirical setting is Latin America, where constitutions are rewritten often enough that constitutional mortality is observable.</p>
+          </div>
+
+          <div class="papers">
+            <article class="paper">
+              <span class="paper-id">00</span>
+              <div class="paper-body">
+                <h3>Anacyclosis as a Hopf bifurcation</h3>
+                <p>Regime cycling recovered as a limit cycle in a dynamic political economy model, with the speed of the demographic transition as the bifurcation parameter. Below the threshold the polity spirals into a stable constitutional equilibrium. Above it, that equilibrium loses stability and the regime sequence turns periodic. Validated against V-Dem.</p>
+                <div class="paper-tags"><span class="tag live">In progress</span><span class="tag">Nonlinear dynamics</span><span class="tag">V-Dem</span></div>
+              </div>
+            </article>
+
+            <article class="paper">
+              <span class="paper-id">01</span>
+              <div class="paper-body">
+                <h3>A constitutional impossibility theorem</h3>
+                <p>Five axioms (stability, non-capture, openness, commitment efficiency, anonymity) are shown to be mutually incompatible in an overlapping-generations economy with heterogeneous patience and multidimensional policy. Epistocratic bicameralism is characterised as the unique escape. A companion convergence result shows the constitution self-obsolesces as the patience distribution shifts.</p>
+                <div class="paper-tags"><span class="tag live">Draft</span><span class="tag">Axiomatic social choice</span><span class="tag">OLG</span></div>
+              </div>
+            </article>
+
+            <article class="paper">
+              <span class="paper-id">02</span>
+              <div class="paper-body">
+                <h3>Constitutional mortality in Latin America</h3>
+                <p>The causal companion. Regression discontinuity around constitutional reform thresholds, using close elections and the bifurcation threshold itself as cutoffs, testing whether the cycling predicted by 00 shows up as a discontinuity in constitutional survival.</p>
+                <div class="paper-tags"><span class="tag">Early</span><span class="tag">Causal inference</span><span class="tag">Latin America</span></div>
+              </div>
+            </article>
+          </div>
+
+          <p class="drawer">Two further papers sit at memo stage: a torus paper on quasi-periodic constitutional dynamics, embedding the impossibility result of 01 in the cycling of 00, and a quantum social choice extension built on a novel intergenerational consistency axiom.</p>
+        </section>
+
+        <section id="building">
+          <div class="sec-head"><span class="sec-num">02</span><h2>Building</h2></div>
+          <div class="prose">
+            <p>Two things outside the research. Both exist because the research needed them or paid for them.</p>
+          </div>
+
+          <div class="ventures">
+            <article class="venture">
+              <div class="venture-top"><h3>Frontier</h3><span class="venture-role">Solo, research infrastructure</span></div>
+              <p>An overnight research pipeline: verification-gated agents with hard quality floors, which halt instead of returning a degraded answer. Current work is a pre-registered study on whether cross-model disagreement predicts extraction error when an LLM reads a paper into a causal identification spec. That reading step is the bottleneck now that the identification algorithms themselves are solved.</p>
+            </article>
+            <article class="venture">
+              <div class="venture-top"><h3>Punto</h3><span class="venture-role">Co-founder, board level</span></div>
+              <p>A Flutter wellness and productivity app, incorporated as a German UG. It started as an alarm that had to earn the right to wake you. My role is strategic. Operations sit with my co-founder.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="cv">
+          <div class="sec-head"><span class="sec-num">03</span><h2>CV</h2></div>
+
+          <div class="cv">
+            <div class="cv-group">
+              <div class="cv-label">Education</div>
+              <div class="cv-row">
+                <span class="cv-year">2026 on</span>
+                <span class="cv-detail"><strong>MPhil Economics, University of Oxford</strong><span>Merton College. Continuing to the DPhil.</span></span>
+              </div>
+              <div class="cv-row">
+                <span class="cv-year"></span>
+                <span class="cv-detail"><strong>BSc Economics, University of Manchester</strong><span>First Class Honours. Stellify Award. Dissertation on commodity volatility, in Python on Bloomberg data.</span></span>
+              </div>
+              <div class="cv-row">
+                <span class="cv-year">2016 to 2021</span>
+                <span class="cv-detail"><strong>IB Diploma, International School Hannover Region</strong></span>
+              </div>
+            </div>
+
+            <div class="cv-group">
+              <div class="cv-label">Positions</div>
+              <div class="cv-row">
+                <span class="cv-year"></span>
+                <span class="cv-detail"><strong>Crowwd</strong><span>Equity research.</span></span>
+              </div>
+              <div class="cv-row">
+                <span class="cv-year"></span>
+                <span class="cv-detail"><strong>Copytrade Market</strong><span>Retail trading platform.</span></span>
+              </div>
+              <div class="cv-row">
+                <span class="cv-year"></span>
+                <span class="cv-detail"><strong>Cloud IT</strong></span>
+              </div>
+            </div>
+
+            <div class="cv-group">
+              <div class="cv-label">Other</div>
+              <div class="cv-row">
+                <span class="cv-year"></span>
+                <span class="cv-detail"><strong>Manchester Trading Society</strong><span>Co-founder. Grew it from seven members to over five hundred.</span></span>
+              </div>
+              <div class="cv-row">
+                <span class="cv-year"></span>
+                <span class="cv-detail"><strong>Languages</strong><span>Spanish, German, English.</span></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact">
+          <div class="sec-head"><span class="sec-num">04</span><h2>Contact</h2></div>
+          <div class="prose">
+            <p>Happy to hear from anyone working on constitutional design, regime dynamics, or Latin American political economy, and from people building research infrastructure.</p>
+          </div>
+          <div class="contact-list">
+            <div class="contact-row"><span class="k">Email</span><span class="v"><a href="mailto:pdfrackebrandt@gmail.com">pdfrackebrandt@gmail.com</a></span></div>
+            <div class="contact-row"><span class="k">ORCID</span><span class="v"><a href="https://orcid.org/0009-0002-4896-2287">0009-0002-4896-2287</a></span></div>
+            <div class="contact-row"><span class="k">X</span><span class="v"><a href="https://x.com/pdfrackebrandt">@pdfrackebrandt</a></span></div>
+            <div class="contact-row"><span class="k">GitHub</span><span class="v"><a href="https://github.com/pdfrackebrandt">pdfrackebrandt</a></span></div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>Lima, Hannover, Oxford</span>
+    <span>rackebrandt.pe</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var cv = document.getElementById('field');
+  if(!cv) return;
+  var ctx = cv.getContext('2d', {alpha:false});
+  var slider = document.getElementById('theta');
+  var out = document.getElementById('theta-out');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var CELL = 14, GAP = 2, ROWS = 20;
+  var N = 0, W = 0, H = 0, dpr = 1, cw = 0, ch = 0, ox = 0;
+  var x = null, y = null, om = null, mu = null, hot = null;
+  var theta = 0.46, thr = 0;
+  var raf = null;
+
+  function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+  var C = {};
+  function readTokens(){
+    C.bg = css('--canvas-bg') || '#F3F4F5';
+    C.line = css('--canvas-line') || '#DCE0E3';
+    C.r1 = css('--r1'); C.r2 = css('--r2'); C.r3 = css('--r3');
+    C.sig = css('--signal');
+  }
+
+  function alloc(n){
+    x = new Float32Array(n); y = new Float32Array(n);
+    om = new Float32Array(n); mu = new Float32Array(n); hot = new Float32Array(n);
+    for(var i=0;i<n;i++){
+      x[i] = (Math.random()-0.5)*0.02;
+      y[i] = (Math.random()-0.5)*0.02;
+      om[i] = 0.85 + 0.55*(i/(n-1||1));
+    }
+  }
+
+  function setMu(){
+    for(var i=0;i<N;i++){
+      mu[i] = -0.62 + 1.20*(i/(N-1||1)) + (theta-0.5)*0.86;
+    }
+    thr = -1;
+    for(var j=0;j<N;j++){ if(mu[j] >= 0){ thr = j; break; } }
+  }
+
+  function resize(){
+    var rect = cv.getBoundingClientRect();
+    if(rect.width < 2) return;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.round(rect.width); H = Math.round(rect.height);
+    cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    CELL = W < 520 ? 9 : (W < 820 ? 11 : 14);
+    GAP = W < 520 ? 1 : 2;
+    ROWS = W < 520 ? 16 : 20;
+    var n = Math.max(12, Math.floor(W / CELL));
+    cw = CELL - GAP;
+    ch = Math.max(3, Math.floor(H / ROWS) - GAP);
+    ox = Math.round((W - n*CELL) / 2);
+    if(n !== N){ N = n; alloc(N); }
+    setMu();
+    if(reduce){ for(var k=0;k<900;k++) step(); draw(); }
+  }
+
+  function step(){
+    var D = 0.075, dt = 0.085, i, r2, lx, rx, ly, ry, dx, dy;
+    var nx = step.nx || (step.nx = new Float32Array(4096));
+    for(i=0;i<N;i++){
+      lx = x[i>0?i-1:0]; rx = x[i<N-1?i+1:N-1];
+      ly = y[i>0?i-1:0]; ry = y[i<N-1?i+1:N-1];
+      r2 = x[i]*x[i] + y[i]*y[i];
+      dx = mu[i]*x[i] - om[i]*y[i] - r2*x[i] + D*(lx+rx-2*x[i]);
+      dy = om[i]*x[i] + mu[i]*y[i] - r2*y[i] + D*(ly+ry-2*y[i]);
+      x[i] += dt*dx + (Math.random()-0.5)*0.0016;
+      y[i] += dt*dy + (Math.random()-0.5)*0.0016;
+      if(hot[i] > 0) hot[i] *= 0.94;
+    }
+  }
+
+  function draw(){
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0,0,W,H);
+
+    // bifurcation hairline
+    if(thr >= 0 && thr < N){
+      ctx.fillStyle = C.line;
+      ctx.fillRect(ox + thr*CELL - 1, 0, 1, H);
+    }
+
+    var A = 1.05, i, j, lvl, e, top;
+    for(i=0;i<N;i++){
+      var amp = Math.sqrt(x[i]*x[i] + y[i]*y[i]) / A;
+      var u = 0.55*amp + 0.55*(x[i]/A);
+      if(u > 1) u = 1; if(u < 0) u = 0;
+      lvl = Math.floor(ROWS * (0.10 + 0.86*u));
+      if(lvl < 0) lvl = 0; if(lvl > ROWS-1) lvl = ROWS-1;
+      var px = ox + i*CELL;
+      for(j=0;j<=lvl;j++){
+        e = j/(ROWS-1);
+        ctx.fillStyle = e < 0.30 ? C.r1 : (e < 0.62 ? C.r2 : C.r3);
+        top = H - (j+1)*(ch+GAP);
+        ctx.fillRect(px, top, cw, ch);
+      }
+      if(hot[i] > 0.02){
+        ctx.globalAlpha = Math.min(hot[i], 0.85);
+        ctx.fillStyle = C.sig;
+        top = H - (lvl+1)*(ch+GAP);
+        ctx.fillRect(px, top, cw, ch);
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+
+  function loop(){
+    step(); step();
+    draw();
+    raf = requestAnimationFrame(loop);
+  }
+
+  function kick(clientX){
+    var rect = cv.getBoundingClientRect();
+    var i = Math.round((clientX - rect.left - ox) / CELL);
+    if(i < 0 || i >= N) return;
+    for(var d=-3; d<=3; d++){
+      var k = i+d; if(k<0||k>=N) continue;
+      var w = Math.exp(-(d*d)/3.2);
+      x[k] += 0.85*w;
+      hot[k] = Math.max(hot[k], w);
+    }
+  }
+
+  readTokens();
+  resize();
+
+  var ro = new ResizeObserver(function(){ resize(); });
+  ro.observe(cv);
+
+  if(slider){
+    slider.addEventListener('input', function(){
+      theta = slider.value/100;
+      out.textContent = theta.toFixed(2);
+      setMu();
+      if(reduce){ for(var k=0;k<500;k++) step(); draw(); }
+    });
+    out.textContent = theta.toFixed(2);
+  }
+
+  if(!reduce){
+    cv.addEventListener('pointermove', function(e){ kick(e.clientX); });
+    cv.addEventListener('pointerdown', function(e){ kick(e.clientX); kick(e.clientX); });
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if(mq.addEventListener) mq.addEventListener('change', readTokens);
+    loop();
+  }
+})();
+</script>
+
+</body>
+</html>
