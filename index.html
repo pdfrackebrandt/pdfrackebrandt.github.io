@@ -3,14 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Pedro F. Rackebrandt. Constitutional mechanism design, political economy and regime dynamics.">
-<meta name="color-scheme" content="light dark">
-<link rel="canonical" href="https://rackebrandt.pe/">
+<meta name="description" content="Pedro F. Rackebrandt. Constitutional mechanism design, political economy and regime dynamics. Incoming MPhil Economics, Merton College, Oxford.">
 <title>Pedro F. Rackebrandt</title>
-<script>location.replace("body.html");</script>
-<meta http-equiv="refresh" content="0;url=body.html">
 </head>
 <body>
-<p><a href="body.html">Pedro F. Rackebrandt</a></p>
+<script>
+(function(){
+  var url='https://raw.githubusercontent.com/pdfrackebrandt/pdfrackebrandt.github.io/192b8350f54b0f493c18a95abe0d9ab85c54338c/index.html';
+  fetch(url).then(function(r){return r.text();}).then(function(t){
+    t=t.replace(/<a class="skip"[^>]*>Skip to content<\/a>\s*/,'');
+    var marker='<div class="axiom-wrap">';
+    var start=t.indexOf(marker);
+    if(start>0){
+      var art=t.lastIndexOf('<article class="paper">', start);
+      var end=t.indexOf('</article>', start);
+      if(art>=0 && end>art) t=t.slice(0,art)+t.slice(end+10);
+    }
+    t=t.replace('<span class="tag live">In progress</span>','<span class="tag live">Work in progress</span>');
+    t=t.replace('<div class="sec-head"><h2>Research</h2></div>','<div class="sec-head"><h2>Research</h2><p class="sec-kicker">Work in progress</p></div>');
+    if(t.indexOf('.sec-kicker')<0){
+      t=t.replace('.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}',
+        '.sec-head{justify-content:space-between;gap:12px 24px;flex-wrap:wrap}.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}.sec-kicker{font-family:var(--f-mono);font-size:var(--step--1);color:var(--signal);letter-spacing:.04em;text-transform:uppercase;margin:0}');
+    }
+    document.open();
+    document.write(t);
+    document.close();
+  }).catch(function(){
+    document.body.textContent='Could not load the page.';
+  });
+})();
+</script>
 </body>
 </html>
