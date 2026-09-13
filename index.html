@@ -212,24 +212,10 @@ section{scroll-margin-top:24px}
 .tag.live{color:var(--signal);border-color:color-mix(in srgb,var(--signal) 35%,transparent)}
 .drawer{margin-top:22px;font-size:var(--step--1);color:var(--muted);line-height:1.7;padding-left:16px;border-left:2px solid var(--rule)}
 
-.ventures{display:flex;flex-direction:column;margin-top:26px}
-.venture{display:flex;flex-direction:column;gap:9px;padding-block:6px 24px}
 
-.venture-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 13px}
-.venture h3{font-size:var(--step-1);font-weight:700}
-.venture-role{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint)}
-.venture p{font-size:var(--step--1);line-height:1.68;color:var(--muted)}
 
-.cv{display:flex;flex-direction:column;margin-top:26px}
-.cv-group{padding-block:4px 22px}
 
-.cv-label{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);margin-bottom:12px}
-.cv-row{display:grid;grid-template-columns:7rem 1fr;gap:4px 18px;padding-block:8px}
 .cv-year{font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);font-variant-numeric:tabular-nums;padding-top:.22em;white-space:nowrap}
-.cv-detail{display:flex;flex-direction:column;gap:3px;min-width:0}
-.cv-detail strong{font-weight:700;font-size:var(--step-0)}
-.cv-detail span{font-size:var(--step--1);color:var(--muted);line-height:1.62}
-@media (max-width:520px){.cv-row{grid-template-columns:1fr}.cv-year{padding-top:0}}
 
 .contact-list{display:flex;flex-direction:column;margin-top:24px}
 .contact-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:5px 18px;padding-block:13px;border-top:1px solid var(--rule-soft)}
@@ -385,47 +371,7 @@ footer{
 
     </section>
 
-    <section id="building">
-      <div class="sec-head"><h2>Building</h2></div>
-      <div class="ventures">
-        <article class="venture">
-          <div class="venture-top"><h3>Frontier</h3><span class="venture-role">Solo</span></div>
-          <p class="claim">Research agents that run overnight and stop rather than guess when they are not sure.</p>
-          <details class="more">
-            <summary>What I am testing</summary>
-            <div class="more-body">
-              <p>A pre-registered study on whether disagreement between models predicts extraction error when an LLM reads a paper into a causal identification spec. The identification algorithms are solved; reading the paper correctly is the bottleneck.</p>
-            </div>
-          </details>
-        </article>
-        <article class="venture">
-          <div class="venture-top"><h3>Punto</h3><span class="venture-role">Co-founder</span></div>
-          <p class="claim">A wellness app that began as an alarm clock which had to earn the right to wake you. Flutter, incorporated in Germany; I set direction, my co-founder runs it.</p>
-        </article>
-      </div>
-    </section>
 
-    <section id="cv">
-      <div class="sec-head"><h2>CV</h2></div>
-      <div class="cv">
-        <div class="cv-group">
-          <div class="cv-label">Education</div>
-          <div class="cv-row"><span class="cv-year">2026 on</span><span class="cv-detail"><strong>MPhil Economics, University of Oxford</strong><span>Merton College. Continuing to the DPhil.</span></span></div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>BSc Economics, University of Manchester</strong><span>First Class Honours. Stellify Award.</span></span></div>
-        </div>
-        <div class="cv-group">
-          <div class="cv-label">Positions</div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Crowwd</strong><span>Equity research.</span></span></div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Copytrade Market</strong><span>Retail trading platform.</span></span></div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Cloud IT</strong></span></div>
-        </div>
-        <div class="cv-group">
-          <div class="cv-label">Other</div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Manchester Trading Society</strong><span>Co-founder. Seven members to five hundred.</span></span></div>
-          <div class="cv-row"><span class="cv-year"></span><span class="cv-detail"><strong>Languages</strong><span>Spanish, German, English.</span></span></div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer>
