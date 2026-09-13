@@ -178,7 +178,6 @@ input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;bac
 .sw.ln{border-top:2px solid var(--accent);height:0}
 .sw.dt{width:9px;height:9px;border-radius:50%;background:var(--signal)}
 .sw.ds{border-top:1px dashed var(--faint);height:0}
-.sw.rg{border-top:1px solid var(--faint);height:0;opacity:.6}
 .caption{margin-top:20px;font-size:var(--step--1);line-height:1.75;color:var(--muted);display:flex;flex-direction:column;gap:13px}
 .caption p{margin:0}
 .caption b{color:var(--ink-soft);font-weight:600}
@@ -328,7 +327,6 @@ footer{
       <li><span class="sw ln"></span>the country's path</li>
       <li><span class="sw dt"></span>where it is now</li>
       <li><span class="sw ds"></span>the tipping point</li>
-      <li><span class="sw rg"></span>how wide the swings end up</li>
     </ul>
 
     <div class="caption">
@@ -341,7 +339,7 @@ footer{
     <details class="more">
       <summary>What the model actually is</summary>
       <div class="more-body">
-        <p>The normal form of a Hopf bifurcation, integrated live. Horizontal axes are the two state variables; the vertical axis is &#952;, the speed of the demographic transition, which drifts slowly upward so the system passes through the bifurcation rather than sitting at a fixed value. For &#952; &lt; 0 the origin is a stable spiral. At &#952; = 0 a pair of eigenvalues crosses the imaginary axis and the origin loses stability, throwing off a limit cycle of radius &#8730;&#952;. The faint horizontal rings are that predicted radius; the trajectory locks onto them with a lag, which is the delay effect characteristic of slow passage through a bifurcation. These are the equations from paper 00.</p>
+        <p>The normal form of a Hopf bifurcation, integrated live. Horizontal axes are the two state variables; the vertical axis is &#952;, the speed of the demographic transition, which drifts slowly upward so the system passes through the bifurcation rather than sitting at a fixed value. For &#952; &lt; 0 the origin is a stable spiral. At &#952; = 0 a pair of eigenvalues crosses the imaginary axis and the origin loses stability, throwing off a limit cycle of radius &#8730;&#952;. The trajectory settles onto that radius only after a lag, the delay effect characteristic of slow passage through a bifurcation. These are the equations from paper 00.</p>
       </div>
     </details>
   </div>
@@ -544,20 +542,6 @@ footer{
     txt('\u03b8',[tp[0]-12,tp[1]-16],C.muted,'right');
   }
 
-  function rings(){
-    ctx.strokeStyle=C.faint;ctx.lineWidth=1;ctx.globalAlpha=.2;
-    for(var k=1;k<=4;k++){
-      var v=TH1*k/4,r=Math.sqrt(v);
-      ctx.beginPath();
-      for(var a=0;a<=56;a++){
-        var an=a/56*6.2832,q=to2(r*Math.cos(an),r*Math.sin(an),v);
-        a?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);
-      }
-      ctx.stroke();
-    }
-    ctx.globalAlpha=1;
-  }
-
   function plane(){
     var q=[to2(-XR,-XR,0),to2(XR,-XR,0),to2(XR,XR,0),to2(-XR,XR,0)];
     ctx.beginPath();ctx.setLineDash([3,4]);
@@ -585,7 +569,7 @@ footer{
 
   function draw(){
     ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,H);
-    axes();rings();plane();trail();
+    axes();plane();trail();
     if(tRead)tRead.textContent='t = '+tt.toFixed(1);
   }
   function step(){
