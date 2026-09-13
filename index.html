@@ -145,7 +145,7 @@ p{margin:0}
 /* ---------- phase portrait ---------- */
 .lattice{margin-block:clamp(40px,6vw,64px) 0}
 .lattice-frame{background:var(--canvas-bg);position:relative;overflow:hidden}
-#field{display:block;width:100%;height:auto;aspect-ratio:1.07;touch-action:none;cursor:grab}
+#field{display:block;width:100%;height:auto;aspect-ratio:1.14;touch-action:none;cursor:grab}
 #field.dragging{cursor:grabbing}
 .viewhint{
   position:absolute;right:6px;top:4px;pointer-events:none;
@@ -197,8 +197,8 @@ section{scroll-margin-top:24px}
   .paper{grid-template-columns:306px minmax(0,1fr);gap:30px}
 }
 .paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}
-.fig-note{font-family:var(--f-mono);font-size:0.72rem;color:var(--faint)}
-.fig-controls{display:flex;flex-wrap:wrap;gap:6px}
+.fig-note{font-family:var(--f-mono);font-size:0.75rem;color:var(--faint);font-variant-numeric:tabular-nums}
+.fig-controls{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
 .fig-controls .btn{padding:3px 8px;font-size:0.72rem}
 .paper-head{display:flex;align-items:baseline}
 
@@ -309,8 +309,8 @@ section{scroll-margin-top:24px}
               <button class="btn" id="pause" type="button" aria-pressed="false">Pause</button>
               <button class="btn" id="shock" type="button">Shock it</button>
               <button class="btn" id="replay" type="button">Replay</button>
+              <span class="fig-note" id="tread">t = 0.0</span>
             </div>
-            <span class="fig-note" id="tread">t = 0.0</span>
           </div>
           <div class="paper-body">
             <div class="paper-head"><h3>Why regimes go round in circles</h3></div>
@@ -404,9 +404,9 @@ section{scroll-margin-top:24px}
     var xs=pts2.map(function(q){return q[0];}), ys=pts2.map(function(q){return q[1];});
     var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs);
     var y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
-    var padX=Math.max(52,Math.min(120,W*0.30)), padY=Math.max(30,Math.min(64,H*0.16));
+    var padX=Math.max(52,Math.min(120,W*0.30)), padY=Math.max(24,Math.min(52,H*0.13));
     sc=Math.min((W-padX)/(x1-x0),(H-padY)/(y1-y0));
-    ox=W/2-((x0+x1)/2)*sc; oy=H/2+((y0+y1)/2)*sc;
+    ox=W/2-((x0+x1)/2)*sc; oy=H/2+((y0+y1)/2)*sc-H*0.055;
     mid=[W/2,H/2];
   }
   function out(p,px){
@@ -494,7 +494,7 @@ section{scroll-margin-top:24px}
     if(tRead)tRead.textContent='t = '+tt.toFixed(1);
   }
   function step(){
-    var dt=0.01,i;
+    var dt=0.006,i;
     for(i=0;i<5;i++){
       var r2=x*x+y*y;
       var dx=th*x-OM*y-r2*x, dy=OM*x+th*y-r2*y;
