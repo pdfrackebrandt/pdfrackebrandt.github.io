@@ -13,7 +13,6 @@
   var url='https://raw.githubusercontent.com/pdfrackebrandt/pdfrackebrandt.github.io/192b8350f54b0f493c18a95abe0d9ab85c54338c/index.html';
   fetch(url).then(function(r){return r.text();}).then(function(t){
     t=t.replace(/<a class="skip"[^>]*>Skip to content<\/a>\s*/,'');
-
     var marker='<div class="axiom-wrap">';
     var start=t.indexOf(marker);
     if(start>0){
@@ -21,64 +20,29 @@
       var end=t.indexOf('</article>', start);
       if(art>=0 && end>art) t=t.slice(0,art)+t.slice(end+10);
     }
-
     t=t.replace('<span class="tag live">In progress</span>','<span class="tag live">Work in progress</span>');
     t=t.replace('<div class="sec-head"><h2>Research</h2></div>','<div class="sec-head"><h2>Research</h2><p class="sec-kicker">Work in progress</p></div>');
-
-    t=t.replace(
-      'family=Lato:ital,wght@0,300;0,400;0,700;1,400',
-      'family=Instrument+Serif:ital@0;1&family=Inter:ital,wght@0,400;0,500;0,600;1,400'
-    );
-    t=t.replace(
-      '--f-display:Lato,Verdana,Helvetica,Arial,sans-serif;\n  --f-body:Lato,Verdana,Helvetica,Arial,sans-serif;\n  --f-mono:Lato,Verdana,Helvetica,Arial,sans-serif;',
-      '--f-display:"Instrument Serif",Georgia,"Times New Roman",serif;\n  --f-body:Inter,system-ui,Helvetica,Arial,sans-serif;\n  --f-mono:Inter,system-ui,Helvetica,Arial,sans-serif;'
-    );
-
+    t=t.replace('family=Lato:ital,wght@0,300;0,400;0,700;1,400','family=Instrument+Serif:ital@0;1&family=Inter:ital,wght@0,400;0,500;0,600;1,400');
+    t=t.replace('--f-display:Lato,Verdana,Helvetica,Arial,sans-serif;\n  --f-body:Lato,Verdana,Helvetica,Arial,sans-serif;\n  --f-mono:Lato,Verdana,Helvetica,Arial,sans-serif;','--f-display:"Instrument Serif",Georgia,"Times New Roman",serif;\n  --f-body:Inter,system-ui,Helvetica,Arial,sans-serif;\n  --f-mono:Inter,system-ui,Helvetica,Arial,sans-serif;');
     t=t.replace('--link:#1C3C5A;','--link:#0c2e4a;');
     t=t.replace('--accent:#22557E;','--accent:#061d30;');
     t=t.replaceAll('--link:#AFC9DE;','--link:#8ca8c4;');
     t=t.replaceAll('--accent:#84B8E2;','--accent:#c5d4e3;');
-
-    t=t.replace(
-      'a{color:var(--link);text-decoration:underline;text-decoration-thickness:.5px;text-underline-offset:2.5px;text-decoration-color:color-mix(in srgb,var(--link) 45%,transparent);transition:color .15s,text-decoration-color .15s}',
-      'a{color:var(--link);text-decoration:none;transition:color .15s}'
-    );
-    t=t.replace(
-      'a:hover{color:var(--accent);text-decoration-color:var(--accent)}',
-      'a:hover{color:var(--accent)}'
-    );
-    t=t.replace(
-      '.quicklinks a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}',
-      '.quicklinks a:hover{color:var(--accent)}'
-    );
-
-    t=t.replace(
-      'I study MPhil Economics at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton College</a>. I like to learn about frontier AI and economics.',
-      'I study MPhil Economics at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton College</a>. As an undergraduate at the <a href="https://www.manchester.ac.uk/">University of Manchester</a>, I used volatility to measure price dislocation in commodity markets. I later worked in institutional brokerage. I now research political economy and consult on graph engineering and multimodel AI.'
-    );
-    t=t.replace(
-      'As an undergraduate at the <a href="https://www.manchester.ac.uk/">University of Manchester</a> I used volatility to measure price dislocation in commodity markets. I then spent time in institutional brokerage before returning to research.',
-      'I believe, to my core, that economics is the hardest subject out there; objects cycle, causes resist identification, and a cycle can become irrelevant once technology, culture, etc. change the scope of the initial question. Think of it this way, why haven\'t we solved politics yet?'
-    );
-
+    t=t.replace('a{color:var(--link);text-decoration:underline;text-decoration-thickness:.5px;text-underline-offset:2.5px;text-decoration-color:color-mix(in srgb,var(--link) 45%,transparent);transition:color .15s,text-decoration-color .15s}','a{color:var(--link);text-decoration:none;transition:color .15s}');
+    t=t.replace('a:hover{color:var(--accent);text-decoration-color:var(--accent)}','a:hover{color:var(--accent)}');
+    t=t.replace('.quicklinks a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}','.quicklinks a:hover{color:var(--accent)}');
+    t=t.replace('I study MPhil Economics at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton College</a>. I like to learn about frontier AI and economics.','I study MPhil Economics at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton College</a>. As an undergraduate at the <a href="https://www.manchester.ac.uk/">University of Manchester</a>, I used volatility to measure price dislocation in commodity markets. I later worked in institutional brokerage. I now research political economy and consult on graph engineering and multimodel AI.');
+    t=t.replace('As an undergraduate at the <a href="https://www.manchester.ac.uk/">University of Manchester</a> I used volatility to measure price dislocation in commodity markets. I then spent time in institutional brokerage before returning to research.','I believe, to my core, that economics is the hardest subject out there; objects cycle, causes resist identification, and a cycle can become irrelevant once technology, culture, etc. change the scope of the initial question. Think of it this way, why haven\'t we solved politics yet?');
     if(t.indexOf('.sec-kicker')<0){
-      t=t.replace(
-        '.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}',
-        '.sec-head{justify-content:space-between;gap:12px 24px;flex-wrap:wrap}.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}.sec-kicker{font-family:var(--f-mono);font-size:var(--step--1);color:var(--signal);letter-spacing:.06em;text-transform:uppercase;margin:0}'
-      );
+      t=t.replace('.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}','.sec-head{justify-content:space-between;gap:12px 24px;flex-wrap:wrap}.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}.sec-kicker{font-family:var(--f-mono);font-size:var(--step--1);color:var(--signal);letter-spacing:.06em;text-transform:uppercase;margin:0}');
     }
-
     if(t.indexOf('.hurdle-fig')<0){
-      t=t.replace(
-        '.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}',
-        '.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}.hurdle-fig{width:100%;height:auto;display:block;background:transparent;border:0;cursor:crosshair}.hurdle-fig text{font-family:var(--f-mono);fill:var(--faint)}.rev-fig{width:100%;height:auto;display:block;background:transparent;border:0;cursor:default}.rev-fig text{font-family:var(--f-mono);fill:var(--faint)}.byline{font-size:var(--step--1);color:var(--muted);line-height:1.45;margin:2px 0 2px}'
-      );
+      t=t.replace('.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}','.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}.hurdle-fig{width:100%;height:auto;display:block;background:transparent;border:0;cursor:default}.hurdle-fig text{font-family:var(--f-mono);fill:var(--faint)}.rev-fig{width:100%;height:auto;display:block;background:transparent;border:0;cursor:default}.rev-fig text{font-family:var(--f-mono);fill:var(--faint)}.byline{font-size:var(--step--1);color:var(--muted);line-height:1.45;margin:2px 0 2px}');
     }
-
-    var extraPaper = [
+    var extraPaper = document.createElement('div'); extraPaper = [
       '<article class="paper">',
       '  <div class="paper-fig">',
-      '    <svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Interactive search hurdle. Move across the curve to read N and the expected maximum Sharpe ratio.">',
+      '    <svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Search hurdle. Buttons mark the cluster, effective, and nominal trial counts.">',
       '      <g stroke="var(--rule)" stroke-width="1" fill="none">',
       '        <line x1="44" y1="24" x2="44" y2="168"/>',
       '        <line x1="44" y1="168" x2="294" y2="168"/>',
@@ -129,13 +93,12 @@
       '        <line id="hurdle-hair" x1="201.3" y1="28" x2="201.3" y2="168" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>',
       '        <circle id="hurdle-dot" cx="201.3" cy="89.1" r="4" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.5"/>',
       '      </g>',
-      '      <rect id="hurdle-hit" x="44" y="24" width="250" height="144" fill="transparent"/>',
       '    </svg>',
       '    <div class="fig-controls">',
       '      <button class="btn" type="button" data-jump="2">Cluster</button>',
       '      <button class="btn" type="button" data-jump="1400">Effective</button>',
       '      <button class="btn" type="button" data-jump="2825">Nominal</button>',
-      '      <span class="fig-note" id="hurdle-read">move across the curve</span>',
+      '      <span class="fig-note" id="hurdle-read"></span>',
       '    </div>',
       '  </div>',
       '  <div class="paper-body">',
@@ -145,7 +108,7 @@
       '    <details class="more">',
       '      <summary>How to read the figure</summary>',
       '      <div class="more-body">',
-      '        <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. Move across it to read the hurdle at any trial count.</p>',
+      '        <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. The buttons read the hurdle at the cluster, effective, and nominal counts.</p>',
       '        <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>',
       '        <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>',
       '      </div>',
@@ -162,7 +125,6 @@
       '  </div>',
       '</article>'
     ].join("\n        ");
-
     var extraPaper2 = [
       '<article class="paper">',
       '  <div class="paper-fig">',
@@ -245,16 +207,13 @@
       '  </div>',
       '</article>'
     ].join("\n        ");
-
     var anchor = t.indexOf('Why regimes go round in circles');
     if(anchor>=0){
       var close = t.indexOf('</article>', anchor);
       if(close>=0) t = t.slice(0, close+10) + "\n        " + extraPaper + "\n        " + extraPaper2 + t.slice(close+10);
     }
-
     var icon='<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'%3E%3Crect width=\'32\' height=\'32\' fill=\'%230c2e4a\'/%3E%3Cpath fill=\'%23f3efe4\' d=\'M12.2 8.4h5.1c2.7 0 4.5 1.7 4.5 4.2 0 2.5-1.8 4.3-4.5 4.3h-3.1V23.4h-2V8.4zm2 6.7h3c1.6 0 2.5-1 2.5-2.5s-.9-2.4-2.5-2.4h-3v4.9z\'/%3E%3C/svg%3E">';
     t=t.replace(/<link rel="icon"[^>]*>/, icon);
-
     document.open();
     document.write(t);
     document.close();
@@ -262,7 +221,6 @@
   }).catch(function(){
     document.body.textContent='Could not load the page.';
   });
-
   function invNorm(p){
     var a=[-39.69683028665376,220.9460984351125,-275.9285104469687,138.3577509074756,-30.66479806614716,2.506628277459239];
     var b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.2806807164995];
@@ -293,29 +251,15 @@
     var hair=document.getElementById('hurdle-hair');
     var dot=document.getElementById('hurdle-dot');
     var read=document.getElementById('hurdle-read');
-    var hit=document.getElementById('hurdle-hit');
     function show(N, label){
       N=Math.min(1e5, Math.max(2, N));
       var h=hurdle(N), x=xOf(N), y=yOf(h);
       cur.setAttribute('visibility','visible');
       hair.setAttribute('x1', x); hair.setAttribute('x2', x);
       dot.setAttribute('cx', x); dot.setAttribute('cy', y);
-      var tag=label? label+' · ':'';
+      var tag=label? label+' \u00b7 ':'';
       read.textContent=tag+'N = '+fmtN(N)+'   hurdle = '+h.toFixed(2);
     }
-    function fromEvent(e){
-      var pt=svg.createSVGPoint();
-      pt.x=e.clientX; pt.y=e.clientY;
-      var p=pt.matrixTransform(svg.getScreenCTM().inverse());
-      var tt=Math.min(1, Math.max(0, (p.x-44)/250));
-      show(Math.pow(10, tt*5));
-    }
-    hit.addEventListener('pointermove', fromEvent);
-    hit.addEventListener('pointerdown', fromEvent);
-    hit.addEventListener('pointerleave', function(){
-      cur.setAttribute('visibility','hidden');
-      read.textContent='move across the curve';
-    });
     Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function(btn){
       btn.addEventListener('click', function(){
         var N=+btn.getAttribute('data-jump');
