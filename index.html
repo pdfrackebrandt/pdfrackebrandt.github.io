@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Pedro F. Rackebrandt. Political economy and regime dynamics. Incoming MPhil Economics, Merton College, Oxford.">
+<meta name="description" content="Pedro F. Rackebrandt. Political economy, graph engineering and multimodel AI. MPhil Economics, Merton College, Oxford.">
 <title>Pedro F. Rackebrandt</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230c2e4a'/%3E%3Cpath fill='%23f3efe4' d='M12.2 8.4h5.1c2.7 0 4.5 1.7 4.5 4.2 0 2.5-1.8 4.3-4.5 4.3h-3.1V23.4h-2V8.4zm2 6.7h3c1.6 0 2.5-1 2.5-2.5s-.9-2.4-2.5-2.4h-3v4.9z'/%3E%3C/svg%3E">
 </head>
@@ -12,18 +12,18 @@
 (function(){
   var url='https://raw.githubusercontent.com/pdfrackebrandt/pdfrackebrandt.github.io/192b8350f54b0f493c18a95abe0d9ab85c54338c/index.html';
   fetch(url).then(function(r){return r.text();}).then(function(t){
-    t=t.replace(/<a class="skip"[^>]*>Skip to content<\/a>\s*/,'');
+    t=t.replace(/<a class=\"skip\"[^>]*>Skip to content<\\/a>\\s*/,'');
 
-    var marker='<div class="axiom-wrap">';
+    var marker='<div class=\"axiom-wrap\">';
     var start=t.indexOf(marker);
     if(start>0){
-      var art=t.lastIndexOf('<article class="paper">', start);
+      var art=t.lastIndexOf('<article class=\"paper\">', start);
       var end=t.indexOf('</article>', start);
       if(art>=0 && end>art) t=t.slice(0,art)+t.slice(end+10);
     }
 
-    t=t.replace('<span class="tag live">In progress</span>','<span class="tag live">Work in progress</span>');
-    t=t.replace('<div class="sec-head"><h2>Research</h2></div>','<div class="sec-head"><h2>Research</h2><p class="sec-kicker">Work in progress</p></div>');
+    t=t.replace('<span class=\"tag live\">In progress</span>','<span class=\"tag live\">Work in progress</span>');
+    t=t.replace('<div class=\"sec-head\"><h2>Research</h2></div>','<div class=\"sec-head\"><h2>Research</h2><p class=\"sec-kicker\">Work in progress</p></div>');
 
     t=t.replace(
       'family=Lato:ital,wght@0,300;0,400;0,700;1,400',
@@ -31,7 +31,7 @@
     );
     t=t.replace(
       '--f-display:Lato,Verdana,Helvetica,Arial,sans-serif;\n  --f-body:Lato,Verdana,Helvetica,Arial,sans-serif;\n  --f-mono:Lato,Verdana,Helvetica,Arial,sans-serif;',
-      '--f-display:"Instrument Serif",Georgia,"Times New Roman",serif;\n  --f-body:Inter,system-ui,Helvetica,Arial,sans-serif;\n  --f-mono:Inter,system-ui,Helvetica,Arial,sans-serif;'
+      '--f-display:\"Instrument Serif\",Georgia,\"Times New Roman\",serif;\n  --f-body:Inter,system-ui,Helvetica,Arial,sans-serif;\n  --f-mono:Inter,system-ui,Helvetica,Arial,sans-serif;'
     );
 
     t=t.replace('--link:#1C3C5A;','--link:#0c2e4a;');
@@ -53,12 +53,12 @@
     );
 
     t=t.replace(
-      'I study MPhil Economics at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton College</a>. I like to learn about frontier AI and economics.',
-      'I study MPhil Economics at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton College</a>. As an undergraduate at the <a href="https://www.manchester.ac.uk/">University of Manchester</a>, I used volatility to measure price dislocation in commodity markets.'
+      'I study MPhil Economics at the <a href=\"https://www.economics.ox.ac.uk/\">University of Oxford</a>, <a href=\"https://www.merton.ox.ac.uk/\">Merton College</a>. I like to learn about frontier AI and economics.',
+      'I study MPhil Economics at the <a href=\"https://www.economics.ox.ac.uk/\">University of Oxford</a>, <a href=\"https://www.merton.ox.ac.uk/\">Merton College</a>. As an undergraduate at the <a href=\"https://www.manchester.ac.uk/\">University of Manchester</a>, I used volatility to measure price dislocation in commodity markets. I later worked in institutional brokerage.'
     );
     t=t.replace(
-      'As an undergraduate at the <a href="https://www.manchester.ac.uk/">University of Manchester</a> I used volatility to measure price dislocation in commodity markets. I then spent time in institutional brokerage before returning to research.',
-      'I later worked in institutional brokerage. I research political economy and consult on graph engineering and multi-model AI systems.'
+      'As an undergraduate at the <a href=\"https://www.manchester.ac.uk/\">University of Manchester</a> I used volatility to measure price dislocation in commodity markets. I then spent time in institutional brokerage before returning to research.',
+      'I now research political economy and consult on graph engineering and multimodel AI. I believe, to my core, that economics is the hardest subject out there; objects cycle, causes resist identification, and a cycle can become irrelevant once technology, culture, etc. change the scope of the initial question being asked.'
     );
 
     if(t.indexOf('.sec-kicker')<0){
@@ -76,101 +76,101 @@
     }
 
     var extraPaper = [
-      '<article class="paper">',
-      '  <div class="paper-fig">',
-      '    <svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Interactive search hurdle. Move across the curve to read N and the expected maximum Sharpe ratio.">',
-      '      <g stroke="var(--rule)" stroke-width="1" fill="none">',
-      '        <line x1="44" y1="24" x2="44" y2="168"/>',
-      '        <line x1="44" y1="168" x2="294" y2="168"/>',
+      '<article class=\"paper\">',
+      '  <div class=\"paper-fig\">',
+      '    <svg class=\"hurdle-fig\" id=\"hurdle\" viewBox=\"0 0 306 220\" role=\"img\" aria-label=\"Interactive search hurdle. Move across the curve to read N and the expected maximum Sharpe ratio.\">',
+      '      <g stroke=\"var(--rule)\" stroke-width=\"1\" fill=\"none\">',
+      '        <line x1=\"44\" y1=\"24\" x2=\"44\" y2=\"168\"/>',
+      '        <line x1=\"44\" y1=\"168\" x2=\"294\" y2=\"168\"/>',
       '      </g>',
-      '      <g stroke="var(--rule)" stroke-width="1">',
-      '        <line x1="44" y1="168" x2="44" y2="172"/>',
-      '        <line x1="94" y1="168" x2="94" y2="172"/>',
-      '        <line x1="144" y1="168" x2="144" y2="172"/>',
-      '        <line x1="194" y1="168" x2="194" y2="172"/>',
-      '        <line x1="244" y1="168" x2="244" y2="172"/>',
-      '        <line x1="294" y1="168" x2="294" y2="172"/>',
-      '        <line x1="40" y1="168" x2="44" y2="168"/>',
-      '        <line x1="40" y1="117.1" x2="44" y2="117.1"/>',
-      '        <line x1="40" y1="66.3" x2="44" y2="66.3"/>',
+      '      <g stroke=\"var(--rule)\" stroke-width=\"1\">',
+      '        <line x1=\"44\" y1=\"168\" x2=\"44\" y2=\"172\"/>',
+      '        <line x1=\"94\" y1=\"168\" x2=\"94\" y2=\"172\"/>',
+      '        <line x1=\"144\" y1=\"168\" x2=\"144\" y2=\"172\"/>',
+      '        <line x1=\"194\" y1=\"168\" x2=\"194\" y2=\"172\"/>',
+      '        <line x1=\"244\" y1=\"168\" x2=\"244\" y2=\"172\"/>',
+      '        <line x1=\"294\" y1=\"168\" x2=\"294\" y2=\"172\"/>',
+      '        <line x1=\"40\" y1=\"168\" x2=\"44\" y2=\"168\"/>',
+      '        <line x1=\"40\" y1=\"117.1\" x2=\"44\" y2=\"117.1\"/>',
+      '        <line x1=\"40\" y1=\"66.3\" x2=\"44\" y2=\"66.3\"/>',
       '      </g>',
-      '      <g font-size="8" text-anchor="middle">',
-      '        <text x="44" y="184">1</text>',
-      '        <text x="94" y="184">10</text>',
-      '        <text x="144" y="184">100</text>',
-      '        <text x="194" y="184">1k</text>',
-      '        <text x="244" y="184">10k</text>',
-      '        <text x="294" y="184">100k</text>',
+      '      <g font-size=\"8\" text-anchor=\"middle\">',
+      '        <text x=\"44\" y=\"184\">1</text>',
+      '        <text x=\"94\" y=\"184\">10</text>',
+      '        <text x=\"144\" y=\"184\">100</text>',
+      '        <text x=\"194\" y=\"184\">1k</text>',
+      '        <text x=\"244\" y=\"184\">10k</text>',
+      '        <text x=\"294\" y=\"184\">100k</text>',
       '      </g>',
-      '      <g font-size="8" text-anchor="end">',
-      '        <text x="36" y="171">0</text>',
-      '        <text x="36" y="120">0.2</text>',
-      '        <text x="36" y="69">0.4</text>',
+      '      <g font-size=\"8\" text-anchor=\"end\">',
+      '        <text x=\"36\" y=\"171\">0</text>',
+      '        <text x=\"36\" y=\"120\">0.2</text>',
+      '        <text x=\"36\" y=\"69\">0.4</text>',
       '      </g>',
-      '      <text x="14" y="110" font-size="8" transform="rotate(-90 14 110)" text-anchor="middle">E[max SR]</text>',
-      '      <text x="169" y="202" font-size="8" text-anchor="middle">number of trials N, log scale</text>',
-      '      <path id="hurdle-line" d="M59.1,155.7 L66.2,149.2 L75.6,142.1 L85.1,135.9 L94.6,130.4 L104.1,125.5 L113.6,121.0 L123.1,116.7 L132.6,112.7 L142.1,109.0 L151.6,105.4 L161.1,102.0 L170.6,98.7 L180.1,95.6 L189.6,92.6 L199.1,89.7 L201.3,89.1 L211.7,86.0 L216.6,84.5 L227.5,81.4 L237.0,78.8 L246.5,76.2 L256.0,73.7 L265.5,71.3 L275.0,68.9 L284.5,66.6 L294.0,64.3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>',
-      '      <g stroke="var(--signal)" stroke-width="1" stroke-dasharray="2.5 2.5" fill="none">',
-      '        <line x1="59.1" y1="155.7" x2="59.1" y2="168"/>',
-      '        <line x1="201.3" y1="89.1" x2="201.3" y2="168"/>',
-      '        <line x1="216.6" y1="84.5" x2="216.6" y2="168"/>',
+      '      <text x=\"14\" y=\"110\" font-size=\"8\" transform=\"rotate(-90 14 110)\" text-anchor=\"middle\">E[max SR]</text>',
+      '      <text x=\"169\" y=\"202\" font-size=\"8\" text-anchor=\"middle\">number of trials N, log scale</text>',
+      '      <path id=\"hurdle-line\" d=\"M59.1,155.7 L66.2,149.2 L75.6,142.1 L85.1,135.9 L94.6,130.4 L104.1,125.5 L113.6,121.0 L123.1,116.7 L132.6,112.7 L142.1,109.0 L151.6,105.4 L161.1,102.0 L170.6,98.7 L180.1,95.6 L189.6,92.6 L199.1,89.7 L201.3,89.1 L211.7,86.0 L216.6,84.5 L227.5,81.4 L237.0,78.8 L246.5,76.2 L256.0,73.7 L265.5,71.3 L275.0,68.9 L284.5,66.6 L294.0,64.3\" fill=\"none\" stroke=\"var(--accent)\" stroke-width=\"1.8\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>',
+      '      <g stroke=\"var(--signal)\" stroke-width=\"1\" stroke-dasharray=\"2.5 2.5\" fill=\"none\">',
+      '        <line x1=\"59.1\" y1=\"155.7\" x2=\"59.1\" y2=\"168\"/>',
+      '        <line x1=\"201.3\" y1=\"89.1\" x2=\"201.3\" y2=\"168\"/>',
+      '        <line x1=\"216.6\" y1=\"84.5\" x2=\"216.6\" y2=\"168\"/>',
       '      </g>',
-      '      <g fill="var(--paper)" stroke="var(--signal)" stroke-width="1.4">',
-      '        <circle cx="59.1" cy="155.7" r="3.2"/>',
-      '        <circle cx="201.3" cy="89.1" r="3.2"/>',
-      '        <circle cx="216.6" cy="84.5" r="3.2"/>',
+      '      <g fill=\"var(--paper)\" stroke=\"var(--signal)\" stroke-width=\"1.4\">',
+      '        <circle cx=\"59.1\" cy=\"155.7\" r=\"3.2\"/>',
+      '        <circle cx=\"201.3\" cy=\"89.1\" r=\"3.2\"/>',
+      '        <circle cx=\"216.6\" cy=\"84.5\" r=\"3.2\"/>',
       '      </g>',
-      '      <g font-size="8" fill="var(--muted)">',
-      '        <text x="66" y="151">cluster N = 2</text>',
-      '        <text x="201.3" y="68" text-anchor="end">N_eff 1,400</text>',
-      '        <text x="222" y="60">nominal 2,825</text>',
+      '      <g font-size=\"8\" fill=\"var(--muted)\">',
+      '        <text x=\"66\" y=\"151\">cluster N = 2</text>',
+      '        <text x=\"201.3\" y=\"68\" text-anchor=\"end\">N_eff 1,400</text>',
+      '        <text x=\"222\" y=\"60\">nominal 2,825</text>',
       '      </g>',
-      '      <g id="hurdle-cursor" visibility="hidden">',
-      '        <line id="hurdle-hair" x1="201.3" y1="28" x2="201.3" y2="168" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>',
-      '        <circle id="hurdle-dot" cx="201.3" cy="89.1" r="4" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.5"/>',
+      '      <g id=\"hurdle-cursor\" visibility=\"hidden\">',
+      '        <line id=\"hurdle-hair\" x1=\"201.3\" y1=\"28\" x2=\"201.3\" y2=\"168\" stroke=\"var(--accent)\" stroke-width=\"1\" stroke-dasharray=\"3 3\"/>',
+      '        <circle id=\"hurdle-dot\" cx=\"201.3\" cy=\"89.1\" r=\"4\" fill=\"var(--accent)\" stroke=\"var(--paper)\" stroke-width=\"1.5\"/>',
       '      </g>',
-      '      <rect id="hurdle-hit" x="44" y="24" width="250" height="144" fill="transparent"/>',
+      '      <rect id=\"hurdle-hit\" x=\"44\" y=\"24\" width=\"250\" height=\"144\" fill=\"transparent\"/>',
       '    </svg>',
-      '    <div class="fig-controls">',
-      '      <button class="btn" type="button" data-jump="2">Cluster</button>',
-      '      <button class="btn" type="button" data-jump="1400">Effective</button>',
-      '      <button class="btn" type="button" data-jump="2825">Nominal</button>',
-      '      <span class="fig-note" id="hurdle-read">move across the curve</span>',
+      '    <div class=\"fig-controls\">',
+      '      <button class=\"btn\" type=\"button\" data-jump=\"2\">Cluster</button>',
+      '      <button class=\"btn\" type=\"button\" data-jump=\"1400\">Effective</button>',
+      '      <button class=\"btn\" type=\"button\" data-jump=\"2825\">Nominal</button>',
+      '      <span class=\"fig-note\" id=\"hurdle-read\">move across the curve</span>',
       '    </div>',
       '  </div>',
-      '  <div class="paper-body">',
-      '    <div class="paper-head"><h3>How many tests was it really?</h3></div>',
-      '    <p class="byline">with <a href="https://winzker.net/">Sebastian Winzker</a></p>',
-      '    <p class="claim">Every parameter search is a multiple test. Cluster corrections for correlated trading rules cut the hurdle by as much as 84 percent and call noise significant. A block bootstrap on the real grid shows the nominal count is the safe one.</p>',
-      '    <details class="more">',
+      '  <div class=\"paper-body\">',
+      '    <div class=\"paper-head\"><h3>How many tests was it really?</h3></div>',
+      '    <p class=\"byline\">with <a href=\"https://winzker.net/\">Sebastian Winzker</a></p>',
+      '    <p class=\"claim\">Every parameter search is a multiple test. Cluster corrections for correlated trading rules cut the hurdle by as much as 84 percent and call noise significant. A block bootstrap on the real grid shows the nominal count is the safe one.</p>',
+      '    <details class=\"more\">',
       '      <summary>How to read the figure</summary>',
-      '      <div class="more-body">',
+      '      <div class=\"more-body\">',
       '        <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. Move across it to read the hurdle at any trial count.</p>',
       '        <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>',
       '        <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>',
       '      </div>',
       '    </details>',
-      '    <details class="more">',
+      '    <details class=\"more\">',
       '      <summary>The technical version</summary>',
-      '      <div class="more-body">',
+      '      <div class=\"more-body\">',
       '        <p>Stationary block bootstrap of the full rule grid, mean block length ten days, yields the null distribution of the maximum Sharpe ratio. Neff is the independent trial count that reproduces that hurdle in the Bailey and Lopez de Prado formula.</p>',
       '        <p>Even correlation does not cut Neff. Block structure does. Gao (2008) is the only eigenvalue correction that stays close. Multiplicity moves the required Sharpe by a factor of 7.3; the N versus Neff swap moves it by minus 3.1 percent; daily non-normality by plus 0.2 percent.</p>',
       '        <p>Best moving-average rule survives in 3 of 17 markets and 2 of 31 German stocks. Not on the DAX.</p>',
       '      </div>',
       '    </details>',
-      '    <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Deflated Sharpe</span><span class="tag">Quantitative Finance</span></div>',
+      '    <div class=\"paper-tags\"><span class=\"tag live\">Working paper</span><span class=\"tag\">Deflated Sharpe</span><span class=\"tag\">Quantitative Finance</span></div>',
       '  </div>',
       '</article>'
-    ].join("\n        ");
+    ].join(\"\\n        \");
 
     var anchor = t.indexOf('Why regimes go round in circles');
     if(anchor>=0){
       var close = t.indexOf('</article>', anchor);
-      if(close>=0) t = t.slice(0, close+10) + "\n        " + extraPaper + t.slice(close+10);
+      if(close>=0) t = t.slice(0, close+10) + \"\\n        \" + extraPaper + t.slice(close+10);
     }
 
-    var icon='<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'%3E%3Crect width=\'32\' height=\'32\' fill=\'%230c2e4a\'/%3E%3Cpath fill=\'%23f3efe4\' d=\'M12.2 8.4h5.1c2.7 0 4.5 1.7 4.5 4.2 0 2.5-1.8 4.3-4.5 4.3h-3.1V23.4h-2V8.4zm2 6.7h3c1.6 0 2.5-1 2.5-2.5s-.9-2.4-2.5-2.4h-3v4.9z\'/%3E%3C/svg%3E">';
-    t=t.replace(/<link rel="icon"[^>]*>/, icon);
+    var icon='<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 32 32\\'%3E%3Crect width=\\'32\\' height=\\'32\\' fill=\\'%230c2e4a\\'/%3E%3Cpath fill=\\'%23f3efe4\\' d=\\'M12.2 8.4h5.1c2.7 0 4.5 1.7 4.5 4.2 0 2.5-1.8 4.3-4.5 4.3h-3.1V23.4h-2V8.4zm2 6.7h3c1.6 0 2.5-1 2.5-2.5s-.9-2.4-2.5-2.4h-3v4.9z\\'/%3E%3C/svg%3E\">';
+    t=t.replace(/<link rel=\"icon\"[^>]*>/, icon);
 
     document.open();
     document.write(t);
