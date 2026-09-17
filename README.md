@@ -8,4 +8,4 @@ Personal site. Static, no build step, no dependencies.
 - `CNAME` binds the GitHub Pages site to the apex domain.
 - `.nojekyll` stops GitHub running the files through Jekyll.
 
-The live research section is one work in progress: a slow passage through a Hopf bifurcation as a model of Polybius's regime cycle. The figure on the page integrates the normal form live.
+Research currently has two pieces: the Polybius regime-cycle Hopf model, and a calibration of multiplicity corrections for technical trading rules (with Sebastian Winzker).
