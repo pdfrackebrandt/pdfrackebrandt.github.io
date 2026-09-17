@@ -39,7 +39,7 @@
     if(t.indexOf('.hurdle-fig')<0){
       t=t.replace('.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}','.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}.hurdle-fig{width:100%;height:auto;display:block;background:transparent;border:0;cursor:default}.hurdle-fig text{font-family:var(--f-mono);fill:var(--faint)}.rev-fig{width:100%;height:auto;display:block;background:transparent;border:0;cursor:default}.rev-fig text{font-family:var(--f-mono);fill:var(--faint)}.byline{font-size:var(--step--1);color:var(--muted);line-height:1.45;margin:2px 0 2px}');
     }
-    var extraPaper = document.createElement('div'); extraPaper = [
+    var extraPaper = [
       '<article class="paper">',
       '  <div class="paper-fig">',
       '    <svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Search hurdle. Buttons mark the cluster, effective, and nominal trial counts.">',
@@ -85,8 +85,8 @@
       '        <circle cx="216.6" cy="84.5" r="3.2"/>',
       '      </g>',
       '      <g font-size="8" fill="var(--muted)">',
-      '        <text x="66" y="151">cluster N = 2</text>',
-      '        <text x="201.3" y="68" text-anchor="end">N_eff 1,400</text>',
+      '        <text x="72" y="164">cluster N = 2</text>',
+      '        <text x="201.3" y="68" text-anchor="end">Neff 1,400</text>',
       '        <text x="222" y="60">nominal 2,825</text>',
       '      </g>',
       '      <g id="hurdle-cursor" visibility="hidden">',
