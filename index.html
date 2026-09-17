@@ -71,69 +71,11 @@
     if(t.indexOf('.hurdle-fig')<0){
       t=t.replace(
         '.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}',
-        '.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}.hurdle-fig{width:100%;height:auto;background:var(--canvas-bg);border:1px solid var(--rule);display:block}.hurdle-fig text{font-family:var(--f-mono)}'
+        '.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}.hurdle-fig{width:100%;height:auto;background:var(--canvas-bg);border:1px solid var(--rule);display:block}.hurdle-fig text{font-family:var(--f-mono);fill:var(--faint)}.byline{font-size:var(--step--1);color:var(--muted);line-height:1.45;margin:2px 0 2px}'
       );
     }
 
-    var extraPaper = ""
-      + "\n        <article class=\"paper\">\n"
-      + "          <div class=\"paper-fig\">\n"
-      + "            <svg class=\"hurdle-fig\" viewBox=\"0 0 306 220\" role=\"img\" aria-label=\"Search hurdle rising only with the order of magnitude of N.\">\n"
-      + "              <rect width=\"306\" height=\"220\" fill=\"var(--canvas-bg)\"/>\n"
-      + "              <g fill=\"none\" stroke=\"var(--canvas-line)\" stroke-width=\"1\">\n"
-      + "                <line x1=\"44\" y1=\"18\" x2=\"44\" y2=\"178\"/>\n"
-      + "                <line x1=\"44\" y1=\"178\" x2=\"292\" y2=\"178\"/>\n"
-      + "              </g>\n"
-      + "              <g fill=\"var(--faint)\" font-size=\"9\">\n"
-      + "                <text x=\"8\" y=\"24\">E[max SR]</text>\n"
-      + "                <text x=\"8\" y=\"178\">0</text>\n"
-      + "                <text x=\"36\" y=\"108\">0.3</text>\n"
-      + "                <text x=\"44\" y=\"194\">1</text>\n"
-      + "                <text x=\"132\" y=\"194\">100</text>\n"
-      + "                <text x=\"210\" y=\"194\">10k</text>\n"
-      + "                <text x=\"248\" y=\"208\">trials N (log)</text>\n"
-      + "              </g>\n"
-      + "              <path d=\"M44,170 C70,156 90,142 110,128 C140,110 170,96 210,82 C240,72 270,64 292,58\" fill=\"none\" stroke=\"var(--accent)\" stroke-width=\"1.7\"/>\n"
-      + "              <g stroke=\"var(--signal)\" stroke-dasharray=\"3 3\" stroke-width=\"1\">\n"
-      + "                <line x1=\"58\" y1=\"162\" x2=\"58\" y2=\"178\"/>\n"
-      + "                <line x1=\"196\" y1=\"86\" x2=\"196\" y2=\"178\"/>\n"
-      + "                <line x1=\"224\" y1=\"78\" x2=\"224\" y2=\"178\"/>\n"
-      + "              </g>\n"
-      + "              <g fill=\"var(--signal)\">\n"
-      + "                <circle cx=\"58\" cy=\"162\" r=\"3\"/>\n"
-      + "                <circle cx=\"196\" cy=\"86\" r=\"3\"/>\n"
-      + "                <circle cx=\"224\" cy=\"78\" r=\"3\"/>\n"
-      + "              </g>\n"
-      + "              <g fill=\"var(--muted)\" font-size=\"8\">\n"
-      + "                <text x=\"62\" y=\"158\">cluster N=2</text>\n"
-      + "                <text x=\"148\" y=\"76\">Neff ~ 1,400</text>\n"
-      + "                <text x=\"228\" y=\"74\">nominal 2,825</text>\n"
-      + "              </g>\n"
-      + "            </svg>\n"
-      + "            <p class=\"fig-note\">DAX grid, 2,825 MA rules. The hurdle barely moves between Neff and M.</p>\n"
-      + "          </div>\n"
-      + "          <div class=\"paper-body\">\n"
-      + "            <div class=\"paper-head\"><h3>How many tests was it really?</h3></div>\n"
-      + "            <p class=\"claim\">Every parameter search is a multiple test. Cluster corrections for correlated trading rules cut the hurdle by as much as 84 percent and call noise significant. A block bootstrap on the real grid shows the nominal count is the safe one. With <a href=\"https://winzker.net/\">Sebastian Winzker</a>.</p>\n"
-      + "            <details class=\"more\">\n"
-      + "              <summary>How to read the figure</summary>\n"
-      + "              <div class=\"more-body\">\n"
-      + "                <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters.</p>\n"
-      + "                <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>\n"
-      + "                <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>\n"
-      + "              </div>\n"
-      + "            </details>\n"
-      + "            <details class=\"more\">\n"
-      + "              <summary>The technical version</summary>\n"
-      + "              <div class=\"more-body\">\n"
-      + "                <p>Stationary block bootstrap of the full rule grid, mean block length ten days, yields the null distribution of the maximum Sharpe ratio. Neff is the independent trial count that reproduces that hurdle in the Bailey and Lopez de Prado formula.</p>\n"
-      + "                <p>Even correlation does not cut Neff. Block structure does. Gao (2008) is the only eigenvalue correction that stays close. Multiplicity moves the required Sharpe by a factor of 7.3; the N versus Neff swap moves it by minus 3.1 percent; daily non-normality by plus 0.2 percent.</p>\n"
-      + "                <p>Best moving-average rule survives in 3 of 17 markets and 2 of 31 German stocks. Not on the DAX.</p>\n"
-      + "              </div>\n"
-      + "            </details>\n"
-      + "            <div class=\"paper-tags\"><span class=\"tag live\">Working paper</span><span class=\"tag\">Deflated Sharpe</span><span class=\"tag\">Technical analysis</span></div>\n"
-      + "          </div>\n"
-      + "        </article>\n";
+    var extraPaper = `\n        <article class=\"paper\">\n          <div class=\"paper-fig\">\n            <svg class=\"hurdle-fig\" viewBox=\"0 0 306 236\" role=\"img\" aria-label=\"Expected maximum Sharpe ratio versus log number of trials, with cluster, effective and nominal counts marked.\">\n              <rect width=\"306\" height=\"236\" fill=\"var(--canvas-bg)\"/>\n              <g stroke=\"var(--rule-soft)\" stroke-width=\"1\" fill=\"none\">\n                <line x1=\"44\" y1=\"176\" x2=\"294\" y2=\"176\"/>\n                <line x1=\"44\" y1=\"123.1\" x2=\"294\" y2=\"123.1\"/>\n                <line x1=\"44\" y1=\"70.3\" x2=\"294\" y2=\"70.3\"/>\n              </g>\n              <g stroke=\"var(--rule)\" stroke-width=\"1\" fill=\"none\">\n                <line x1=\"44\" y1=\"28\" x2=\"44\" y2=\"176\"/>\n                <line x1=\"44\" y1=\"176\" x2=\"294\" y2=\"176\"/>\n              </g>\n              <g stroke=\"var(--rule)\" stroke-width=\"1\">\n                <line x1=\"44\" y1=\"176\" x2=\"44\" y2=\"180\"/>\n                <line x1=\"94\" y1=\"176\" x2=\"94\" y2=\"180\"/>\n                <line x1=\"144\" y1=\"176\" x2=\"144\" y2=\"180\"/>\n                <line x1=\"194\" y1=\"176\" x2=\"194\" y2=\"180\"/>\n                <line x1=\"244\" y1=\"176\" x2=\"244\" y2=\"180\"/>\n                <line x1=\"294\" y1=\"176\" x2=\"294\" y2=\"180\"/>\n                <line x1=\"40\" y1=\"176\" x2=\"44\" y2=\"176\"/>\n                <line x1=\"40\" y1=\"123.1\" x2=\"44\" y2=\"123.1\"/>\n                <line x1=\"40\" y1=\"70.3\" x2=\"44\" y2=\"70.3\"/>\n              </g>\n              <g font-size=\"8\" text-anchor=\"middle\">\n                <text x=\"44\" y=\"192\">1</text>\n                <text x=\"94\" y=\"192\">10</text>\n                <text x=\"144\" y=\"192\">100</text>\n                <text x=\"194\" y=\"192\">1k</text>\n                <text x=\"244\" y=\"192\">10k</text>\n                <text x=\"294\" y=\"192\">100k</text>\n              </g>\n              <g font-size=\"8\" text-anchor=\"end\">\n                <text x=\"36\" y=\"179\">0</text>\n                <text x=\"36\" y=\"126\">0.2</text>\n                <text x=\"36\" y=\"73\">0.4</text>\n              </g>\n              <text x=\"12\" y=\"118\" font-size=\"8\" transform=\"rotate(-90 12 118)\" text-anchor=\"middle\">E[max SR]</text>\n              <text x=\"169\" y=\"210\" font-size=\"8\" text-anchor=\"middle\">number of trials N, log scale</text>\n              <path d=\"M59.1,163.4L63.0,159.5L66.2,156.7L69.3,154.1L72.5,151.7L75.6,149.4L78.8,147.2L82.0,145.1L85.1,143.0L88.3,141.1L91.5,139.2L94.6,137.4L97.8,135.7L101.0,134.0L104.1,132.4L107.3,130.8L110.5,129.2L113.6,127.7L116.8,126.2L119.9,124.7L123.1,123.3L126.3,121.9L129.4,120.6L132.6,119.2L135.8,117.9L138.9,116.6L142.1,115.4L145.3,114.1L148.4,112.9L151.6,111.7L154.8,110.5L157.9,109.3L161.1,108.2L164.3,107.0L167.4,105.9L170.6,104.8L173.7,103.7L176.9,102.6L180.1,101.6L183.2,100.5L186.4,99.5L189.6,98.4L192.7,97.4L195.9,96.4L199.1,95.4L201.3,94.7L205.4,93.5L208.6,92.5L211.7,91.6L214.9,90.6L216.6,90.1L221.2,88.8L224.4,87.8L227.5,86.9L230.7,86.0L233.9,85.1L237.0,84.3L240.2,83.4L243.4,82.5L246.5,81.6L249.7,80.8L252.9,79.9L256.0,79.1L259.2,78.3L262.4,77.4L265.5,76.6L268.7,75.8L271.8,75.0L275.0,74.2L278.2,73.4L281.3,72.6L284.5,71.8L287.7,71.0L290.8,70.2L294.0,69.5L294.0,176L59.1,176Z\" fill=\"var(--accent)\" fill-opacity=\"0.08\"/>\n              <path d=\"M59.1,163.4L63.0,159.5L66.2,156.7L69.3,154.1L72.5,151.7L75.6,149.4L78.8,147.2L82.0,145.1L85.1,143.0L88.3,141.1L91.5,139.2L94.6,137.4L97.8,135.7L101.0,134.0L104.1,132.4L107.3,130.8L110.5,129.2L113.6,127.7L116.8,126.2L119.9,124.7L123.1,123.3L126.3,121.9L129.4,120.6L132.6,119.2L135.8,117.9L138.9,116.6L142.1,115.4L145.3,114.1L148.4,112.9L151.6,111.7L154.8,110.5L157.9,109.3L161.1,108.2L164.3,107.0L167.4,105.9L170.6,104.8L173.7,103.7L176.9,102.6L180.1,101.6L183.2,100.5L186.4,99.5L189.6,98.4L192.7,97.4L195.9,96.4L199.1,95.4L201.3,94.7L205.4,93.5L208.6,92.5L211.7,91.6L214.9,90.6L216.6,90.1L221.2,88.8L224.4,87.8L227.5,86.9L230.7,86.0L233.9,85.1L237.0,84.3L240.2,83.4L243.4,82.5L246.5,81.6L249.7,80.8L252.9,79.9L256.0,79.1L259.2,78.3L262.4,77.4L265.5,76.6L268.7,75.8L271.8,75.0L275.0,74.2L278.2,73.4L281.3,72.6L284.5,71.8L287.7,71.0L290.8,70.2L294.0,69.5\" fill=\"none\" stroke=\"var(--accent)\" stroke-width=\"1.8\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n              <g stroke=\"var(--signal)\" stroke-width=\"1\" stroke-dasharray=\"2.5 2.5\" fill=\"none\">\n                <line x1=\"59.1\" y1=\"163.4\" x2=\"59.1\" y2=\"176\"/>\n                <line x1=\"201.3\" y1=\"94.7\" x2=\"201.3\" y2=\"176\"/>\n                <line x1=\"216.6\" y1=\"90.1\" x2=\"216.6\" y2=\"176\"/>\n              </g>\n              <g fill=\"var(--paper)\" stroke=\"var(--signal)\" stroke-width=\"1.4\">\n                <circle cx=\"59.1\" cy=\"163.4\" r=\"3.2\"/>\n                <circle cx=\"201.3\" cy=\"94.7\" r=\"3.2\"/>\n                <circle cx=\"216.6\" cy=\"90.1\" r=\"3.2\"/>\n              </g>\n              <g font-size=\"8\" fill=\"var(--muted)\">\n                <text x=\"66\" y=\"158\">cluster N = 2</text>\n                <text x=\"201.3\" y=\"72\" text-anchor=\"end\">N_eff 1,400</text>\n                <text x=\"222\" y=\"64\">nominal 2,825</text>\n              </g>\n              <line x1=\"201.3\" y1=\"78\" x2=\"201.3\" y2=\"90\" stroke=\"var(--muted)\" stroke-width=\"0.8\"/>\n              <line x1=\"216.6\" y1=\"70\" x2=\"216.6\" y2=\"86\" stroke=\"var(--muted)\" stroke-width=\"0.8\"/>\n            </svg>\n            <p class=\"fig-note\">DAX, 2,825 moving-average rules. Only the order of N moves the hurdle.</p>\n          </div>\n          <div class=\"paper-body\">\n            <div class=\"paper-head\"><h3>How many tests was it really?</h3></div>\n            <p class=\"byline\">with <a href=\"https://winzker.net/\">Sebastian Winzker</a></p>\n            <p class=\"claim\">Every parameter search is a multiple test. Cluster corrections for correlated trading rules cut the hurdle by as much as 84 percent and call noise significant. A block bootstrap on the real grid shows the nominal count is the safe one.</p>\n            <details class=\"more\">\n              <summary>How to read the figure</summary>\n              <div class=\"more-body\">\n                <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters.</p>\n                <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>\n                <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>\n              </div>\n            </details>\n            <details class=\"more\">\n              <summary>The technical version</summary>\n              <div class=\"more-body\">\n                <p>Stationary block bootstrap of the full rule grid, mean block length ten days, yields the null distribution of the maximum Sharpe ratio. Neff is the independent trial count that reproduces that hurdle in the Bailey and Lopez de Prado formula.</p>\n                <p>Even correlation does not cut Neff. Block structure does. Gao (2008) is the only eigenvalue correction that stays close. Multiplicity moves the required Sharpe by a factor of 7.3; the N versus Neff swap moves it by minus 3.1 percent; daily non-normality by plus 0.2 percent.</p>\n                <p>Best moving-average rule survives in 3 of 17 markets and 2 of 31 German stocks. Not on the DAX.</p>\n              </div>\n            </details>\n            <div class=\"paper-tags\"><span class=\"tag live\">Working paper</span><span class=\"tag\">Deflated Sharpe</span><span class=\"tag\">Technical analysis</span></div>\n          </div>\n        </article>\n`;
 
     var anchor = t.indexOf('Why regimes go round in circles');
     if(anchor>=0){
