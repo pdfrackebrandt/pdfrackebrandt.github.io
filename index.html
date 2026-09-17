@@ -71,16 +71,102 @@
     if(t.indexOf('.hurdle-fig')<0){
       t=t.replace(
         '.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}',
-        '.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}.hurdle-fig{width:100%;height:auto;background:var(--canvas-bg);border:1px solid var(--rule);display:block}.hurdle-fig text{font-family:var(--f-mono);fill:var(--faint)}.byline{font-size:var(--step--1);color:var(--muted);line-height:1.45;margin:2px 0 2px}'
+        '.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}.hurdle-fig{width:100%;height:auto;display:block;background:transparent;border:0;cursor:crosshair}.hurdle-fig text{font-family:var(--f-mono);fill:var(--faint)}.byline{font-size:var(--step--1);color:var(--muted);line-height:1.45;margin:2px 0 2px}'
       );
     }
 
-    var extraPaper = `\n        <article class=\"paper\">\n          <div class=\"paper-fig\">\n            <svg class=\"hurdle-fig\" viewBox=\"0 0 306 236\" role=\"img\" aria-label=\"Expected maximum Sharpe ratio versus log number of trials, with cluster, effective and nominal counts marked.\">\n              <rect width=\"306\" height=\"236\" fill=\"var(--canvas-bg)\"/>\n              <g stroke=\"var(--rule-soft)\" stroke-width=\"1\" fill=\"none\">\n                <line x1=\"44\" y1=\"176\" x2=\"294\" y2=\"176\"/>\n                <line x1=\"44\" y1=\"123.1\" x2=\"294\" y2=\"123.1\"/>\n                <line x1=\"44\" y1=\"70.3\" x2=\"294\" y2=\"70.3\"/>\n              </g>\n              <g stroke=\"var(--rule)\" stroke-width=\"1\" fill=\"none\">\n                <line x1=\"44\" y1=\"28\" x2=\"44\" y2=\"176\"/>\n                <line x1=\"44\" y1=\"176\" x2=\"294\" y2=\"176\"/>\n              </g>\n              <g stroke=\"var(--rule)\" stroke-width=\"1\">\n                <line x1=\"44\" y1=\"176\" x2=\"44\" y2=\"180\"/>\n                <line x1=\"94\" y1=\"176\" x2=\"94\" y2=\"180\"/>\n                <line x1=\"144\" y1=\"176\" x2=\"144\" y2=\"180\"/>\n                <line x1=\"194\" y1=\"176\" x2=\"194\" y2=\"180\"/>\n                <line x1=\"244\" y1=\"176\" x2=\"244\" y2=\"180\"/>\n                <line x1=\"294\" y1=\"176\" x2=\"294\" y2=\"180\"/>\n                <line x1=\"40\" y1=\"176\" x2=\"44\" y2=\"176\"/>\n                <line x1=\"40\" y1=\"123.1\" x2=\"44\" y2=\"123.1\"/>\n                <line x1=\"40\" y1=\"70.3\" x2=\"44\" y2=\"70.3\"/>\n              </g>\n              <g font-size=\"8\" text-anchor=\"middle\">\n                <text x=\"44\" y=\"192\">1</text>\n                <text x=\"94\" y=\"192\">10</text>\n                <text x=\"144\" y=\"192\">100</text>\n                <text x=\"194\" y=\"192\">1k</text>\n                <text x=\"244\" y=\"192\">10k</text>\n                <text x=\"294\" y=\"192\">100k</text>\n              </g>\n              <g font-size=\"8\" text-anchor=\"end\">\n                <text x=\"36\" y=\"179\">0</text>\n                <text x=\"36\" y=\"126\">0.2</text>\n                <text x=\"36\" y=\"73\">0.4</text>\n              </g>\n              <text x=\"12\" y=\"118\" font-size=\"8\" transform=\"rotate(-90 12 118)\" text-anchor=\"middle\">E[max SR]</text>\n              <text x=\"169\" y=\"210\" font-size=\"8\" text-anchor=\"middle\">number of trials N, log scale</text>\n              <path d=\"M59.1,163.4L63.0,159.5L66.2,156.7L69.3,154.1L72.5,151.7L75.6,149.4L78.8,147.2L82.0,145.1L85.1,143.0L88.3,141.1L91.5,139.2L94.6,137.4L97.8,135.7L101.0,134.0L104.1,132.4L107.3,130.8L110.5,129.2L113.6,127.7L116.8,126.2L119.9,124.7L123.1,123.3L126.3,121.9L129.4,120.6L132.6,119.2L135.8,117.9L138.9,116.6L142.1,115.4L145.3,114.1L148.4,112.9L151.6,111.7L154.8,110.5L157.9,109.3L161.1,108.2L164.3,107.0L167.4,105.9L170.6,104.8L173.7,103.7L176.9,102.6L180.1,101.6L183.2,100.5L186.4,99.5L189.6,98.4L192.7,97.4L195.9,96.4L199.1,95.4L201.3,94.7L205.4,93.5L208.6,92.5L211.7,91.6L214.9,90.6L216.6,90.1L221.2,88.8L224.4,87.8L227.5,86.9L230.7,86.0L233.9,85.1L237.0,84.3L240.2,83.4L243.4,82.5L246.5,81.6L249.7,80.8L252.9,79.9L256.0,79.1L259.2,78.3L262.4,77.4L265.5,76.6L268.7,75.8L271.8,75.0L275.0,74.2L278.2,73.4L281.3,72.6L284.5,71.8L287.7,71.0L290.8,70.2L294.0,69.5L294.0,176L59.1,176Z\" fill=\"var(--accent)\" fill-opacity=\"0.08\"/>\n              <path d=\"M59.1,163.4L63.0,159.5L66.2,156.7L69.3,154.1L72.5,151.7L75.6,149.4L78.8,147.2L82.0,145.1L85.1,143.0L88.3,141.1L91.5,139.2L94.6,137.4L97.8,135.7L101.0,134.0L104.1,132.4L107.3,130.8L110.5,129.2L113.6,127.7L116.8,126.2L119.9,124.7L123.1,123.3L126.3,121.9L129.4,120.6L132.6,119.2L135.8,117.9L138.9,116.6L142.1,115.4L145.3,114.1L148.4,112.9L151.6,111.7L154.8,110.5L157.9,109.3L161.1,108.2L164.3,107.0L167.4,105.9L170.6,104.8L173.7,103.7L176.9,102.6L180.1,101.6L183.2,100.5L186.4,99.5L189.6,98.4L192.7,97.4L195.9,96.4L199.1,95.4L201.3,94.7L205.4,93.5L208.6,92.5L211.7,91.6L214.9,90.6L216.6,90.1L221.2,88.8L224.4,87.8L227.5,86.9L230.7,86.0L233.9,85.1L237.0,84.3L240.2,83.4L243.4,82.5L246.5,81.6L249.7,80.8L252.9,79.9L256.0,79.1L259.2,78.3L262.4,77.4L265.5,76.6L268.7,75.8L271.8,75.0L275.0,74.2L278.2,73.4L281.3,72.6L284.5,71.8L287.7,71.0L290.8,70.2L294.0,69.5\" fill=\"none\" stroke=\"var(--accent)\" stroke-width=\"1.8\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n              <g stroke=\"var(--signal)\" stroke-width=\"1\" stroke-dasharray=\"2.5 2.5\" fill=\"none\">\n                <line x1=\"59.1\" y1=\"163.4\" x2=\"59.1\" y2=\"176\"/>\n                <line x1=\"201.3\" y1=\"94.7\" x2=\"201.3\" y2=\"176\"/>\n                <line x1=\"216.6\" y1=\"90.1\" x2=\"216.6\" y2=\"176\"/>\n              </g>\n              <g fill=\"var(--paper)\" stroke=\"var(--signal)\" stroke-width=\"1.4\">\n                <circle cx=\"59.1\" cy=\"163.4\" r=\"3.2\"/>\n                <circle cx=\"201.3\" cy=\"94.7\" r=\"3.2\"/>\n                <circle cx=\"216.6\" cy=\"90.1\" r=\"3.2\"/>\n              </g>\n              <g font-size=\"8\" fill=\"var(--muted)\">\n                <text x=\"66\" y=\"158\">cluster N = 2</text>\n                <text x=\"201.3\" y=\"72\" text-anchor=\"end\">N_eff 1,400</text>\n                <text x=\"222\" y=\"64\">nominal 2,825</text>\n              </g>\n              <line x1=\"201.3\" y1=\"78\" x2=\"201.3\" y2=\"90\" stroke=\"var(--muted)\" stroke-width=\"0.8\"/>\n              <line x1=\"216.6\" y1=\"70\" x2=\"216.6\" y2=\"86\" stroke=\"var(--muted)\" stroke-width=\"0.8\"/>\n            </svg>\n            <p class=\"fig-note\">DAX, 2,825 moving-average rules. Only the order of N moves the hurdle.</p>\n          </div>\n          <div class=\"paper-body\">\n            <div class=\"paper-head\"><h3>How many tests was it really?</h3></div>\n            <p class=\"byline\">with <a href=\"https://winzker.net/\">Sebastian Winzker</a></p>\n            <p class=\"claim\">Every parameter search is a multiple test. Cluster corrections for correlated trading rules cut the hurdle by as much as 84 percent and call noise significant. A block bootstrap on the real grid shows the nominal count is the safe one.</p>\n            <details class=\"more\">\n              <summary>How to read the figure</summary>\n              <div class=\"more-body\">\n                <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters.</p>\n                <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>\n                <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>\n              </div>\n            </details>\n            <details class=\"more\">\n              <summary>The technical version</summary>\n              <div class=\"more-body\">\n                <p>Stationary block bootstrap of the full rule grid, mean block length ten days, yields the null distribution of the maximum Sharpe ratio. Neff is the independent trial count that reproduces that hurdle in the Bailey and Lopez de Prado formula.</p>\n                <p>Even correlation does not cut Neff. Block structure does. Gao (2008) is the only eigenvalue correction that stays close. Multiplicity moves the required Sharpe by a factor of 7.3; the N versus Neff swap moves it by minus 3.1 percent; daily non-normality by plus 0.2 percent.</p>\n                <p>Best moving-average rule survives in 3 of 17 markets and 2 of 31 German stocks. Not on the DAX.</p>\n              </div>\n            </details>\n            <div class=\"paper-tags\"><span class=\"tag live\">Working paper</span><span class=\"tag\">Deflated Sharpe</span><span class=\"tag\">Technical analysis</span></div>\n          </div>\n        </article>\n`;
+    var extraPaper = [
+      '<article class="paper">',
+      '  <div class="paper-fig">',
+      '    <svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Interactive search hurdle. Move across the curve to read N and the expected maximum Sharpe ratio.">',
+      '      <g stroke="var(--rule)" stroke-width="1" fill="none">',
+      '        <line x1="44" y1="24" x2="44" y2="168"/>',
+      '        <line x1="44" y1="168" x2="294" y2="168"/>',
+      '      </g>',
+      '      <g stroke="var(--rule)" stroke-width="1">',
+      '        <line x1="44" y1="168" x2="44" y2="172"/>',
+      '        <line x1="94" y1="168" x2="94" y2="172"/>',
+      '        <line x1="144" y1="168" x2="144" y2="172"/>',
+      '        <line x1="194" y1="168" x2="194" y2="172"/>',
+      '        <line x1="244" y1="168" x2="244" y2="172"/>',
+      '        <line x1="294" y1="168" x2="294" y2="172"/>',
+      '        <line x1="40" y1="168" x2="44" y2="168"/>',
+      '        <line x1="40" y1="117.1" x2="44" y2="117.1"/>',
+      '        <line x1="40" y1="66.3" x2="44" y2="66.3"/>',
+      '      </g>',
+      '      <g font-size="8" text-anchor="middle">',
+      '        <text x="44" y="184">1</text>',
+      '        <text x="94" y="184">10</text>',
+      '        <text x="144" y="184">100</text>',
+      '        <text x="194" y="184">1k</text>',
+      '        <text x="244" y="184">10k</text>',
+      '        <text x="294" y="184">100k</text>',
+      '      </g>',
+      '      <g font-size="8" text-anchor="end">',
+      '        <text x="36" y="171">0</text>',
+      '        <text x="36" y="120">0.2</text>',
+      '        <text x="36" y="69">0.4</text>',
+      '      </g>',
+      '      <text x="14" y="110" font-size="8" transform="rotate(-90 14 110)" text-anchor="middle">E[max SR]</text>',
+      '      <text x="169" y="202" font-size="8" text-anchor="middle">number of trials N, log scale</text>',
+      '      <path id="hurdle-line" d="M59.1,155.7 L66.2,149.2 L75.6,142.1 L85.1,135.9 L94.6,130.4 L104.1,125.5 L113.6,121.0 L123.1,116.7 L132.6,112.7 L142.1,109.0 L151.6,105.4 L161.1,102.0 L170.6,98.7 L180.1,95.6 L189.6,92.6 L199.1,89.7 L201.3,89.1 L211.7,86.0 L216.6,84.5 L227.5,81.4 L237.0,78.8 L246.5,76.2 L256.0,73.7 L265.5,71.3 L275.0,68.9 L284.5,66.6 L294.0,64.3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>',
+      '      <g stroke="var(--signal)" stroke-width="1" stroke-dasharray="2.5 2.5" fill="none">',
+      '        <line x1="59.1" y1="155.7" x2="59.1" y2="168"/>',
+      '        <line x1="201.3" y1="89.1" x2="201.3" y2="168"/>',
+      '        <line x1="216.6" y1="84.5" x2="216.6" y2="168"/>',
+      '      </g>',
+      '      <g fill="var(--paper)" stroke="var(--signal)" stroke-width="1.4">',
+      '        <circle cx="59.1" cy="155.7" r="3.2"/>',
+      '        <circle cx="201.3" cy="89.1" r="3.2"/>',
+      '        <circle cx="216.6" cy="84.5" r="3.2"/>',
+      '      </g>',
+      '      <g font-size="8" fill="var(--muted)">',
+      '        <text x="66" y="151">cluster N = 2</text>',
+      '        <text x="201.3" y="68" text-anchor="end">N_eff 1,400</text>',
+      '        <text x="222" y="60">nominal 2,825</text>',
+      '      </g>',
+      '      <g id="hurdle-cursor" visibility="hidden">',
+      '        <line id="hurdle-hair" x1="201.3" y1="28" x2="201.3" y2="168" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>',
+      '        <circle id="hurdle-dot" cx="201.3" cy="89.1" r="4" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.5"/>',
+      '      </g>',
+      '      <rect id="hurdle-hit" x="44" y="24" width="250" height="144" fill="transparent"/>',
+      '    </svg>',
+      '    <div class="fig-controls">',
+      '      <button class="btn" type="button" data-jump="2">Cluster</button>',
+      '      <button class="btn" type="button" data-jump="1400">Effective</button>',
+      '      <button class="btn" type="button" data-jump="2825">Nominal</button>',
+      '      <span class="fig-note" id="hurdle-read">move across the curve</span>',
+      '    </div>',
+      '  </div>',
+      '  <div class="paper-body">',
+      '    <div class="paper-head"><h3>How many tests was it really?</h3></div>',
+      '    <p class="byline">with <a href="https://winzker.net/">Sebastian Winzker</a></p>',
+      '    <p class="claim">Every parameter search is a multiple test. Cluster corrections for correlated trading rules cut the hurdle by as much as 84 percent and call noise significant. A block bootstrap on the real grid shows the nominal count is the safe one.</p>',
+      '    <details class="more">',
+      '      <summary>How to read the figure</summary>',
+      '      <div class="more-body">',
+      '        <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. Move across it to read the hurdle at any trial count.</p>',
+      '        <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>',
+      '        <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>',
+      '      </div>',
+      '    </details>',
+      '    <details class="more">',
+      '      <summary>The technical version</summary>',
+      '      <div class="more-body">',
+      '        <p>Stationary block bootstrap of the full rule grid, mean block length ten days, yields the null distribution of the maximum Sharpe ratio. Neff is the independent trial count that reproduces that hurdle in the Bailey and Lopez de Prado formula.</p>',
+      '        <p>Even correlation does not cut Neff. Block structure does. Gao (2008) is the only eigenvalue correction that stays close. Multiplicity moves the required Sharpe by a factor of 7.3; the N versus Neff swap moves it by minus 3.1 percent; daily non-normality by plus 0.2 percent.</p>',
+      '        <p>Best moving-average rule survives in 3 of 17 markets and 2 of 31 German stocks. Not on the DAX.</p>',
+      '      </div>',
+      '    </details>',
+      '    <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Deflated Sharpe</span><span class="tag">Technical analysis</span></div>',
+      '  </div>',
+      '</article>'
+    ].join("\n        ");
 
     var anchor = t.indexOf('Why regimes go round in circles');
     if(anchor>=0){
       var close = t.indexOf('</article>', anchor);
-      if(close>=0) t = t.slice(0, close+10) + extraPaper + t.slice(close+10);
+      if(close>=0) t = t.slice(0, close+10) + "\n        " + extraPaper + t.slice(close+10);
     }
 
     var icon='<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'%3E%3Crect width=\'32\' height=\'32\' fill=\'%230c2e4a\'/%3E%3Cpath fill=\'%23f3efe4\' d=\'M12.2 8.4h5.1c2.7 0 4.5 1.7 4.5 4.2 0 2.5-1.8 4.3-4.5 4.3h-3.1V23.4h-2V8.4zm2 6.7h3c1.6 0 2.5-1 2.5-2.5s-.9-2.4-2.5-2.4h-3v4.9z\'/%3E%3C/svg%3E">';
@@ -89,9 +175,72 @@
     document.open();
     document.write(t);
     document.close();
+    initHurdle();
   }).catch(function(){
     document.body.textContent='Could not load the page.';
   });
+
+  function invNorm(p){
+    var a=[-39.69683028665376,220.9460984351125,-275.9285104469687,138.3577509074756,-30.66479806614716,2.506628277459239];
+    var b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.2806807164995];
+    var c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783];
+    var d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416];
+    var plow=0.02425, phigh=1-plow, q, r;
+    if(p<plow){ q=Math.sqrt(-2*Math.log(p)); return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+    if(p>phigh){ q=Math.sqrt(-2*Math.log(1-p)); return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+    q=p-0.5; r=q*q;
+    return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+  }
+  function hurdle(N){
+    N=Math.max(N,1.2);
+    var g=0.5772156649, s=0.0918;
+    return s*((1-g)*invNorm(1-1/N)+g*invNorm(1-1/(N*Math.E)));
+  }
+  function xOf(N){ return 44+(Math.log(N)/Math.LN10)/5*250; }
+  function yOf(h){ return 168-h/0.56*144; }
+  function fmtN(N){
+    if(N>=100000) return Math.round(N/1000)+'k';
+    if(N>=10000) return (N/1000).toFixed(N%1000?1:0)+'k';
+    return Math.round(N).toLocaleString('en-US');
+  }
+  function initHurdle(){
+    var svg=document.getElementById('hurdle');
+    if(!svg) return;
+    var cur=document.getElementById('hurdle-cursor');
+    var hair=document.getElementById('hurdle-hair');
+    var dot=document.getElementById('hurdle-dot');
+    var read=document.getElementById('hurdle-read');
+    var hit=document.getElementById('hurdle-hit');
+    function show(N, label){
+      N=Math.min(1e5, Math.max(2, N));
+      var h=hurdle(N), x=xOf(N), y=yOf(h);
+      cur.setAttribute('visibility','visible');
+      hair.setAttribute('x1', x); hair.setAttribute('x2', x);
+      dot.setAttribute('cx', x); dot.setAttribute('cy', y);
+      var tag=label? label+' · ':'';
+      read.textContent=tag+'N = '+fmtN(N)+'   hurdle = '+h.toFixed(2);
+    }
+    function fromEvent(e){
+      var pt=svg.createSVGPoint();
+      pt.x=e.clientX; pt.y=e.clientY;
+      var p=pt.matrixTransform(svg.getScreenCTM().inverse());
+      var tt=Math.min(1, Math.max(0, (p.x-44)/250));
+      show(Math.pow(10, tt*5));
+    }
+    hit.addEventListener('pointermove', fromEvent);
+    hit.addEventListener('pointerdown', fromEvent);
+    hit.addEventListener('pointerleave', function(){
+      cur.setAttribute('visibility','hidden');
+      read.textContent='move across the curve';
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function(btn){
+      btn.addEventListener('click', function(){
+        var N=+btn.getAttribute('data-jump');
+        var names={2:'cluster',1400:'effective',2825:'nominal'};
+        show(N, names[N]||'');
+      });
+    });
+  }
 })();
 </script>
 </body>
