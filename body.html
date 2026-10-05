@@ -142,6 +142,7 @@
     }
 
     // Paper B update (October 2026): text and 3D figure follow the current draft
+    t=t.replace('<h3>Why regimes go round in circles</h3>','<h3>When regimes cycle</h3>');
     t=t.replace(/aria-label="Rotatable 3D phase portrait[^"]*"/,'aria-label="Rotatable 3D phase portrait: political swings fade below the threshold and keep going above it."');
     t=t.replace('<button class="btn" id="shock" type="button">Shock it</button>','<button class="btn" id="shock" type="button">Shock it</button><button class="btn" id="fallbehind" type="button">Fall behind</button><button class="btn" id="crisis" type="button">Crisis</button>');
     t=t.replace(/<p class="claim">Democracies decay[\s\S]*?<\/p>/,'<p class="claim">Many countries swing between democracy and autocracy for decades; Polybius called it anacyclosis. In my model the swings need no run of bad luck, and the economy decides when they run. Young autocracies that fall behind their neighbours open up, crises keep them shut and break young democracies, and new autocracies often fall when a neighbour turns democratic, until they consolidate. All three predictions hold in V-Dem data since 1950.</p>');
