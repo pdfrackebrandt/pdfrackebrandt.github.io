@@ -114,9 +114,8 @@
       '  <div class="paper-body">',
       '    <div class="paper-head"><h3>How many tests was it really?</h3></div>',
       '    <p class="byline">with <a href="https://winzker.net/">Sebastian Winzker</a></p>',
-      '    <p class="claim">Every parameter search is a multiple test. Cluster corrections can cut the hurdle by 84% and call noise significant. A block bootstrap shows the nominal count is safer.</p>',
-      '    <p>We bootstrap the full grid of 2,825 rules together so correlations stay real. On the DAX the effective independent count is about 1,400.</p>',
-      '    <p>Even correlation does not cut the effective count; block structure does. Only Gao (2008) stays close among eigenvalue corrections. The best rule survives in a few markets but not on the DAX.</p>',
+      '    <p class="claim">Why does this matter? When you test thousands of trading rules, the best one will look good by chance. Cluster corrections that group similar rules can make noise look significant by undercounting the tests. A block bootstrap on the real grid keeps the correlations and shows the safer hurdle is the full nominal count.</p>',
+      '    <p class="claim">We resample the 2,825 moving-average rules together. On the DAX the effective independent tests are about 1,400. Even spread-out correlation barely lowers that number; only rules bunched in blocks do. The best rule still fails the hurdle on the DAX.</p>',
       '    <details class="more">',
       '      <summary>How to read the figure</summary>',
       '      <div class="more-body">',
@@ -190,9 +189,8 @@
       '  </div>',
       '  <div class="paper-body">',
       '    <div class="paper-head"><h3>Reversed by our own replication</h3></div>',
-      '    <p class="claim">An automated auditor is right about a third of the time. We pre-registered three signals to catch extraction errors. Two reversed on frontier models. Cross-model disagreement held.</p>',
-      '    <p>On 174 items, within-model disagreement cleared the pre-registered bar in only one of four families. Cross-model disagreement reached 0.75 and held.</p>',
-      '    <p>Disagreement flagged errors better on unconventional designs. Abstaining where models disagree most cuts the error rate from 81% to 72%. The signal is real; the product is still weak.</p>',
+      '    <p class="claim">Why does this matter? An automated auditor that checks research extractions is right only about a third of the time, yet a wrong extraction can still return a theorem. We pre-registered three signals that might catch the error, then tested them once on frontier models. Two reversed. Cross-model disagreement is the one that held.</p>',
+      '    <p class="claim">On 174 items, a model disagreeing with its own repeats cleared the bar in only one family. Disagreement across models reached 0.75 and stayed above the threshold. It flagged errors better on unconventional designs. Abstaining where models disagree most trims the error rate from 81% to 72%, but the tool remains weak.</p>',
       '    <details class="more">',
       '      <summary>How to read the figure</summary>',
       '      <div class="more-body">',
@@ -210,7 +208,7 @@
       t = t.slice(0, firstPaperEnd+10) + '\n        ' + extraPaper + '\n        ' + extraPaper2 + t.slice(firstPaperEnd+10);
     }
     // Other updates from original if present
-    document.open();
+    t=t.replace('.claim{',' .claim, .paper-body > p {'); document.open();
 
     document.write(t);
     document.close();
