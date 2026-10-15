@@ -212,60 +212,6 @@
     // Other updates from original if present
     document.open();
 
-    // Inject sticky vertical Research label with teleport animation
-    var stickyCss = `
-<style>
-.research-sticky {
-  position: fixed;
-  left: 12px;
-  top: 24px;
-  z-index: 100;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-family: var(--f-display, Georgia, serif);
-  font-size: 1.1rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent, #061d30);
-  opacity: 0;
-  pointer-events: none;
-  transition: none;
-}
-.research-sticky.visible {
-  animation: teleportIn 0.35s ease-out forwards;
-}
-@keyframes teleportIn {
-  0% { opacity: 0; transform: rotate(180deg) scale(0.4); filter: blur(2px); }
-  40% { opacity: 1; transform: rotate(180deg) scale(1.15); filter: blur(0); }
-  100% { opacity: 1; transform: rotate(180deg) scale(1); filter: blur(0); }
-}
-@media (max-width: 700px) {
-  .research-sticky { display: none; }
-}
-</style>
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-  var label = document.createElement('div');
-  label.className = 'research-sticky';
-  label.textContent = 'Research';
-  document.body.appendChild(label);
-  var research = document.querySelector('.sec-head') || document.querySelector('h2');
-  function check(){
-    if(!research) return;
-    var rect = research.getBoundingClientRect();
-    var inView = rect.top < window.innerHeight * 0.6 && rect.bottom > 0;
-    if(inView && !label.classList.contains('visible')){
-      label.classList.add('visible');
-    } else if(!inView && label.classList.contains('visible')){
-      label.classList.remove('visible');
-    }
-  }
-  window.addEventListener('scroll', check, {passive:true});
-  check();
-});
-<\/script>
-`;
-    t = t.replace('</head>', stickyCss + '</head>');
     document.write(t);
     document.close();
   }).catch(function(){
