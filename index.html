@@ -31,7 +31,7 @@
     t=t.replace('a{color:var(--link);text-decoration:underline;text-decoration-thickness:.5px;text-underline-offset:2.5px;text-decoration-color:color-mix(in srgb,var(--link) 45%,transparent);transition:color .15s,text-decoration-color .15s}','a{color:var(--link);text-decoration:none;transition:color .15s}');
     t=t.replace('a:hover{color:var(--accent);text-decoration-color:var(--accent)}','a:hover{color:var(--accent)}');
     t=t.replace('.quicklinks a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}','.quicklinks a:hover{color:var(--accent)}');
-    t=t.replace(/<div class="bio">[\s\S]*?<\/div>/,'<div class="bio"><p>I do an MPhil in Economics at the <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton</a>. As an undergrad at the <a href="https://www.manchester.ac.uk/">University of Manchester</a>, I did my dissertation on volatility to measure price dislocation in commodity markets, then I worked in brokerage at a family office.</p><p>I want to solve politics. I study the incentive structures of hybrid regimes. Superintelligence will eventually allow agents to perform nearly any task, which risks dissolving the social contract between elites and the rest of society under democratic systems. How do we adapt? I do not know, yet. But regime change is coming. Aristotle and Polybius analysed how constitutions decay and settled on the mixed republic, which balanced claims of wealth and power against those of free birth. They aimed for a <em>politeia</em>, a form of government more resistant to degeneration over time. How to implement a given regime type, under what conditions, and for which society remain unknowns that motivate my research.</p><p>If you have AI/SI questions for consultancy, <a href="mailto:pedro.fernandezrackebrandt@merton.ox.ac.uk">send me an email</a>.</p></div>');
+    t=t.replace(/<div class="bio">[\s\S]*?<\/div>/,'<div class="bio"><p>MPhil in Economics, <a href="https://www.economics.ox.ac.uk/">Oxford</a> (<a href="https://www.merton.ox.ac.uk/">Merton</a>). Undergraduate dissertation at <a href="https://www.manchester.ac.uk/">Manchester</a> on volatility as a measure of price dislocation in commodity markets. Later worked in brokerage at a family office.</p><p>I want to solve politics. I study the incentive structures of hybrid regimes. Superintelligence will let agents handle nearly any task, which risks dissolving the social contract between elites and everyone else under democratic systems. How would we adapt? I have no clue. However, regime change is coming.</p><p>Aristotle and Polybius traced how constitutions decay and settled on the mixed republic, a <em>politeia</em> balancing claims of wealth and power against free birth, more resistant to degeneration. How to implement a given regime, under what conditions, and for which society motivates my research.</p><p>Feel free to email me for SI/AI consultancy: <a href="mailto:pedro.fernandezrackebrandt@merton.ox.ac.uk">email me</a>.</p></div>');
     var navM=t.match(/<nav class="socials"[\s\S]*?<\/nav>\s*/);
     if(navM){ t=t.replace(navM[0],''); var nav=navM[0].trim(); t=t.replace(/<img class="portrait"[^>]*>/,function(m){return '<div class="portrait-col">'+m+nav+'</div>';}); }
     t=t.replace('.socials svg{width:19px;height:19px;display:block}','.socials svg{width:19px;height:19px;display:block}.portrait-col{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}');
@@ -189,96 +189,26 @@
       '      <summary>How to read the figure</summary>',
       '      <div class="more-body">',
       '        <p>Each row is a registered comparison. The open square is the discovery sample on five open-weight arms. The filled circle is the confirmatory run on four frontier families. The dashed navy line is the 0.65 threshold we deposited before seeing those families. The dotted line is chance.</p>',
-      '        <p>Task structure falls from 0.771 to about 0.50 and is retracted. Within-model sampling falls from 0.727 and clears the bar in one family of four. Cross-model disagreement rises from 0.609 to 0.753 and is the result that survives.</p>',
-      '        <p>The small circles under a row are the four families. On the within-model row the rightmost of those four is Google, the only family that passes.</p>',
+      '        <p>Task structure falls from 0.771 to about 0.50 and is retracted. Within-model sampling falls from 0.727 and clears the bar in one family of four. Cross-model disagreement rises from 0.609 to 0.753 and is held.</p>',
       '      </div>',
       '    </details>',
-      '    <div class="paper-tags"><span class="tag live">Under review</span><span class="tag">TMLR</span><span class="tag">Causal identification</span></div>',
+      '    <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Verification</span><span class="tag">Multi-model</span></div>',
       '  </div>',
       '</article>'
     ].join("\n        ");
-    var anchor = t.indexOf('Why regimes go round in circles');
-    if(anchor>=0){
-      var close = t.indexOf('</article>', anchor);
-      if(close>=0) t = t.slice(0, close+10) + "\n        " + extraPaper + "\n        " + extraPaper2 + t.slice(close+10);
+    // Insert papers after the first paper or at appropriate place
+    var firstPaperEnd = t.indexOf('</article>');
+    if(firstPaperEnd>0){
+      t = t.slice(0, firstPaperEnd+10) + '\n        ' + extraPaper + '\n        ' + extraPaper2 + t.slice(firstPaperEnd+10);
     }
-    // Paper B update (October 2026): text and 3D figure follow the current draft
-    t=t.replace('<h3>Why regimes go round in circles</h3>','<h3>When regimes cycle</h3>');
-    t=t.replace(/aria-label="Rotatable 3D phase portrait[^"]*"/,'aria-label="Rotatable 3D phase portrait: political swings fade below the threshold and keep going above it."');
-    t=t.replace('<button class="btn" id="shock" type="button">Shock it</button>','<button class="btn" id="shock" type="button">Shock it</button><button class="btn" id="fallbehind" type="button">Fall behind</button><button class="btn" id="crisis" type="button">Crisis</button>');
-    t=t.replace(/<p class="claim">Democracies decay[\s\S]*?<\/p>/,'<p class="claim">Many countries swing between democracy and autocracy for decades; Polybius called it anacyclosis. In my model the swings need no run of bad luck, and the economy decides when they run. Young autocracies that fall behind their neighbours open up, crises keep them shut and break young democracies, and new autocracies often fall when a neighbour turns democratic, until they consolidate. All three predictions hold in V-Dem data since 1950.</p><p>The model tracks two things, how inclusive the regime is and how mobilized its population is; these are the flat axes of the figure. The height is K, the pool of young people free to be mobilized, measured from a threshold K*. Below K*, a shock sets off swings that shrink every round but keep a fixed tempo, the model’s own period. Above it they stop shrinking and the country cycles by itself. Mathematically, the threshold is a Hopf bifurcation. Falling behind the neighbours enlarges the pool and lifts a country over. A crisis speeds the erosion of institutions, which drops it back below and closes the regime. The tests run on V-Dem from 1950 to 2019, under eight different codings of regime type.</p>');
-    t=t.replace(/<p><b>The wobble\.<\/b>[\s\S]*?<p><b>Test it\.<\/b>[\s\S]*?<\/p>/,'<p><b>The wobble.</b> Think of a country’s politics as a wobble between more open and more closed rule. The blue line is that wobble over time. A wide loop means big swings between democracy and autocracy; a tight loop means calm.</p><p><b>The height.</b> Height is the pool of young people free to be mobilized. A young country that falls behind its neighbours rises. A crisis pulls it down and shuts it.</p><p><b>Below the dashed square</b> a shock fades, but in loops. The country swings back and forth a few times before it settles, so a new regime is safest at first and most at risk some years later.</p><p><b>Above it</b> the loop never closes and the country keeps going round, until its economy catches up and it sinks back below.</p><p><b>Test it.</b> Press Fall behind and watch the loop open. Press Crisis and it shuts. Left alone, the country has a bad year now and then.</p>');
-    t=t.replace(/<details class="more">\s*<summary>The technical version<\/summary>[\s\S]*?<\/details>\s*/g,'');
-    t=t.replace(/<span class="tag live">[^<]*<\/span><span class="tag">Nonlinear dynamics<\/span><span class="tag">V-Dem<\/span>/,'<span class="tag live">Working paper</span><span class="tag">Nonlinear dynamics</span><span class="tag">Political economy</span><span class="tag">V-Dem</span>');
-    t=t.replace('var XR=1.5, TH0=-0.5, TH1=1.8,','var XR=1.5, TH0=-0.5, TH1=1.5,');
-    t=t.replace('var x=1.3,y=0,th=TH0,tt=0,pts=[];','var x=1.3,y=0,th=-0.35,tt=0,pts=[],lastEv=0,nextEv=9;');
-    t=t.replace('th+=dt*EPS*SPEED; tt+=dt;','th+=dt*0.08*(-0.35-th); tt+=dt;');
-    t=t.replace('if(th>TH1) reset();','if(pts.length>2600) pts.shift(); if(tt>nextEv){ if(tt-lastEv>8){ if(Math.random()<0.6){ th=Math.min(TH1-0.05,th+0.6); } else { var a2=Math.random()*6.2832; x+=0.6*Math.cos(a2); y+=0.6*Math.sin(a2); } } nextEv=tt+10+Math.random()*8; }');
-    t=t.replace('function reset(){x=1.3;y=0;th=TH0;tt=0;pts=[];}','function reset(){x=1.3;y=0;th=-0.35;tt=0;pts=[];lastEv=0;nextEv=9;}');
-    t=t.replace("[[lo,'x'],[hi,'y']]","[[lo,'x'],[hi,'m']]");
-    t=t.replace("txt('\\u03b8',[tp[0]-12,tp[1]-16],C.muted,'right');","txt('K \\u2212 K*',[tp[0]-12,tp[1]-16],C.muted,'right');");
-    t=t.replace("txt('tipping point',out(e,26),C.faint);","txt('threshold K*',out(e,26),C.faint);");
-    t=t.replace('var a=Math.random()*6.2832;x+=0.6*Math.cos(a);y+=0.6*Math.sin(a);','var a=Math.random()*6.2832;x+=0.6*Math.cos(a);y+=0.6*Math.sin(a);lastEv=tt;');
-    t=t.replace('var drag=false,lx=0,ly=0;','var fb=document.getElementById(\'fallbehind\');if(fb)fb.addEventListener(\'click\',function(){th=Math.min(TH1-0.05,th+0.6);lastEv=tt;});var cr=document.getElementById(\'crisis\');if(cr)cr.addEventListener(\'click\',function(){th=Math.max(TH0+0.05,th-0.5);x-=0.5;lastEv=tt;});var drag=false,lx=0,ly=0;');
-    var icon='<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'%3E%3Crect width=\'32\' height=\'32\' fill=\'%230c2e4a\'/%3E%3Cpath fill=\'%23f3efe4\' d=\'M12.2 8.4h5.1c2.7 0 4.5 1.7 4.5 4.2 0 2.5-1.8 4.3-4.5 4.3h-3.1V23.4h-2V8.4zm2 6.7h3c1.6 0 2.5-1 2.5-2.5s-.9-2.4-2.5-2.4h-3v4.9z\'/%3E%3C/svg%3E">';
-    t=t.replace(/<link rel="icon"[^>]*>/, icon);
+    // Other updates from original if present
     document.open();
     document.write(t);
     document.close();
-    initHurdle();
   }).catch(function(){
     document.body.textContent='Could not load the page.';
   });
-  function invNorm(p){
-    var a=[-39.69683028665376,220.9460984351125,-275.9285104469687,138.3577509074756,-30.66479806614716,2.506628277459239];
-    var b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.2806807164995];
-    var c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783];
-    var d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416];
-    var plow=0.02425, phigh=1-plow, q, r;
-    if(p<plow){ q=Math.sqrt(-2*Math.log(p)); return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
-    if(p>phigh){ q=Math.sqrt(-2*Math.log(1-p)); return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
-    q=p-0.5; r=q*q;
-    return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
-  }
-  function hurdle(N){
-    N=Math.max(N,1.2);
-    var g=0.5772156649, s=0.0918;
-    return s*((1-g)*invNorm(1-1/N)+g*invNorm(1-1/(N*Math.E)));
-  }
-  function xOf(N){ return 44+(Math.log(N)/Math.LN10)/5*250; }
-  function yOf(h){ return 168-h/0.56*144; }
-  function fmtN(N){
-    if(N>=100000) return Math.round(N/1000)+'k';
-    if(N>=10000) return (N/1000).toFixed(N%1000?1:0)+'k';
-    return Math.round(N).toLocaleString('en-US');
-  }
-  function initHurdle(){
-    var svg=document.getElementById('hurdle');
-    if(!svg) return;
-    var cur=document.getElementById('hurdle-cursor');
-    var hair=document.getElementById('hurdle-hair');
-    var dot=document.getElementById('hurdle-dot');
-    var read=document.getElementById('hurdle-read');
-    function show(N, label){
-      N=Math.min(1e5, Math.max(2, N));
-      var h=hurdle(N), x=xOf(N), y=yOf(h);
-      cur.setAttribute('visibility','visible');
-      hair.setAttribute('x1', x); hair.setAttribute('x2', x);
-      dot.setAttribute('cx', x); dot.setAttribute('cy', y);
-      var tag=label? label+' \u00b7 ':'';
-      read.textContent=tag+'N = '+fmtN(N)+'   hurdle = '+h.toFixed(2);
-    }
-    Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function(btn){
-      btn.addEventListener('click', function(){
-        var N=+btn.getAttribute('data-jump');
-        var names={2:'cluster',1400:'effective',2825:'nominal'};
-        show(N, names[N]||'');
-      });
-    });
-  }
 })();
 </script>
-<script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count"
-        async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
