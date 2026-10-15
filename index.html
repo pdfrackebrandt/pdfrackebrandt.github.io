@@ -209,6 +209,8 @@
     if(firstPaperEnd>0){
       t = t.slice(0, firstPaperEnd+10) + '\n        ' + extraPaper + '\n        ' + extraPaper2 + t.slice(firstPaperEnd+10);
     }
+    // Other updates from original if present
+    document.open();
 
     // Inject sticky vertical Research label with teleport animation
     var stickyCss = `
@@ -264,8 +266,6 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 `;
     t = t.replace('</head>', stickyCss + '</head>');
-
-    document.open();
     document.write(t);
     document.close();
   }).catch(function(){
