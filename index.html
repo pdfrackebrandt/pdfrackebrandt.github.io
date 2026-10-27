@@ -459,15 +459,23 @@
       if(reduce){ var lim=s.free?300:Math.ceil(s.end/0.024); for(var i=0;i<lim;i++) step(); }
       draw(); wake();
     }
-    function tick(){
+    // fixed 60 steps per second whatever the screen's refresh rate; one loop only
+    var lastT=0, acc=0, FRAME=1000/60;
+    function tick(now){
       raf=0;
-      if(paused || !onScreen || reduce) return;
-      var s=SC[cur];
-      if(tt<s.end) step(); else if(++hold>80) start(cur);
-      draw();
-      raf=requestAnimationFrame(tick);
+      if(paused || !onScreen || reduce){ lastT=0; return; }
+      if(!lastT) lastT=now;
+      acc+=Math.min(100, now-lastT); lastT=now;
+      var n=0;
+      while(acc>=FRAME && n<6){
+        acc-=FRAME; n++;
+        if(tt<SC[cur].end) step(); else if(++hold>80) start(cur);
+      }
+      if(n>=6) acc=0;
+      if(n) draw();
+      if(!raf) raf=requestAnimationFrame(tick);
     }
-    function wake(){ if(!raf && !paused && onScreen && !reduce) raf=requestAnimationFrame(tick); }
+    function wake(){ if(!raf && !paused && onScreen && !reduce){ lastT=0; acc=0; raf=requestAnimationFrame(tick); } }
     function go(k){ cv.style.opacity='0'; setTimeout(function(){ start(k); cv.style.opacity='1'; },170); }
     function after(){ if(reduce){ for(var i=0;i<300;i++) step(); draw(); } }
     el('sc-prev').addEventListener('click',function(){ go(cur-1); });
