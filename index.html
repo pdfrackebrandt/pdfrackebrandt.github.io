@@ -44,13 +44,19 @@
   </header>
 
   <div class="tabs-sentinel" aria-hidden="true"></div>
-  <nav class="tabs" role="tablist" aria-label="Sections">
-    <a class="tab" role="tab" id="tab-research" href="#research" aria-controls="research" aria-selected="true">Research<span class="count">3</span></a>
-    <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">2</span></a>
-  </nav>
+  <div class="tabbar">
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <a class="tab" role="tab" id="tab-research" href="#research" aria-controls="research" aria-selected="true">Research<span class="count">3</span></a>
+      <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">2</span></a>
+    </nav>
+    <div class="views" role="group" aria-label="Show research as" hidden>
+      <button class="view" type="button" data-view="list" aria-pressed="true">List</button>
+      <button class="view" type="button" data-view="visual" aria-pressed="false">Visual</button>
+    </div>
+  </div>
 
   <main id="main">
-    <section class="panel" id="research" role="tabpanel" aria-labelledby="tab-research">
+    <section class="panel" id="research" role="tabpanel" aria-labelledby="tab-research" data-view="list">
       <h2 class="vh">Research</h2>
       <div class="index" data-limit="10">
         <h3 class="vh">All papers</h3>
