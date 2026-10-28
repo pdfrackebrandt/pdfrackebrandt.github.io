@@ -1,45 +1,61 @@
-## The question
+::: short
+- Language models now read research papers and write down their causal design. Most of these readings are wrong, and a wrong reading still produces a confident result further down the line.
+- Can we tell which readings to distrust without an answer key? We fixed three warning signals in advance and tested them once on four frontier model families.
+- Two signals reversed. One held: when different model families disagree about a case, their reading is more likely wrong. Skipping the most disputed half cuts the error rate from 81 to 72 percent.
+:::
 
-A causal claim rests on its identification: treatment, outcome, controls, design. Given that specification, identification algorithms (Shpitser and Pearl; Jaber et al.) decide whether the effect can be recovered. The weak step is reading the paper into the specification. Language models now do that reading, most of their extractions fail the benchmark's grader, and a wrong specification still returns a verdict.
+[[figure]]
 
-Does disagreement among extractions flag the wrong ones, item by item and with no answer key, well enough to tell a pipeline when to abstain?
+## The problem
 
-## The design
+A causal claim stands on its design: what was treated, what was measured, what was held fixed. Given that design, algorithms (Shpitser and Pearl; Jaber et al.) decide mechanically whether the effect can be identified. The weak link is the step before: reading the paper into a design. Language models now do that reading. Most of their readings fail the benchmark's grader, and a wrong reading still returns a verdict.
 
-The corpus is CausalReasoningBenchmark (Sawarni, Tan, Syrgkanis): 174 items, each with an expert specification. The authors' grader, `evaluate_identification`, scores each model's modal answer, the specification it returns most often across its draws. The error $e^f_i$ is 1 if the grader rejects family $f$'s modal answer on item $i$, and 0 otherwise.
+## The idea
 
-Five open weight arms served as the discovery sample and named three candidate signals. The decision rules were then registered on OSF on 13 September 2026, with the hash of the analysis script deposited, and run once on four frontier families: Anthropic, OpenAI, Google and xAI, three draws each at temperature 1.0. That is 2,088 extractions.
+::: intuition
+Ask three people to summarise a paper. If they disagree, at least one of them is wrong. Disagreement is a warning light that needs no answer key.
+:::
 
-## The signals
+Three candidate lights:
 
-- **Within model disagreement** $d^{W,f}_i$: how far family $f$'s three draws on item $i$ differ.
-- **Cross model disagreement** $d^{C}_i$: how far the four families differ on item $i$.
-- **Task structure** $k^f_i$: the number of design fields in family $f$'s predicted specification.
+- **Within model disagreement** $d^{W,f}_i$: ask one model family $f$ three times about item $i$ and see how much its answers differ.
+- **Cross model disagreement** $d^{C}_i$: ask four different families and see how much they differ.
+- **Task structure** $k^f_i$: count the design fields in the answer. More fields, more room for error.
 
-Each signal $s$ is judged by its AUROC, written $A(s)$: the probability that a randomly drawn wrong item scores higher than a randomly drawn right one.
+## The test
+
+Five open weight models served as the discovery sample and picked out the three signals. The decision rules were then registered on OSF on 13 September 2026, with the hash of the analysis script deposited, and run once on four frontier families: Anthropic, OpenAI, Google and xAI. Each answered every item three times at temperature 1.0, 2,088 readings in all.
+
+The items are the 174 cases of CausalReasoningBenchmark (Sawarni, Tan, Syrgkanis), each with an expert design. The authors' grader, `evaluate_identification`, checks each family's most frequent answer. The error $e^f_i$ is 1 when it fails and 0 when it passes.
+
+A signal $s$ is scored by its AUROC, written $A(s)$:
 
 $$A(s) = \Pr\big(s_i > s_j \mid e_i = 1,\ e_j = 0\big)$$
 
-Ties count as half. Chance is 0.5; perfect separation is 1. With $f$ running over the four families, the registered rules were:
+::: intuition
+Pick one wrong reading and one right reading at random. $A(s)$ is the chance the signal flags the wrong one as more suspicious, with ties counted as half. A coin flip scores 0.5; a perfect signal scores 1.
+:::
+
+The registered bar was 0.65. With $f$ running over the four families, the rules were:
 
 $$\begin{aligned} \text{C1:}&\quad \#\{f : A(d^{W,f}) \ge 0.65\} \ge 3 \\ \text{C2:}&\quad A(d^{C}) \ge 0.65 \\ \text{C3:}&\quad \#\{f : A(k^{f}) > A(d^{W,f})\} \ge 3 \end{aligned}$$
 
 ## The result
 
-| Rule | Discovery | Frontier | Verdict |
+| Signal | Discovery | Frontier | Verdict |
 |---|---|---|---|
 | C1 Within model | 0.727 | 0.680, Google only | Failed |
 | C2 Cross model | 0.609 | 0.753, interval [0.661, 0.840] | Held |
 | C3 Task structure | 0.771 | about 0.50, one family | Retracted |
 
-A registered falsifier predicted that families would agree on the same wrong answer for unconventional designs. Disagreement separated errors better there: 0.868 against 0.646, permutation $p = 0.025$. Neither ensemble breadth nor model accuracy explains the reversal.
+The signal ranked last in discovery is the only one that survived. Disagreement inside one family says little about its errors; disagreement between families tracks them.
 
-Abstaining where the families disagree most lowers the error on what is kept:
+A registered falsifier predicted the opposite on unusual designs: families would agree on the same wrong answer. Disagreement flagged errors better there, 0.868 against 0.646, with a permutation $p = 0.025$. Neither the number of families nor how accurate they are explains the reversal.
 
-$$\bar e_{\text{all}} = 80.9\% \;\longrightarrow\; \bar e_{H} = 72.4\%$$
+Skipping the half of the items with the most cross model disagreement lowers the error on what is kept:
 
-$H$ is the half of the items with the lowest $d^{C}_i$, and $\bar e$ is the share of graded answers that are wrong.
+$$\bar e_{\text{all}} = 80.9\% \;\longrightarrow\; \bar e_{\text{kept}} = 72.4\%$$
 
-## What it means
+## Why it matters
 
-The signal ranked last in discovery is the only one that survived. Five open weight arms favoured task structure and within model sampling; four frontier families reversed both. Cross model disagreement worked best on unconventional designs, the case the falsifier expected to break it. As an abstention rule it cuts error by 8.5 points, and the half it keeps is still wrong 72.4 percent of the time.
+Two lessons. Cross model disagreement is a cheap, honest warning light for automated reading of research. But it is no fix: the half it keeps is still wrong 72 percent of the time, so the reading step itself needs work. And registering the rules in advance mattered. On discovery data alone, two of the three signals would have been reported as findings.
