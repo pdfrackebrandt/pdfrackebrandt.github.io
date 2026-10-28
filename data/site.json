@@ -13,7 +13,6 @@
     {"label": "LinkedIn", "url": "https://www.linkedin.com/in/pedro-fern%C3%A1ndez-rackebrandt-a58439222", "icon": "linkedin"},
     {"label": "X", "url": "https://x.com/pdfrackebrandt", "icon": "x"}
   ],
-  "research_kicker": "Work in progress",
   "tools_kicker": "Coming soon",
   "tools": [
     {"name": "Frontier", "text": "A research agent that works overnight and shows, as a map, how ideas in frontier research connect.", "tags": []},
