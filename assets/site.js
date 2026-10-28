@@ -293,13 +293,13 @@
     }
   }
 
-  // All papers: topic chips filter the list and the selected cards; long lists start collapsed
+  // All papers: topic filters (shown once the list is long) narrow the list and the selected cards; long lists start collapsed
   function initIndex(){
     var box=document.querySelector('.index'); if(!box) return;
     var cards=Array.prototype.slice.call(document.querySelectorAll('.papers > .paper[data-topic]'));
     var selHead=document.querySelector('.selected-head');
     var limit=parseInt(box.getAttribute('data-limit'),10)||10;
-    var chips=Array.prototype.slice.call(box.querySelectorAll('.chip'));
+    var chips=Array.prototype.slice.call(box.querySelectorAll('.filter'));
     var rows=Array.prototype.slice.call(box.querySelectorAll('.row'));
     var groups=Array.prototype.slice.call(box.querySelectorAll('.year-group'));
     var more=box.querySelector('.show-all');
