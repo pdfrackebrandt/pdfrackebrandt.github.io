@@ -56,7 +56,10 @@
     var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     var W=0, H=0, C={}, paused=false, onScreen=true, raf=0;
     var AZ=-0.70, EL=0.42, XR=1.5, TH0=-0.6, TH1=1.2, ZS=(2*XR)/(TH1-TH0), OM=3.0, BASE=-0.35;
-    var x=0, y=0, th=BASE, target=BASE, rate=0, tt=0, pts=[], label='', labelT=-99, evi=0, hold=0, lastEv=0, nextEv=9, cur=0;
+    var x=0, y=0, th=BASE, target=BASE, rate=0, tt=0, label='', labelT=-99, evi=0, hold=0, lastEv=0, nextEv=9, cur=0;
+    // trail: fixed ring buffer, so drawing cost stays flat however long the figure runs
+    var MAXP=1200, PX=new Float64Array(MAXP), PY=new Float64Array(MAXP), PZ=new Float64Array(MAXP), p0=0, pn=0;
+    function push(a,b,c){ var i; if(pn<MAXP){ i=(p0+pn)%MAXP; pn++; } else { i=p0; p0=(p0+1)%MAXP; } PX[i]=a; PY[i]=b; PZ[i]=c; }
     function flag(s){ label=s; labelT=tt; }
     var SC=[
       { name:'A shock fades', end:11,
@@ -78,15 +81,17 @@
     function tokens(){
       C.bg=css('--canvas-bg')||'#FFFFFF'; C.rule=css('--canvas-line')||'#D2D8DE';
       C.faint=css('--faint')||'#939CA6'; C.muted=css('--muted')||'#616B76';
-      C.sig=css('--signal')||'#8C2F39'; C.blue=css('--fig-blue')||'#22557E';
+      C.sig=css('--signal')||'#8C2F39'; C.blue=css('--fig-blue')||'#22557E'; bgOk=false;
     }
-    function proj(a,b,c){
-      var ca=Math.cos(AZ), sa=Math.sin(AZ), se=Math.sin(EL), ce=Math.cos(EL);
-      return [a*ca+b*sa, (-a*sa+b*ca)*se+(c*ZS)*ce];
-    }
-    var sc=1, ox=0, oy=0, mid=[0,0];
+    var ca=1, sa=0, se=0, ce=1;
+    function angles(){ ca=Math.cos(AZ); sa=Math.sin(AZ); se=Math.sin(EL); ce=Math.cos(EL); }
+    function proj(a,b,c){ return [a*ca+b*sa, (-a*sa+b*ca)*se+(c*ZS)*ce]; }
+    var sc=1, ox=0, oy=0, mid=[0,0], dpr=1;
+    // axes and plane only change on resize, drag or theme: paint them once to an offscreen layer
+    var bg=document.createElement('canvas'), bctx=bg.getContext('2d'), bgOk=false;
     function to2(a,b,c){ var q=proj(a,b,c); return [ox+q[0]*sc, oy-q[1]*sc]; }
     function fit(){
+      angles(); bgOk=false;
       var xs=[], ys=[], i, j, k;
       for(i=0;i<2;i++) for(j=0;j<2;j++) for(k=0;k<2;k++){ var q=proj(i?XR:-XR, j?XR:-XR, k?TH1:TH0); xs.push(q[0]); ys.push(q[1]); }
       var x0=Math.min.apply(null,xs), x1=Math.max.apply(null,xs), y0=Math.min.apply(null,ys), y1=Math.max.apply(null,ys);
@@ -98,7 +103,7 @@
     function out(p,px){ var dx=p[0]-mid[0], dy=p[1]-mid[1], d=Math.hypot(dx,dy)||1; return [p[0]+dx/d*px, p[1]+dy/d*px]; }
     function resize(){
       var r=cv.getBoundingClientRect(); if(r.width<2) return;
-      var dpr=Math.min(window.devicePixelRatio||1,2);
+      dpr=Math.min(window.devicePixelRatio||1,2);
       W=Math.round(r.width); H=Math.round(r.height);
       cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
       ctx.setTransform(dpr,0,0,dpr,0,0); fit(); draw();
@@ -136,14 +141,22 @@
       em.forEach(function(q,k){ if(q[0]>mid[0] && (bi<0 || q[1]>em[bi][1])) bi=k; });
       if(bi>=0) txt('threshold',out(em[bi],18),C.faint);
     }
+    // older points fade: drawn as 16 bands of one path each, at most ~600 vertices a frame
+    function vtx(k, first){
+      var j=(p0+k)%MAXP, a=PX[j], b=PY[j];
+      var sx=ox+(a*ca+b*sa)*sc, sy=oy-((-a*sa+b*ca)*se+PZ[j]*ZS*ce)*sc;
+      if(first) ctx.moveTo(sx,sy); else ctx.lineTo(sx,sy);
+    }
     function trail(){
-      var n=pts.length;
+      var n=pn;
       if(n>1){
         ctx.lineJoin='round'; ctx.lineCap='round'; ctx.strokeStyle=C.blue; ctx.lineWidth=1.7;
-        var stepn=Math.max(1,Math.floor(n/900));
-        for(var i=stepn;i<n;i+=stepn){
-          var a=to2(pts[i-stepn][0],pts[i-stepn][1],pts[i-stepn][2]), b=to2(pts[i][0],pts[i][1],pts[i][2]);
-          ctx.globalAlpha=0.30+0.70*(i/n); ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+        var stepn=Math.max(1,Math.ceil(n/600)), BANDS=16, per=Math.max(1,Math.ceil((n-1)/BANDS));
+        for(var s0=0; s0<n-1; s0+=per){
+          var e0=Math.min(n-1,s0+per);
+          ctx.globalAlpha=0.30+0.70*(e0/n); ctx.beginPath(); vtx(s0,true);
+          for(var k=s0+stepn;k<e0;k+=stepn) vtx(k,false);
+          vtx(e0,false); ctx.stroke();
         }
         ctx.globalAlpha=1;
       }
@@ -156,10 +169,17 @@
         ctx.globalAlpha=1;
       }
     }
+    function paintBg(){
+      bg.width=cv.width; bg.height=cv.height;
+      var main=ctx; ctx=bctx;
+      ctx.setTransform(dpr,0,0,dpr,0,0); ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H); axes(); plane();
+      ctx=main; bgOk=true;
+    }
     function draw(){
       if(!W) return;
-      ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
-      axes(); plane(); trail();
+      if(!bgOk) paintBg();
+      ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(bg,0,0);
+      ctx.setTransform(dpr,0,0,dpr,0,0); trail();
     }
     function kick(){ var a=Math.random()*6.2832; x+=0.6*Math.cos(a); y+=0.6*Math.sin(a); lastEv=tt; flag('shock'); }
     function step(){
@@ -175,13 +195,13 @@
         if(tt-lastEv>8){ if(Math.random()<0.6){ th=Math.min(TH1-0.05,th+0.6); lastEv=tt; flag('falls behind ↑'); } else kick(); }
         nextEv=tt+10+Math.random()*8;
       }
-      pts.push([x,y,th]); if(pts.length>3000) pts.shift();
+      push(x,y,th);
     }
     function start(k){
       cur=(k+SC.length)%SC.length;
       var s=SC[cur];
-      tt=0; evi=0; hold=0; pts=[]; label=''; labelT=-99;
-      s.init(); pts.push([x,y,th]);
+      tt=0; evi=0; hold=0; p0=0; pn=0; label=''; labelT=-99;
+      s.init(); push(x,y,th);
       numEl.textContent=(cur+1)+' / '+SC.length; nameEl.textContent=s.name; capEl.textContent=s.cap;
       freeEl.style.display=s.free?'flex':'none';
       if(reduce){ var lim=s.free?300:Math.ceil(s.end/0.024); for(var i=0;i<lim;i++) step(); }
@@ -232,7 +252,7 @@
     if(window.IntersectionObserver) new IntersectionObserver(function(es){ onScreen=es[0].isIntersecting; wake(); }).observe(cv);
     resize();
     start(0);
-    if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ draw(); });
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ bgOk=false; draw(); });
   }
 
   // email: the address is decoded only inside the click handler, so neither the HTML,
