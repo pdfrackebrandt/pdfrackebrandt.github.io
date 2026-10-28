@@ -26,7 +26,7 @@ Bio, socials and tools live in `data/site.json`.
 ## Security notes
 
 - Every page carries a Content Security Policy: scripts only from this site and GoatCounter, no inline scripts.
-- The email address never appears in the HTML; `site.js` assembles it in the browser.
+- The email address never appears in the HTML or the data files; it lives only in `assets/site.js` (`initEmail`), which assembles it in the browser.
 - Only publish PDFs you are happy to see copied. Without a `pdf` link, a paper page offers "Draft on request".
 
 `body.html` is the old Artifact copy of the page and is no longer used.

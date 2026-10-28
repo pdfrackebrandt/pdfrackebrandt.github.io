@@ -106,11 +106,11 @@ def head(title, desc, canonical, extra=''):
 
 
 def footer():
-    e = SITE['email']
+    # the address itself only exists in site.js; the HTML carries a neutral label
     return '''  <footer class="foot" id="contact">
     <span>&copy; {year} {name}</span>
-    <a class="js-email" data-show href="#contact">{user} [at] {domain}</a>
-  </footer>'''.format(year=YEAR, name=escape(SITE['name']), user=e['user'], domain=e['domain'])
+    <a class="js-email" data-show href="#contact">Email</a>
+  </footer>'''.format(year=YEAR, name=escape(SITE['name']))
 
 
 def featured_card(p):
