@@ -141,11 +141,15 @@ def index_list(papers):
     for p in papers:
         if p['topic'] not in topics:
             topics.append(p['topic'])
-    chips = ['<button class="chip" type="button" data-topic="" aria-pressed="true">All<span class="n">%d</span></button>' % len(papers)]
-    for t in topics:
-        n = sum(1 for p in papers if p['topic'] == t)
-        chips.append('<button class="chip" type="button" data-topic="%s" aria-pressed="false">%s<span class="n">%d</span></button>'
-                     % (escape(t), escape(t), n))
+    # filters only earn their place once the list is long enough to need them
+    filters = ''
+    if len(papers) >= SITE.get('filters_from', 8) and len(topics) > 1:
+        btns = ['<button class="filter" type="button" data-topic="" aria-pressed="true">All<span class="count">%d</span></button>' % len(papers)]
+        for t in topics:
+            n = sum(1 for p in papers if p['topic'] == t)
+            btns.append('<button class="filter" type="button" data-topic="%s" aria-pressed="false">%s<span class="count">%d</span></button>'
+                        % (escape(t), escape(t), n))
+        filters = '\n    <div class="filters" role="group" aria-label="Filter papers by topic">%s</div>' % ''.join(btns)
     ordered = sorted(papers, key=lambda p: -int(p['year']))
     years = []
     for p in ordered:
@@ -167,13 +171,10 @@ def index_list(papers):
         groups.append('    <div class="year-group">\n      <h4 class="year">%s</h4>\n      <ul class="rows">\n%s\n      </ul>\n    </div>'
                       % (y, '\n'.join(rows)))
     return '''  <div class="index" data-limit="{limit}">
-    <div class="index-head">
-      <h3 class="label">All papers</h3>
-      <div class="chips" role="group" aria-label="Filter papers by topic">{chips}</div>
-    </div>
+    <h3 class="vh">All papers</h3>{filters}
 {groups}
-    <button class="btn show-all" type="button" hidden>Show all</button>
-  </div>'''.format(limit=SITE.get('list_collapsed', 10), chips=''.join(chips), groups='\n'.join(groups))
+    <button class="show-all" type="button" hidden>Show all</button>
+  </div>'''.format(limit=SITE.get('list_collapsed', 10), filters=filters, groups='\n'.join(groups))
 
 
 def build_index():
