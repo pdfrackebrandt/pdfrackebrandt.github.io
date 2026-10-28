@@ -60,8 +60,17 @@ p{margin:0}
 
 /* tabs */
 .tabs-sentinel{height:1px;margin-top:clamp(30px,5vw,52px)}
-.tabs{position:sticky;top:0;z-index:20;display:flex;gap:clamp(20px,4vw,32px);background:var(--paper);padding-top:4px;transition:box-shadow .2s}
-.tabs.stuck{box-shadow:0 1px 0 var(--rule-soft)}
+.tabbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--paper);padding-top:4px;transition:box-shadow .2s}
+.tabbar.stuck{box-shadow:0 1px 0 var(--rule-soft)}
+.tabs{display:flex;gap:clamp(20px,4vw,32px)}
+/* List or Visual: quiet text switch on the right of the tab row */
+.views{display:flex;gap:16px;align-items:center}
+.view{min-height:40px;padding:0;background:none;border:0;font-family:var(--f-body);font-size:var(--step--1);color:var(--faint);cursor:pointer;transition:color .15s}
+.view:hover{color:var(--ink-soft)}
+.view[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+#research[data-view="list"] .selected-head,#research[data-view="list"] .papers{display:none}
+#research[data-view="visual"] .index{display:none}
+#research[data-view="visual"] .selected-head{margin-top:clamp(14px,2.5vw,22px)}
 .tab{position:relative;display:inline-flex;align-items:baseline;gap:6px;min-height:48px;padding:8px 0 10px;font-family:var(--f-display);font-size:var(--step-2);line-height:1.2;color:var(--faint)}
 .tab:hover{color:var(--ink-soft)}
 .tab[aria-selected="true"]{color:var(--ink)}
@@ -170,8 +179,29 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .page-fig{max-width:460px;display:flex;flex-direction:column;gap:9px;margin-block:6px}
 .abstract{display:flex;flex-direction:column;gap:12px}
 .abstract p{font-size:var(--step-0);line-height:1.68;color:var(--ink-soft)}
+.abstract p.lede{font-size:var(--step-1);line-height:1.55;color:var(--ink)}
 .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .actions .btn{min-height:40px;display:inline-flex;align-items:center}
+/* explainer: the paper's argument in sections, with math */
+.explainer{display:flex;flex-direction:column;gap:12px;margin-top:clamp(18px,4vw,30px);border-top:1px solid var(--rule-soft);padding-top:clamp(6px,2vw,12px)}
+.explainer h2{font-size:var(--step-2);line-height:1.2;color:var(--ink);margin-top:clamp(18px,3.5vw,28px);scroll-margin-top:20px}
+.explainer h3{font-family:var(--f-body);font-size:var(--step-0);font-weight:600;color:var(--ink);margin-top:8px}
+.explainer p,.explainer li{font-size:var(--step-0);line-height:1.72;color:var(--ink-soft)}
+.explainer strong{font-weight:600;color:var(--ink)}
+.explainer ul,.explainer ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px}
+.explainer li::marker{color:var(--faint)}
+.explainer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.85em;background:var(--surface);padding:1px 4px}
+.eq{overflow-x:auto;overflow-y:hidden;padding:4px 0;margin:2px 0;color:var(--ink);-webkit-overflow-scrolling:touch}
+.eq .katex-display{margin:0}
+@media (max-width:560px){.eq .katex{font-size:1.1em}}
+.katex{color:inherit}
+.explainer p .katex,.explainer li .katex,.abstract .katex{color:var(--ink)}
+.result{border-left:2px solid var(--fig-blue);padding:2px 0 2px 16px;display:flex;flex-direction:column;gap:8px}
+.result p{color:var(--ink)}
+.table{overflow-x:auto;margin:4px 0}
+.table table{border-collapse:collapse;min-width:min(100%,30rem);font-size:var(--step--1);font-variant-numeric:tabular-nums}
+.table th{font-weight:500;text-align:left;color:var(--muted);border-bottom:1px solid var(--rule);padding:6px 14px 6px 0}
+.table td{color:var(--ink-soft);border-bottom:1px solid var(--rule-soft);padding:7px 14px 7px 0;vertical-align:top}
 .bib{margin:8px 0 0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.75rem;line-height:1.55;white-space:pre-wrap;word-break:break-word;background:var(--surface);color:var(--ink-soft);padding:12px 14px}
 
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
