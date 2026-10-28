@@ -289,9 +289,11 @@
     }
   }
 
-  // All papers: topic chips and a collapsed long list
+  // All papers: topic chips filter the list and the selected cards; long lists start collapsed
   function initIndex(){
     var box=document.querySelector('.index'); if(!box) return;
+    var cards=Array.prototype.slice.call(document.querySelectorAll('.papers > .paper[data-topic]'));
+    var selHead=document.querySelector('.selected-head');
     var limit=parseInt(box.getAttribute('data-limit'),10)||10;
     var chips=Array.prototype.slice.call(box.querySelectorAll('.chip'));
     var rows=Array.prototype.slice.call(box.querySelectorAll('.row'));
@@ -308,6 +310,9 @@
       });
       groups.forEach(function(g){ g.hidden=!g.querySelector('.row:not([hidden])'); });
       if(more){ more.hidden=(topic!=='' || expanded || rows.length<=limit); more.textContent='Show all '+rows.length; }
+      var anyCard=false;
+      cards.forEach(function(c){ var m=!topic || c.getAttribute('data-topic')===topic; c.hidden=!m; if(m) anyCard=true; });
+      if(selHead) selHead.hidden=!anyCard;
     }
     chips.forEach(function(c){
       c.addEventListener('click',function(){
