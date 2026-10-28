@@ -378,7 +378,6 @@ def build_index():
     <section class="panel" id="research" role="tabpanel" aria-labelledby="tab-research" data-view="{view}">
       <h2 class="vh">Research</h2>
 {index}
-      <div class="panel-head selected-head"><h3 class="label">Selected</h3><p class="kicker">{rk}</p></div>
       <div class="papers">
 {cards}
       </div>
@@ -398,7 +397,7 @@ def build_index():
 </html>
 '''.format(name=escape(SITE['name']), bio=bio, socials=''.join(socials), np=len(PAPERS), nt=len(SITE['tools']),
            view=VIEW, list_on='true' if VIEW == 'list' else 'false', visual_on='true' if VIEW == 'visual' else 'false',
-           rk=escape(SITE.get('research_kicker', '')), tk=escape(SITE.get('tools_kicker', '')),
+           tk=escape(SITE.get('tools_kicker', '')),
            cards=cards, index=indent(index_list(PAPERS), 4), tools=tools)
     return html
 
