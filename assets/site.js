@@ -252,6 +252,7 @@
   // Research / Tools tabs: plain anchors without JS, real tabs with it
   function initTabs(){
     var bar=document.querySelector('.tabs'); if(!bar) return;
+    var wrap=document.querySelector('.tabbar')||bar;
     var tabs=Array.prototype.slice.call(bar.querySelectorAll('[role="tab"]'));
     var sentinel=document.querySelector('.tabs-sentinel');
     var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -266,7 +267,7 @@
       });
       if(opts.focus) t.focus();
       if(opts.push) history.replaceState(null,'','#'+t.getAttribute('aria-controls'));
-      if(opts.scroll && bar.classList.contains('stuck') && sentinel){
+      if(opts.scroll && wrap.classList.contains('stuck') && sentinel){
         window.scrollTo({top: sentinel.getBoundingClientRect().top+window.pageYOffset, behavior: reduce?'auto':'smooth'});
       }
     }
@@ -289,7 +290,7 @@
     window.addEventListener('hashchange', function(){ fromHash(false); });
     fromHash(true);
     if(sentinel && window.IntersectionObserver){
-      new IntersectionObserver(function(es){ bar.classList.toggle('stuck', !es[0].isIntersecting); }).observe(sentinel);
+      new IntersectionObserver(function(es){ wrap.classList.toggle('stuck', !es[0].isIntersecting); }).observe(sentinel);
     }
   }
 
@@ -329,6 +330,23 @@
     apply();
   }
 
+  // List or Visual: one switch on the right of the tab row, remembered on this device, shown only on Research
+  function initViews(){
+    var panel=document.getElementById('research'), box=document.querySelector('.views'); if(!panel || !box) return;
+    var btns=Array.prototype.slice.call(box.querySelectorAll('.view'));
+    function set(v, save){
+      panel.setAttribute('data-view', v);
+      btns.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-view')===v ? 'true' : 'false'); });
+      if(save){ try{ localStorage.setItem('research-view', v); }catch(e){} }
+    }
+    var saved=null; try{ saved=localStorage.getItem('research-view'); }catch(e){}
+    if(saved==='list' || saved==='visual') set(saved, false);
+    btns.forEach(function(b){ b.addEventListener('click', function(){ set(b.getAttribute('data-view'), true); }); });
+    function sync(){ box.hidden=panel.hidden; }
+    sync();
+    if(window.MutationObserver) new MutationObserver(sync).observe(panel, {attributes:true, attributeFilter:['hidden']});
+  }
+
   // copy a citation
   function initCopy(){
     Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function(b){
@@ -339,6 +357,6 @@
     });
   }
 
-  function boot(){ initEmail(); initTabs(); initIndex(); initCopy(); initHurdle(); initRegime(); }
+  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initHurdle(); initRegime(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
