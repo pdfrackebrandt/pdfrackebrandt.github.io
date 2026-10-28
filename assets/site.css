@@ -168,5 +168,6 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 
 /* footer */
 .foot{margin-top:clamp(40px,6vw,64px);padding-block:20px 36px;font-size:var(--step--1);color:var(--faint);display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
+.foot a{display:inline-block;padding-block:12px;margin-block:-12px}
 
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
