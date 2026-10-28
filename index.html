@@ -51,9 +51,39 @@
   <main id="main">
     <section class="panel" id="research" role="tabpanel" aria-labelledby="tab-research">
       <h2 class="vh">Research</h2>
-      <div class="panel-head"><h3 class="label">Selected</h3><p class="kicker">Work in progress</p></div>
+      <div class="index" data-limit="10">
+        <div class="index-head">
+          <h3 class="label">All papers</h3>
+          <div class="chips" role="group" aria-label="Filter papers by topic"><button class="chip" type="button" data-topic="" aria-pressed="true">All<span class="n">3</span></button><button class="chip" type="button" data-topic="Regimes" aria-pressed="false">Regimes<span class="n">1</span></button><button class="chip" type="button" data-topic="Finance" aria-pressed="false">Finance<span class="n">1</span></button><button class="chip" type="button" data-topic="AI" aria-pressed="false">AI<span class="n">1</span></button></div>
+        </div>
+        <div class="year-group">
+          <h4 class="year">2026</h4>
+          <ul class="rows">
+            <li class="row" data-topic="Regimes">
+              <details>
+                <summary><span class="row-title">When regimes cycle</span><span class="row-meta">Working paper</span></summary>
+                <div class="row-body"><p>Why countries keep swinging between democracy and autocracy, and what starts and stops the swings.</p><a class="go" href="/papers/when-regimes-cycle/">Paper page &rarr;</a></div>
+              </details>
+            </li>
+            <li class="row" data-topic="Finance">
+              <details>
+                <summary><span class="row-title">How many tests was it really?</span><span class="row-meta">Working paper &middot; with Winzker</span></summary>
+                <div class="row-body"><p>How high the bar for a backtested trading rule should be once you count every rule you tried.</p><a class="go" href="/papers/how-many-tests/">Paper page &rarr;</a></div>
+              </details>
+            </li>
+            <li class="row" data-topic="AI">
+              <details>
+                <summary><span class="row-title">Reversed by our own replication</span><span class="row-meta">Working paper</span></summary>
+                <div class="row-body"><p>A registered replication in which two of three signals for catching LLM extraction errors reversed.</p><a class="go" href="/papers/reversed-by-replication/">Paper page &rarr;</a></div>
+              </details>
+            </li>
+          </ul>
+        </div>
+        <button class="btn show-all" type="button" hidden>Show all</button>
+      </div>
+      <div class="panel-head selected-head"><h3 class="label">Selected</h3><p class="kicker">Work in progress</p></div>
       <div class="papers">
-        <article class="paper">
+        <article class="paper" data-topic="Regimes">
           <div class="paper-head">
             <h3><a href="/papers/when-regimes-cycle/">When regimes cycle</a></h3>
           </div>
@@ -90,7 +120,7 @@
             <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Nonlinear dynamics</span><span class="tag">Political economy</span><span class="tag">V-Dem</span><a class="go" href="/papers/when-regimes-cycle/">Paper page &rarr;</a></div>
           </div>
         </article>
-        <article class="paper">
+        <article class="paper" data-topic="Finance">
           <div class="paper-head">
             <h3><a href="/papers/how-many-tests/">How many tests was it really?</a></h3>
             <p class="byline">with <a href="https://winzker.net/" rel="noopener noreferrer">Sebastian Winzker</a></p>
@@ -169,7 +199,7 @@
             <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Deflated Sharpe</span><span class="tag">Quantitative Finance</span><a class="go" href="/papers/how-many-tests/">Paper page &rarr;</a></div>
           </div>
         </article>
-        <article class="paper">
+        <article class="paper" data-topic="AI">
           <div class="paper-head">
             <h3><a href="/papers/reversed-by-replication/">Reversed by our own replication</a></h3>
           </div>
@@ -244,36 +274,6 @@
           </div>
         </article>
       </div>
-      <div class="index" data-limit="10">
-        <div class="index-head">
-          <h3 class="label">All papers</h3>
-          <div class="chips" role="group" aria-label="Filter papers by topic"><button class="chip" type="button" data-topic="" aria-pressed="true">All<span class="n">3</span></button><button class="chip" type="button" data-topic="Regimes" aria-pressed="false">Regimes<span class="n">1</span></button><button class="chip" type="button" data-topic="Finance" aria-pressed="false">Finance<span class="n">1</span></button><button class="chip" type="button" data-topic="AI" aria-pressed="false">AI<span class="n">1</span></button></div>
-        </div>
-        <div class="year-group">
-          <h4 class="year">2026</h4>
-          <ul class="rows">
-            <li class="row" data-topic="Regimes">
-              <details>
-                <summary><span class="row-title">When regimes cycle</span><span class="row-meta">Working paper</span></summary>
-                <div class="row-body"><p>Why countries keep swinging between democracy and autocracy, and what starts and stops the swings.</p><a class="go" href="/papers/when-regimes-cycle/">Paper page &rarr;</a></div>
-              </details>
-            </li>
-            <li class="row" data-topic="Finance">
-              <details>
-                <summary><span class="row-title">How many tests was it really?</span><span class="row-meta">Working paper &middot; with Winzker</span></summary>
-                <div class="row-body"><p>How high the bar for a backtested trading rule should be once you count every rule you tried.</p><a class="go" href="/papers/how-many-tests/">Paper page &rarr;</a></div>
-              </details>
-            </li>
-            <li class="row" data-topic="AI">
-              <details>
-                <summary><span class="row-title">Reversed by our own replication</span><span class="row-meta">Working paper</span></summary>
-                <div class="row-body"><p>A registered replication in which two of three signals for catching LLM extraction errors reversed.</p><a class="go" href="/papers/reversed-by-replication/">Paper page &rarr;</a></div>
-              </details>
-            </li>
-          </ul>
-        </div>
-        <button class="btn show-all" type="button" hidden>Show all</button>
-      </div>
     </section>
 
     <section class="panel" id="tools" role="tabpanel" aria-labelledby="tab-tools">
@@ -293,10 +293,6 @@
     </section>
   </main>
 
-  <footer class="foot" id="contact">
-    <span>&copy; 2026 Pedro F. Rackebrandt</span>
-    <a class="js-email" data-show href="#contact">Email</a>
-  </footer>
 </div>
 </body>
 </html>
