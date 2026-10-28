@@ -157,15 +157,35 @@ def md_table(lines):
     return '<div class="table"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (th, tb)
 
 
+BOX_LABELS = {'short': 'In short', 'intuition': 'Intuition', 'note': 'Note'}
+FIG_SLOT = '\x04FIGURE\x04'
+
+
 def md_html(src):
-    src = re.sub(r'\$\$(.+?)\$\$', lambda m: '\n\n$$%s$$\n\n' % m.group(1), src.replace('\r', ''), flags=re.S)
+    raw = []
+
+    def fence(m):
+        kind, inner = m.group(1), m.group(2)
+        label = BOX_LABELS.get(kind, '')
+        raw.append('<div class="box %s">%s%s</div>' % (kind, '<p class="box-label">%s</p>' % label if label else '', md_html(inner)))
+        return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
+
+    src = re.sub(r'^:::[ \t]*(\w+)[ \t]*\n(.*?)\n:::[ \t]*$', fence, src.replace('\r', ''), flags=re.M | re.S)
+    src = re.sub(r'\$\$(.+?)\$\$', lambda m: '\n\n$$%s$$\n\n' % m.group(1), src, flags=re.S)
     out = []
     for block in re.split(r'\n\s*\n', src.strip()):
         lines = [l for l in block.split('\n') if l.strip()]
         if not lines:
             continue
         first = lines[0]
-        if block.strip().startswith('$$'):
+        tok = re.fullmatch(r'\s*\x03(\d+)\x03\s*', block)
+        if tok:
+            out.append(raw[int(tok.group(1))])
+        elif block.strip() == '[[figure]]':
+            out.append(FIG_SLOT)
+        elif block.lstrip().startswith(('<svg', '<figure')):
+            out.append(block.strip())
+        elif block.strip().startswith('$$'):
             out.append('<div class="eq">%s</div>' % math_token(block.strip()[2:-2], True))
         elif first.startswith('#'):
             level = min(len(first) - len(first.lstrip('#')), 3)
@@ -427,24 +447,27 @@ def build_paper(p):
     meta.append('<script type="application/ld+json">%s</script>' % json.dumps(article, ensure_ascii=False).replace('</', '<\\/'))
     actions = []
     if links.get('pdf'):
-        actions.append('<a class="btn" href="%s">PDF</a>' % escape(links['pdf']))
+        actions.append('<a href="%s">PDF</a>' % escape(links['pdf']))
     else:
-        actions.append('<a class="btn js-email" href="#contact" data-subject="%s">Draft on request</a>' % escape('Draft request: ' + p['title']))
+        actions.append('<a class="js-email" href="#contact" data-subject="%s">Draft on request</a>' % escape('Draft request: ' + p['title']))
     for k, label in (('arxiv', 'arXiv'), ('code', 'Code'), ('data', 'Data')):
         if links.get(k):
-            actions.append('<a class="btn" href="%s" rel="noopener noreferrer">%s</a>' % (escape(links[k]), label))
+            actions.append('<a href="%s" rel="noopener noreferrer">%s</a>' % (escape(links[k]), label))
+    actions.append('<a href="#cite">Cite</a>')
     fig = ''
     if p.get('figure'):
-        fig = '    <div class="page-fig">\n%s\n    </div>\n' % indent(figure(p['figure']), 6)
+        fig = '<figure class="page-fig">\n%s\n%s</figure>' % (figure(p['figure']), help_html(p))
     body = md_html(explainer(p))
+    if body and fig:
+        body = body.replace(FIG_SLOT, fig) if FIG_SLOT in body else fig + '\n' + body
+    elif not body:
+        body = fig + '\n' + '\n'.join('<p>%s</p>' % escape(x) for x in p['text'])
     extra = '\n'.join(meta) + '\n'
     if '\x00M' in body:
         extra += ('<link rel="stylesheet" href="/assets/katex/katex.css?v=%s">\n<link rel="stylesheet" href="/assets/math.css?v=\x02MATHV\x02">\n'
                   '<link rel="preload" href="/assets/katex/fonts/KaTeX_Main-Regular.woff2" as="font" type="font/woff2" crossorigin>\n'
                   '<link rel="preload" href="/assets/katex/fonts/KaTeX_Math-Italic.woff2" as="font" type="font/woff2" crossorigin>\n'
                   % version('assets/katex/katex.css'))
-    if body:
-        body = '    <div class="explainer">\n%s\n    </div>\n' % indent(body, 6)
     who = escape(SITE['name']) + ((', ' + byline(p)) if byline(p) else '')
     bib_id = 'bib-' + p['slug']
     html = head('%s · %s' % (p['title'], SITE['name']), p['summary'], canonical, extra) + """
@@ -454,28 +477,32 @@ def build_paper(p):
   <header class="page-top"><a class="back" href="/#research">&larr; {name}</a></header>
   <main id="main">
   <article class="paper-page">
-    <p class="eyebrow">{status} &middot; {year}</p>
-    <h1>{title}</h1>
-    <p class="authors">{who}</p>
-    <div class="abstract">
-{text}
+    <header class="paper-header">
+      <p class="eyebrow">{status} &middot; {year}</p>
+      <h1>{title}</h1>
+      <p class="authors">{who}</p>
+      <p class="lede">{lede}</p>
+      <p class="page-actions">{actions}</p>
+    </header>
+    <div class="explainer">
+{body}
     </div>
-    <div class="actions">{actions}</div>
-{fig}{help}
-{body}    <div class="paper-tags">{tags}</div>
-    <details class="more">
-      <summary>Cite</summary>
-      <pre class="bib" id="{bib_id}">{bib}</pre>
-      <button class="btn" type="button" data-copy="{bib_id}">Copy BibTeX</button>
-    </details>
+    <footer class="paper-foot">
+      <div class="paper-tags">{tags}</div>
+      <details class="more" id="cite">
+        <summary>Cite</summary>
+        <pre class="bib" id="{bib_id}">{bib}</pre>
+        <button class="btn" type="button" data-copy="{bib_id}">Copy BibTeX</button>
+      </details>
+    </footer>
   </article>
   </main>
 </div>
 </body>
 </html>
-""".format(name=escape(SITE['name']), status=escape(p['status']), year=p['year'], title=escape(p['title']), who=who, fig=fig,
-           text=('      <p class="lede">%s</p>' % escape(p['summary'])) if body else '\n'.join('      <p>%s</p>' % escape(x) for x in p['text']), help=indent(help_html(p), 4) if help_html(p) else '',
-           body=body, tags=tags_html(p), actions=''.join(actions), bib_id=bib_id, bib=escape(bibtex(p)))
+""".format(name=escape(SITE['name']), status=escape(p['status']), year=p['year'], title=escape(p['title']), who=who,
+           lede=escape(p['summary']), actions='<span aria-hidden="true">&middot;</span>'.join(actions),
+           body=indent(body, 6), tags=tags_html(p), bib_id=bib_id, bib=escape(bibtex(p)))
     return html
 
 

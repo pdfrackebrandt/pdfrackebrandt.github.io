@@ -15,12 +15,12 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://rackebrandt.pe/assets/portrait.jpg">
 <meta name="twitter:card" content="summary">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Pedro F. Rackebrandt", "url": "https://rackebrandt.pe/", "description": "Pedro F. Rackebrandt. Political economy and regime dynamics. MPhil Economics, Merton College, Oxford.", "knowsAbout": ["Regimes", "Nonlinear dynamics", "Political economy", "V-Dem", "Finance", "Deflated Sharpe", "Quantitative Finance", "AI", "Verification", "Multi-model"], "subjectOf": [{"@type": "ScholarlyArticle", "name": "When regimes cycle", "url": "https://rackebrandt.pe/papers/when-regimes-cycle/"}, {"@type": "ScholarlyArticle", "name": "How many tests was it really?", "url": "https://rackebrandt.pe/papers/how-many-tests/"}, {"@type": "ScholarlyArticle", "name": "Reversed by our own replication", "url": "https://rackebrandt.pe/papers/reversed-by-replication/"}], "affiliation": {"@type": "CollegeOrUniversity", "name": "Merton College, University of Oxford"}, "sameAs": ["https://github.com/pdfrackebrandt", "https://www.linkedin.com/in/pedro-fern%C3%A1ndez-rackebrandt-a58439222", "https://x.com/pdfrackebrandt"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Pedro F. Rackebrandt", "url": "https://rackebrandt.pe/", "description": "Pedro F. Rackebrandt. Political economy and regime dynamics. MPhil Economics, Merton College, Oxford.", "knowsAbout": ["Regimes", "Nonlinear dynamics", "Political economy", "V-Dem", "Finance", "Deflated Sharpe", "Quantitative Finance", "AI", "Verification", "Multi model"], "subjectOf": [{"@type": "ScholarlyArticle", "name": "When regimes cycle", "url": "https://rackebrandt.pe/papers/when-regimes-cycle/"}, {"@type": "ScholarlyArticle", "name": "How many tests was it really?", "url": "https://rackebrandt.pe/papers/how-many-tests/"}, {"@type": "ScholarlyArticle", "name": "Reversed by our own replication", "url": "https://rackebrandt.pe/papers/reversed-by-replication/"}], "affiliation": {"@type": "CollegeOrUniversity", "name": "Merton College, University of Oxford"}, "sameAs": ["https://github.com/pdfrackebrandt", "https://www.linkedin.com/in/pedro-fern%C3%A1ndez-rackebrandt-a58439222", "https://x.com/pdfrackebrandt"]}</script>
 <link rel="alternate" type="text/markdown" href="/llms.txt" title="Plain text summary for AI agents">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=25a819c4">
-<script src="/assets/site.js?v=72ed7596" defer></script>
+<link rel="stylesheet" href="/assets/site.css?v=8330b2ae">
+<script src="/assets/site.js?v=9d4e16e3" defer></script>
 <script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -190,7 +190,7 @@
           </div>
           <div class="paper-body">
             <p>Why does this matter? When you test thousands of trading rules, the best one will look good by chance. Cluster corrections that group similar rules can make noise look significant by undercounting the tests. A block bootstrap on the real grid keeps the correlations and shows the safer hurdle is the full nominal count.</p>
-            <p>We resample the 2,825 moving-average rules together. On the DAX the effective independent tests are about 1,400. Even spread-out correlation barely lowers that number; only rules bunched in blocks do. The best rule still fails the hurdle on the DAX.</p>
+            <p>We resample the 2,825 moving average rules together. On the DAX the effective independent tests are about 1,400. Correlation spread evenly barely lowers that number; only rules bunched in blocks do. The best rule still fails the hurdle on the DAX.</p>
             <details class="more">
               <summary>How to read the figure</summary>
               <div class="more-body">
@@ -219,7 +219,7 @@
                 <text x="142.2" y="186">0.50</text>
                 <text x="206.4" y="186">0.65</text>
                 <text x="292" y="186">0.85</text>
-                <text x="185" y="210">AUROC</text>
+                <text x="292" y="203" text-anchor="end">AUROC</text>
               </g>
               <text x="206.4" y="16" font-size="7" text-anchor="middle" fill="var(--muted)">registered 0.65</text>
               <g id="rev-c3">
@@ -236,7 +236,7 @@
                 <text x="138" y="36" font-size="7" text-anchor="end" fill="var(--muted)">retracted</text>
               </g>
               <g id="rev-c1">
-                <text x="72" y="98" font-size="8" text-anchor="end">within-model</text>
+                <text x="72" y="98" font-size="8" text-anchor="end">within model</text>
                 <line x1="239.4" y1="94" x2="184.6" y2="94" stroke="var(--accent)" stroke-width="1.6"/>
                 <rect x="236.6" y="91.2" width="5.6" height="5.6" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.3"/>
                 <circle cx="184.6" cy="94" r="3.3" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.2"/>
@@ -249,7 +249,7 @@
                 <text x="180" y="86" font-size="7" text-anchor="end" fill="var(--muted)">1 of 4</text>
               </g>
               <g id="rev-c2">
-                <text x="72" y="148" font-size="8" text-anchor="end">cross-model</text>
+                <text x="72" y="148" font-size="8" text-anchor="end">cross model</text>
                 <line x1="188.9" y1="144" x2="250.5" y2="144" stroke="var(--accent)" stroke-width="1.6"/>
                 <rect x="186.1" y="141.2" width="5.6" height="5.6" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.3"/>
                 <circle cx="250.5" cy="144" r="3.3" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.2"/>
@@ -264,16 +264,16 @@
             </svg>
           </div>
           <div class="paper-body">
-            <p>Why does this matter? An automated auditor that checks research extractions is right only about a third of the time, yet a wrong extraction can still return a theorem. We pre-registered three signals that might catch the error, then tested them once on frontier models. Two reversed. Cross-model disagreement is the one that held.</p>
+            <p>Why does this matter? An automated auditor that checks research extractions is right only about a third of the time, yet a wrong extraction can still return a theorem. We registered three signals in advance that might catch the error, then tested them once on frontier models. Two reversed. Cross model disagreement is the one that held.</p>
             <p>On 174 items, a model disagreeing with its own repeats cleared the bar in only one family. Disagreement across models reached 0.75 and stayed above the threshold. It flagged errors better on unconventional designs. Abstaining where models disagree most trims the error rate from 81% to 72%, but the tool remains weak.</p>
             <details class="more">
               <summary>How to read the figure</summary>
               <div class="more-body">
-                <p>Each row is a registered comparison. The open square is the discovery sample on five open-weight arms. The filled circle is the confirmatory run on four frontier families. The dashed navy line is the 0.65 threshold we deposited before seeing those families. The dotted line is chance.</p>
-                <p>Task structure falls from 0.771 to about 0.50 and is retracted. Within-model sampling falls from 0.727 and clears the bar in one family of four. Cross-model disagreement rises from 0.609 to 0.753 and is held.</p>
+                <p>Each row is a registered comparison. The open square is the discovery sample on five open weight arms. The filled circle is the confirmatory run on four frontier families. The dashed navy line is the 0.65 threshold we deposited before seeing those families. The dotted line is chance.</p>
+                <p>Task structure falls from 0.771 to about 0.50 and is retracted. Within model sampling falls from 0.727 and clears the bar in one family of four. Cross model disagreement rises from 0.609 to 0.753 and is held.</p>
               </div>
             </details>
-            <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Verification</span><span class="tag">Multi-model</span><a class="go" href="/papers/reversed-by-replication/">Paper page &rarr;</a></div>
+            <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Verification</span><span class="tag">Multi model</span><a class="go" href="/papers/reversed-by-replication/">Paper page &rarr;</a></div>
           </div>
         </article>
       </div>
