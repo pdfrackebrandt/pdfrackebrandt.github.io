@@ -234,6 +234,11 @@ def resolve_math(pages):
     return out
 
 
+def version(path):
+    """Short content hash for cache busting: a changed file gets a new URL, so browsers fetch it at once."""
+    return hashlib.sha1(open(os.path.join(ROOT, path), 'rb').read()).hexdigest()[:8]
+
+
 def head(title, desc, canonical, extra=''):
     return '''<!doctype html>
 <html lang="en">
@@ -255,10 +260,11 @@ def head(title, desc, canonical, extra=''):
 {extra}<link rel="alternate" type="text/markdown" href="/llms.txt" title="Plain text summary for AI agents">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css">
-<script src="/assets/site.js" defer></script>
+<link rel="stylesheet" href="/assets/site.css?v={vcss}">
+<script src="/assets/site.js?v={vjs}" defer></script>
 <script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
-</head>'''.format(csp=CSP, title=escape(title), desc=escape(desc), canonical=canonical, base=BASE, extra=extra)
+</head>'''.format(csp=CSP, title=escape(title), desc=escape(desc), canonical=canonical, base=BASE, extra=extra,
+           vcss=version('assets/site.css'), vjs=version('assets/site.js'))
 
 
 def featured_card(p):
@@ -433,9 +439,10 @@ def build_paper(p):
     body = md_html(explainer(p))
     extra = '\n'.join(meta) + '\n'
     if '\x00M' in body:
-        extra += ('<link rel="stylesheet" href="/assets/katex/katex.css">\n<link rel="stylesheet" href="/assets/math.css">\n'
+        extra += ('<link rel="stylesheet" href="/assets/katex/katex.css?v=%s">\n<link rel="stylesheet" href="/assets/math.css?v=\x02MATHV\x02">\n'
                   '<link rel="preload" href="/assets/katex/fonts/KaTeX_Main-Regular.woff2" as="font" type="font/woff2" crossorigin>\n'
-                  '<link rel="preload" href="/assets/katex/fonts/KaTeX_Math-Italic.woff2" as="font" type="font/woff2" crossorigin>\n')
+                  '<link rel="preload" href="/assets/katex/fonts/KaTeX_Math-Italic.woff2" as="font" type="font/woff2" crossorigin>\n'
+                  % version('assets/katex/katex.css'))
     if body:
         body = '    <div class="explainer">\n%s\n    </div>\n' % indent(body, 6)
     who = escape(SITE['name']) + ((', ' + byline(p)) if byline(p) else '')
@@ -516,7 +523,7 @@ def main():
         pages[os.path.join(ROOT, 'papers', p['slug'], 'index.html')] = build_paper(p)
     for path, html in resolve_math(pages).items():
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        open(path, 'w', encoding='utf-8').write(html)
+        open(path, 'w', encoding='utf-8').write(html.replace('\x02MATHV\x02', version('assets/math.css')))
     urls = [BASE + '/'] + [BASE + url_of(p) for p in PAPERS]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % (
         '\n'.join('  <url><loc>%s</loc></url>' % u for u in urls))
