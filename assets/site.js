@@ -377,6 +377,12 @@
     });
   }
 
-  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initHurdle(); initRegime(); }
+  // the Cite link at the top opens the citation at the bottom
+  function initCite(){
+    var d=document.getElementById('cite'); if(!d) return;
+    Array.prototype.forEach.call(document.querySelectorAll('a[href="#cite"]'), function(a){ a.addEventListener('click', function(){ d.open=true; }); });
+  }
+
+  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initCite(); initHurdle(); initRegime(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
