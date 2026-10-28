@@ -19,7 +19,7 @@ Open to AI and superintelligence consultancy: use the email link on https://rack
 ## Tools (coming soon)
 
 - Frontier: A research agent that works overnight and shows, as a map, how ideas in frontier research connect.
-- Galley (Open source): A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.
+- Rikuy (Open source): A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.
 
 ## Elsewhere
 

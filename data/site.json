@@ -16,7 +16,7 @@
   "tools_kicker": "Coming soon",
   "tools": [
     {"name": "Frontier", "text": "A research agent that works overnight and shows, as a map, how ideas in frontier research connect.", "tags": []},
-    {"name": "Galley", "text": "A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.", "tags": ["Open source"]}
+    {"name": "Rikuy", "text": "A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.", "tags": ["Open source"]}
   ],
   "list_collapsed": 10
 }
