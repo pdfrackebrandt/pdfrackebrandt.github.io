@@ -235,13 +235,17 @@
     if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ draw(); });
   }
 
-  // email: assembled at runtime so address harvesters reading the HTML get nothing
+  // email: the address is decoded only inside the click handler, so neither the HTML,
+  // the rendered page nor a link preview ever carries it (stored shifted by one character code)
+  var MAIL='qfesp/gfsoboef{sbdlfcsboeuAnfsupo/py/bd/vl';
   function initEmail(){
-    var u='pedro.fernandezrackebrandt', d='merton.ox.ac.uk';
-    var addr=u+'@'+d;
     Array.prototype.forEach.call(document.querySelectorAll('.js-email'), function(a){
-      a.setAttribute('href','mailto:'+addr);
-      if(a.hasAttribute('data-show')) a.textContent=addr;
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        var addr=MAIL.replace(/./g, function(c){ return String.fromCharCode(c.charCodeAt(0)-1); });
+        var subj=a.getAttribute('data-subject');
+        window.location.href='mailto:'+addr+(subj?'?subject='+encodeURIComponent(subj):'');
+      });
     });
   }
 
