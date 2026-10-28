@@ -73,6 +73,31 @@
     ].join("\n        ");
     var rs=t.indexOf('<article class="paper">'), re=rs>=0?t.indexOf('</article>', rs):-1;
     if(rs>=0 && re>rs) t=t.slice(0,rs)+regimeArticle+t.slice(re+10);
+    // Tools section: Frontier and Galley, both coming soon
+    var toolsSection = [
+      '<section id="tools">',
+      '  <div class="sec-head"><h2>Tools</h2><p class="sec-kicker">Coming soon</p></div>',
+      '  <div class="tools">',
+      '    <div class="tool">',
+      '      <h3>Frontier</h3>',
+      '      <p>A research agent that works overnight and shows, as a map, how ideas in frontier research connect.</p>',
+      '    </div>',
+      '    <div class="tool">',
+      '      <h3>Galley</h3>',
+      '      <p>A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.</p>',
+      '      <div class="paper-tags"><span class="tag">Open source</span></div>',
+      '    </div>',
+      '  </div>',
+      '</section>'
+    ].join("\n    ");
+    t=t.replace('  </main>', '    '+toolsSection+'\n\n  </main>');
+    t=t.replace('</head>','<style>'
+      +'.tools{display:grid;grid-template-columns:1fr;gap:26px;margin-top:8px;padding-bottom:clamp(44px,6vw,72px)}'
+      +'@media (min-width:720px){.tools{grid-template-columns:1fr 1fr;gap:44px}}'
+      +'.tool{display:flex;flex-direction:column;gap:8px;min-width:0}'
+      +'.tool h3{font-size:var(--step-1);line-height:1.35;font-weight:700;margin:0}'
+      +'.tool p{margin:0;font-size:var(--step-0);line-height:1.6;color:var(--ink-soft)}'
+      +'</style></head>');
     // drop the base page's own phase portrait script; initRegime() below replaces it
     var cvi=t.indexOf("var cv=document.getElementById('field')");
     if(cvi>0){
