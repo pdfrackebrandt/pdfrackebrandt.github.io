@@ -1,0 +1,24 @@
+{
+  "name": "Pedro F. Rackebrandt",
+  "url": "https://rackebrandt.pe",
+  "description": "Pedro F. Rackebrandt. Political economy and regime dynamics. MPhil Economics, Merton College, Oxford.",
+  "email": {"user": "pedro.fernandezrackebrandt", "domain": "merton.ox.ac.uk"},
+  "bio": [
+    "MPhil in Economics, <a href=\"https://www.economics.ox.ac.uk/\">University of Oxford</a>, <a href=\"https://www.merton.ox.ac.uk/\">Merton</a>. Undergraduate dissertation at the <a href=\"https://www.manchester.ac.uk/\">University of Manchester</a> on volatility as a measure of price dislocation in commodity markets. Later worked in brokerage at a family office.",
+    "I want to solve politics. I study the incentive structures of hybrid regimes. Superintelligence will let agents handle nearly any task, which risks dissolving the social contract between elites and everyone else under democratic systems. How would we adapt? I have no clue. However, regime change is coming.",
+    "Aristotle and Polybius traced how constitutions decay and settled on the mixed republic, a <em>politeia</em> balancing claims of wealth and power against free birth, more resistant to degeneration. How to implement a given regime, under what conditions, and for which society motivates my research.",
+    "<a class=\"js-email\" href=\"#contact\">Feel free to email me for SI/AI consultancy.</a>"
+  ],
+  "socials": [
+    {"label": "GitHub", "url": "https://github.com/pdfrackebrandt", "icon": "github"},
+    {"label": "LinkedIn", "url": "https://www.linkedin.com/in/pedro-fern%C3%A1ndez-rackebrandt-a58439222", "icon": "linkedin"},
+    {"label": "X", "url": "https://x.com/pdfrackebrandt", "icon": "x"}
+  ],
+  "research_kicker": "Work in progress",
+  "tools_kicker": "Coming soon",
+  "tools": [
+    {"name": "Frontier", "text": "A research agent that works overnight and shows, as a map, how ideas in frontier research connect.", "tags": []},
+    {"name": "Galley", "text": "A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.", "tags": ["Open source"]}
+  ],
+  "list_collapsed": 10
+}
