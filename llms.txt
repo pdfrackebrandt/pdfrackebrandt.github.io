@@ -1,0 +1,32 @@
+# Pedro F. Rackebrandt
+
+> Pedro F. Rackebrandt. Political economy and regime dynamics. MPhil Economics, Merton College, Oxford.
+
+MPhil in Economics, University of Oxford, Merton. Undergraduate dissertation at the University of Manchester on volatility as a measure of price dislocation in commodity markets. Later worked in brokerage at a family office.
+
+I want to solve politics. I study the incentive structures of hybrid regimes. Superintelligence will let agents handle nearly any task, which risks dissolving the social contract between elites and everyone else under democratic systems. How would we adapt? I have no clue. However, regime change is coming.
+
+Aristotle and Polybius traced how constitutions decay and settled on the mixed republic, a politeia balancing claims of wealth and power against free birth, more resistant to degeneration. How to implement a given regime, under what conditions, and for which society motivates my research.
+
+Open to AI and superintelligence consultancy: use the email link on https://rackebrandt.pe/ (the address appears only when clicked).
+
+## Research
+
+- [When regimes cycle](https://rackebrandt.pe/papers/when-regimes-cycle/): Working paper, 2026. Topic: Regimes. Why countries keep swinging between democracy and autocracy, and what starts and stops the swings.
+- [How many tests was it really?](https://rackebrandt.pe/papers/how-many-tests/): Working paper, 2026. Topic: Finance. With Sebastian Winzker. How high the bar for a backtested trading rule should be once you count every rule you tried.
+- [Reversed by our own replication](https://rackebrandt.pe/papers/reversed-by-replication/): Working paper, 2026. Topic: AI. A registered replication in which two of three signals for catching LLM extraction errors reversed.
+
+## Tools (coming soon)
+
+- Frontier: A research agent that works overnight and shows, as a map, how ideas in frontier research connect.
+- Galley (Open source): A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.
+
+## Elsewhere
+
+- [GitHub](https://github.com/pdfrackebrandt)
+- [LinkedIn](https://www.linkedin.com/in/pedro-fern%C3%A1ndez-rackebrandt-a58439222)
+- [X](https://x.com/pdfrackebrandt)
+
+## Optional
+
+- [Full text of every paper summary](https://rackebrandt.pe/llms-full.txt)

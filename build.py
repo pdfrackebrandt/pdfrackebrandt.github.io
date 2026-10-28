@@ -2,13 +2,13 @@
 """Build rackebrandt.pe from data/*.json.
 
 Edit data/papers.json or data/site.json, run `python3 build.py`, commit everything.
-Writes index.html, papers/<slug>/index.html and sitemap.xml. Standard library only.
+Writes index.html, papers/<slug>/index.html, sitemap.xml, llms.txt and llms-full.txt. Standard library only.
 """
 import json
 import os
 import re
 from datetime import date
-from html import escape
+from html import escape, unescape
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = json.load(open(os.path.join(ROOT, 'data', 'site.json'), encoding='utf-8'))
@@ -37,6 +37,18 @@ def indent(block, n):
 
 def url_of(p):
     return '/papers/%s/' % p['slug']
+
+
+def plain(html):
+    """Markup to plain text for llms.txt: drop tags, decode entities."""
+    return unescape(re.sub(r'<[^>]+>', '', html)).strip()
+
+
+def bio_for_agents(par):
+    # the consultancy line is an email link; agents get a pointer, never the address
+    if 'js-email' in par:
+        return 'Open to AI and superintelligence consultancy: use the email link on %s/ (the address appears only when clicked).' % BASE
+    return plain(par)
 
 
 def author_list(p):
@@ -97,7 +109,8 @@ def head(title, desc, canonical, extra=''):
 <meta property="og:type" content="website">
 <meta property="og:image" content="{base}/assets/portrait.jpg">
 <meta name="twitter:card" content="summary">
-{extra}<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+{extra}<link rel="alternate" type="text/markdown" href="/llms.txt" title="Plain text summary for AI agents">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <script src="/assets/site.js" defer></script>
@@ -176,7 +189,14 @@ def build_index():
         </div>'''.format(name=escape(t['name']), text=escape(t['text']),
                          tags=('\n          <div class="paper-tags">%s</div>' % ''.join('<span class="tag">%s</span>' % escape(x) for x in t['tags'])) if t.get('tags') else '')
                       for t in SITE['tools'])
+    topics = []
+    for p in PAPERS:
+        for t in [p['topic']] + list(p.get('tags', [])):
+            if t not in topics:
+                topics.append(t)
     person = json.dumps({"@context": "https://schema.org", "@type": "Person", "name": SITE['name'], "url": BASE + '/',
+                         "description": SITE['description'], "knowsAbout": topics,
+                         "subjectOf": [{"@type": "ScholarlyArticle", "name": p['title'], "url": BASE + url_of(p)} for p in PAPERS],
                          "affiliation": {"@type": "CollegeOrUniversity", "name": "Merton College, University of Oxford"},
                          "sameAs": [s['url'] for s in SITE['socials']]})
     html = head(SITE['name'], SITE['description'], BASE + '/',
@@ -241,11 +261,19 @@ def build_paper(p):
     links = p.get('links', {})
     if links.get('pdf'):
         meta.append('<meta name="citation_pdf_url" content="%s">' % escape(links['pdf']))
+    article = {"@context": "https://schema.org", "@type": "ScholarlyArticle", "headline": p['title'], "name": p['title'],
+               "author": [{"@type": "Person", "name": a} for a in authors], "datePublished": str(p['year']),
+               "creativeWorkStatus": p['status'], "about": [p['topic']] + list(p.get('tags', [])),
+               "abstract": plain(' '.join(p['text'])), "description": p['summary'], "url": canonical,
+               "isAccessibleForFree": True}
+    if links.get('pdf'):
+        article["encoding"] = {"@type": "MediaObject", "contentUrl": links['pdf'], "encodingFormat": "application/pdf"}
+    meta.append('<script type="application/ld+json">%s</script>' % json.dumps(article, ensure_ascii=False).replace('</', '<\\/'))
     actions = []
     if links.get('pdf'):
         actions.append('<a class="btn" href="%s">PDF</a>' % escape(links['pdf']))
     else:
-        actions.append('<a class="btn js-email" href="#contact">Draft on request</a>')
+        actions.append('<a class="btn js-email" href="#contact" data-subject="%s">Draft on request</a>' % escape('Draft request: ' + p['title']))
     for k, label in (('arxiv', 'arXiv'), ('code', 'Code'), ('data', 'Data')):
         if links.get(k):
             actions.append('<a class="btn" href="%s" rel="noopener noreferrer">%s</a>' % (escape(links[k]), label))
@@ -286,6 +314,37 @@ def build_paper(p):
     return html
 
 
+def build_llms():
+    lines = ['# %s' % SITE['name'], '', '> %s' % SITE['description'], '']
+    for b in SITE['bio']:
+        lines += [bio_for_agents(b), '']
+    lines += ['## Research', '']
+    for p in sorted(PAPERS, key=lambda q: -int(q['year'])):
+        who = (' With %s.' % ', '.join(c['name'] for c in p['coauthors'])) if p.get('coauthors') else ''
+        extra = ''.join(' %s: %s.' % (k.upper() if k == 'pdf' else k.capitalize(), v) for k, v in p.get('links', {}).items() if v)
+        lines.append('- [%s](%s%s): %s, %s. Topic: %s.%s %s%s' % (p['title'], BASE, url_of(p), p['status'], p['year'], p['topic'], who, p['summary'], extra))
+    lines += ['', '## Tools (coming soon)', '']
+    for t in SITE['tools']:
+        tags = (' (%s)' % ', '.join(t['tags'])) if t.get('tags') else ''
+        lines.append('- %s%s: %s' % (t['name'], tags, plain(t['text'])))
+    lines += ['', '## Elsewhere', '']
+    lines += ['- [%s](%s)' % (s['label'], s['url']) for s in SITE['socials']]
+    lines += ['', '## Optional', '', '- [Full text of every paper summary](%s/llms-full.txt)' % BASE, '']
+    return '\n'.join(lines)
+
+
+def build_llms_full():
+    out = ['# %s: research in full' % SITE['name'], '', '> Every paper summary from %s/, as plain text.' % BASE, '']
+    for p in sorted(PAPERS, key=lambda q: -int(q['year'])):
+        authors = ', '.join(author_list(p))
+        out += ['## %s' % p['title'], '', '%s, %s. %s. Topic: %s. Tags: %s. Page: %s%s' % (
+            authors, p['year'], p['status'], p['topic'], ', '.join(p.get('tags', [])) or 'none', BASE, url_of(p)), '']
+        out += [plain(x) + '\n' for x in p['text']]
+        if p.get('figure_help'):
+            out += ['How to read the figure:', ''] + [plain(x) + '\n' for x in p['figure_help']]
+    return '\n'.join(out)
+
+
 def main():
     slugs = [p['slug'] for p in PAPERS]
     assert len(slugs) == len(set(slugs)), 'duplicate slug'
@@ -301,7 +360,9 @@ def main():
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % (
         '\n'.join('  <url><loc>%s</loc></url>' % u for u in urls))
     open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write(sm)
-    print('built index.html, %d paper pages, sitemap.xml' % len(PAPERS))
+    open(os.path.join(ROOT, 'llms.txt'), 'w', encoding='utf-8').write(build_llms())
+    open(os.path.join(ROOT, 'llms-full.txt'), 'w', encoding='utf-8').write(build_llms_full())
+    print('built index.html, %d paper pages, sitemap.xml, llms.txt, llms-full.txt' % len(PAPERS))
 
 
 if __name__ == '__main__':

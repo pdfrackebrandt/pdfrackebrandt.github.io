@@ -17,16 +17,17 @@ Bio, socials and tools live in `data/site.json`.
 
 ## Layout
 
-- `index.html`, `papers/*/index.html`, `sitemap.xml`: generated, do not edit by hand.
+- `index.html`, `papers/*/index.html`, `sitemap.xml`, `llms.txt`, `llms-full.txt`: generated, do not edit by hand.
 - `assets/site.css`, `assets/site.js`: styles, figures, tabs, paper filters.
 - `assets/fonts/`: self hosted Inter and Instrument Serif (SIL Open Font License).
 - `src/figures/`, `src/icons/`: markup the build inlines.
-- `robots.txt`: lets search engines in, asks AI training crawlers to stay out.
+- `robots.txt`: lets search engines and citing AI search tools in, asks AI training crawlers to stay out.
+- `llms.txt`, `llms-full.txt`: plain text summaries for AI agents (the llmstxt.org convention), built from the same data. Every page links to `llms.txt`, and paper pages carry ScholarlyArticle structured data.
 
 ## Security notes
 
 - Every page carries a Content Security Policy: scripts only from this site and GoatCounter, no inline scripts.
-- The email address never appears in the HTML or the data files; it lives only in `assets/site.js` (`initEmail`), which assembles it in the browser.
+- The email address never appears in the HTML, the data files or the agent files. `assets/site.js` stores it shifted by one character code and decodes it only inside the click handler, so even the rendered page never carries it until someone clicks.
 - Only publish PDFs you are happy to see copied. Without a `pdf` link, a paper page offers "Draft on request".
 
 `body.html` is the old Artifact copy of the page and is no longer used.
