@@ -2,11 +2,16 @@
 """Build rackebrandt.pe from data/*.json.
 
 Edit data/papers.json or data/site.json, run `python3 build.py`, commit everything.
-Writes index.html, papers/<slug>/index.html, sitemap.xml, llms.txt and llms-full.txt. Standard library only.
+Writes index.html, papers/<slug>/index.html, sitemap.xml, llms.txt, llms-full.txt and assets/math.css.
+Paper explainers live in content/<slug>.md (Markdown with LaTeX math; see the notes above md_html).
+Standard library only, except that new or changed math is rendered once with Node (cd tools && npm install).
 """
+import gzip
+import hashlib
 import json
 import os
 import re
+import subprocess
 from datetime import date
 from html import escape, unescape
 
@@ -14,6 +19,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = json.load(open(os.path.join(ROOT, 'data', 'site.json'), encoding='utf-8'))
 PAPERS = json.load(open(os.path.join(ROOT, 'data', 'papers.json'), encoding='utf-8'))
 BASE = SITE['url'].rstrip('/')
+VIEW = 'visual' if SITE.get('default_view') == 'visual' else 'list'   # how Research opens: 'list' or 'visual'
 YEAR = date.today().year
 
 ICONS = {n: open(os.path.join(ROOT, 'src', 'icons', n + '.svg'), encoding='utf-8').read().strip()
@@ -89,6 +95,143 @@ def help_html(p):
     body = '\n'.join('    <p>%s</p>' % escape(x) for x in p['figure_help'])
     return ('<details class="more">\n  <summary>How to read the figure</summary>\n  <div class="more-body">\n%s\n  </div>\n</details>'
             % body)
+
+
+# ---------------------------------------------------------------------------
+# Paper explainers: content/<slug>.md, a small Markdown subset with LaTeX math.
+#   ## Heading      paragraphs      - bullets      1. numbers      > result box
+#   | table |       **bold**  *italic*  [link](url)  `code`        $inline$   $$display$$   \$ for a dollar sign
+# Math is rendered to static HTML at build time (KaTeX), so pages need no script and keep the strict CSP.
+# Rendered math is cached in data/math-cache.json.gz; Node and tools/node_modules are needed only for new math.
+
+MATH_PATH = os.path.join(ROOT, 'data', 'math-cache.json.gz')
+MATH_JOBS = []
+UNSHIPPED = re.compile(r'\\(mathfrak|mathscr|mathsf|mathtt|texttt|textsf|frak|Bbb)\b')
+
+
+def math_token(tex, display):
+    tex = tex.strip()
+    assert not UNSHIPPED.search(tex), 'font not shipped in assets/katex/fonts: %s' % tex
+    MATH_JOBS.append((tex, display))
+    return '\x00M%d\x00' % (len(MATH_JOBS) - 1)
+
+
+def md_inline(s):
+    keep = []
+
+    def stash(html):
+        keep.append(html)
+        return '\x01%d\x01' % (len(keep) - 1)
+
+    s = s.replace('\\$', stash('$'))
+    s = re.sub(r'\$([^$\n]+?)\$', lambda m: stash(math_token(m.group(1), False)), s)
+    s = re.sub(r'`([^`]+)`', lambda m: stash('<code>%s</code>' % escape(m.group(1))), s)
+    s = escape(s, quote=False)
+    s = re.sub(r'\[([^\]]+)\]\(([^)\s]+)\)', lambda m: '<a href="%s"%s>%s</a>' % (
+        m.group(2).replace('"', '%22'), '' if m.group(2).startswith(('/', '#')) else ' rel="noopener noreferrer"', m.group(1)), s)
+    s = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', s)
+    s = re.sub(r'(?<![*\w])\*(?![\s*])(.+?)(?<![\s*])\*(?![*\w])', r'<em>\1</em>', s)
+    return re.sub('\x01(\\d+)\x01', lambda m: keep[int(m.group(1))], s)
+
+
+def anchor(text):
+    return re.sub(r'[^a-z0-9]+', '-', plain(text).lower()).strip('-')
+
+
+def md_items(lines, marker):
+    items = []
+    for line in lines:
+        m = marker.match(line)
+        if m:
+            items.append(line[m.end():])
+        elif items:
+            items[-1] += ' ' + line.strip()
+    return ''.join('<li>%s</li>' % md_inline(i) for i in items)
+
+
+def md_table(lines):
+    rows = [[c.strip() for c in l.strip().strip('|').split('|')] for l in lines if not re.match(r'^\|?[\s:|-]+\|?$', l)]
+    head_row, body = rows[0], rows[1:]
+    th = ''.join('<th>%s</th>' % md_inline(c) for c in head_row)
+    tb = ''.join('<tr>%s</tr>' % ''.join('<td>%s</td>' % md_inline(c) for c in r) for r in body)
+    return '<div class="table"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (th, tb)
+
+
+def md_html(src):
+    src = re.sub(r'\$\$(.+?)\$\$', lambda m: '\n\n$$%s$$\n\n' % m.group(1), src.replace('\r', ''), flags=re.S)
+    out = []
+    for block in re.split(r'\n\s*\n', src.strip()):
+        lines = [l for l in block.split('\n') if l.strip()]
+        if not lines:
+            continue
+        first = lines[0]
+        if block.strip().startswith('$$'):
+            out.append('<div class="eq">%s</div>' % math_token(block.strip()[2:-2], True))
+        elif first.startswith('#'):
+            level = min(len(first) - len(first.lstrip('#')), 3)
+            text = first.lstrip('#').strip()
+            tag = 'h2' if level <= 2 else 'h3'
+            out.append('<%s id="%s">%s</%s>' % (tag, anchor(text), md_inline(text), tag))
+            if lines[1:]:
+                out.append(md_html('\n'.join(lines[1:])))
+        elif first.startswith('- '):
+            out.append('<ul>%s</ul>' % md_items(lines, re.compile(r'- ')))
+        elif re.match(r'\d+\. ', first):
+            out.append('<ol>%s</ol>' % md_items(lines, re.compile(r'\d+\. ')))
+        elif first.startswith('>'):
+            out.append('<div class="result">%s</div>' % md_html('\n'.join(re.sub(r'^>\s?', '', l) for l in lines)))
+        elif first.startswith('|'):
+            out.append(md_table(lines))
+        else:
+            out.append('<p>%s</p>' % md_inline(' '.join(l.strip() for l in lines)))
+    return '\n'.join(out)
+
+
+def explainer(p):
+    f = os.path.join(ROOT, 'content', p['slug'] + '.md')
+    return open(f, encoding='utf-8').read() if os.path.exists(f) else ''
+
+
+def resolve_math(pages):
+    """Swap math tokens for KaTeX HTML. Inline styles become classes in assets/math.css (the CSP blocks style attributes)."""
+    disk = json.loads(gzip.decompress(open(MATH_PATH, 'rb').read())) if os.path.exists(MATH_PATH) else {}
+    cache = dict(disk)
+    keys = [('D ' if d else 'I ') + t for t, d in MATH_JOBS]
+    missing = sorted(set(k for k in keys if k not in cache))
+    if missing:
+        tool = os.path.join(ROOT, 'tools', 'tex.mjs')
+        if not os.path.isdir(os.path.join(ROOT, 'tools', 'node_modules', 'katex')):
+            raise SystemExit('New or changed math needs KaTeX once: cd tools && npm install  (Node 18 or later), then build again.')
+        jobs = [{'tex': k[2:], 'display': k[0] == 'D'} for k in missing]
+        run = subprocess.run(['node', tool], input=json.dumps(jobs), capture_output=True, text=True, cwd=os.path.join(ROOT, 'tools'))
+        if run.returncode:
+            raise SystemExit('KaTeX could not render the math:\n' + run.stderr.strip().split('\n')[-1])
+        cache.update(zip(missing, json.loads(run.stdout)))
+    used = {k: cache[k] for k in sorted(set(keys))}
+    if used != disk:
+        with open(MATH_PATH, 'wb') as fh, gzip.GzipFile(fileobj=fh, mode='wb', mtime=0, filename='') as gz:
+            gz.write(json.dumps(used, ensure_ascii=False, indent=0, sort_keys=True).encode('utf-8'))
+    styles = {}
+
+    def classify(m):
+        tag = m.group(0)
+        sm = re.search(r' style="([^"]*)"', tag)
+        if not sm:
+            return tag
+        decl = sm.group(1).strip()
+        name = 'k' + hashlib.sha1(decl.encode()).hexdigest()[:7]
+        styles[name] = decl
+        tag = tag.replace(sm.group(0), '')
+        if re.search(r' class="', tag):
+            return re.sub(r' class="([^"]*)"', lambda c: ' class="%s %s"' % (c.group(1), name), tag, count=1)
+        return re.sub(r'^<([\w:-]+)', r'<\1 class="%s"' % name, tag)
+
+    html_of = {k: re.sub(r'<[a-zA-Z][^>]*\sstyle="[^"]*"[^>]*>', classify, v) for k, v in used.items()}
+    out = {path: re.sub('\x00M(\\d+)\x00', lambda m: html_of[keys[int(m.group(1))]], html) for path, html in pages.items()}
+    rules = ''.join('.%s{%s}\n' % (n, ';'.join(d.strip() + '!important' for d in styles[n].split(';') if d.strip())) for n in sorted(styles))
+    with open(os.path.join(ROOT, 'assets', 'math.css'), 'w', encoding='utf-8') as fh:
+        fh.write('/* Generated by build.py: KaTeX layout values as classes, so the page needs no inline styles. */\n' + rules)
+    return out
 
 
 def head(title, desc, canonical, extra=''):
@@ -220,13 +363,19 @@ def build_index():
   </header>
 
   <div class="tabs-sentinel" aria-hidden="true"></div>
-  <nav class="tabs" role="tablist" aria-label="Sections">
-    <a class="tab" role="tab" id="tab-research" href="#research" aria-controls="research" aria-selected="true">Research<span class="count">{np}</span></a>
-    <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">{nt}</span></a>
-  </nav>
+  <div class="tabbar">
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <a class="tab" role="tab" id="tab-research" href="#research" aria-controls="research" aria-selected="true">Research<span class="count">{np}</span></a>
+      <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">{nt}</span></a>
+    </nav>
+    <div class="views" role="group" aria-label="Show research as" hidden>
+      <button class="view" type="button" data-view="list" aria-pressed="{list_on}">List</button>
+      <button class="view" type="button" data-view="visual" aria-pressed="{visual_on}">Visual</button>
+    </div>
+  </div>
 
   <main id="main">
-    <section class="panel" id="research" role="tabpanel" aria-labelledby="tab-research">
+    <section class="panel" id="research" role="tabpanel" aria-labelledby="tab-research" data-view="{view}">
       <h2 class="vh">Research</h2>
 {index}
       <div class="panel-head selected-head"><h3 class="label">Selected</h3><p class="kicker">{rk}</p></div>
@@ -248,6 +397,7 @@ def build_index():
 </body>
 </html>
 '''.format(name=escape(SITE['name']), bio=bio, socials=''.join(socials), np=len(PAPERS), nt=len(SITE['tools']),
+           view=VIEW, list_on='true' if VIEW == 'list' else 'false', visual_on='true' if VIEW == 'visual' else 'false',
            rk=escape(SITE.get('research_kicker', '')), tk=escape(SITE.get('tools_kicker', '')),
            cards=cards, index=indent(index_list(PAPERS), 4), tools=tools)
     return html
@@ -281,9 +431,17 @@ def build_paper(p):
     fig = ''
     if p.get('figure'):
         fig = '    <div class="page-fig">\n%s\n    </div>\n' % indent(figure(p['figure']), 6)
+    body = md_html(explainer(p))
+    extra = '\n'.join(meta) + '\n'
+    if '\x00M' in body:
+        extra += ('<link rel="stylesheet" href="/assets/katex/katex.css">\n<link rel="stylesheet" href="/assets/math.css">\n'
+                  '<link rel="preload" href="/assets/katex/fonts/KaTeX_Main-Regular.woff2" as="font" type="font/woff2" crossorigin>\n'
+                  '<link rel="preload" href="/assets/katex/fonts/KaTeX_Math-Italic.woff2" as="font" type="font/woff2" crossorigin>\n')
+    if body:
+        body = '    <div class="explainer">\n%s\n    </div>\n' % indent(body, 6)
     who = escape(SITE['name']) + ((', ' + byline(p)) if byline(p) else '')
     bib_id = 'bib-' + p['slug']
-    html = head('%s · %s' % (p['title'], SITE['name']), p['summary'], canonical, '\n'.join(meta) + '\n') + '''
+    html = head('%s · %s' % (p['title'], SITE['name']), p['summary'], canonical, extra) + """
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
@@ -293,12 +451,12 @@ def build_paper(p):
     <p class="eyebrow">{status} &middot; {year}</p>
     <h1>{title}</h1>
     <p class="authors">{who}</p>
-{fig}    <div class="abstract">
+    <div class="abstract">
 {text}
     </div>
-{help}
-    <div class="paper-tags">{tags}</div>
     <div class="actions">{actions}</div>
+{fig}{help}
+{body}    <div class="paper-tags">{tags}</div>
     <details class="more">
       <summary>Cite</summary>
       <pre class="bib" id="{bib_id}">{bib}</pre>
@@ -309,9 +467,9 @@ def build_paper(p):
 </div>
 </body>
 </html>
-'''.format(name=escape(SITE['name']), status=escape(p['status']), year=p['year'], title=escape(p['title']), who=who, fig=fig,
-           text='\n'.join('      <p>%s</p>' % escape(x) for x in p['text']), help=indent(help_html(p), 4) if help_html(p) else '',
-           tags=tags_html(p), actions=''.join(actions), bib_id=bib_id, bib=escape(bibtex(p)))
+""".format(name=escape(SITE['name']), status=escape(p['status']), year=p['year'], title=escape(p['title']), who=who, fig=fig,
+           text=('      <p class="lede">%s</p>' % escape(p['summary'])) if body else '\n'.join('      <p>%s</p>' % escape(x) for x in p['text']), help=indent(help_html(p), 4) if help_html(p) else '',
+           body=body, tags=tags_html(p), actions=''.join(actions), bib_id=bib_id, bib=escape(bibtex(p)))
     return html
 
 
@@ -343,6 +501,8 @@ def build_llms_full():
         out += [plain(x) + '\n' for x in p['text']]
         if p.get('figure_help'):
             out += ['How to read the figure:', ''] + [plain(x) + '\n' for x in p['figure_help']]
+        if explainer(p):
+            out += [re.sub(r'^(#+) ', lambda m: '#' + m.group(1) + ' ', explainer(p).strip(), flags=re.M), '']
     return '\n'.join(out)
 
 
@@ -352,11 +512,12 @@ def main():
     for p in PAPERS:
         for k in ('slug', 'title', 'year', 'status', 'topic', 'summary', 'text'):
             assert p.get(k), '%s is missing %s' % (p.get('slug'), k)
-    open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(build_index())
+    pages = {os.path.join(ROOT, 'index.html'): build_index()}
     for p in PAPERS:
-        d = os.path.join(ROOT, 'papers', p['slug'])
-        os.makedirs(d, exist_ok=True)
-        open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(build_paper(p))
+        pages[os.path.join(ROOT, 'papers', p['slug'], 'index.html')] = build_paper(p)
+    for path, html in resolve_math(pages).items():
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        open(path, 'w', encoding='utf-8').write(html)
     urls = [BASE + '/'] + [BASE + url_of(p) for p in PAPERS]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % (
         '\n'.join('  <url><loc>%s</loc></url>' % u for u in urls))
