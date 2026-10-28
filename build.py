@@ -105,16 +105,8 @@ def head(title, desc, canonical, extra=''):
 </head>'''.format(csp=CSP, title=escape(title), desc=escape(desc), canonical=canonical, base=BASE, extra=extra)
 
 
-def footer():
-    # the address itself only exists in site.js; the HTML carries a neutral label
-    return '''  <footer class="foot" id="contact">
-    <span>&copy; {year} {name}</span>
-    <a class="js-email" data-show href="#contact">Email</a>
-  </footer>'''.format(year=YEAR, name=escape(SITE['name']))
-
-
 def featured_card(p):
-    parts = ['<article class="paper">',
+    parts = ['<article class="paper" data-topic="%s">' % escape(p['topic']),
              '  <div class="paper-head">',
              '    <h3><a href="%s">%s</a></h3>' % (url_of(p), escape(p['title']))]
     if byline(p):
@@ -215,11 +207,11 @@ def build_index():
   <main id="main">
     <section class="panel" id="research" role="tabpanel" aria-labelledby="tab-research">
       <h2 class="vh">Research</h2>
-      <div class="panel-head"><h3 class="label">Selected</h3><p class="kicker">{rk}</p></div>
+{index}
+      <div class="panel-head selected-head"><h3 class="label">Selected</h3><p class="kicker">{rk}</p></div>
       <div class="papers">
 {cards}
       </div>
-{index}
     </section>
 
     <section class="panel" id="tools" role="tabpanel" aria-labelledby="tab-tools">
@@ -231,13 +223,12 @@ def build_index():
     </section>
   </main>
 
-{footer}
 </div>
 </body>
 </html>
 '''.format(name=escape(SITE['name']), bio=bio, socials=''.join(socials), np=len(PAPERS), nt=len(SITE['tools']),
            rk=escape(SITE.get('research_kicker', '')), tk=escape(SITE.get('tools_kicker', '')),
-           cards=cards, index=indent(index_list(PAPERS), 4), tools=tools, footer=footer())
+           cards=cards, index=indent(index_list(PAPERS), 4), tools=tools)
     return html
 
 
@@ -286,13 +277,12 @@ def build_paper(p):
     </details>
   </article>
   </main>
-{footer}
 </div>
 </body>
 </html>
 '''.format(name=escape(SITE['name']), status=escape(p['status']), year=p['year'], title=escape(p['title']), who=who, fig=fig,
            text='\n'.join('      <p>%s</p>' % escape(x) for x in p['text']), help=indent(help_html(p), 4) if help_html(p) else '',
-           tags=tags_html(p), actions=''.join(actions), bib_id=bib_id, bib=escape(bibtex(p)), footer=footer())
+           tags=tags_html(p), actions=''.join(actions), bib_id=bib_id, bib=escape(bibtex(p)))
     return html
 
 
