@@ -1,0 +1,58 @@
+<svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Search hurdle. Buttons mark the cluster, effective, and nominal trial counts.">
+  <g stroke="var(--rule)" stroke-width="1" fill="none">
+    <line x1="44" y1="24" x2="44" y2="168"/>
+    <line x1="44" y1="168" x2="294" y2="168"/>
+  </g>
+  <g stroke="var(--rule)" stroke-width="1">
+    <line x1="44" y1="168" x2="44" y2="172"/>
+    <line x1="94" y1="168" x2="94" y2="172"/>
+    <line x1="144" y1="168" x2="144" y2="172"/>
+    <line x1="194" y1="168" x2="194" y2="172"/>
+    <line x1="244" y1="168" x2="244" y2="172"/>
+    <line x1="294" y1="168" x2="294" y2="172"/>
+    <line x1="40" y1="168" x2="44" y2="168"/>
+    <line x1="40" y1="117.1" x2="44" y2="117.1"/>
+    <line x1="40" y1="66.3" x2="44" y2="66.3"/>
+  </g>
+  <g font-size="8" text-anchor="middle">
+    <text x="44" y="184">1</text>
+    <text x="94" y="184">10</text>
+    <text x="144" y="184">100</text>
+    <text x="194" y="184">1k</text>
+    <text x="244" y="184">10k</text>
+    <text x="294" y="184">100k</text>
+  </g>
+  <g font-size="8" text-anchor="end">
+    <text x="36" y="171">0</text>
+    <text x="36" y="120">0.2</text>
+    <text x="36" y="69">0.4</text>
+  </g>
+  <text x="14" y="110" font-size="8" transform="rotate(-90 14 110)" text-anchor="middle">E[max SR]</text>
+  <text x="169" y="202" font-size="8" text-anchor="middle">number of trials N, log scale</text>
+  <path id="hurdle-line" d="M59.1,155.7 L66.2,149.2 L75.6,142.1 L85.1,135.9 L94.6,130.4 L104.1,125.5 L113.6,121.0 L123.1,116.7 L132.6,112.7 L142.1,109.0 L151.6,105.4 L161.1,102.0 L170.6,98.7 L180.1,95.6 L189.6,92.6 L199.1,89.7 L201.3,89.1 L211.7,86.0 L216.6,84.5 L227.5,81.4 L237.0,78.8 L246.5,76.2 L256.0,73.7 L265.5,71.3 L275.0,68.9 L284.5,66.6 L294.0,64.3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+  <g stroke="var(--signal)" stroke-width="1" stroke-dasharray="2.5 2.5" fill="none">
+    <line x1="59.1" y1="155.7" x2="59.1" y2="168"/>
+    <line x1="201.3" y1="89.1" x2="201.3" y2="168"/>
+    <line x1="216.6" y1="84.5" x2="216.6" y2="168"/>
+  </g>
+  <g fill="var(--paper)" stroke="var(--signal)" stroke-width="1.4">
+    <circle cx="59.1" cy="155.7" r="3.2"/>
+    <circle cx="201.3" cy="89.1" r="3.2"/>
+    <circle cx="216.6" cy="84.5" r="3.2"/>
+  </g>
+  <g font-size="8" fill="var(--muted)">
+    <text x="72" y="164">cluster N = 2</text>
+    <text x="201.3" y="68" text-anchor="end">N<tspan dy="3" font-size="6">eff</tspan><tspan dy="-3"> 1,400</tspan></text>
+    <text x="222" y="60">nominal 2,825</text>
+  </g>
+  <g id="hurdle-cursor" visibility="hidden">
+    <line id="hurdle-hair" x1="201.3" y1="28" x2="201.3" y2="168" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
+    <circle id="hurdle-dot" cx="201.3" cy="89.1" r="4" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.5"/>
+  </g>
+</svg>
+<div class="fig-controls">
+  <button class="btn" type="button" data-jump="2">Cluster</button>
+  <button class="btn" type="button" data-jump="1400">Effective</button>
+  <button class="btn" type="button" data-jump="2825">Nominal</button>
+  <span class="fig-note" id="hurdle-read"></span>
+</div>

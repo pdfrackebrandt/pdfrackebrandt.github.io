@@ -1,0 +1,67 @@
+[
+  {
+    "slug": "when-regimes-cycle",
+    "title": "When regimes cycle",
+    "year": 2026,
+    "status": "Working paper",
+    "topic": "Regimes",
+    "tags": ["Nonlinear dynamics", "Political economy", "V-Dem"],
+    "coauthors": [],
+    "featured": true,
+    "figure": "regime",
+    "summary": "Why countries keep swinging between democracy and autocracy, and what starts and stops the swings.",
+    "text": [
+      "Many countries swing between democracy and autocracy for decades. Polybius called it anacyclosis. In my model the swings need no run of bad luck: the economy decides when they start and when they stop.",
+      "One quantity does the work: the pool of young people free to be mobilized. Below a threshold, a shock sets off swings that shrink each round. Above it, the swings never die out and the country keeps cycling. Falling behind your neighbours fills the pool and lifts a country over. A crisis erodes institutions and drops it back below.",
+      "Three predictions follow. Young autocracies that fall behind their neighbours open up. Crises keep autocracies shut and break young democracies. New autocracies often fall when a neighbour turns democratic, until they consolidate. All three hold in V-Dem data from 1950 to 2019, under eight different codings of regime type."
+    ],
+    "figure_help": [
+      "One flat axis runs from closed to open rule; the other is how mobilized people are. Height is the pool of young people, and the dashed square marks the threshold. The blue line is the country’s path and the red dot is where it stands now.",
+      "The arrows step through three stories. On the last slide you run the country yourself. Drag the figure to rotate it."
+    ],
+    "links": {}
+  },
+  {
+    "slug": "how-many-tests",
+    "title": "How many tests was it really?",
+    "year": 2026,
+    "status": "Working paper",
+    "topic": "Finance",
+    "tags": ["Deflated Sharpe", "Quantitative Finance"],
+    "coauthors": [{"name": "Sebastian Winzker", "url": "https://winzker.net/"}],
+    "featured": true,
+    "figure": "hurdle",
+    "summary": "How high the bar for a backtested trading rule should be once you count every rule you tried.",
+    "text": [
+      "Why does this matter? When you test thousands of trading rules, the best one will look good by chance. Cluster corrections that group similar rules can make noise look significant by undercounting the tests. A block bootstrap on the real grid keeps the correlations and shows the safer hurdle is the full nominal count.",
+      "We resample the 2,825 moving-average rules together. On the DAX the effective independent tests are about 1,400. Even spread-out correlation barely lowers that number; only rules bunched in blocks do. The best rule still fails the hurdle on the DAX."
+    ],
+    "figure_help": [
+      "The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. The buttons read the hurdle at the cluster, effective, and nominal counts.",
+      "Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.",
+      "On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band."
+    ],
+    "links": {}
+  },
+  {
+    "slug": "reversed-by-replication",
+    "title": "Reversed by our own replication",
+    "year": 2026,
+    "status": "Working paper",
+    "topic": "AI",
+    "tags": ["Verification", "Multi-model"],
+    "coauthors": [],
+    "featured": true,
+    "figure": "reversal",
+    "summary": "A registered replication in which two of three signals for catching LLM extraction errors reversed.",
+    "text": [
+      "Why does this matter? An automated auditor that checks research extractions is right only about a third of the time, yet a wrong extraction can still return a theorem. We pre-registered three signals that might catch the error, then tested them once on frontier models. Two reversed. Cross-model disagreement is the one that held.",
+      "On 174 items, a model disagreeing with its own repeats cleared the bar in only one family. Disagreement across models reached 0.75 and stayed above the threshold. It flagged errors better on unconventional designs. Abstaining where models disagree most trims the error rate from 81% to 72%, but the tool remains weak."
+    ],
+    "figure_help": [
+      "Each row is a registered comparison. The open square is the discovery sample on five open-weight arms. The filled circle is the confirmatory run on four frontier families. The dashed navy line is the 0.65 threshold we deposited before seeing those families. The dotted line is chance.",
+      "Task structure falls from 0.771 to about 0.50 and is retracted. Within-model sampling falls from 0.727 and clears the bar in one family of four. Cross-model disagreement rises from 0.609 to 0.753 and is held."
+    ],
+    "links": {}
+  }
+]

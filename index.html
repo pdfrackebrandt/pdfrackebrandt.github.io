@@ -3,537 +3,300 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Pedro F. Rackebrandt. Political economy, graph engineering and multimodel AI. MPhil Economics, Merton College, Oxford.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self'; img-src 'self' data: https://pedrofrackebrandt.goatcounter.com; connect-src https://pedrofrackebrandt.goatcounter.com; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Pedro F. Rackebrandt</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230c2e4a'/%3E%3Cpath fill='%23f3efe4' d='M12.2 8.4h5.1c2.7 0 4.5 1.7 4.5 4.2 0 2.5-1.8 4.3-4.5 4.3h-3.1V23.4h-2V8.4zm2 6.7h3c1.6 0 2.5-1 2.5-2.5s-.9-2.4-2.5-2.4h-3v4.9z'/%3E%3C/svg%3E">
+<meta name="description" content="Pedro F. Rackebrandt. Political economy and regime dynamics. MPhil Economics, Merton College, Oxford.">
+<link rel="canonical" href="https://rackebrandt.pe/">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Pedro F. Rackebrandt">
+<meta property="og:description" content="Pedro F. Rackebrandt. Political economy and regime dynamics. MPhil Economics, Merton College, Oxford.">
+<meta property="og:url" content="https://rackebrandt.pe/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://rackebrandt.pe/assets/portrait.jpg">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Pedro F. Rackebrandt", "url": "https://rackebrandt.pe/", "affiliation": {"@type": "CollegeOrUniversity", "name": "Merton College, University of Oxford"}, "sameAs": ["https://github.com/pdfrackebrandt", "https://www.linkedin.com/in/pedro-fern%C3%A1ndez-rackebrandt-a58439222", "https://x.com/pdfrackebrandt"]}</script>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<script src="/assets/site.js" defer></script>
+<script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
-<script>
-(function(){
-  var url='https://raw.githubusercontent.com/pdfrackebrandt/pdfrackebrandt.github.io/192b8350f54b0f493c18a95abe0d9ab85c54338c/index.html';
-  fetch(url).then(function(r){return r.text();}).then(function(t){
-    t=t.replace(/<a class="skip"[^>]*>Skip to content<\/a>\s*/,'');
-    var marker='<div class="axiom-wrap">';
-    var start=t.indexOf(marker);
-    if(start>0){
-      var art=t.lastIndexOf('<article class="paper">', start);
-      var end=t.indexOf('</article>', start);
-      if(art>=0 && end>art) t=t.slice(0,art)+t.slice(end+10);
-    }
-    t=t.replace('<span class="tag live">In progress</span>','<span class="tag live">Work in progress</span>');
-    t=t.replace('<div class="sec-head"><h2>Research</h2></div>','<div class="sec-head"><h2>Research</h2><p class="sec-kicker">Work in progress</p></div>');
-    t=t.replace('family=Lato:ital,wght@0,300;0,400;0,700;1,400','family=Instrument+Serif:ital@0;1&family=Inter:ital,wght@0,400;0,500;0,600;1,400');
-    t=t.replace('--f-display:Lato,Verdana,Helvetica,Arial,sans-serif;\n  --f-body:Lato,Verdana,Helvetica,Arial,sans-serif;\n  --f-mono:Lato,Verdana,Helvetica,Arial,sans-serif;','--f-display:"Instrument Serif",Georgia,"Times New Roman",serif;\n  --f-body:Inter,system-ui,Helvetica,Arial,sans-serif;\n  --f-mono:Inter,system-ui,Helvetica,Arial,sans-serif;');
-    t=t.replace('--link:#1C3C5A;','--link:#0c2e4a;');
-    t=t.replace('--accent:#22557E;','--accent:#061d30;');
-    t=t.replaceAll('--link:#AFC9DE;','--link:#8ca8c4;');
-    t=t.replaceAll('--accent:#84B8E2;','--accent:#c5d4e3;');
-    t=t.replace('a{color:var(--link);text-decoration:underline;text-decoration-thickness:.5px;text-underline-offset:2.5px;text-decoration-color:color-mix(in srgb,var(--link) 45%,transparent);transition:color .15s,text-decoration-color .15s}','a{color:var(--link);text-decoration:none;transition:color .15s}');
-    t=t.replace('a:hover{color:var(--accent);text-decoration-color:var(--accent)}','a:hover{color:var(--accent)}');
-    t=t.replace('.quicklinks a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}','.quicklinks a:hover{color:var(--accent)}');
-    t=t.replace(/<div class="bio">[\s\S]*?<\/div>/,'<div class="bio"><p>MPhil in Economics, <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton</a>. Undergraduate dissertation at the <a href="https://www.manchester.ac.uk/">University of Manchester</a> on volatility as a measure of price dislocation in commodity markets. Later worked in brokerage at a family office.</p><p>I want to solve politics. I study the incentive structures of hybrid regimes. Superintelligence will let agents handle nearly any task, which risks dissolving the social contract between elites and everyone else under democratic systems. How would we adapt? I have no clue. However, regime change is coming.</p><p>Aristotle and Polybius traced how constitutions decay and settled on the mixed republic, a <em>politeia</em> balancing claims of wealth and power against free birth, more resistant to degeneration. How to implement a given regime, under what conditions, and for which society motivates my research.</p><p><a href="mailto:pedro.fernandezrackebrandt@merton.ox.ac.uk">Feel free to email me for SI/AI consultancy.</a></p></div>');
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
 
-    // Regime paper (October 2026 draft): guided stories, plain explanation, blue path
-    var regimeArticle = [
-      '<article class="paper">',
-      '  <div class="paper-fig">',
-      '    <div class="scene-nav">',
-      '      <p class="scene-name"><span id="sc-num">1 / 4</span><b id="sc-name">A shock fades</b></p>',
-      '      <div class="scene-arrows">',
-      '        <button class="btn" id="sc-prev" type="button" aria-label="Previous story">&#8249;</button>',
-      '        <button class="btn" id="sc-next" type="button" aria-label="Next story">&#8250;</button>',
-      '      </div>',
-      '    </div>',
-      '    <div class="lattice-frame" id="frame">',
-      '      <canvas id="field" aria-label="Rotatable 3D figure: a country swings between open and closed rule. Below the dashed threshold the swings fade; above it they keep going."></canvas>',
-      '      <span class="viewhint">drag to rotate</span>',
-      '    </div>',
-      '    <p class="scene-cap" id="sc-cap" aria-live="polite"></p>',
-      '    <div class="fig-controls">',
-      '      <button class="btn" id="pause" type="button" aria-pressed="false">Pause</button>',
-      '      <button class="btn" id="replay" type="button">Replay</button>',
-      '      <span class="sc-free" id="sc-free"><button class="btn" id="shock" type="button">Shock it</button><button class="btn" id="fallbehind" type="button">Fall behind</button><button class="btn" id="crisis" type="button">Crisis</button></span>',
-      '    </div>',
-      '  </div>',
-      '  <div class="paper-body">',
-      '    <div class="paper-head"><h3>When regimes cycle</h3></div>',
-      '    <p class="claim">Many countries swing between democracy and autocracy for decades. Polybius called it anacyclosis. In my model the swings need no run of bad luck: the economy decides when they start and when they stop.</p>',
-      '    <p>One quantity does the work: the pool of young people free to be mobilized. Below a threshold, a shock sets off swings that shrink each round. Above it, the swings never die out and the country keeps cycling. Falling behind your neighbours fills the pool and lifts a country over. A crisis erodes institutions and drops it back below.</p>',
-      '    <p>Three predictions follow. Young autocracies that fall behind their neighbours open up. Crises keep autocracies shut and break young democracies. New autocracies often fall when a neighbour turns democratic, until they consolidate. All three hold in V-Dem data from 1950 to 2019, under eight different codings of regime type.</p>',
-      '    <details class="more">',
-      '      <summary>How to read the figure</summary>',
-      '      <div class="more-body">',
-      '        <p>One flat axis runs from closed to open rule; the other is how mobilized people are. Height is the pool of young people, and the dashed square marks the threshold. The blue line is the country’s path and the red dot is where it stands now.</p>',
-      '        <p>The arrows step through three stories. On the last slide you run the country yourself. Drag the figure to rotate it.</p>',
-      '      </div>',
-      '    </details>',
-      '    <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Nonlinear dynamics</span><span class="tag">Political economy</span><span class="tag">V-Dem</span></div>',
-      '  </div>',
-      '</article>'
-    ].join("\n        ");
-    var rs=t.indexOf('<article class="paper">'), re=rs>=0?t.indexOf('</article>', rs):-1;
-    if(rs>=0 && re>rs) t=t.slice(0,rs)+regimeArticle+t.slice(re+10);
-    // Tools section: Frontier and Galley, both coming soon
-    var toolsSection = [
-      '<section id="tools">',
-      '  <div class="sec-head"><h2>Tools</h2><p class="sec-kicker">Coming soon</p></div>',
-      '  <div class="tools">',
-      '    <div class="tool">',
-      '      <h3>Frontier</h3>',
-      '      <p>A research agent that works overnight and shows, as a map, how ideas in frontier research connect.</p>',
-      '    </div>',
-      '    <div class="tool">',
-      '      <h3>Galley</h3>',
-      '      <p>A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.</p>',
-      '      <div class="paper-tags"><span class="tag">Open source</span></div>',
-      '    </div>',
-      '  </div>',
-      '</section>'
-    ].join("\n    ");
-    t=t.replace('  </main>', '    '+toolsSection+'\n\n  </main>');
-    t=t.replace('</head>','<style>'
-      +'.tools{display:grid;grid-template-columns:1fr;gap:26px;margin-top:8px;padding-bottom:clamp(44px,6vw,72px)}'
-      +'@media (min-width:720px){.tools{grid-template-columns:1fr 1fr;gap:44px}}'
-      +'.tool{display:flex;flex-direction:column;gap:8px;min-width:0}'
-      +'.tool h3{font-size:var(--step-1);line-height:1.35;font-weight:700;margin:0}'
-      +'.tool p{margin:0;font-size:var(--step-0);line-height:1.6;color:var(--ink-soft)}'
-      +'</style></head>');
-    // drop the base page's own phase portrait script; initRegime() below replaces it
-    var cvi=t.indexOf("var cv=document.getElementById('field')");
-    if(cvi>0){
-      var cvs=t.lastIndexOf('(function(){', cvi), cve=t.indexOf('/* ---------- paper 01', cvi);
-      if(cvs>0 && cve>cvs) t=t.slice(0,cvs)+t.slice(cve);
-    }
-    t=t.replace('</head>','<style>'
-      +':root{--fig-blue:#22557E}'
-      +'@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--fig-blue:#84B8E2}}'
-      +':root[data-theme="dark"]{--fig-blue:#84B8E2}'
-      +'.scene-nav{display:flex;align-items:center;justify-content:space-between;gap:10px}'
-      +'.paper p.scene-name{margin:0;font-family:var(--f-mono);font-size:var(--step--1);color:var(--ink-soft);line-height:1.3}'
-      +'.scene-name span{color:var(--faint);margin-right:9px;font-variant-numeric:tabular-nums}'
-      +'.scene-name b{font-weight:600}'
-      +'.scene-arrows{display:flex;gap:6px;flex:none}'
-      +'.scene-arrows .btn{width:30px;height:28px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:17px;line-height:1}'
-      +'.paper p.scene-cap{margin:0;min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(--muted)}'
-      +'.sc-free{display:flex;flex-wrap:wrap;gap:6px 10px;width:100%}'
-      +'#field{transition:opacity .18s}'
-      +'</style></head>');
-    var icon='<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'%3E%3Crect width=\'32\' height=\'32\' fill=\'%230c2e4a\'/%3E%3Cpath fill=\'%23f3efe4\' d=\'M12.2 8.4h5.1c2.7 0 4.5 1.7 4.5 4.2 0 2.5-1.8 4.3-4.5 4.3h-3.1V23.4h-2V8.4zm2 6.7h3c1.6 0 2.5-1 2.5-2.5s-.9-2.4-2.5-2.4h-3v4.9z\'/%3E%3C/svg%3E">';
-    t=t.replace(/<link rel="icon"[^>]*>/, icon);
+  <header class="intro">
+    <div class="intro-text">
+      <h1 class="name">Pedro F. Rackebrandt</h1>
+      <div class="bio">
+        <p>MPhil in Economics, <a href="https://www.economics.ox.ac.uk/">University of Oxford</a>, <a href="https://www.merton.ox.ac.uk/">Merton</a>. Undergraduate dissertation at the <a href="https://www.manchester.ac.uk/">University of Manchester</a> on volatility as a measure of price dislocation in commodity markets. Later worked in brokerage at a family office.</p>
+        <p>I want to solve politics. I study the incentive structures of hybrid regimes. Superintelligence will let agents handle nearly any task, which risks dissolving the social contract between elites and everyone else under democratic systems. How would we adapt? I have no clue. However, regime change is coming.</p>
+        <p>Aristotle and Polybius traced how constitutions decay and settled on the mixed republic, a <em>politeia</em> balancing claims of wealth and power against free birth, more resistant to degeneration. How to implement a given regime, under what conditions, and for which society motivates my research.</p>
+        <p><a class="js-email" href="#contact">Feel free to email me for SI/AI consultancy.</a></p>
+      </div>
+    </div>
+    <div class="portrait-col">
+      <img class="portrait" src="/assets/portrait.jpg" alt="Pedro F. Rackebrandt" width="440" height="440">
+      <nav class="socials" aria-label="Elsewhere"><a class="js-email" href="#contact" title="Email" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"></rect><path d="M3 6l9 6.5L21 6"></path></svg></a><a href="https://github.com/pdfrackebrandt" title="GitHub" aria-label="GitHub" rel="noopener noreferrer me"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.8a10.2 10.2 0 0 0-3.23 19.88c.51.1.7-.22.7-.49v-1.9c-2.84.62-3.44-1.2-3.44-1.2-.47-1.18-1.14-1.5-1.14-1.5-.93-.63.07-.62.07-.62 1.03.08 1.57 1.06 1.57 1.06.91 1.57 2.4 1.12 2.99.86a2.2 2.2 0 0 1 .65-1.37c-2.27-.26-4.65-1.14-4.65-5.06a3.96 3.96 0 0 1 1.05-2.75 3.68 3.68 0 0 1 .1-2.71s.86-.28 2.81 1.05a9.66 9.66 0 0 1 5.12 0c1.95-1.33 2.8-1.05 2.8-1.05a3.68 3.68 0 0 1 .11 2.71 3.96 3.96 0 0 1 1.05 2.75c0 3.93-2.39 4.8-4.66 5.05a2.47 2.47 0 0 1 .7 1.91v2.83c0 .27.19.6.71.49A10.2 10.2 0 0 0 12 1.8Z"></path></svg></a><a href="https://www.linkedin.com/in/pedro-fern%C3%A1ndez-rackebrandt-a58439222" title="LinkedIn" aria-label="LinkedIn" rel="noopener noreferrer me"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46ZM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"></path></svg></a><a href="https://x.com/pdfrackebrandt" title="X" aria-label="X" rel="noopener noreferrer me"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.9 3h3.3l-7.2 8.2L22.5 21h-6.6l-5.2-6.8L4.8 21H1.5l7.7-8.8L1.8 3h6.8l4.7 6.2Zm-1.2 16h1.8L7.4 4.8H5.5Z"></path></svg></a></nav>
+    </div>
+  </header>
 
-    var navM=t.match(/<nav class="socials"[\s\S]*?<\/nav>\s*/);
-    if(navM){ t=t.replace(navM[0],''); var nav=navM[0].trim(); t=t.replace(/<img class="portrait"[^>]*>/,function(m){return '<div class="portrait-col">'+m+nav+'</div>';}); }
-    t=t.replace('.socials svg{width:19px;height:19px;display:block}','.socials svg{width:19px;height:19px;display:block}.portrait-col{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}');
-    if(t.indexOf('.sec-kicker')<0){
-      t=t.replace('.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}','.sec-head{justify-content:space-between;gap:12px 24px;flex-wrap:wrap}.sec-head h2{font-size:var(--step-2);letter-spacing:0;font-weight:400}.sec-kicker{font-family:var(--f-mono);font-size:var(--step--1);color:var(--signal);letter-spacing:.06em;text-transform:uppercase;margin:0}');
-    }
-    if(t.indexOf('.hurdle-fig')<0){
-      t=t.replace('.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}','.paper-fig{min-width:0;display:flex;flex-direction:column;gap:9px}.hurdle-fig{width:100%;height:auto;display:block;background:transparent;border:0;cursor:default}.hurdle-fig text{font-family:var(--f-mono);fill:var(--faint)}.rev-fig{width:100%;height:auto;display:block;background:transparent;border:0;cursor:default}.rev-fig text{font-family:var(--f-mono);fill:var(--faint)}.byline{font-size:var(--step--1);color:var(--muted);line-height:1.45;margin:2px 0 2px}.paper p sub{line-height:0;font-size:.75em}');
-    }
-    var extraPaper = [
-      '<article class="paper">',
-      '  <div class="paper-fig">',
-      '    <svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Search hurdle. Buttons mark the cluster, effective, and nominal trial counts.">',
-      '      <g stroke="var(--rule)" stroke-width="1" fill="none">',
-      '        <line x1="44" y1="24" x2="44" y2="168"/>',
-      '        <line x1="44" y1="168" x2="294" y2="168"/>',
-      '      </g>',
-      '      <g stroke="var(--rule)" stroke-width="1">',
-      '        <line x1="44" y1="168" x2="44" y2="172"/>',
-      '        <line x1="94" y1="168" x2="94" y2="172"/>',
-      '        <line x1="144" y1="168" x2="144" y2="172"/>',
-      '        <line x1="194" y1="168" x2="194" y2="172"/>',
-      '        <line x1="244" y1="168" x2="244" y2="172"/>',
-      '        <line x1="294" y1="168" x2="294" y2="172"/>',
-      '        <line x1="40" y1="168" x2="44" y2="168"/>',
-      '        <line x1="40" y1="117.1" x2="44" y2="117.1"/>',
-      '        <line x1="40" y1="66.3" x2="44" y2="66.3"/>',
-      '      </g>',
-      '      <g font-size="8" text-anchor="middle">',
-      '        <text x="44" y="184">1</text>',
-      '        <text x="94" y="184">10</text>',
-      '        <text x="144" y="184">100</text>',
-      '        <text x="194" y="184">1k</text>',
-      '        <text x="244" y="184">10k</text>',
-      '        <text x="294" y="184">100k</text>',
-      '      </g>',
-      '      <g font-size="8" text-anchor="end">',
-      '        <text x="36" y="171">0</text>',
-      '        <text x="36" y="120">0.2</text>',
-      '        <text x="36" y="69">0.4</text>',
-      '      </g>',
-      '      <text x="14" y="110" font-size="8" transform="rotate(-90 14 110)" text-anchor="middle">E[max SR]</text>',
-      '      <text x="169" y="202" font-size="8" text-anchor="middle">number of trials N, log scale</text>',
-      '      <path id="hurdle-line" d="M59.1,155.7 L66.2,149.2 L75.6,142.1 L85.1,135.9 L94.6,130.4 L104.1,125.5 L113.6,121.0 L123.1,116.7 L132.6,112.7 L142.1,109.0 L151.6,105.4 L161.1,102.0 L170.6,98.7 L180.1,95.6 L189.6,92.6 L199.1,89.7 L201.3,89.1 L211.7,86.0 L216.6,84.5 L227.5,81.4 L237.0,78.8 L246.5,76.2 L256.0,73.7 L265.5,71.3 L275.0,68.9 L284.5,66.6 L294.0,64.3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>',
-      '      <g stroke="var(--signal)" stroke-width="1" stroke-dasharray="2.5 2.5" fill="none">',
-      '        <line x1="59.1" y1="155.7" x2="59.1" y2="168"/>',
-      '        <line x1="201.3" y1="89.1" x2="201.3" y2="168"/>',
-      '        <line x1="216.6" y1="84.5" x2="216.6" y2="168"/>',
-      '      </g>',
-      '      <g fill="var(--paper)" stroke="var(--signal)" stroke-width="1.4">',
-      '        <circle cx="59.1" cy="155.7" r="3.2"/>',
-      '        <circle cx="201.3" cy="89.1" r="3.2"/>',
-      '        <circle cx="216.6" cy="84.5" r="3.2"/>',
-      '      </g>',
-      '      <g font-size="8" fill="var(--muted)">',
-      '        <text x="72" y="164">cluster N = 2</text>',
-      '        <text x="201.3" y="68" text-anchor="end">N<tspan dy="3" font-size="6">eff</tspan><tspan dy="-3"> 1,400</tspan></text>',
-      '        <text x="222" y="60">nominal 2,825</text>',
-      '      </g>',
-      '      <g id="hurdle-cursor" visibility="hidden">',
-      '        <line id="hurdle-hair" x1="201.3" y1="28" x2="201.3" y2="168" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>',
-      '        <circle id="hurdle-dot" cx="201.3" cy="89.1" r="4" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.5"/>',
-      '      </g>',
-      '    </svg>',
-      '    <div class="fig-controls">',
-      '      <button class="btn" type="button" data-jump="2">Cluster</button>',
-      '      <button class="btn" type="button" data-jump="1400">Effective</button>',
-      '      <button class="btn" type="button" data-jump="2825">Nominal</button>',
-      '      <span class="fig-note" id="hurdle-read"></span>',
-      '    </div>',
-      '  </div>',
-      '  <div class="paper-body">',
-      '    <div class="paper-head"><h3>How many tests was it really?</h3></div>',
-      '    <p class="byline">with <a href="https://winzker.net/">Sebastian Winzker</a></p>',
-      '    <p class="claim">Why does this matter? When you test thousands of trading rules, the best one will look good by chance. Cluster corrections that group similar rules can make noise look significant by undercounting the tests. A block bootstrap on the real grid keeps the correlations and shows the safer hurdle is the full nominal count.</p>',
-      '    <p class="claim">We resample the 2,825 moving-average rules together. On the DAX the effective independent tests are about 1,400. Even spread-out correlation barely lowers that number; only rules bunched in blocks do. The best rule still fails the hurdle on the DAX.</p>',
-      '    <details class="more">',
-      '      <summary>How to read the figure</summary>',
-      '      <div class="more-body">',
-      '        <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. The buttons read the hurdle at the cluster, effective, and nominal counts.</p>',
-      '        <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>',
-      '        <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>',
-      '      </div>',
-      '    </details>',
-      '    <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Deflated Sharpe</span><span class="tag">Quantitative Finance</span></div>',
-      '  </div>',
-      '</article>'
-    ].join("\n        ");
-    var extraPaper2 = [
-      '<article class="paper">',
-      '  <div class="paper-fig">',
-      '    <svg class="rev-fig" id="reversal" viewBox="0 0 306 220" role="img" aria-label="Discovery against registered replication for three predictors of extraction error.">',
-      '      <g stroke="var(--rule)" stroke-width="1" fill="none">',
-      '        <line x1="78" y1="22" x2="78" y2="172"/>',
-      '        <line x1="78" y1="172" x2="292" y2="172"/>',
-      '      </g>',
-      '      <line x1="142.2" y1="22" x2="142.2" y2="172" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 3"/>',
-      '      <line x1="206.4" y1="22" x2="206.4" y2="172" stroke="var(--signal)" stroke-width="1" stroke-dasharray="2.5 2.5"/>',
-      '      <g font-size="8" text-anchor="middle">',
-      '        <text x="78" y="186">0.35</text>',
-      '        <text x="142.2" y="186">0.50</text>',
-      '        <text x="206.4" y="186">0.65</text>',
-      '        <text x="292" y="186">0.85</text>',
-      '        <text x="185" y="210">AUROC</text>',
-      '      </g>',
-      '      <text x="206.4" y="16" font-size="7" text-anchor="middle" fill="var(--muted)">registered 0.65</text>',
-      '      <g id="rev-c3">',
-      '        <text x="72" y="48" font-size="8" text-anchor="end">task structure</text>',
-      '        <line x1="258.2" y1="44" x2="143.8" y2="44" stroke="var(--accent)" stroke-width="1.6"/>',
-      '        <rect x="255.4" y="41.2" width="5.6" height="5.6" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.3"/>',
-      '        <circle cx="143.8" cy="44" r="3.3" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.2"/>',
-      '        <g fill="none" stroke="var(--faint)" stroke-width="1">',
-      '          <circle cx="147.3" cy="52" r="2"/>',
-      '          <circle cx="152.0" cy="52" r="2"/>',
-      '          <circle cx="179.0" cy="52" r="2"/>',
-      '          <circle cx="96.8" cy="52" r="2"/>',
-      '        </g>',
-      '        <text x="138" y="36" font-size="7" text-anchor="end" fill="var(--muted)">retracted</text>',
-      '      </g>',
-      '      <g id="rev-c1">',
-      '        <text x="72" y="98" font-size="8" text-anchor="end">within-model</text>',
-      '        <line x1="239.4" y1="94" x2="184.6" y2="94" stroke="var(--accent)" stroke-width="1.6"/>',
-      '        <rect x="236.6" y="91.2" width="5.6" height="5.6" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.3"/>',
-      '        <circle cx="184.6" cy="94" r="3.3" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.2"/>',
-      '        <g fill="none" stroke="var(--faint)" stroke-width="1">',
-      '          <circle cx="219.2" cy="102" r="2"/>',
-      '          <circle cx="194.8" cy="102" r="2"/>',
-      '          <circle cx="190.6" cy="102" r="2"/>',
-      '          <circle cx="133.6" cy="102" r="2"/>',
-      '        </g>',
-      '        <text x="180" y="86" font-size="7" text-anchor="end" fill="var(--muted)">1 of 4</text>',
-      '      </g>',
-      '      <g id="rev-c2">',
-      '        <text x="72" y="148" font-size="8" text-anchor="end">cross-model</text>',
-      '        <line x1="188.9" y1="144" x2="250.5" y2="144" stroke="var(--accent)" stroke-width="1.6"/>',
-      '        <rect x="186.1" y="141.2" width="5.6" height="5.6" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.3"/>',
-      '        <circle cx="250.5" cy="144" r="3.3" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.2"/>',
-      '        <text x="256" y="136" font-size="7" text-anchor="start" fill="var(--muted)">held</text>',
-      '      </g>',
-      '      <g font-size="7" fill="var(--faint)">',
-      '        <rect x="78" y="198" width="5" height="5" fill="var(--paper)" stroke="var(--muted)" stroke-width="1"/>',
-      '        <text x="86" y="203">discovery</text>',
-      '        <circle cx="140" cy="200.5" r="2.4" fill="var(--accent)"/>',
-      '        <text x="146" y="203">replication</text>',
-      '      </g>',
-      '    </svg>',
-      '  </div>',
-      '  <div class="paper-body">',
-      '    <div class="paper-head"><h3>Reversed by our own replication</h3></div>',
-      '    <p class="claim">Why does this matter? An automated auditor that checks research extractions is right only about a third of the time, yet a wrong extraction can still return a theorem. We pre-registered three signals that might catch the error, then tested them once on frontier models. Two reversed. Cross-model disagreement is the one that held.</p>',
-      '    <p class="claim">On 174 items, a model disagreeing with its own repeats cleared the bar in only one family. Disagreement across models reached 0.75 and stayed above the threshold. It flagged errors better on unconventional designs. Abstaining where models disagree most trims the error rate from 81% to 72%, but the tool remains weak.</p>',
-      '    <details class="more">',
-      '      <summary>How to read the figure</summary>',
-      '      <div class="more-body">',
-      '        <p>Each row is a registered comparison. The open square is the discovery sample on five open-weight arms. The filled circle is the confirmatory run on four frontier families. The dashed navy line is the 0.65 threshold we deposited before seeing those families. The dotted line is chance.</p>',
-      '        <p>Task structure falls from 0.771 to about 0.50 and is retracted. Within-model sampling falls from 0.727 and clears the bar in one family of four. Cross-model disagreement rises from 0.609 to 0.753 and is held.</p>',
-      '      </div>',
-      '    </details>',
-      '    <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Verification</span><span class="tag">Multi-model</span></div>',
-      '  </div>',
-      '</article>'
-    ].join("\n        ");
-    // Insert papers after the first paper or at appropriate place
-    var firstPaperEnd = t.indexOf('</article>');
-    if(firstPaperEnd>0){
-      t = t.slice(0, firstPaperEnd+10) + '\n        ' + extraPaper + '\n        ' + extraPaper2 + t.slice(firstPaperEnd+10);
-    }
-    // Other updates from original if present
-    t=t.replace('.claim{',' .claim, .paper-body > p {'); document.open();
+  <div class="tabs-sentinel" aria-hidden="true"></div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <a class="tab" role="tab" id="tab-research" href="#research" aria-controls="research" aria-selected="true">Research<span class="count">3</span></a>
+    <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">2</span></a>
+  </nav>
 
-    document.write(t);
-    document.close();
-    initHurdle();
-    initRegime();
-  }).catch(function(){
-    document.body.textContent='Could not load the page.';
-  });
-  function invNorm(p){
-    var a=[-39.69683028665376,220.9460984351125,-275.9285104469687,138.3577509074756,-30.66479806614716,2.506628277459239];
-    var b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.2806807164995];
-    var c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783];
-    var d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416];
-    var plow=0.02425, phigh=1-plow, q, r;
-    if(p<plow){ q=Math.sqrt(-2*Math.log(p)); return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
-    if(p>phigh){ q=Math.sqrt(-2*Math.log(1-p)); return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
-    q=p-0.5; r=q*q;
-    return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
-  }
-  function hurdle(N){
-    N=Math.max(N,1.2);
-    var g=0.5772156649, s=0.0918;
-    return s*((1-g)*invNorm(1-1/N)+g*invNorm(1-1/(N*Math.E)));
-  }
-  function xOf(N){ return 44+(Math.log(N)/Math.LN10)/5*250; }
-  function yOf(h){ return 168-h/0.56*144; }
-  function fmtN(N){
-    if(N>=100000) return Math.round(N/1000)+'k';
-    if(N>=10000) return (N/1000).toFixed(N%1000?1:0)+'k';
-    return Math.round(N).toLocaleString('en-US');
-  }
-  function initHurdle(){
-    var svg=document.getElementById('hurdle');
-    if(!svg) return;
-    var cur=document.getElementById('hurdle-cursor');
-    var hair=document.getElementById('hurdle-hair');
-    var dot=document.getElementById('hurdle-dot');
-    var read=document.getElementById('hurdle-read');
-    function show(N, label){
-      N=Math.min(1e5, Math.max(2, N));
-      var h=hurdle(N), x=xOf(N), y=yOf(h);
-      cur.setAttribute('visibility','visible');
-      hair.setAttribute('x1', x); hair.setAttribute('x2', x);
-      dot.setAttribute('cx', x); dot.setAttribute('cy', y);
-      var tag=label? label+' \u00b7 ':'';
-      read.textContent=tag+'N = '+fmtN(N)+'   hurdle = '+h.toFixed(2);
-    }
-    Array.prototype.forEach.call(document.querySelectorAll('[data-jump]'), function(btn){
-      btn.addEventListener('click', function(){
-        var N=+btn.getAttribute('data-jump');
-        var names={2:'cluster',1400:'effective',2825:'nominal'};
-        show(N, names[N]||'');
-      });
-    });
-  }
-  function initRegime(){
-    var cv=document.getElementById('field'); if(!cv || !cv.getContext) return;
-    var ctx=cv.getContext('2d'), frame=document.getElementById('frame');
-    function el(id){ return document.getElementById(id); }
-    var numEl=el('sc-num'), nameEl=el('sc-name'), capEl=el('sc-cap'), freeEl=el('sc-free'), pb=el('pause');
-    var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    var W=0, H=0, C={}, paused=false, onScreen=true, raf=0;
-    var AZ=-0.70, EL=0.42, XR=1.5, TH0=-0.6, TH1=1.2, ZS=(2*XR)/(TH1-TH0), OM=3.0, BASE=-0.35;
-    var x=0, y=0, th=BASE, target=BASE, rate=0, tt=0, pts=[], label='', labelT=-99, evi=0, hold=0, lastEv=0, nextEv=9, cur=0;
-    function flag(s){ label=s; labelT=tt; }
-    var SC=[
-      { name:'A shock fades', end:11,
-        cap:'Below the threshold, a shock sets off swings that shrink each round. A new regime is safest at first and most at risk a few years later.',
-        init:function(){ x=1.25; y=0; th=-0.3; target=-0.3; rate=0; flag('shock'); }, ev:[] },
-      { name:'An autocracy falls behind', end:15,
-        cap:'A young autocracy falls behind its neighbours. The pool of young people grows, lifts it past the threshold, and the swings stop fading. The regime starts to open.',
-        init:function(){ x=-0.75; y=0.15; th=BASE; target=BASE; rate=0; },
-        ev:[[2.4, function(){ target=0.85; rate=1.1; flag('falls behind ↑'); }]] },
-      { name:'A crisis hits a democracy', end:13,
-        cap:'A crisis erodes institutions. The young democracy is knocked toward closed rule and drops below the threshold, so the loop shuts.',
-        init:function(){ x=0.92; y=0; th=0.85; target=0.85; rate=0; },
-        ev:[[4.19, function(){ target=-0.45; rate=2.2; x-=1.3; flag('crisis ↓'); }]] },
-      { name:'Your turn', end:Infinity, free:true,
-        cap:'Shock it, let it fall behind, or hit it with a crisis. Left alone, its economy catches up and it sinks back below the threshold.',
-        init:function(){ x=1.0; y=0; th=BASE; target=BASE; rate=0.08; lastEv=0; nextEv=9; }, ev:[] }
-    ];
-    function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
-    function tokens(){
-      C.bg=css('--canvas-bg')||'#FFFFFF'; C.rule=css('--canvas-line')||'#D2D8DE';
-      C.faint=css('--faint')||'#939CA6'; C.muted=css('--muted')||'#616B76';
-      C.sig=css('--signal')||'#8C2F39'; C.blue=css('--fig-blue')||'#22557E';
-    }
-    function proj(a,b,c){
-      var ca=Math.cos(AZ), sa=Math.sin(AZ), se=Math.sin(EL), ce=Math.cos(EL);
-      return [a*ca+b*sa, (-a*sa+b*ca)*se+(c*ZS)*ce];
-    }
-    var sc=1, ox=0, oy=0, mid=[0,0];
-    function to2(a,b,c){ var q=proj(a,b,c); return [ox+q[0]*sc, oy-q[1]*sc]; }
-    function fit(){
-      var xs=[], ys=[], i, j, k;
-      for(i=0;i<2;i++) for(j=0;j<2;j++) for(k=0;k<2;k++){ var q=proj(i?XR:-XR, j?XR:-XR, k?TH1:TH0); xs.push(q[0]); ys.push(q[1]); }
-      var x0=Math.min.apply(null,xs), x1=Math.max.apply(null,xs), y0=Math.min.apply(null,ys), y1=Math.max.apply(null,ys);
-      var padX=Math.max(64,Math.min(120,W*0.30)), padY=Math.max(40,Math.min(64,H*0.17));
-      sc=Math.min((W-padX)/(x1-x0),(H-padY)/(y1-y0));
-      ox=W/2-((x0+x1)/2)*sc; oy=H/2+((y0+y1)/2)*sc-H*0.02;
-      mid=[W/2,H/2];
-    }
-    function out(p,px){ var dx=p[0]-mid[0], dy=p[1]-mid[1], d=Math.hypot(dx,dy)||1; return [p[0]+dx/d*px, p[1]+dy/d*px]; }
-    function resize(){
-      var r=cv.getBoundingClientRect(); if(r.width<2) return;
-      var dpr=Math.min(window.devicePixelRatio||1,2);
-      W=Math.round(r.width); H=Math.round(r.height);
-      cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
-      ctx.setTransform(dpr,0,0,dpr,0,0); fit(); draw();
-    }
-    function seg(a,b,col,w,dash){
-      ctx.beginPath(); ctx.setLineDash(dash||[]); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]);
-      ctx.strokeStyle=col; ctx.lineWidth=w||1; ctx.stroke(); ctx.setLineDash([]);
-    }
-    function txt(s,p,col,al){
-      ctx.fillStyle=col; ctx.font=(W<420?'10px':'11px')+' Inter, system-ui, Helvetica, Arial, sans-serif';
-      ctx.textAlign=al||'center'; ctx.textBaseline='middle'; ctx.fillText(s,p[0],p[1]);
-    }
-    function axes(){
-      var c=[to2(-XR,-XR,TH0),to2(XR,-XR,TH0),to2(XR,XR,TH0),to2(-XR,XR,TH0)];
-      for(var i=0;i<4;i++) seg(c[i],c[(i+1)%4],C.rule,1);
-      var fy=to2(0,-XR,TH0)[1]>to2(0,XR,TH0)[1]?-XR:XR;
-      txt('closed',out(to2(-XR*0.72,fy,TH0),17),C.muted);
-      txt('open',out(to2(XR*0.72,fy,TH0),17),C.muted);
-      var fx=to2(-XR,0,TH0)[1]>to2(XR,0,TH0)[1]?-XR:XR;
-      txt('mobilization',out(to2(fx,0,TH0),19),C.muted);
-      var corners=[[-XR,-XR],[XR,-XR],[XR,XR],[-XR,XR]], li=0, best=Infinity;
-      corners.forEach(function(cc,k){ var q=to2(cc[0],cc[1],TH0); if(q[0]<best){ best=q[0]; li=k; } });
-      var cc=corners[li], b0=to2(cc[0],cc[1],TH0), tp=to2(cc[0],cc[1],TH1);
-      seg(b0,tp,C.rule,1);
-      seg(tp,[tp[0]-3.5,tp[1]+6],C.rule,1); seg(tp,[tp[0]+3.5,tp[1]+6],C.rule,1);
-      txt('young people',[tp[0],tp[1]-11],C.muted,'center');
-    }
-    function plane(){
-      var q=[to2(-XR,-XR,0),to2(XR,-XR,0),to2(XR,XR,0),to2(-XR,XR,0)];
-      ctx.beginPath(); ctx.setLineDash([3,4]); ctx.moveTo(q[0][0],q[0][1]);
-      for(var i=1;i<4;i++) ctx.lineTo(q[i][0],q[i][1]);
-      ctx.closePath(); ctx.strokeStyle=C.faint; ctx.globalAlpha=0.6; ctx.lineWidth=1; ctx.stroke();
-      ctx.globalAlpha=1; ctx.setLineDash([]);
-      var em=[[0,-XR],[XR,0],[0,XR],[-XR,0]].map(function(m){ return to2(m[0],m[1],0); }), bi=-1;
-      em.forEach(function(q,k){ if(q[0]>mid[0] && (bi<0 || q[1]>em[bi][1])) bi=k; });
-      if(bi>=0) txt('threshold',out(em[bi],18),C.faint);
-    }
-    function trail(){
-      var n=pts.length;
-      if(n>1){
-        ctx.lineJoin='round'; ctx.lineCap='round'; ctx.strokeStyle=C.blue; ctx.lineWidth=1.7;
-        var stepn=Math.max(1,Math.floor(n/900));
-        for(var i=stepn;i<n;i+=stepn){
-          var a=to2(pts[i-stepn][0],pts[i-stepn][1],pts[i-stepn][2]), b=to2(pts[i][0],pts[i][1],pts[i][2]);
-          ctx.globalAlpha=0.30+0.70*(i/n); ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
-        }
-        ctx.globalAlpha=1;
-      }
-      var h=to2(x,y,th);
-      ctx.beginPath(); ctx.arc(h[0],h[1],3.9,0,6.2832); ctx.fillStyle=C.sig; ctx.fill();
-      var age=tt-labelT;
-      if(label && age>=0 && age<2.6){
-        ctx.globalAlpha=Math.max(0,1-age/2.6);
-        txt(label,[h[0]+9,h[1]-13],C.sig,'left');
-        ctx.globalAlpha=1;
-      }
-    }
-    function draw(){
-      if(!W) return;
-      ctx.fillStyle=C.bg; ctx.fillRect(0,0,W,H);
-      axes(); plane(); trail();
-    }
-    function kick(){ var a=Math.random()*6.2832; x+=0.6*Math.cos(a); y+=0.6*Math.sin(a); lastEv=tt; flag('shock'); }
-    function step(){
-      var dt=0.006, s=SC[cur];
-      for(var i=0;i<4;i++){
-        var r2=x*x+y*y, dx=th*x-OM*y-r2*x, dy=OM*x+th*y-r2*y;
-        x+=dt*dx; y+=dt*dy;
-        if(s.free){ x+=(Math.random()-0.5)*0.004; y+=(Math.random()-0.5)*0.004; }
-        th+=dt*rate*(target-th); th=Math.max(TH0+0.02,Math.min(TH1-0.02,th)); tt+=dt;
-        while(evi<s.ev.length && tt>=s.ev[evi][0]){ s.ev[evi][1](); evi++; }
-      }
-      if(s.free && tt>nextEv){
-        if(tt-lastEv>8){ if(Math.random()<0.6){ th=Math.min(TH1-0.05,th+0.6); lastEv=tt; flag('falls behind ↑'); } else kick(); }
-        nextEv=tt+10+Math.random()*8;
-      }
-      pts.push([x,y,th]); if(pts.length>3000) pts.shift();
-    }
-    function start(k){
-      cur=(k+SC.length)%SC.length;
-      var s=SC[cur];
-      tt=0; evi=0; hold=0; pts=[]; label=''; labelT=-99;
-      s.init(); pts.push([x,y,th]);
-      numEl.textContent=(cur+1)+' / '+SC.length; nameEl.textContent=s.name; capEl.textContent=s.cap;
-      freeEl.style.display=s.free?'flex':'none';
-      if(reduce){ var lim=s.free?300:Math.ceil(s.end/0.024); for(var i=0;i<lim;i++) step(); }
-      draw(); wake();
-    }
-    // fixed 60 steps per second whatever the screen's refresh rate; one loop only
-    var lastT=0, acc=0, FRAME=1000/60;
-    function tick(now){
-      raf=0;
-      if(paused || !onScreen || reduce){ lastT=0; return; }
-      if(!lastT) lastT=now;
-      acc+=Math.min(100, now-lastT); lastT=now;
-      var n=0;
-      while(acc>=FRAME && n<6){
-        acc-=FRAME; n++;
-        if(tt<SC[cur].end) step(); else if(++hold>80) start(cur);
-      }
-      if(n>=6) acc=0;
-      if(n) draw();
-      if(!raf) raf=requestAnimationFrame(tick);
-    }
-    function wake(){ if(!raf && !paused && onScreen && !reduce){ lastT=0; acc=0; raf=requestAnimationFrame(tick); } }
-    function go(k){ cv.style.opacity='0'; setTimeout(function(){ start(k); cv.style.opacity='1'; },170); }
-    function after(){ if(reduce){ for(var i=0;i<300;i++) step(); draw(); } }
-    el('sc-prev').addEventListener('click',function(){ go(cur-1); });
-    el('sc-next').addEventListener('click',function(){ go(cur+1); });
-    el('replay').addEventListener('click',function(){ start(cur); });
-    el('shock').addEventListener('click',function(){ kick(); after(); });
-    el('fallbehind').addEventListener('click',function(){ th=Math.min(TH1-0.05,th+0.6); lastEv=tt; flag('falls behind ↑'); after(); });
-    el('crisis').addEventListener('click',function(){ th=Math.max(TH0+0.05,th-0.5); x-=0.5; lastEv=tt; flag('crisis ↓'); after(); });
-    pb.addEventListener('click',function(){
-      paused=!paused; pb.textContent=paused?'Play':'Pause'; pb.setAttribute('aria-pressed',String(paused)); wake();
-    });
-    if(reduce){ pb.style.display='none'; }
-    var drag=false, lx=0, ly=0;
-    cv.addEventListener('pointerdown',function(e){ drag=true; lx=e.clientX; ly=e.clientY; cv.classList.add('dragging'); frame.classList.add('touched'); cv.setPointerCapture(e.pointerId); });
-    cv.addEventListener('pointermove',function(e){
-      if(!drag) return;
-      AZ-=(e.clientX-lx)*0.008; EL=Math.max(0.08,Math.min(1.3,EL+(e.clientY-ly)*0.005));
-      lx=e.clientX; ly=e.clientY; fit(); if(paused || reduce || !raf) draw();
-    });
-    function end(){ drag=false; cv.classList.remove('dragging'); }
-    cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end);
-    var mq=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-    if(mq && mq.addEventListener) mq.addEventListener('change',function(){ tokens(); draw(); });
-    tokens();
-    if(window.ResizeObserver) new ResizeObserver(resize).observe(cv); else window.addEventListener('resize',resize);
-    if(window.IntersectionObserver) new IntersectionObserver(function(es){ onScreen=es[0].isIntersecting; wake(); }).observe(cv);
-    resize();
-    start(0);
-  }
-})();
-</script>
-<script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count"
-        async src="https://gc.zgo.at/count.js"></script>
+  <main id="main">
+    <section class="panel" id="research" role="tabpanel" aria-labelledby="tab-research">
+      <h2 class="vh">Research</h2>
+      <div class="panel-head"><h3 class="label">Selected</h3><p class="kicker">Work in progress</p></div>
+      <div class="papers">
+        <article class="paper">
+          <div class="paper-head">
+            <h3><a href="/papers/when-regimes-cycle/">When regimes cycle</a></h3>
+          </div>
+          <div class="paper-fig">
+            <div class="scene-nav">
+              <p class="scene-name"><span id="sc-num">1 / 4</span><b id="sc-name">A shock fades</b></p>
+              <div class="scene-arrows">
+                <button class="btn" id="sc-prev" type="button" aria-label="Previous story">&#8249;</button>
+                <button class="btn" id="sc-next" type="button" aria-label="Next story">&#8250;</button>
+              </div>
+            </div>
+            <div class="lattice-frame" id="frame">
+              <canvas id="field" aria-label="Rotatable 3D figure: a country swings between open and closed rule. Below the dashed threshold the swings fade; above it they keep going."></canvas>
+              <span class="viewhint">drag to rotate</span>
+            </div>
+            <p class="scene-cap" id="sc-cap" aria-live="polite"></p>
+            <div class="fig-controls">
+              <button class="btn" id="pause" type="button" aria-pressed="false">Pause</button>
+              <button class="btn" id="replay" type="button">Replay</button>
+              <span class="sc-free" id="sc-free"><button class="btn" id="shock" type="button">Shock it</button><button class="btn" id="fallbehind" type="button">Fall behind</button><button class="btn" id="crisis" type="button">Crisis</button></span>
+            </div>
+          </div>
+          <div class="paper-body">
+            <p>Many countries swing between democracy and autocracy for decades. Polybius called it anacyclosis. In my model the swings need no run of bad luck: the economy decides when they start and when they stop.</p>
+            <p>One quantity does the work: the pool of young people free to be mobilized. Below a threshold, a shock sets off swings that shrink each round. Above it, the swings never die out and the country keeps cycling. Falling behind your neighbours fills the pool and lifts a country over. A crisis erodes institutions and drops it back below.</p>
+            <p>Three predictions follow. Young autocracies that fall behind their neighbours open up. Crises keep autocracies shut and break young democracies. New autocracies often fall when a neighbour turns democratic, until they consolidate. All three hold in V-Dem data from 1950 to 2019, under eight different codings of regime type.</p>
+            <details class="more">
+              <summary>How to read the figure</summary>
+              <div class="more-body">
+                <p>One flat axis runs from closed to open rule; the other is how mobilized people are. Height is the pool of young people, and the dashed square marks the threshold. The blue line is the country’s path and the red dot is where it stands now.</p>
+                <p>The arrows step through three stories. On the last slide you run the country yourself. Drag the figure to rotate it.</p>
+              </div>
+            </details>
+            <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Nonlinear dynamics</span><span class="tag">Political economy</span><span class="tag">V-Dem</span><a class="go" href="/papers/when-regimes-cycle/">Paper page &rarr;</a></div>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-head">
+            <h3><a href="/papers/how-many-tests/">How many tests was it really?</a></h3>
+            <p class="byline">with <a href="https://winzker.net/" rel="noopener noreferrer">Sebastian Winzker</a></p>
+          </div>
+          <div class="paper-fig">
+            <svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Search hurdle. Buttons mark the cluster, effective, and nominal trial counts.">
+              <g stroke="var(--rule)" stroke-width="1" fill="none">
+                <line x1="44" y1="24" x2="44" y2="168"/>
+                <line x1="44" y1="168" x2="294" y2="168"/>
+              </g>
+              <g stroke="var(--rule)" stroke-width="1">
+                <line x1="44" y1="168" x2="44" y2="172"/>
+                <line x1="94" y1="168" x2="94" y2="172"/>
+                <line x1="144" y1="168" x2="144" y2="172"/>
+                <line x1="194" y1="168" x2="194" y2="172"/>
+                <line x1="244" y1="168" x2="244" y2="172"/>
+                <line x1="294" y1="168" x2="294" y2="172"/>
+                <line x1="40" y1="168" x2="44" y2="168"/>
+                <line x1="40" y1="117.1" x2="44" y2="117.1"/>
+                <line x1="40" y1="66.3" x2="44" y2="66.3"/>
+              </g>
+              <g font-size="8" text-anchor="middle">
+                <text x="44" y="184">1</text>
+                <text x="94" y="184">10</text>
+                <text x="144" y="184">100</text>
+                <text x="194" y="184">1k</text>
+                <text x="244" y="184">10k</text>
+                <text x="294" y="184">100k</text>
+              </g>
+              <g font-size="8" text-anchor="end">
+                <text x="36" y="171">0</text>
+                <text x="36" y="120">0.2</text>
+                <text x="36" y="69">0.4</text>
+              </g>
+              <text x="14" y="110" font-size="8" transform="rotate(-90 14 110)" text-anchor="middle">E[max SR]</text>
+              <text x="169" y="202" font-size="8" text-anchor="middle">number of trials N, log scale</text>
+              <path id="hurdle-line" d="M59.1,155.7 L66.2,149.2 L75.6,142.1 L85.1,135.9 L94.6,130.4 L104.1,125.5 L113.6,121.0 L123.1,116.7 L132.6,112.7 L142.1,109.0 L151.6,105.4 L161.1,102.0 L170.6,98.7 L180.1,95.6 L189.6,92.6 L199.1,89.7 L201.3,89.1 L211.7,86.0 L216.6,84.5 L227.5,81.4 L237.0,78.8 L246.5,76.2 L256.0,73.7 L265.5,71.3 L275.0,68.9 L284.5,66.6 L294.0,64.3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+              <g stroke="var(--signal)" stroke-width="1" stroke-dasharray="2.5 2.5" fill="none">
+                <line x1="59.1" y1="155.7" x2="59.1" y2="168"/>
+                <line x1="201.3" y1="89.1" x2="201.3" y2="168"/>
+                <line x1="216.6" y1="84.5" x2="216.6" y2="168"/>
+              </g>
+              <g fill="var(--paper)" stroke="var(--signal)" stroke-width="1.4">
+                <circle cx="59.1" cy="155.7" r="3.2"/>
+                <circle cx="201.3" cy="89.1" r="3.2"/>
+                <circle cx="216.6" cy="84.5" r="3.2"/>
+              </g>
+              <g font-size="8" fill="var(--muted)">
+                <text x="72" y="164">cluster N = 2</text>
+                <text x="201.3" y="68" text-anchor="end">N<tspan dy="3" font-size="6">eff</tspan><tspan dy="-3"> 1,400</tspan></text>
+                <text x="222" y="60">nominal 2,825</text>
+              </g>
+              <g id="hurdle-cursor" visibility="hidden">
+                <line id="hurdle-hair" x1="201.3" y1="28" x2="201.3" y2="168" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
+                <circle id="hurdle-dot" cx="201.3" cy="89.1" r="4" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.5"/>
+              </g>
+            </svg>
+            <div class="fig-controls">
+              <button class="btn" type="button" data-jump="2">Cluster</button>
+              <button class="btn" type="button" data-jump="1400">Effective</button>
+              <button class="btn" type="button" data-jump="2825">Nominal</button>
+              <span class="fig-note" id="hurdle-read"></span>
+            </div>
+          </div>
+          <div class="paper-body">
+            <p>Why does this matter? When you test thousands of trading rules, the best one will look good by chance. Cluster corrections that group similar rules can make noise look significant by undercounting the tests. A block bootstrap on the real grid keeps the correlations and shows the safer hurdle is the full nominal count.</p>
+            <p>We resample the 2,825 moving-average rules together. On the DAX the effective independent tests are about 1,400. Even spread-out correlation barely lowers that number; only rules bunched in blocks do. The best rule still fails the hurdle on the DAX.</p>
+            <details class="more">
+              <summary>How to read the figure</summary>
+              <div class="more-body">
+                <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. The buttons read the hurdle at the cluster, effective, and nominal counts.</p>
+                <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>
+                <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>
+              </div>
+            </details>
+            <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Deflated Sharpe</span><span class="tag">Quantitative Finance</span><a class="go" href="/papers/how-many-tests/">Paper page &rarr;</a></div>
+          </div>
+        </article>
+        <article class="paper">
+          <div class="paper-head">
+            <h3><a href="/papers/reversed-by-replication/">Reversed by our own replication</a></h3>
+          </div>
+          <div class="paper-fig">
+            <svg class="rev-fig" id="reversal" viewBox="0 0 306 220" role="img" aria-label="Discovery against registered replication for three predictors of extraction error.">
+              <g stroke="var(--rule)" stroke-width="1" fill="none">
+                <line x1="78" y1="22" x2="78" y2="172"/>
+                <line x1="78" y1="172" x2="292" y2="172"/>
+              </g>
+              <line x1="142.2" y1="22" x2="142.2" y2="172" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 3"/>
+              <line x1="206.4" y1="22" x2="206.4" y2="172" stroke="var(--signal)" stroke-width="1" stroke-dasharray="2.5 2.5"/>
+              <g font-size="8" text-anchor="middle">
+                <text x="78" y="186">0.35</text>
+                <text x="142.2" y="186">0.50</text>
+                <text x="206.4" y="186">0.65</text>
+                <text x="292" y="186">0.85</text>
+                <text x="185" y="210">AUROC</text>
+              </g>
+              <text x="206.4" y="16" font-size="7" text-anchor="middle" fill="var(--muted)">registered 0.65</text>
+              <g id="rev-c3">
+                <text x="72" y="48" font-size="8" text-anchor="end">task structure</text>
+                <line x1="258.2" y1="44" x2="143.8" y2="44" stroke="var(--accent)" stroke-width="1.6"/>
+                <rect x="255.4" y="41.2" width="5.6" height="5.6" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.3"/>
+                <circle cx="143.8" cy="44" r="3.3" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.2"/>
+                <g fill="none" stroke="var(--faint)" stroke-width="1">
+                  <circle cx="147.3" cy="52" r="2"/>
+                  <circle cx="152.0" cy="52" r="2"/>
+                  <circle cx="179.0" cy="52" r="2"/>
+                  <circle cx="96.8" cy="52" r="2"/>
+                </g>
+                <text x="138" y="36" font-size="7" text-anchor="end" fill="var(--muted)">retracted</text>
+              </g>
+              <g id="rev-c1">
+                <text x="72" y="98" font-size="8" text-anchor="end">within-model</text>
+                <line x1="239.4" y1="94" x2="184.6" y2="94" stroke="var(--accent)" stroke-width="1.6"/>
+                <rect x="236.6" y="91.2" width="5.6" height="5.6" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.3"/>
+                <circle cx="184.6" cy="94" r="3.3" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.2"/>
+                <g fill="none" stroke="var(--faint)" stroke-width="1">
+                  <circle cx="219.2" cy="102" r="2"/>
+                  <circle cx="194.8" cy="102" r="2"/>
+                  <circle cx="190.6" cy="102" r="2"/>
+                  <circle cx="133.6" cy="102" r="2"/>
+                </g>
+                <text x="180" y="86" font-size="7" text-anchor="end" fill="var(--muted)">1 of 4</text>
+              </g>
+              <g id="rev-c2">
+                <text x="72" y="148" font-size="8" text-anchor="end">cross-model</text>
+                <line x1="188.9" y1="144" x2="250.5" y2="144" stroke="var(--accent)" stroke-width="1.6"/>
+                <rect x="186.1" y="141.2" width="5.6" height="5.6" fill="var(--paper)" stroke="var(--muted)" stroke-width="1.3"/>
+                <circle cx="250.5" cy="144" r="3.3" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.2"/>
+                <text x="256" y="136" font-size="7" text-anchor="start" fill="var(--muted)">held</text>
+              </g>
+              <g font-size="7" fill="var(--faint)">
+                <rect x="78" y="198" width="5" height="5" fill="var(--paper)" stroke="var(--muted)" stroke-width="1"/>
+                <text x="86" y="203">discovery</text>
+                <circle cx="140" cy="200.5" r="2.4" fill="var(--accent)"/>
+                <text x="146" y="203">replication</text>
+              </g>
+            </svg>
+          </div>
+          <div class="paper-body">
+            <p>Why does this matter? An automated auditor that checks research extractions is right only about a third of the time, yet a wrong extraction can still return a theorem. We pre-registered three signals that might catch the error, then tested them once on frontier models. Two reversed. Cross-model disagreement is the one that held.</p>
+            <p>On 174 items, a model disagreeing with its own repeats cleared the bar in only one family. Disagreement across models reached 0.75 and stayed above the threshold. It flagged errors better on unconventional designs. Abstaining where models disagree most trims the error rate from 81% to 72%, but the tool remains weak.</p>
+            <details class="more">
+              <summary>How to read the figure</summary>
+              <div class="more-body">
+                <p>Each row is a registered comparison. The open square is the discovery sample on five open-weight arms. The filled circle is the confirmatory run on four frontier families. The dashed navy line is the 0.65 threshold we deposited before seeing those families. The dotted line is chance.</p>
+                <p>Task structure falls from 0.771 to about 0.50 and is retracted. Within-model sampling falls from 0.727 and clears the bar in one family of four. Cross-model disagreement rises from 0.609 to 0.753 and is held.</p>
+              </div>
+            </details>
+            <div class="paper-tags"><span class="tag live">Working paper</span><span class="tag">Verification</span><span class="tag">Multi-model</span><a class="go" href="/papers/reversed-by-replication/">Paper page &rarr;</a></div>
+          </div>
+        </article>
+      </div>
+      <div class="index" data-limit="10">
+        <div class="index-head">
+          <h3 class="label">All papers</h3>
+          <div class="chips" role="group" aria-label="Filter papers by topic"><button class="chip" type="button" data-topic="" aria-pressed="true">All<span class="n">3</span></button><button class="chip" type="button" data-topic="Regimes" aria-pressed="false">Regimes<span class="n">1</span></button><button class="chip" type="button" data-topic="Finance" aria-pressed="false">Finance<span class="n">1</span></button><button class="chip" type="button" data-topic="AI" aria-pressed="false">AI<span class="n">1</span></button></div>
+        </div>
+        <div class="year-group">
+          <h4 class="year">2026</h4>
+          <ul class="rows">
+            <li class="row" data-topic="Regimes">
+              <details>
+                <summary><span class="row-title">When regimes cycle</span><span class="row-meta">Working paper</span></summary>
+                <div class="row-body"><p>Why countries keep swinging between democracy and autocracy, and what starts and stops the swings.</p><a class="go" href="/papers/when-regimes-cycle/">Paper page &rarr;</a></div>
+              </details>
+            </li>
+            <li class="row" data-topic="Finance">
+              <details>
+                <summary><span class="row-title">How many tests was it really?</span><span class="row-meta">Working paper &middot; with Winzker</span></summary>
+                <div class="row-body"><p>How high the bar for a backtested trading rule should be once you count every rule you tried.</p><a class="go" href="/papers/how-many-tests/">Paper page &rarr;</a></div>
+              </details>
+            </li>
+            <li class="row" data-topic="AI">
+              <details>
+                <summary><span class="row-title">Reversed by our own replication</span><span class="row-meta">Working paper</span></summary>
+                <div class="row-body"><p>A registered replication in which two of three signals for catching LLM extraction errors reversed.</p><a class="go" href="/papers/reversed-by-replication/">Paper page &rarr;</a></div>
+              </details>
+            </li>
+          </ul>
+        </div>
+        <button class="btn show-all" type="button" hidden>Show all</button>
+      </div>
+    </section>
+
+    <section class="panel" id="tools" role="tabpanel" aria-labelledby="tab-tools">
+      <h2 class="vh">Tools</h2>
+      <div class="panel-head"><span></span><p class="kicker">Coming soon</p></div>
+      <div class="tools">
+        <div class="tool">
+          <h3>Frontier</h3>
+          <p>A research agent that works overnight and shows, as a map, how ideas in frontier research connect.</p>
+        </div>
+        <div class="tool">
+          <h3>Galley</h3>
+          <p>A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.</p>
+          <div class="paper-tags"><span class="tag">Open source</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot" id="contact">
+    <span>&copy; 2026 Pedro F. Rackebrandt</span>
+    <a class="js-email" data-show href="#contact">pedro.fernandezrackebrandt [at] merton.ox.ac.uk</a>
+  </footer>
+</div>
 </body>
-<!-- clean -->
 </html>
