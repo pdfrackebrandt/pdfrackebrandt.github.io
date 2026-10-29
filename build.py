@@ -457,11 +457,12 @@ def build_paper(p):
     fig = ''
     if p.get('figure'):
         fig = '<figure class="page-fig">\n%s\n%s</figure>' % (figure(p['figure']), help_html(p))
-    body = md_html(explainer(p))
-    if body and fig:
-        body = body.replace(FIG_SLOT, fig) if FIG_SLOT in body else fig + '\n' + body
-    elif not body:
-        body = fig + '\n' + '\n'.join('<p>%s</p>' % escape(x) for x in p['text'])
+    body = md_html(explainer(p)) or '\n'.join('<p>%s</p>' % escape(x) for x in p['text'])
+    # on wide screens the figure sits in a sticky right column; on phones it follows the "In short" box
+    pre, post = body.split(FIG_SLOT, 1) if FIG_SLOT in body else ('', body)
+    lead = '<div class="explainer explainer-lead">\n%s\n</div>\n' % pre.strip() if pre.strip() else ''
+    if fig:
+        fig = fig.replace('<figure class="page-fig">', '<figure class="page-fig rows-%d">' % (4 if lead else 3), 1) + '\n'
     extra = '\n'.join(meta) + '\n'
     if '\x00M' in body:
         extra += ('<link rel="stylesheet" href="/assets/katex/katex.css?v=%s">\n<link rel="stylesheet" href="/assets/math.css?v=\x02MATHV\x02">\n'
@@ -484,7 +485,7 @@ def build_paper(p):
       <p class="lede">{lede}</p>
       <p class="page-actions">{actions}</p>
     </header>
-    <div class="explainer">
+{lead}{fig}    <div class="explainer">
 {body}
     </div>
     <footer class="paper-foot">
@@ -502,7 +503,7 @@ def build_paper(p):
 </html>
 """.format(name=escape(SITE['name']), status=escape(p['status']), year=p['year'], title=escape(p['title']), who=who,
            lede=escape(p['summary']), actions='<span aria-hidden="true">&middot;</span>'.join(actions),
-           body=indent(body, 6), tags=tags_html(p), bib_id=bib_id, bib=escape(bibtex(p)))
+           lead=indent(lead, 4), fig=indent(fig, 4), body=indent(post.strip(), 6), tags=tags_html(p), bib_id=bib_id, bib=escape(bibtex(p)))
     return html
 
 
