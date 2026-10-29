@@ -27,7 +27,7 @@
 <link rel="alternate" type="text/markdown" href="/llms.txt" title="Plain text summary for AI agents">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=8330b2ae">
+<link rel="stylesheet" href="/assets/site.css?v=80a7b32b">
 <script src="/assets/site.js?v=9d4e16e3" defer></script>
 <script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -44,75 +44,77 @@
       <p class="lede">How high the bar for a backtested trading rule should be once you count every rule you tried.</p>
       <p class="page-actions"><a class="js-email" href="#contact" data-subject="Draft request: How many tests was it really?">Draft on request</a><span aria-hidden="true">&middot;</span><a href="#cite">Cite</a></p>
     </header>
-    <div class="explainer">
-      <div class="box short"><p class="box-label">In short</p><ul><li>Try enough trading rules and the best one will look good by pure luck. The bar a rule must clear has to rise with the number of rules tried.</li><li>Similar rules are not independent tests, and some software counts a grid of 2,825 moving averages as just 2. We measure the real count with a bootstrap: about 1,400 on the DAX.</li><li>Undercounting cuts the bar by up to 84 percent and calls noise a discovery. Using the full count overstates it by only 6 percent. When in doubt, count every rule.</li></ul></div>
-      <figure class="page-fig">
-      <svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Search hurdle. Buttons mark the cluster, effective, and nominal trial counts.">
-        <g stroke="var(--rule)" stroke-width="1" fill="none">
-          <line x1="44" y1="24" x2="44" y2="168"/>
-          <line x1="44" y1="168" x2="294" y2="168"/>
-        </g>
-        <g stroke="var(--rule)" stroke-width="1">
-          <line x1="44" y1="168" x2="44" y2="172"/>
-          <line x1="94" y1="168" x2="94" y2="172"/>
-          <line x1="144" y1="168" x2="144" y2="172"/>
-          <line x1="194" y1="168" x2="194" y2="172"/>
-          <line x1="244" y1="168" x2="244" y2="172"/>
-          <line x1="294" y1="168" x2="294" y2="172"/>
-          <line x1="40" y1="168" x2="44" y2="168"/>
-          <line x1="40" y1="117.1" x2="44" y2="117.1"/>
-          <line x1="40" y1="66.3" x2="44" y2="66.3"/>
-        </g>
-        <g font-size="8" text-anchor="middle">
-          <text x="44" y="184">1</text>
-          <text x="94" y="184">10</text>
-          <text x="144" y="184">100</text>
-          <text x="194" y="184">1k</text>
-          <text x="244" y="184">10k</text>
-          <text x="294" y="184">100k</text>
-        </g>
-        <g font-size="8" text-anchor="end">
-          <text x="36" y="171">0</text>
-          <text x="36" y="120">0.2</text>
-          <text x="36" y="69">0.4</text>
-        </g>
-        <text x="14" y="110" font-size="8" transform="rotate(-90 14 110)" text-anchor="middle">E[max SR]</text>
-        <text x="169" y="202" font-size="8" text-anchor="middle">number of trials N, log scale</text>
-        <path id="hurdle-line" d="M59.1,155.7 L66.2,149.2 L75.6,142.1 L85.1,135.9 L94.6,130.4 L104.1,125.5 L113.6,121.0 L123.1,116.7 L132.6,112.7 L142.1,109.0 L151.6,105.4 L161.1,102.0 L170.6,98.7 L180.1,95.6 L189.6,92.6 L199.1,89.7 L201.3,89.1 L211.7,86.0 L216.6,84.5 L227.5,81.4 L237.0,78.8 L246.5,76.2 L256.0,73.7 L265.5,71.3 L275.0,68.9 L284.5,66.6 L294.0,64.3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-        <g stroke="var(--signal)" stroke-width="1" stroke-dasharray="2.5 2.5" fill="none">
-          <line x1="59.1" y1="155.7" x2="59.1" y2="168"/>
-          <line x1="201.3" y1="89.1" x2="201.3" y2="168"/>
-          <line x1="216.6" y1="84.5" x2="216.6" y2="168"/>
-        </g>
-        <g fill="var(--paper)" stroke="var(--signal)" stroke-width="1.4">
-          <circle cx="59.1" cy="155.7" r="3.2"/>
-          <circle cx="201.3" cy="89.1" r="3.2"/>
-          <circle cx="216.6" cy="84.5" r="3.2"/>
-        </g>
-        <g font-size="8" fill="var(--muted)">
-          <text x="72" y="164">cluster N = 2</text>
-          <text x="201.3" y="68" text-anchor="end">N<tspan dy="3" font-size="6">eff</tspan><tspan dy="-3"> 1,400</tspan></text>
-          <text x="222" y="60">nominal 2,825</text>
-        </g>
-        <g id="hurdle-cursor" visibility="hidden">
-          <line id="hurdle-hair" x1="201.3" y1="28" x2="201.3" y2="168" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
-          <circle id="hurdle-dot" cx="201.3" cy="89.1" r="4" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.5"/>
-        </g>
-      </svg>
-      <div class="fig-controls">
-        <button class="btn" type="button" data-jump="2">Cluster</button>
-        <button class="btn" type="button" data-jump="1400">Effective</button>
-        <button class="btn" type="button" data-jump="2825">Nominal</button>
-        <span class="fig-note" id="hurdle-read"></span>
+    <div class="explainer explainer-lead">
+    <div class="box short"><p class="box-label">In short</p><ul><li>Try enough trading rules and the best one will look good by pure luck. The bar a rule must clear has to rise with the number of rules tried.</li><li>Similar rules are not independent tests, and some software counts a grid of 2,825 moving averages as just 2. We measure the real count with a bootstrap: about 1,400 on the DAX.</li><li>Undercounting cuts the bar by up to 84 percent and calls noise a discovery. Using the full count overstates it by only 6 percent. When in doubt, count every rule.</li></ul></div>
+    </div>
+    <figure class="page-fig rows-4">
+    <svg class="hurdle-fig" id="hurdle" viewBox="0 0 306 220" role="img" aria-label="Search hurdle. Buttons mark the cluster, effective, and nominal trial counts.">
+      <g stroke="var(--rule)" stroke-width="1" fill="none">
+        <line x1="44" y1="24" x2="44" y2="168"/>
+        <line x1="44" y1="168" x2="294" y2="168"/>
+      </g>
+      <g stroke="var(--rule)" stroke-width="1">
+        <line x1="44" y1="168" x2="44" y2="172"/>
+        <line x1="94" y1="168" x2="94" y2="172"/>
+        <line x1="144" y1="168" x2="144" y2="172"/>
+        <line x1="194" y1="168" x2="194" y2="172"/>
+        <line x1="244" y1="168" x2="244" y2="172"/>
+        <line x1="294" y1="168" x2="294" y2="172"/>
+        <line x1="40" y1="168" x2="44" y2="168"/>
+        <line x1="40" y1="117.1" x2="44" y2="117.1"/>
+        <line x1="40" y1="66.3" x2="44" y2="66.3"/>
+      </g>
+      <g font-size="8" text-anchor="middle">
+        <text x="44" y="184">1</text>
+        <text x="94" y="184">10</text>
+        <text x="144" y="184">100</text>
+        <text x="194" y="184">1k</text>
+        <text x="244" y="184">10k</text>
+        <text x="294" y="184">100k</text>
+      </g>
+      <g font-size="8" text-anchor="end">
+        <text x="36" y="171">0</text>
+        <text x="36" y="120">0.2</text>
+        <text x="36" y="69">0.4</text>
+      </g>
+      <text x="14" y="110" font-size="8" transform="rotate(-90 14 110)" text-anchor="middle">E[max SR]</text>
+      <text x="169" y="202" font-size="8" text-anchor="middle">number of trials N, log scale</text>
+      <path id="hurdle-line" d="M59.1,155.7 L66.2,149.2 L75.6,142.1 L85.1,135.9 L94.6,130.4 L104.1,125.5 L113.6,121.0 L123.1,116.7 L132.6,112.7 L142.1,109.0 L151.6,105.4 L161.1,102.0 L170.6,98.7 L180.1,95.6 L189.6,92.6 L199.1,89.7 L201.3,89.1 L211.7,86.0 L216.6,84.5 L227.5,81.4 L237.0,78.8 L246.5,76.2 L256.0,73.7 L265.5,71.3 L275.0,68.9 L284.5,66.6 L294.0,64.3" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+      <g stroke="var(--signal)" stroke-width="1" stroke-dasharray="2.5 2.5" fill="none">
+        <line x1="59.1" y1="155.7" x2="59.1" y2="168"/>
+        <line x1="201.3" y1="89.1" x2="201.3" y2="168"/>
+        <line x1="216.6" y1="84.5" x2="216.6" y2="168"/>
+      </g>
+      <g fill="var(--paper)" stroke="var(--signal)" stroke-width="1.4">
+        <circle cx="59.1" cy="155.7" r="3.2"/>
+        <circle cx="201.3" cy="89.1" r="3.2"/>
+        <circle cx="216.6" cy="84.5" r="3.2"/>
+      </g>
+      <g font-size="8" fill="var(--muted)">
+        <text x="72" y="164">cluster N = 2</text>
+        <text x="201.3" y="68" text-anchor="end">N<tspan dy="3" font-size="6">eff</tspan><tspan dy="-3"> 1,400</tspan></text>
+        <text x="222" y="60">nominal 2,825</text>
+      </g>
+      <g id="hurdle-cursor" visibility="hidden">
+        <line id="hurdle-hair" x1="201.3" y1="28" x2="201.3" y2="168" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
+        <circle id="hurdle-dot" cx="201.3" cy="89.1" r="4" fill="var(--accent)" stroke="var(--paper)" stroke-width="1.5"/>
+      </g>
+    </svg>
+    <div class="fig-controls">
+      <button class="btn" type="button" data-jump="2">Cluster</button>
+      <button class="btn" type="button" data-jump="1400">Effective</button>
+      <button class="btn" type="button" data-jump="2825">Nominal</button>
+      <span class="fig-note" id="hurdle-read"></span>
+    </div>
+    <details class="more">
+      <summary>How to read the figure</summary>
+      <div class="more-body">
+        <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. The buttons read the hurdle at the cluster, effective, and nominal counts.</p>
+        <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>
+        <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>
       </div>
-      <details class="more">
-        <summary>How to read the figure</summary>
-        <div class="more-body">
-          <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. The buttons read the hurdle at the cluster, effective, and nominal counts.</p>
-          <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>
-          <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>
-        </div>
-      </details></figure>
+    </details></figure>
+    <div class="explainer">
       <h2 id="the-problem">The problem</h2>
       <p>Give 2,825 traders a coin each and let them trade the DAX by its flips. One of them will post a superb record. Testing a grid of moving average rules plays the same game: the best rule's record is partly luck, and the more rules you try, the more luck the best one carries.</p>
       <h2 id="the-bar-set-by-luck">The bar set by luck</h2>
