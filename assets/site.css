@@ -173,7 +173,16 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 /* paper page */
 .page-top{padding-top:clamp(14px,3vw,28px)}
 .back{display:inline-flex;align-items:center;min-height:44px;font-family:var(--f-mono);font-size:var(--step--1);color:var(--muted)}
-.paper-page{max-width:42rem;display:flex;flex-direction:column;gap:clamp(22px,4vw,30px);padding-block:clamp(10px,3vw,24px) 20px}
+.paper-page{max-width:44rem;display:flex;flex-direction:column;gap:clamp(22px,4vw,30px);padding-block:clamp(10px,3vw,24px) 20px}
+/* wide screens: text on the left, the figure on the right and in view while reading (same width and gaps as the home page) */
+@media (min-width:960px){
+  .paper-page{max-width:none;display:grid;grid-template-columns:minmax(0,1fr) 352px;column-gap:44px;row-gap:30px;align-items:start}
+  .paper-page > *{grid-column:1;min-width:0}
+  .paper-page > .page-fig{grid-column:2;margin:0;max-width:none;align-self:start}
+  .paper-page > .page-fig.rows-3{grid-row:1 / span 3}
+  .paper-page > .page-fig.rows-4{grid-row:1 / span 4}
+}
+@media (min-width:960px) and (min-height:700px){.paper-page > .page-fig{position:sticky;top:24px}}
 .paper-header{display:flex;flex-direction:column;gap:10px}
 .eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--signal)}
 .paper-page h1{font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.1}
@@ -182,7 +191,7 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .page-actions{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:var(--step--1)}
 .page-actions a{display:inline-flex;align-items:center;min-height:36px}
 .page-actions span{color:var(--faint)}
-.page-fig{margin:6px auto;width:100%;max-width:540px;display:flex;flex-direction:column;gap:9px}
+.page-fig{margin:6px 0;width:100%;max-width:540px;display:flex;flex-direction:column;gap:9px}
 .page-fig p.scene-cap{font-size:var(--step--1);line-height:1.6;color:var(--muted)}
 .page-fig p.scene-name{font-size:var(--step--1);line-height:1.3;color:var(--ink-soft)}
 .page-fig .more-body p{font-size:inherit;line-height:inherit;color:inherit}
