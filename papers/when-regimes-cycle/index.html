@@ -26,7 +26,7 @@
 <link rel="alternate" type="text/markdown" href="/llms.txt" title="Plain text summary for AI agents">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=8330b2ae">
+<link rel="stylesheet" href="/assets/site.css?v=80a7b32b">
 <script src="/assets/site.js?v=9d4e16e3" defer></script>
 <script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -43,33 +43,35 @@
       <p class="lede">Why countries keep swinging between democracy and autocracy, and what starts and stops the swings.</p>
       <p class="page-actions"><a class="js-email" href="#contact" data-subject="Draft request: When regimes cycle">Draft on request</a><span aria-hidden="true">&middot;</span><a href="#cite">Cite</a></p>
     </header>
+    <div class="explainer explainer-lead">
+    <div class="box short"><p class="box-label">In short</p><ul><li>Countries can swing between open and closed rule on their own. No run of bad luck is needed.</li><li>One quantity decides whether the swings fade or last: the pool of young people free to mobilize. Below a threshold, shocks die out. Above it, the swings never stop.</li><li>The economy moves countries across that threshold. Falling behind the neighbours pushes them over; a crisis pulls them back. All three predictions hold in data on nearly every country from 1950 to 2019.</li></ul></div>
+    </div>
+    <figure class="page-fig rows-4">
+    <div class="scene-nav">
+      <p class="scene-name"><span id="sc-num">1 / 4</span><b id="sc-name">A shock fades</b></p>
+      <div class="scene-arrows">
+        <button class="btn" id="sc-prev" type="button" aria-label="Previous story">&#8249;</button>
+        <button class="btn" id="sc-next" type="button" aria-label="Next story">&#8250;</button>
+      </div>
+    </div>
+    <div class="lattice-frame" id="frame">
+      <canvas id="field" aria-label="Rotatable 3D figure: a country swings between open and closed rule. Below the dashed threshold the swings fade; above it they keep going."></canvas>
+      <span class="viewhint">drag to rotate</span>
+    </div>
+    <p class="scene-cap" id="sc-cap" aria-live="polite"></p>
+    <div class="fig-controls">
+      <button class="btn" id="pause" type="button" aria-pressed="false">Pause</button>
+      <button class="btn" id="replay" type="button">Replay</button>
+      <span class="sc-free" id="sc-free"><button class="btn" id="shock" type="button">Shock it</button><button class="btn" id="fallbehind" type="button">Fall behind</button><button class="btn" id="crisis" type="button">Crisis</button></span>
+    </div>
+    <details class="more">
+      <summary>How to read the figure</summary>
+      <div class="more-body">
+        <p>One flat axis runs from closed to open rule; the other is how mobilized people are. Height is the pool of young people, and the dashed square marks the threshold. The blue line is the country’s path and the red dot is where it stands now.</p>
+        <p>The arrows step through three stories. On the last slide you run the country yourself. Drag the figure to rotate it.</p>
+      </div>
+    </details></figure>
     <div class="explainer">
-      <div class="box short"><p class="box-label">In short</p><ul><li>Countries can swing between open and closed rule on their own. No run of bad luck is needed.</li><li>One quantity decides whether the swings fade or last: the pool of young people free to mobilize. Below a threshold, shocks die out. Above it, the swings never stop.</li><li>The economy moves countries across that threshold. Falling behind the neighbours pushes them over; a crisis pulls them back. All three predictions hold in data on nearly every country from 1950 to 2019.</li></ul></div>
-      <figure class="page-fig">
-      <div class="scene-nav">
-        <p class="scene-name"><span id="sc-num">1 / 4</span><b id="sc-name">A shock fades</b></p>
-        <div class="scene-arrows">
-          <button class="btn" id="sc-prev" type="button" aria-label="Previous story">&#8249;</button>
-          <button class="btn" id="sc-next" type="button" aria-label="Next story">&#8250;</button>
-        </div>
-      </div>
-      <div class="lattice-frame" id="frame">
-        <canvas id="field" aria-label="Rotatable 3D figure: a country swings between open and closed rule. Below the dashed threshold the swings fade; above it they keep going."></canvas>
-        <span class="viewhint">drag to rotate</span>
-      </div>
-      <p class="scene-cap" id="sc-cap" aria-live="polite"></p>
-      <div class="fig-controls">
-        <button class="btn" id="pause" type="button" aria-pressed="false">Pause</button>
-        <button class="btn" id="replay" type="button">Replay</button>
-        <span class="sc-free" id="sc-free"><button class="btn" id="shock" type="button">Shock it</button><button class="btn" id="fallbehind" type="button">Fall behind</button><button class="btn" id="crisis" type="button">Crisis</button></span>
-      </div>
-      <details class="more">
-        <summary>How to read the figure</summary>
-        <div class="more-body">
-          <p>One flat axis runs from closed to open rule; the other is how mobilized people are. Height is the pool of young people, and the dashed square marks the threshold. The blue line is the country’s path and the red dot is where it stands now.</p>
-          <p>The arrows step through three stories. On the last slide you run the country yourself. Drag the figure to rotate it.</p>
-        </div>
-      </details></figure>
       <h2 id="the-puzzle">The puzzle</h2>
       <p>Many countries swing between democracy and autocracy for decades. Polybius called it anacyclosis. The usual story blames bad luck: a coup here, a crash there. But the swings look too regular for luck. Is there an engine?</p>
       <h2 id="two-forces">Two forces</h2>
