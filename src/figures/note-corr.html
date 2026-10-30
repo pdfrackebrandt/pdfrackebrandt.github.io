@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="corr">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="How Y is made">
+      <button type="button" class="nfig-opt" data-mode="normal" aria-pressed="true">Joint normal</button>
+      <button type="button" class="nfig-opt" data-mode="square" aria-pressed="false">Y = X² + noise</button>
+    </div>
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">correlation </span>ρ</span><input type="range" min="-0.9" max="0.9" step="0.05" value="0.6" data-k="rho"><span class="nfig-val" aria-hidden="true">0.60</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 280" role="img" aria-label="Scatter of 300 draws of X and Y with the dashed least squares line. In the joint normal mode the cloud tilts with ρ. In the Y = X² + noise mode the points form a U and the fitted line is flat."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">r = 0.61</p>
+  <figcaption>Move ρ and the cloud tilts with r. Then pick Y = X² + noise: r is near 0 and the fitted line goes flat, yet Y plainly depends on X, so zero correlation does not mean independence.</figcaption>
+</figure>
