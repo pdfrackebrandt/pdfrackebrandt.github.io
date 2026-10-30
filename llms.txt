@@ -21,6 +21,10 @@ Open to AI and superintelligence consultancy: use the email link on https://rack
 - Frontier: A research agent that works overnight and shows, as a map, how ideas in frontier research connect.
 - Rikuy (Open source): A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.
 
+## Notes
+
+- [Core Econometrics L1: Probability, distributions and moments](https://rackebrandt.pe/notes/econometrics-l1/): The axioms, CDFs and densities, moments, iterated expectations, total variance, and why zero correlation is not independence.
+
 ## Elsewhere
 
 - [GitHub](https://github.com/pdfrackebrandt)
