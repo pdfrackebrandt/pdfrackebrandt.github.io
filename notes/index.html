@@ -1,1 +1,252 @@
-PLACEHOLDER_NOTES
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.jsdelivr.net https://cdn.plot.ly; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.plot.ly; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data:; connect-src https://cdn.plot.ly;">
+<title>MPhil Core Econometrics Notes</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #111; line-height: 1.5; }
+.header { border-bottom: 1px solid #e5e5e5; padding: 12px 24px; display: flex; gap: 32px; align-items: center; background: #fff; position: sticky; top: 0; z-index: 100; }
+.tab { font-size: 16px; color: #888; cursor: pointer; padding-bottom: 4px; position: relative; }
+.tab.active { color: #111; border-bottom: 2px solid #111; font-weight: 500; }
+.tab .count { font-size: 11px; vertical-align: super; margin-left: 2px; color: #aaa; }
+.container { display: flex; height: calc(100vh - 50px); }
+.sidebar { width: 220px; border-right: 1px solid #e5e5e5; padding: 16px 0; background: #fafafa; overflow-y: auto; }
+.lecture { padding: 10px 20px; cursor: pointer; font-size: 14px; color: #333; }
+.lecture.active { background: #f0f0f0; font-weight: 600; border-left: 3px solid #111; }
+.lecture:hover { background: #f5f5f5; }
+.main { flex: 1; overflow-y: auto; padding: 24px 40px; max-width: 900px; }
+h1 { font-size: 28px; margin-bottom: 8px; }
+h2 { font-size: 20px; margin: 28px 0 12px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+h3 { font-size: 16px; margin: 20px 0 8px; }
+.section { margin-bottom: 24px; }
+p, li { margin-bottom: 8px; font-size: 15px; }
+ul { padding-left: 20px; }
+.note { background: #f8f9fa; border-left: 3px solid #0066cc; padding: 10px 14px; margin: 12px 0; font-size: 14px; }
+.takeaway { background: #f0fff4; border-left: 3px solid #00aa55; padding: 10px 14px; margin: 12px 0; font-weight: 500; }
+.plot { width: 100%; height: 400px; margin: 16px 0; border: 1px solid #eee; border-radius: 6px; }
+.controls { display: flex; gap: 16px; flex-wrap: wrap; margin: 12px 0; align-items: center; }
+.controls label { font-size: 13px; }
+.controls input[type=range] { width: 140px; }
+.controls button { padding: 6px 12px; background: #111; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; }
+.controls button:hover { background: #333; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; }
+th { background: #f5f5f5; }
+.placeholder { color: #888; font-style: italic; padding: 40px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="tab">Research <span class="count">3</span></div>
+  <div class="tab">Tools <span class="count">2</span></div>
+  <div class="tab active">Notes <span class="count">4</span></div>
+</div>
+<div class="container">
+  <div class="sidebar">
+    <div class="lecture active" onclick="showLecture('l1', this)">L1: Probability & Moments</div>
+    <div class="lecture" onclick="showLecture('l2', this)">L2: Estimation & Asymptotics</div>
+    <div class="lecture" onclick="showLecture('l3', this)">L3: Matrix Algebra</div>
+    <div class="lecture" onclick="showLecture('l4', this)">L4: OLS Finite Sample</div>
+  </div>
+  <div class="main" id="content">
+    <!-- L1 content injected -->
+  </div>
+</div>
+
+<script>
+const lectures = {
+  l1: `
+    <h1>L1: Probability, Distributions and Moments</h1>
+    <p>Building blocks for statistical and econometric methods. Population quantities are functions of an unknown distribution; observed data carry information about them.</p>
+
+    <h2>1. Theory: Random Variables and Kolmogorov’s Axioms</h2>
+    <div class="section">
+      <p>A random variable $X$ maps each uncertain outcome to a number. Discrete: finitely or countably many values. Continuous: any value in an interval; $P(X=x)=0$ at every single point.</p>
+      <p>Kolmogorov’s axioms. Let $\Omega$ be the sample space, $A$ any event:</p>
+      <ul>
+        <li>Nonnegativity: $P(A) \ge 0$</li>
+        <li>Normalisation: $P(\Omega)=1$</li>
+        <li>Countable additivity: if $A_i$ pairwise disjoint, $P(\cup A_i)=\sum P(A_i)$</li>
+      </ul>
+      <p>Union rule for overlapping events: $P(A\cup B)=P(A)+P(B)-P(A\cap B)$.</p>
+      <div class="note">Subsets: if $A\subset B$ then $P(A)\le P(B)$. Every event is a subset of $\Omega$ so $P(A)\le 1$.</div>
+      <div class="takeaway">Probability is never negative, something always happens, and disjoint events add.</div>
+    </div>
+
+    <h2>2. Context: CDFs and Densities</h2>
+    <div class="section">
+      <p>The CDF $F(x)=P(X\le x)$ exists for discrete, continuous and mixed variables. It tends to 0 as $x\to-\infty$, to 1 as $x\to\infty$, is nondecreasing, and right-continuous.</p>
+      <p>Why right continuous? As $x\downarrow x_0$ the events $\{X\le x\}$ shrink to $\{X\le x_0\}$. From the left the jump equals the point mass $P(X=x_0)$.</p>
+      <p>Density: discrete PMF $p(x)=P(X=x)$. Continuous $f(x)=F'(x)$ where it exists. Density is probability per unit length and can exceed 1.</p>
+      <div class="controls">
+        <label>Distribution: 
+          <select id="distSelect" onchange="updateCDF()">
+            <option value="bernoulli">Bernoulli(0.3)</option>
+            <option value="uniform">Uniform(0,1)</option>
+            <option value="normal">Normal(0,1)</option>
+            <option value="exponential">Exponential(1)</option>
+          </select>
+        </label>
+      </div>
+      <div id="cdfPlot" class="plot"></div>
+      <div class="takeaway">Density is the derivative of the CDF (continuous) or its jumps (discrete). Endpoints matter only at atoms.</div>
+    </div>
+
+    <h2>3. Assumptions and Common Distributions</h2>
+    <div class="section">
+      <table>
+        <tr><th>Distribution</th><th>Support</th><th>Mean</th><th>Variance</th></tr>
+        <tr><td>Bernoulli($p$)</td><td>$\{0,1\}$</td><td>$p$</td><td>$p(1-p)$</td></tr>
+        <tr><td>Binomial($n,p$)</td><td>$\{0,\dots,n\}$</td><td>$np$</td><td>$np(1-p)$</td></tr>
+        <tr><td>Poisson($\lambda$)</td><td>$\{0,1,\dots\}$</td><td>$\lambda$</td><td>$\lambda$</td></tr>
+        <tr><td>Uniform($a,b$)</td><td>$(a,b)$</td><td>$(a+b)/2$</td><td>$(b-a)^2/12$</td></tr>
+        <tr><td>Normal($\mu,\sigma^2$)</td><td>$\mathbb{R}$</td><td>$\mu$</td><td>$\sigma^2$</td></tr>
+        <tr><td>Exponential($\lambda$)</td><td>$[0,\infty)$</td><td>$1/\lambda$</td><td>$1/\lambda^2$</td></tr>
+      </table>
+      <div class="controls">
+        <label>Mean $\mu$: <input type="range" id="muSlider" min="-2" max="2" step="0.1" value="0" oninput="updateNormal()"></label>
+        <label>SD $\sigma$: <input type="range" id="sigmaSlider" min="0.3" max="2" step="0.1" value="1" oninput="updateNormal()"></label>
+        <span id="normalParams">$\mu=0$, $\sigma=1$</span>
+      </div>
+      <div id="normalPlot" class="plot"></div>
+      <div class="takeaway">A distribution family is a CDF indexed by parameters. Estimation targets those parameters or the moments they pin down.</div>
+    </div>
+
+    <h2>4. Derive: Moments, LIE and Total Variance</h2>
+    <div class="section">
+      <p>The $k$th moment is $E[X^k]$, defined only if $E[|X|^k]<\infty$ (absolute convergence). Otherwise the integral order matters; Cauchy has no mean.</p>
+      <p>Variance: $\mathrm{Var}(X)=E[(X-\mu)^2]=E[X^2]-\mu^2$. Shift-invariant. Bernoulli variance $p(1-p)$ peaks at $p=1/2$.</p>
+      <p>Law of iterated expectations: $E[Y]=E[E[Y|X]]$. The overall mean is the probability-weighted average of conditional means.</p>
+      <p>Law of total variance: $\mathrm{Var}(Y)=E[\mathrm{Var}(Y|X)] + \mathrm{Var}(E[Y|X])$. Between-group plus within-group spread. Their ratio is the population $R^2$ of the best predictor of $Y$ given $X$.</p>
+      <div class="note">If $E[Y|X]=0$ then $E[g(X)Y]=0$ for any (measurable) $g$. This is the source of the orthogonality conditions in OLS under strict exogeneity.</div>
+      <div class="takeaway">$E[Y|X]$ is a random variable; the LIE averages it back to $E[Y]$. Mean independence makes the error orthogonal to every function of the regressors.</div>
+    </div>
+
+    <h2>5. Independence, Mean Independence and Correlation</h2>
+    <div class="section">
+      <p>Nesting: independence $\implies$ mean independence $\implies$ zero covariance. Neither arrow reverses in general.</p>
+      <p>Joint normality is the exception: uncorrelated jointly normal variables are independent.</p>
+      <div class="controls">
+        <label>Correlation $\rho$: <input type="range" id="rhoSlider" min="-0.9" max="0.9" step="0.05" value="0" oninput="updateScatter()"></label>
+        <span id="rhoLabel">$\rho=0$</span>
+        <button onclick="generateScatter()">Regenerate</button>
+      </div>
+      <div id="scatterPlot" class="plot"></div>
+      <div class="takeaway">Independence implies mean independence implies zero covariance. Only under joint normality does the chain run backwards.</div>
+    </div>
+
+    <h2>6. Testing Distributions and Quantiles</h2>
+    <div class="section">
+      <p>$Z\sim N(0,1)$ $\implies$ $Z^2\sim\chi^2_1$. Independent chi-squares add. $t_k$ is normal over square root of independent chi-square over degrees of freedom. $t^2_k = F_{1,k}$.</p>
+      <p>Quantile $q_\alpha$ solves $F(q_\alpha)=\alpha$. For continuous strictly increasing $F$, the probability integral transform gives $F(X)\sim U(0,1)$.</p>
+      <div class="takeaway">$\chi^2$, $t$ and $F$ are built from independent standard normals. The PIT is the engine of exact p-values under continuous nulls and of simulation.</div>
+    </div>
+
+    <h2>Summary Table</h2>
+    <table>
+      <tr><th>Result</th><th>Statement</th><th>Returns in</th></tr>
+      <tr><td>Independence</td><td>Joint density factors</td><td>MLE</td></tr>
+      <tr><td>LIE</td><td>$E[Y]=E[E[Y|X]]$</td><td>OLS, IV</td></tr>
+      <tr><td>Total variance</td><td>Between + within</td><td>$R^2$</td></tr>
+      <tr><td>Dependence</td><td>Zero cov $\not\implies$ indep (except joint normal)</td><td>Robust SEs</td></tr>
+      <tr><td>PIT</td><td>$F(X)\sim U(0,1)$ continuous</td><td>Simulation</td></tr>
+    </table>
+  `,
+  l2: `<div class="placeholder"><h1>L2: Estimation, Asymptotics and Confidence Intervals</h1><p>Coming next. LLN (weak and strong; assumptions stay the same), CLT, Slutsky, consistency vs unbiasedness, asymptotic intervals. Use limits rigorously: theory, context, assumptions, derive & conclude.</p></div>`,
+  l3: `<div class="placeholder"><h1>L3: Matrix Algebra Review</h1><p>Coming next. Rank, inverse, quadratic forms, matrix calculus for the OLS first-order conditions.</p></div>`,
+  l4: `<div class="placeholder"><h1>L4: OLS Estimator and Finite-Sample Properties</h1><p>Coming next. $\hat\beta=(X'X)^{-1}X'y$, unbiasedness under OLS.1–3, variance under OLS.1–4, Gauss–Markov, residual maker.</p></div>`
+};
+
+function showLecture(id, el) {
+  document.querySelectorAll('.lecture').forEach(e => e.classList.remove('active'));
+  if (el) el.classList.add('active');
+  else document.querySelector(`.lecture[onclick*="${id}"]`).classList.add('active');
+  document.getElementById('content').innerHTML = lectures[id];
+  renderMathInElement(document.getElementById('content'));
+  if (id === 'l1') setTimeout(initPlots, 100);
+}
+
+function initPlots() {
+  updateCDF();
+  updateNormal();
+  updateScatter();
+}
+
+function updateCDF() {
+  const dist = document.getElementById('distSelect').value;
+  let x, y;
+  if (dist === 'bernoulli') {
+    x = [-0.5, 0, 0, 1, 1, 1.5];
+    y = [0, 0, 0.7, 0.7, 1, 1];
+  } else if (dist === 'uniform') {
+    x = Array.from({length: 100}, (_, i) => -0.2 + i * 0.014);
+    y = x.map(v => v < 0 ? 0 : v > 1 ? 1 : v);
+  } else if (dist === 'normal') {
+    x = Array.from({length: 200}, (_, i) => -4 + i * 0.04);
+    y = x.map(v => 0.5 * (1 + erf(v / Math.sqrt(2))));
+  } else {
+    x = Array.from({length: 200}, (_, i) => i * 0.05);
+    y = x.map(v => 1 - Math.exp(-v));
+  }
+  Plotly.newPlot('cdfPlot', [{x, y, mode: 'lines', line: {width: 2}}], {
+    title: 'CDF', margin: {t: 40}, xaxis: {title: 'x'}, yaxis: {title: 'F(x)', range: [-0.05, 1.05]}
+  }, {responsive: true});
+}
+
+function erf(z) {
+  const sign = z < 0 ? -1 : 1;
+  z = Math.abs(z);
+  const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429, p=0.3275911;
+  const t = 1 / (1 + p * z);
+  return sign * (1 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t * Math.exp(-z*z));
+}
+
+function updateNormal() {
+  const mu = parseFloat(document.getElementById('muSlider').value);
+  const sigma = parseFloat(document.getElementById('sigmaSlider').value);
+  document.getElementById('normalParams').innerHTML = `$\mu=${mu.toFixed(1)}$, $\sigma=${sigma.toFixed(1)}$`;
+  renderMathInElement(document.getElementById('normalParams'));
+  const x = Array.from({length: 300}, (_, i) => mu - 4*sigma + i * (8*sigma)/299);
+  const y = x.map(v => Math.exp(-0.5 * ((v-mu)/sigma)**2) / (sigma * Math.sqrt(2*Math.PI)));
+  Plotly.newPlot('normalPlot', [{x, y, mode: 'lines', fill: 'tozeroy', line: {width: 2}}], {
+    title: 'Normal Density', margin: {t: 40}, xaxis: {title: 'x'}, yaxis: {title: 'f(x)'}
+  }, {responsive: true});
+}
+
+function generateScatter() { updateScatter(); }
+function updateScatter() {
+  const rho = parseFloat(document.getElementById('rhoSlider').value);
+  document.getElementById('rhoLabel').innerHTML = `$\rho=${rho.toFixed(2)}$`;
+  renderMathInElement(document.getElementById('rhoLabel'));
+  const n = 300;
+  const x = [], y = [];
+  for (let i = 0; i < n; i++) {
+    const z1 = randn(), z2 = randn();
+    const xx = z1;
+    const yy = rho * z1 + Math.sqrt(1-rho*rho) * z2;
+    x.push(xx); y.push(yy);
+  }
+  Plotly.newPlot('scatterPlot', [{x, y, mode: 'markers', marker: {size: 5, opacity: 0.6}}], {
+    title: 'Bivariate sample (joint normal)', margin: {t: 40},
+    xaxis: {title: 'X', range: [-4,4]}, yaxis: {title: 'Y', range: [-4,4]}
+  }, {responsive: true});
+}
+function randn() {
+  let u = 0, v = 0;
+  while(u === 0) u = Math.random();
+  while(v === 0) v = Math.random();
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
+// init
+showLecture('l1');
+</script>
+</body>
+</html>
