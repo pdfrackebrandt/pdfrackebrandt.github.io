@@ -233,4 +233,49 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .loop-tip{fill:var(--fig-blue)}
 .bib{margin:8px 0 0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.75rem;line-height:1.55;white-space:pre-wrap;word-break:break-word;background:var(--surface);color:var(--ink-soft);padding:12px 14px}
 
+/* boxes used in lecture notes */
+.box.takeaway{border-left:2px solid var(--green);padding:2px 0 2px 16px}
+.box.takeaway .box-label{color:var(--green)}
+.box.note{background:var(--surface);padding:14px 16px 16px;border-radius:4px}
+.box.note .box-label{color:var(--signal)}
+
+/* lecture notes: text on the left, contents in a sticky column on wide screens */
+.toc-label{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--faint)}
+.toc-list{list-style:none;margin:10px 0 0;padding:0;border-left:1px solid var(--rule)}
+.toc-list a{display:block;margin-left:-1px;padding:6px 0 6px 14px;border-left:2px solid transparent;font-size:var(--step--1);line-height:1.4;color:var(--muted)}
+.toc-list a:hover{color:var(--ink)}
+.toc-list a[aria-current]{color:var(--ink);border-left-color:var(--fig-blue)}
+.toc-list + .toc-label{margin-top:26px}
+.toc-wide{display:none}
+.toc-narrow{border:1px solid var(--rule);border-radius:4px;padding:2px 14px}
+.toc-narrow summary{min-height:42px;display:flex;align-items:center;cursor:pointer;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.toc-narrow summary::-webkit-details-marker{display:none}
+.toc-narrow summary::after{content:"+";margin-left:auto;font-size:1rem;letter-spacing:0;color:var(--faint)}
+.toc-narrow[open] summary::after{content:"\2212"}
+.toc-narrow .toc-list{margin:0 0 12px}
+@media (min-width:960px){
+  .note-page{grid-template-columns:minmax(0,1fr) 240px;column-gap:64px}
+  .note-page > .toc-wide{display:block;grid-column:2;grid-row:1 / span 2;align-self:start;padding-top:6px}
+  .note-page > .toc-narrow{display:none}
+}
+@media (min-width:960px) and (min-height:560px){.note-page > .toc-wide{position:sticky;top:24px}}
+.note-page .explainer h2{scroll-margin-top:24px}
+.note-page .explainer h3{font-family:var(--f-display);font-size:1.2rem;font-weight:400;margin-top:12px}
+.note-card .eyebrow{font-size:.7rem;color:var(--muted)}
+.note-card h3 a{color:var(--ink)}
+.note-card h3 a:hover{color:var(--accent)}
+.note-card .go{margin-left:0;align-self:flex-start}
+
+/* all notes */
+.notes-index{max-width:44rem;display:flex;flex-direction:column;gap:clamp(26px,5vw,40px);padding-block:clamp(10px,3vw,24px) 48px}
+.notes-index h1{font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.1}
+.note-course h2{font-size:1.5rem;line-height:1.2;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.note-rows{list-style:none;margin:0;padding:0}
+.note-row{padding:14px 0;border-bottom:1px solid var(--rule-soft);display:flex;flex-direction:column;gap:4px}
+.note-row a{display:flex;gap:14px;align-items:baseline;color:var(--ink)}
+.note-row a:hover{color:var(--accent)}
+.note-label{font-family:var(--f-mono);font-size:var(--step--1);color:var(--signal);flex:none;width:28px}
+.note-title{font-size:var(--step-1);font-weight:600}
+.note-row p{font-size:var(--step-0);line-height:1.6;color:var(--ink-soft);padding-left:42px}
+
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}

@@ -2,8 +2,8 @@
 (function(){
   'use strict';
   function invNorm(p){
-    var a=[-39.69683028665376,220.9460984351125,-275.9285104469687,138.3577509074756,-30.66479806614716,2.506628277459239];
-    var b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.2806807164995];
+    var a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.357751867269,-30.66479806614716,2.506628277459239];
+    var b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572];
     var c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783];
     var d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416];
     var plow=0.02425, phigh=1-plow, q, r;
@@ -383,6 +383,23 @@
     Array.prototype.forEach.call(document.querySelectorAll('a[href="#cite"]'), function(a){ a.addEventListener('click', function(){ d.open=true; }); });
   }
 
-  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initCite(); initHurdle(); initRegime(); }
+  // lecture notes: the contents column marks the section being read
+  function initToc(){
+    var nav=document.querySelector('.toc-wide'); if(!nav) return;
+    var links=Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+    var heads=links.map(function(a){ return document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); });
+    var queued=false;
+    function update(){
+      queued=false;
+      var cur=-1;
+      heads.forEach(function(h,i){ if(h && h.getBoundingClientRect().top<=140) cur=i; });
+      if(cur<0) cur=0;
+      links.forEach(function(a,i){ if(i===cur) a.setAttribute('aria-current','location'); else a.removeAttribute('aria-current'); });
+    }
+    window.addEventListener('scroll', function(){ if(!queued){ queued=true; requestAnimationFrame(update); } }, {passive:true});
+    update();
+  }
+
+  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initCite(); initToc(); initHurdle(); initRegime(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
