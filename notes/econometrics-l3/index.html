@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L3: Matrix algebra review · Pedro F. Rackebrandt</title>
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/notes.css">
+<style>
+body, body * { font-family: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif !important; }
+#gate { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+#gate input { font-size: 18px; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; width: 200px; }
+#gate button { font-size: 16px; padding: 8px 16px; background: #111; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+.rel-matrix { color: #2c5aa0; }
+</style>
+</head>
+<body>
+<div id="gate">
+  <p>Notes are for the class. Enter the password.</p>
+  <input type="password" id="pw" placeholder="password" autofocus>
+  <button onclick="checkPw()">Enter</button>
+  <p id="msg" style="color:#c00; min-height:1.2em;"></p>
+</div>
+<script>
+function checkPw() {
+  var v = document.getElementById('pw').value;
+  if (v === 'gato') {
+    sessionStorage.setItem('notes_ok', '1');
+    document.getElementById('gate').style.display = 'none';
+  } else {
+    document.getElementById('msg').textContent = 'Wrong password.';
+    document.getElementById('pw').value = '';
+  }
+}
+document.getElementById('pw').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPw();
+});
+if (sessionStorage.getItem('notes_ok') === '1') {
+  document.getElementById('gate').style.display = 'none';
+}
+</script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="page-top"><a class="back" href="/#notes">&larr; Pedro F. Rackebrandt</a></header>
+  <main id="main">
+  <article class="paper-page note-page">
+    <header class="paper-header">
+      <p class="eyebrow">Core Econometrics &middot; L3</p>
+      <h1>Matrix algebra review</h1>
+      <p class="lede">Rank, inverse, quadratic forms, and the matrix calculus used in the OLS first-order conditions.</p>
+      <p class="page-actions"><a href="/notes/">All notes</a></p>
+    </header>
+    <h2>1. Basic operations</h2>
+    <p>A <span class="rel-matrix">symmetric</span> matrix equals its transpose. The identity, diagonal matrices, and the vector of ones appear constantly. Addition is entrywise; multiplication is not commutative.</p>
+    <div class="box takeaway"><p class="box-label">Takeaway</p><p>X'X is symmetric and positive semidefinite. It is invertible exactly when X has full column rank.</p></div>
+    <h2>2. Rank, inverse and determinants</h2>
+    <p>Full column rank means the columns are linearly independent. The determinant of a 2×2 matrix is the signed area of the parallelogram spanned by its columns. A singular matrix has determinant zero and no inverse.</p>
+    <h2>3. Quadratic forms and derivatives</h2>
+    <p>The quadratic form β'Aβ is positive for all β ≠ 0 when A is positive definite. The gradient of β'X'Xβ with respect to β is 2X'Xβ. These two facts give the OLS first-order condition.</p>
+  </article>
+  </main>
+</div>
+</body>
+</html>
