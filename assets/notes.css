@@ -71,3 +71,19 @@
 .nfig .nfig-read{margin:0;font-family:var(--f-mono);font-size:.75rem;line-height:1.5;color:var(--muted);white-space:pre-wrap;font-variant-numeric:tabular-nums}
 .nfig-read .nf-warn{color:var(--signal)}
 .nfig figcaption{font-size:var(--step--1);line-height:1.6;color:var(--muted)}
+
+/* Force Calibri only, no fancy fonts */
+body.note-page, body.note-page *,
+.notes-index, .notes-index *,
+.paper-page.note-page, .paper-page.note-page * {
+  font-family: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+}
+
+/* Colour coding for related concepts */
+.rel-axiom { color: #1a5f7a; }
+.rel-moment { color: #0d6e4f; }
+.rel-indep { color: #8b3a3a; }
+.rel-asymp { color: #5a4a8a; }
+.rel-ols { color: #2c5aa0; }
+.box.takeaway { border-left: 3px solid #0d6e4f; }
+.box.note { border-left: 3px solid #1a5f7a; }
