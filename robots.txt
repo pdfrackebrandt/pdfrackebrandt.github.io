@@ -2,6 +2,7 @@
 # Search engines and AI answer engines that cite and link back: welcome.
 # AI training, dataset and bulk scraping crawlers: not welcome.
 # robots.txt is a request, not a lock: honest crawlers obey it, bad actors ignore it.
+# /notes/ is private (and encrypted), so it stays out of every index.
 
 # Search engines (Google Scholar crawls as Googlebot)
 User-agent: Googlebot
@@ -9,6 +10,7 @@ User-agent: bingbot
 User-agent: DuckDuckBot
 User-agent: Applebot
 Allow: /
+Disallow: /notes/
 
 # AI search indexers and user-triggered fetchers (they cite and link; not used for training)
 User-agent: OAI-SearchBot
@@ -27,6 +29,7 @@ User-agent: MistralAI-User
 User-agent: Kimi-SearchBot
 User-agent: Kimi-User
 Allow: /
+Disallow: /notes/
 
 # AI training, dataset and bulk scraping crawlers
 # (Google-Extended only affects Gemini training and Gemini app grounding, never Google Search or Scholar)
@@ -70,5 +73,6 @@ Disallow: /
 # Everyone else
 User-agent: *
 Allow: /
+Disallow: /notes/
 
 Sitemap: https://rackebrandt.pe/sitemap.xml

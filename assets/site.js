@@ -273,7 +273,7 @@
   function initTabs(){
     var bar=document.querySelector('.tabs'); if(!bar) return;
     var wrap=document.querySelector('.tabbar')||bar;
-    var tabs=Array.prototype.slice.call(bar.querySelectorAll('[role="tab"]'));
+    var tabs=Array.prototype.slice.call(wrap.querySelectorAll('[role="tab"]'));
     var sentinel=document.querySelector('.tabs-sentinel');
     var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function panelOf(t){ return document.getElementById(t.getAttribute('aria-controls')); }
@@ -286,6 +286,9 @@
         panelOf(x).hidden=!on;
       });
       if(opts.focus) t.focus();
+      // a locked panel takes the cursor straight to its password field
+      var field=panelOf(t).querySelector('.locked:not(.is-open) input');
+      if(field && opts.push) setTimeout(function(){ field.focus({preventScroll:true}); }, 60);
       if(opts.push) history.replaceState(null,'','#'+t.getAttribute('aria-controls'));
       if(opts.scroll && wrap.classList.contains('stuck') && sentinel){
         window.scrollTo({top: sentinel.getBoundingClientRect().top+window.pageYOffset, behavior: reduce?'auto':'smooth'});
@@ -400,6 +403,70 @@
     update();
   }
 
-  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initCite(); initToc(); initHurdle(); initRegime(); }
+  // private notes: the content ships encrypted (AES-GCM, key from the password by PBKDF2) and opens here
+  function initLocks(){
+    var locks=Array.prototype.slice.call(document.querySelectorAll('[data-lock]'));
+    if(!locks.length) return;
+    var KEY='notes-pass', keys={};
+    var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function bytes(b64){ var s=atob(b64), u=new Uint8Array(s.length); for(var i=0;i<s.length;i++) u[i]=s.charCodeAt(i); return u; }
+    function keyFor(pass, salt, iter){
+      var id=salt+'|'+iter+'|'+pass;
+      if(!keys[id]) keys[id]=crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']).then(function(base){
+        return crypto.subtle.deriveKey({name:'PBKDF2', salt:bytes(salt), iterations:iter, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+      });
+      return keys[id];
+    }
+    function open(lock, pass){
+      var s=lock.querySelector('.sealed');
+      return keyFor(pass, s.getAttribute('data-salt'), +s.getAttribute('data-iter')).then(function(k){
+        return crypto.subtle.decrypt({name:'AES-GCM', iv:bytes(s.getAttribute('data-iv'))}, k, bytes(s.textContent.trim()));
+      }).then(function(buf){ return new TextDecoder().decode(buf); });
+    }
+    function remember(pass){ try{ sessionStorage.setItem(KEY, pass); }catch(e){} }
+    function recall(){ try{ return sessionStorage.getItem(KEY); }catch(e){ return null; } }
+    function forget(){ try{ sessionStorage.removeItem(KEY); }catch(e){} }
+    function tabCount(lock){
+      var mark=document.querySelector('.tab-lock[data-locked]'); if(!mark || !lock.closest('#notes')) return;
+      var n=lock.querySelectorAll('.unsealed .note-card').length;
+      mark.removeAttribute('data-locked'); mark.classList.add('is-counted'); mark.textContent=n ? String(n) : '';
+    }
+    function reveal(lock, html, animate){
+      var out=lock.querySelector('.unsealed');
+      out.appendChild(document.createRange().createContextualFragment(html));
+      lock.classList.add(animate && !reduce ? 'is-opening' : 'is-open');
+      if(animate && !reduce) setTimeout(function(){ lock.classList.remove('is-opening'); lock.classList.add('is-open'); }, 900);
+      lock.querySelector('.sealed').remove();
+      if(window.initNoteFigures) window.initNoteFigures(out);
+      initToc();
+      tabCount(lock);
+      if(location.hash && location.hash.length>1){ var tgt=document.getElementById(decodeURIComponent(location.hash.slice(1))); if(tgt && out.contains(tgt)) tgt.scrollIntoView(); }
+    }
+    function wire(lock){
+      var form=lock.querySelector('.lock-form'), input=form.querySelector('input'), msg=lock.querySelector('.lock-msg'), busy=false;
+      input.addEventListener('input', function(){ lock.classList.remove('is-wrong'); msg.textContent=''; });
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        var pass=input.value; if(busy || !pass) return;
+        busy=true; lock.classList.add('is-busy'); lock.classList.remove('is-wrong');
+        open(lock, pass).then(function(html){
+          remember(pass);
+          locks.forEach(function(other){ if(other!==lock && !other.classList.contains('is-open')) open(other, pass).then(function(h){ reveal(other, h, false); }, function(){}); });
+          reveal(lock, html, true);
+        }, function(){
+          void lock.offsetWidth;   // restart the shake
+          lock.classList.add('is-wrong'); msg.textContent='Not quite. Try again.';
+          input.select();
+        }).then(function(){ busy=false; lock.classList.remove('is-busy'); });
+      });
+    }
+    var saved=recall();
+    locks.forEach(function(lock){
+      wire(lock);
+      if(saved) open(lock, saved).then(function(html){ reveal(lock, html, false); }, function(){ forget(); });
+    });
+  }
+
+  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initCite(); initToc(); initLocks(); initHurdle(); initRegime(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

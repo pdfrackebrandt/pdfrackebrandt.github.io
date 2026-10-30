@@ -220,6 +220,7 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 @media (max-width:560px){.eq .katex{font-size:1.1em}}
 .katex{color:inherit}
 .explainer p .katex,.explainer li .katex{color:var(--ink)}
+.mp{white-space:nowrap}
 .result{border:1px solid var(--rule);border-radius:4px;padding:12px 16px;display:flex;flex-direction:column;gap:8px}
 .result p{color:var(--ink)}
 .table{overflow-x:auto;margin:2px 0}
@@ -277,5 +278,65 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .note-label{font-family:var(--f-mono);font-size:var(--step--1);color:var(--signal);flex:none;width:28px}
 .note-title{font-size:var(--step-1);font-weight:600}
 .note-row p{font-size:var(--step-0);line-height:1.6;color:var(--ink-soft);padding-left:42px}
+
+/* Notes tab: right end of the tab row, a small lock until the password opens it */
+.tabs{flex:1 1 auto}
+.tab-notes{flex:none;margin-left:clamp(4px,2vw,20px)}
+.tab-lock{display:inline-flex;align-items:center;justify-content:center;min-width:12px}
+.tab-lock-icon{width:11px;height:13px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
+.tab-lock.is-counted{animation:count-in .45s cubic-bezier(.2,.8,.2,1.2) both}
+@keyframes count-in{from{opacity:0;transform:translateY(-.1em) scale(.6)}to{opacity:1;transform:translateY(-.55em) scale(1)}}
+@media (max-width:430px){.tabs{gap:16px}.tab{font-size:1.2rem}.view{padding:0 10px}}
+
+/* the lock */
+.locked{position:relative}
+.lockbox{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:clamp(44px,9vw,84px) 0 clamp(56px,10vw,96px);animation:lock-in .5s .22s both}
+@keyframes lock-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.lock-icon{width:30px;height:38px;margin-bottom:6px;overflow:visible;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lock-body{fill:var(--paper)}
+.lock-shackle{transform-box:fill-box;transform-origin:100% 100%;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.lock-hole{stroke-width:2}
+.lock-title{font-family:var(--f-display);font-size:1.75rem;line-height:1.15;color:var(--ink)}
+.lock-sub{font-size:var(--step--1);color:var(--muted)}
+.lock-form{display:flex;align-items:flex-end;gap:10px;width:min(300px,100%);margin-top:14px}
+.lock-field{position:relative;flex:1;display:block}
+.lock-field input{width:100%;min-height:44px;padding:8px 2px 7px;border:0;border-bottom:1px solid var(--rule);border-radius:0;background:transparent;font-family:var(--f-body);font-size:1rem;letter-spacing:.12em;color:var(--ink);outline:none;-webkit-appearance:none;appearance:none}
+.lock-field input::placeholder{letter-spacing:0;color:var(--faint);font-family:var(--f-display);font-size:1.15rem}
+.lock-field::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.5px;background:var(--green);transform:scaleX(0);transition:transform .35s cubic-bezier(.2,.8,.2,1),background-color .2s}
+.lock-field:focus-within::after{transform:scaleX(1)}
+.lock-go{flex:none;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--green);border-radius:3px;background:var(--green);color:var(--on-green);cursor:pointer;transition:transform .2s,opacity .2s}
+.lock-go svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.lock-go:hover svg{transform:translateX(2px)}
+.lock-go:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.lock-msg{min-height:1.4em;font-size:var(--step--1);color:var(--signal);opacity:0;transform:translateY(-3px);transition:opacity .2s,transform .2s}
+.is-busy .lock-go{opacity:.55;pointer-events:none}
+.is-busy .lock-go svg{animation:lock-wait .9s ease-in-out infinite}
+@keyframes lock-wait{50%{transform:translateX(4px)}}
+.is-wrong .lock-form{animation:lock-shake .45s cubic-bezier(.36,.07,.19,.97)}
+.is-wrong .lock-field::after{background:var(--signal);transform:scaleX(1)}
+.is-wrong .lock-msg{opacity:1;transform:none}
+@keyframes lock-shake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
+/* opening: the shackle lifts and swings, the lock fades up, the content rises in */
+.is-opening .lock-shackle{transform:translateY(-5px) rotate(28deg)}
+.is-opening .lock-field::after{transform:scaleX(1)}
+.is-opening .lockbox{animation:lock-out .45s .38s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes lock-out{to{opacity:0;transform:translateY(-10px)}}
+.is-opening .unsealed{position:absolute;inset:0 0 auto 0;pointer-events:none}
+.is-open .lockbox{display:none}
+.is-open .unsealed{animation:unseal .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes unseal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.unsealed:empty{display:none}
+.locked:not(.is-open):not(.is-opening) .unsealed{display:none}
+.is-opening .unsealed{visibility:hidden}
+
+/* notes are set in Calibri (Carlito is its free metric twin), on the pages and in the home panel */
+.notes-body,#notes .unsealed{--f-display:Calibri,Carlito,"Segoe UI","Helvetica Neue",Arial,sans-serif;--f-body:Calibri,Carlito,"Segoe UI","Helvetica Neue",Arial,sans-serif;--f-mono:Calibri,Carlito,"Segoe UI","Helvetica Neue",Arial,sans-serif;font-family:var(--f-body)}
+.notes-body .lockbox{--f-display:"Instrument Serif",Georgia,"Times New Roman",serif;--f-body:Inter,system-ui,Helvetica,Arial,sans-serif}
+.notes-body .explainer p,.notes-body .explainer li{font-size:1.0625rem;line-height:1.65}
+.notes-body .paper-page h1,.notes-body .notes-index h1{font-weight:700;font-size:clamp(1.7rem,4.5vw,2.2rem);line-height:1.15}
+.notes-body .explainer h2,.notes-body .note-course h2{font-weight:700;font-size:1.35rem}
+.notes-body .explainer h3{font-weight:700;font-size:1.1rem}
+.notes-body .explainer p.box-label{font-weight:700;font-size:1.1rem}
+#notes .unsealed .note-card h3{font-weight:700}
 
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
