@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L2: Estimation, asymptotics and confidence intervals · Pedro F. Rackebrandt</title>
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/notes.css">
+<style>
+body, body * { font-family: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif !important; }
+#gate { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+#gate input { font-size: 18px; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; width: 200px; }
+#gate button { font-size: 16px; padding: 8px 16px; background: #111; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+.rel-asymp { color: #5a4a8a; }
+</style>
+</head>
+<body>
+<div id="gate">
+  <p>Notes are for the class. Enter the password.</p>
+  <input type="password" id="pw" placeholder="password" autofocus>
+  <button onclick="checkPw()">Enter</button>
+  <p id="msg" style="color:#c00; min-height:1.2em;"></p>
+</div>
+<script>
+function checkPw() {
+  var v = document.getElementById('pw').value;
+  if (v === 'gato') {
+    sessionStorage.setItem('notes_ok', '1');
+    document.getElementById('gate').style.display = 'none';
+  } else {
+    document.getElementById('msg').textContent = 'Wrong password.';
+    document.getElementById('pw').value = '';
+  }
+}
+document.getElementById('pw').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPw();
+});
+if (sessionStorage.getItem('notes_ok') === '1') {
+  document.getElementById('gate').style.display = 'none';
+}
+</script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="page-top"><a class="back" href="/#notes">&larr; Pedro F. Rackebrandt</a></header>
+  <main id="main">
+  <article class="paper-page note-page">
+    <header class="paper-header">
+      <p class="eyebrow">Core Econometrics &middot; L2</p>
+      <h1>Estimation, asymptotics and confidence intervals</h1>
+      <p class="lede">LLN (weak and strong), CLT, Slutsky, consistency versus unbiasedness, and asymptotic intervals.</p>
+      <p class="page-actions"><a href="/notes/">All notes</a></p>
+    </header>
+    <h2>1. Estimators and the analogy principle</h2>
+    <p>An <span class="rel-asymp">estimator</span> is a function of the random sample, hence a random variable. An estimate is the value it takes in one sample. Population quantities are replaced by sample analogues: expectations become averages, the CDF becomes the EDF.</p>
+    <div class="box takeaway"><p class="box-label">Takeaway</p><p>An estimator is a random variable. Asymptotics describe its distribution as n grows.</p></div>
+    <h2>2. Law of large numbers</h2>
+    <p>The <span class="rel-asymp">weak LLN</span> and <span class="rel-asymp">strong LLN</span> both require the same moment conditions. The strong version gives almost-sure convergence. Cauchy has no mean, so averaging fails.</p>
+    <h2>3. Central limit theorem and Slutsky</h2>
+    <p>The <span class="rel-asymp">CLT</span> says the standardised sample mean is approximately normal. <span class="rel-asymp">Slutsky</span> lets you replace consistent estimators inside continuous functions without changing the limiting distribution.</p>
+    <h2>4. Consistency versus unbiasedness</h2>
+    <p>Unbiasedness is a finite-sample property. Consistency is asymptotic: the estimator converges in probability to the true value. An estimator can be biased yet consistent, or unbiased yet inconsistent.</p>
+    <div class="box note"><p class="box-label">Note</p><p>Use limits rigorously: state the theory result, the context, the assumptions, then derive and conclude.</p></div>
+  </article>
+  </main>
+</div>
+</body>
+</html>
