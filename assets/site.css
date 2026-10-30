@@ -292,13 +292,11 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .locked{position:relative}
 .lockbox{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:clamp(44px,9vw,84px) 0 clamp(56px,10vw,96px);animation:lock-in .5s .22s both}
 @keyframes lock-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.lock-icon{width:30px;height:38px;margin-bottom:6px;overflow:visible;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lock-icon{width:30px;height:38px;margin-bottom:2px;overflow:visible;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .lock-body{fill:var(--paper)}
 .lock-shackle{transform-box:fill-box;transform-origin:100% 100%;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
 .lock-hole{stroke-width:2}
-.lock-title{font-family:var(--f-display);font-size:1.75rem;line-height:1.15;color:var(--ink)}
-.lock-sub{font-size:var(--step--1);color:var(--muted)}
-.lock-form{display:flex;align-items:flex-end;gap:10px;width:min(300px,100%);margin-top:14px}
+.lock-form{display:flex;align-items:flex-end;gap:10px;width:min(300px,100%);margin-top:4px}
 .lock-field{position:relative;flex:1;display:block}
 .lock-field input{width:100%;min-height:44px;padding:8px 2px 7px;border:0;border-bottom:1px solid var(--rule);border-radius:0;background:transparent;font-family:var(--f-body);font-size:1rem;letter-spacing:.12em;color:var(--ink);outline:none;-webkit-appearance:none;appearance:none}
 .lock-field input::placeholder{letter-spacing:0;color:var(--faint);font-family:var(--f-display);font-size:1.15rem}
