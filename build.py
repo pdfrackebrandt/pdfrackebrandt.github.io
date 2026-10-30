@@ -640,8 +640,6 @@ def sealed_block(sid, html, indent_by=4):
 LOCK_HTML = """<div class="locked" data-lock>
   <div class="lockbox">
     <svg class="lock-icon" viewBox="0 0 32 40" aria-hidden="true"><path class="lock-shackle" d="M9 18v-6a7 7 0 0 1 14 0v6"/><rect class="lock-body" x="4" y="18" width="24" height="19" rx="3.5"/><path class="lock-hole" d="M16 25.5v4"/></svg>
-    <p class="lock-title">Private notes</p>
-    <p class="lock-sub">Type the password to open them.</p>
     <form class="lock-form" novalidate>
       <label class="lock-field"><span class="vh">Password</span><input type="password" name="password" autocomplete="current-password" placeholder="Password" spellcheck="false"></label>
       <button class="lock-go" type="submit" aria-label="Open the notes"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5"/></svg></button>
