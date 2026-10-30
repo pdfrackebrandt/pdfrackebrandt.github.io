@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Build rackebrandt.pe from data/*.json.
 
-Edit data/papers.json or data/site.json, run `python3 build.py`, commit everything.
-Writes index.html, papers/<slug>/index.html, sitemap.xml, llms.txt, llms-full.txt and assets/math.css.
-Paper explainers live in content/<slug>.md (Markdown with LaTeX math; see the notes above md_html).
+Edit data/papers.json, data/notes.json or data/site.json, run `python3 build.py`, commit everything.
+Writes index.html, papers/<slug>/index.html, notes/index.html, notes/<slug>/index.html, sitemap.xml,
+llms.txt, llms-full.txt and assets/math.css. Never edit those generated files by hand.
+Paper explainers live in content/<slug>.md and lecture notes in content/notes/<slug>.md
+(Markdown with LaTeX math; see the notes above md_html).
 Standard library only, except that new or changed math is rendered once with Node (cd tools && npm install).
 """
 import gzip
@@ -18,6 +20,8 @@ from html import escape, unescape
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = json.load(open(os.path.join(ROOT, 'data', 'site.json'), encoding='utf-8'))
 PAPERS = json.load(open(os.path.join(ROOT, 'data', 'papers.json'), encoding='utf-8'))
+NOTES_PATH = os.path.join(ROOT, 'data', 'notes.json')
+NOTES = json.load(open(NOTES_PATH, encoding='utf-8')) if os.path.exists(NOTES_PATH) else []
 BASE = SITE['url'].rstrip('/')
 VIEW = 'visual' if SITE.get('default_view') == 'visual' else 'list'   # how Research opens: 'list' or 'visual'
 YEAR = date.today().year
@@ -43,6 +47,14 @@ def indent(block, n):
 
 def url_of(p):
     return '/papers/%s/' % p['slug']
+
+
+def note_url(n):
+    return '/notes/%s/' % n['slug']
+
+
+def note_tag(n):
+    return '%s &middot; %s' % (escape(n['course']), escape(n['label']))
 
 
 def plain(html):
@@ -101,6 +113,8 @@ def help_html(p):
 # Paper explainers: content/<slug>.md, a small Markdown subset with LaTeX math.
 #   ## Heading      paragraphs      - bullets      1. numbers      > result box
 #   | table |       **bold**  *italic*  [link](url)  `code`        $inline$   $$display$$   \$ for a dollar sign
+#   ::: short|intuition|note|takeaway  then text, then :::  (a labelled box)
+#   [[figure]]  marks where a paper's main figure sits on phones      [[fig name]]  inlines src/figures/name.html
 # Math is rendered to static HTML at build time (KaTeX), so pages need no script and keep the strict CSP.
 # Rendered math is cached in data/math-cache.json.gz; Node and tools/node_modules are needed only for new math.
 
@@ -157,7 +171,7 @@ def md_table(lines):
     return '<div class="table"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (th, tb)
 
 
-BOX_LABELS = {'short': 'In short', 'intuition': 'Intuition', 'note': 'Note'}
+BOX_LABELS = {'short': 'In short', 'intuition': 'Intuition', 'note': 'Note', 'takeaway': 'Takeaway'}
 FIG_SLOT = '\x04FIGURE\x04'
 
 
@@ -183,6 +197,8 @@ def md_html(src):
             out.append(raw[int(tok.group(1))])
         elif block.strip() == '[[figure]]':
             out.append(FIG_SLOT)
+        elif re.fullmatch(r'\[\[fig [\w-]+\]\]', block.strip()):
+            out.append(figure(block.strip()[6:-2]))
         elif block.lstrip().startswith(('<svg', '<figure')):
             out.append(block.strip())
         elif block.strip().startswith('$$'):
@@ -287,6 +303,13 @@ def head(title, desc, canonical, extra=''):
            vcss=version('assets/site.css'), vjs=version('assets/site.js'))
 
 
+def math_links():
+    return ('<link rel="stylesheet" href="/assets/katex/katex.css?v=%s">\n<link rel="stylesheet" href="/assets/math.css?v=\x02MATHV\x02">\n'
+            '<link rel="preload" href="/assets/katex/fonts/KaTeX_Main-Regular.woff2" as="font" type="font/woff2" crossorigin>\n'
+            '<link rel="preload" href="/assets/katex/fonts/KaTeX_Math-Italic.woff2" as="font" type="font/woff2" crossorigin>\n'
+            % version('assets/katex/katex.css'))
+
+
 def featured_card(p):
     parts = ['<article class="paper" data-topic="%s">' % escape(p['topic']),
              '  <div class="paper-head">',
@@ -346,6 +369,24 @@ def index_list(papers):
   </div>'''.format(limit=SITE.get('list_collapsed', 10), filters=filters, groups='\n'.join(groups))
 
 
+NOTE_CARD = """        <div class="tool note-card">
+          <p class="eyebrow">{tag}</p>
+          <h3><a href="{url}">{title}</a></h3>
+          <p>{summary}</p>
+          <a class="go" href="{url}">Read the notes &rarr;</a>
+        </div>"""
+
+NOTE_PANEL = """
+
+    <section class="panel" id="notes" role="tabpanel" aria-labelledby="tab-notes">
+      <h2 class="vh">Notes</h2>
+      <div class="panel-head"><span></span><p class="kicker">%s</p></div>
+      <div class="tools">
+%s
+      </div>
+    </section>"""
+
+
 def build_index():
     socials = ['<a class="js-email" href="#contact" title="Email" aria-label="Email">%s</a>' % ICONS['email']]
     socials += ['<a href="%s" title="%s" aria-label="%s" rel="noopener noreferrer me">%s</a>'
@@ -359,6 +400,13 @@ def build_index():
         </div>'''.format(name=escape(t['name']), text=escape(t['text']),
                          tags=('\n          <div class="paper-tags">%s</div>' % ''.join('<span class="tag">%s</span>' % escape(x) for x in t['tags'])) if t.get('tags') else '')
                       for t in SITE['tools'])
+    notes = '\n'.join(NOTE_CARD.format(tag=note_tag(n), url=note_url(n), title=escape(n['title']), summary=escape(n['summary']))
+                      for n in NOTES)
+    notes_tab = notes_panel = ''
+    if NOTES:
+        notes_tab = ('\n      <a class="tab" role="tab" id="tab-notes" href="#notes" aria-controls="notes" aria-selected="false" tabindex="-1">'
+                     'Notes<span class="count">%d</span></a>' % len(NOTES))
+        notes_panel = NOTE_PANEL % (escape(SITE.get('notes_kicker', '')), notes)
     topics = []
     for p in PAPERS:
         for t in [p['topic']] + list(p.get('tags', [])):
@@ -392,7 +440,7 @@ def build_index():
   <div class="tabbar">
     <nav class="tabs" role="tablist" aria-label="Sections">
       <a class="tab" role="tab" id="tab-research" href="#research" aria-controls="research" aria-selected="true">Research<span class="count">{np}</span></a>
-      <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">{nt}</span></a>
+      <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">{nt}</span></a>{notes_tab}
     </nav>
     <div class="views" role="group" aria-label="Show research as" hidden>
       <button class="view" type="button" data-view="list" aria-pressed="{list_on}">List</button>
@@ -415,7 +463,7 @@ def build_index():
       <div class="tools">
 {tools}
       </div>
-    </section>
+    </section>{notes_panel}
   </main>
 
 </div>
@@ -424,7 +472,7 @@ def build_index():
 '''.format(name=escape(SITE['name']), bio=bio, socials=''.join(socials), np=len(PAPERS), nt=len(SITE['tools']),
            view=VIEW, list_on='true' if VIEW == 'list' else 'false', visual_on='true' if VIEW == 'visual' else 'false',
            tk=escape(SITE.get('tools_kicker', '')),
-           cards=cards, index=indent(index_list(PAPERS), 4), tools=tools)
+           cards=cards, index=indent(index_list(PAPERS), 4), tools=tools, notes_tab=notes_tab, notes_panel=notes_panel)
     return html
 
 
@@ -465,10 +513,7 @@ def build_paper(p):
         fig = fig.replace('<figure class="page-fig">', '<figure class="page-fig rows-%d">' % (4 if lead else 3), 1) + '\n'
     extra = '\n'.join(meta) + '\n'
     if '\x00M' in body:
-        extra += ('<link rel="stylesheet" href="/assets/katex/katex.css?v=%s">\n<link rel="stylesheet" href="/assets/math.css?v=\x02MATHV\x02">\n'
-                  '<link rel="preload" href="/assets/katex/fonts/KaTeX_Main-Regular.woff2" as="font" type="font/woff2" crossorigin>\n'
-                  '<link rel="preload" href="/assets/katex/fonts/KaTeX_Math-Italic.woff2" as="font" type="font/woff2" crossorigin>\n'
-                  % version('assets/katex/katex.css'))
+        extra += math_links()
     who = escape(SITE['name']) + ((', ' + byline(p)) if byline(p) else '')
     bib_id = 'bib-' + p['slug']
     html = head('%s · %s' % (p['title'], SITE['name']), p['summary'], canonical, extra) + """
@@ -507,6 +552,101 @@ def build_paper(p):
     return html
 
 
+def note_source(n):
+    f = os.path.join(ROOT, 'content', 'notes', n['slug'] + '.md')
+    return open(f, encoding='utf-8').read() if os.path.exists(f) else ''
+
+
+def note_head(title, desc, canonical, body):
+    extra = math_links() if '\x00M' in body else ''
+    if 'data-nfig' in body:
+        extra += ('<link rel="stylesheet" href="/assets/notes.css?v=%s">\n<script src="/assets/notes.js?v=%s" defer></script>\n'
+                  % (version('assets/notes.css'), version('assets/notes.js')))
+    return head(title, desc, canonical, extra)
+
+
+def toc_items(body):
+    return ''.join('<li><a href="#%s">%s</a></li>' % (m.group(1), m.group(2))
+                   for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', body))
+
+
+def build_note(n):
+    canonical = BASE + note_url(n)
+    body = md_html(note_source(n))
+    toc = toc_items(body)
+    course = [m for m in NOTES if m['course'] == n['course']]
+    others = ''
+    if len(course) > 1:
+        others = '\n      <p class="toc-label">%s</p>\n      <ol class="toc-list">%s</ol>' % (escape(n['course']), ''.join(
+            '<li><a href="%s"%s>%s %s</a></li>' % (note_url(m), ' aria-current="page"' if m is n else '', escape(m['label']), escape(m['title']))
+            for m in course))
+    html = note_head('%s: %s · %s' % (n['label'], n['title'], SITE['name']), n['summary'], canonical, body) + """
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="page-top"><a class="back" href="/#notes">&larr; {name}</a></header>
+  <main id="main">
+  <article class="paper-page note-page">
+    <header class="paper-header">
+      <p class="eyebrow">{tag}</p>
+      <h1>{title}</h1>
+      <p class="lede">{lede}</p>
+      <p class="page-actions"><a href="/notes/">All notes</a></p>
+    </header>
+    <nav class="toc toc-wide" aria-label="On this page">
+      <p class="toc-label">On this page</p>
+      <ol class="toc-list">{toc}</ol>{others}
+    </nav>
+    <details class="toc toc-narrow">
+      <summary>On this page</summary>
+      <ol class="toc-list">{toc}</ol>
+    </details>
+    <div class="explainer">
+{body}
+    </div>
+  </article>
+  </main>
+</div>
+</body>
+</html>
+""".format(name=escape(SITE['name']), tag=note_tag(n), title=escape(n['title']), lede=escape(n['summary']),
+           toc=toc, others=others, body=indent(body, 6))
+    return html
+
+
+def build_notes_index():
+    courses = []
+    for n in NOTES:
+        if n['course'] not in courses:
+            courses.append(n['course'])
+    groups = []
+    for c in courses:
+        rows = ''.join("""
+        <li class="note-row"><a href="{url}"><span class="note-label">{label}</span><span class="note-title">{title}</span></a>
+          <p>{summary}</p></li>""".format(url=note_url(n), label=escape(n['label']), title=escape(n['title']), summary=escape(n['summary']))
+                       for n in NOTES if n['course'] == c)
+        groups.append('      <section class="note-course">\n        <h2>%s</h2>\n        <ol class="note-rows">%s\n        </ol>\n      </section>'
+                      % (escape(c), rows))
+    desc = 'Lecture notes by %s from the Oxford MPhil in Economics, with interactive figures.' % SITE['name']
+    return head('Notes · %s' % SITE['name'], desc, BASE + '/notes/') + """
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="page-top"><a class="back" href="/#notes">&larr; {name}</a></header>
+  <main id="main" class="notes-index">
+    <header class="paper-header">
+      <p class="eyebrow">{kicker}</p>
+      <h1>Notes</h1>
+      <p class="lede">Lecture notes written to be read with the figures: move the sliders and watch the result.</p>
+    </header>
+{groups}
+  </main>
+</div>
+</body>
+</html>
+""".format(name=escape(SITE['name']), kicker=escape(SITE.get('notes_kicker', '')), groups='\n'.join(groups))
+
+
 def build_llms():
     lines = ['# %s' % SITE['name'], '', '> %s' % SITE['description'], '']
     for b in SITE['bio']:
@@ -520,6 +660,9 @@ def build_llms():
     for t in SITE['tools']:
         tags = (' (%s)' % ', '.join(t['tags'])) if t.get('tags') else ''
         lines.append('- %s%s: %s' % (t['name'], tags, plain(t['text'])))
+    if NOTES:
+        lines += ['', '## Notes', '']
+        lines += ['- [%s %s: %s](%s%s): %s' % (n['course'], n['label'], n['title'], BASE, note_url(n), n['summary']) for n in NOTES]
     lines += ['', '## Elsewhere', '']
     lines += ['- [%s](%s)' % (s['label'], s['url']) for s in SITE['socials']]
     lines += ['', '## Optional', '', '- [Full text of every paper summary](%s/llms-full.txt)' % BASE, '']
@@ -549,16 +692,27 @@ def main():
     pages = {os.path.join(ROOT, 'index.html'): build_index()}
     for p in PAPERS:
         pages[os.path.join(ROOT, 'papers', p['slug'], 'index.html')] = build_paper(p)
+    slugs = [n['slug'] for n in NOTES]
+    assert len(slugs) == len(set(slugs)), 'duplicate note slug'
+    if NOTES:
+        pages[os.path.join(ROOT, 'notes', 'index.html')] = build_notes_index()
+    for n in NOTES:
+        for k in ('slug', 'course', 'label', 'title', 'summary'):
+            assert n.get(k), '%s is missing %s' % (n.get('slug'), k)
+        assert note_source(n), 'content/notes/%s.md is missing' % n['slug']
+        pages[os.path.join(ROOT, 'notes', n['slug'], 'index.html')] = build_note(n)
     for path, html in resolve_math(pages).items():
         os.makedirs(os.path.dirname(path), exist_ok=True)
         open(path, 'w', encoding='utf-8').write(html.replace('\x02MATHV\x02', version('assets/math.css')))
     urls = [BASE + '/'] + [BASE + url_of(p) for p in PAPERS]
+    if NOTES:
+        urls += [BASE + '/notes/'] + [BASE + note_url(n) for n in NOTES]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % (
         '\n'.join('  <url><loc>%s</loc></url>' % u for u in urls))
     open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write(sm)
     open(os.path.join(ROOT, 'llms.txt'), 'w', encoding='utf-8').write(build_llms())
     open(os.path.join(ROOT, 'llms-full.txt'), 'w', encoding='utf-8').write(build_llms_full())
-    print('built index.html, %d paper pages, sitemap.xml, llms.txt, llms-full.txt' % len(PAPERS))
+    print('built index.html, %d paper pages, %d note pages, sitemap.xml, llms.txt, llms-full.txt' % (len(PAPERS), len(NOTES)))
 
 
 if __name__ == '__main__':
