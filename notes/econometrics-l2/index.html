@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>L2: Estimation, asymptotics and confidence intervals · Pedro F. Rackebrandt</title>
+<title>L2: Estimation, asymptotics and confidence intervals</title>
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/notes.css">
 <link rel="stylesheet" href="/assets/katex/katex.css">
 <script src="/assets/notes.js" defer></script>
-<script defer src="/assets/katex/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<script src="/assets/katex/auto-render.min.js" defer></script>
 <style>
 body, body * { font-family: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif !important; }
 #gate { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
@@ -26,21 +26,26 @@ body, body * { font-family: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-s
 </div>
 <script>
 function checkPw() {
-  var v = document.getElementById('pw').value;
-  if (v === 'gato') {
-    sessionStorage.setItem('notes_ok', '1');
-    document.getElementById('gate').style.display = 'none';
+  var v = document.getElementById("pw").value;
+  if (v === "gato") {
+    sessionStorage.setItem("notes_ok", "1");
+    document.getElementById("gate").style.display = "none";
   } else {
-    document.getElementById('msg').textContent = 'Wrong password.';
-    document.getElementById('pw').value = '';
+    document.getElementById("msg").textContent = "Wrong password.";
+    document.getElementById("pw").value = "";
   }
 }
-document.getElementById('pw').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') checkPw();
+document.getElementById("pw").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") checkPw();
 });
-if (sessionStorage.getItem('notes_ok') === '1') {
-  document.getElementById('gate').style.display = 'none';
+if (sessionStorage.getItem("notes_ok") === "1") {
+  document.getElementById("gate").style.display = "none";
 }
+document.addEventListener("DOMContentLoaded", function() {
+  if (typeof renderMathInElement === "function") {
+    renderMathInElement(document.body, {delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}]});
+  }
+});
 </script>
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
