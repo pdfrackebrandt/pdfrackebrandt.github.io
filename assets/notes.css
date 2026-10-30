@@ -1,0 +1,73 @@
+/* Lecture note figures, drawn by /assets/notes.js. Colours come from the site tokens, so dark mode follows. */
+.nfig{margin:6px 0 8px;padding:0;max-width:620px;display:flex;flex-direction:column;gap:10px;min-width:0;container-type:inline-size}
+[data-nfig="totalvar"]{--nfig-name:7.9em}
+.nfig-plot{display:block;width:100%;height:auto;overflow:visible;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.nfig-drag{cursor:crosshair;touch-action:pan-y}
+.nfig-plot:focus{outline:none}
+.nfig-plot:focus-visible{outline:1.5px solid var(--accent);outline-offset:4px}
+
+/* svg marks */
+.nfig text{font-family:var(--f-mono);font-size:11px;fill:var(--faint);font-variant-numeric:tabular-nums}
+.nfig .nf-title{fill:var(--muted)}
+.nfig .nf-lab{fill:var(--ink-soft)}
+.nfig text.nf-hot{fill:var(--signal)}
+.nf-ax,.nf-zero{stroke:var(--rule);stroke-width:1;fill:none}
+.nf-grid{stroke:var(--rule-soft);stroke-width:1;fill:none}
+.nf-line{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.nf-flat{stroke-linecap:butt}
+.nf-area{fill:var(--fig-blue);fill-opacity:.15;stroke:none}
+.nf-dot{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.nf-open{fill:var(--paper);stroke:var(--fig-blue);stroke-width:1.75}
+.nf-jump{stroke:var(--faint);stroke-width:1;stroke-dasharray:2 3}
+.nf-guide{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.nf-hread{stroke:var(--faint);stroke-width:1;stroke-dasharray:1 3}
+.nf-stem{transition:opacity .15s}
+.nf-stem.nf-off{opacity:.28}
+.nf-one{stroke:var(--faint);stroke-width:1;stroke-dasharray:4 4}
+.nf-one.nf-hot{stroke:var(--signal)}
+.nf-pt{fill:var(--fig-blue);fill-opacity:.5}
+.nf-fit{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:6 4}
+.nf-dw,.nf-w{fill:var(--fig-blue);fill-opacity:.38}
+.nf-b{fill:var(--fig-blue)}
+.nf-mean{stroke:var(--fig-blue);stroke-width:2.5;stroke-linecap:round}
+.nf-mean0{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 3}
+.nf-track{fill:var(--rule-soft)}
+/* translucent fills read weaker on the dark page, so they get a little more weight there */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .nf-area{fill-opacity:.22}
+  :root:not([data-theme="light"]) .nf-dw,:root:not([data-theme="light"]) .nf-w{fill-opacity:.5}
+  :root:not([data-theme="light"]) .nf-pt{fill-opacity:.62}
+}
+:root[data-theme="dark"] .nf-area{fill-opacity:.22}
+:root[data-theme="dark"] .nf-dw,:root[data-theme="dark"] .nf-w{fill-opacity:.5}
+:root[data-theme="dark"] .nf-pt{fill-opacity:.62}
+
+/* segmented choice */
+.nfig-seg{display:flex;flex-wrap:wrap;flex:1 1 auto;min-width:0;padding:1px 0 0 1px}
+.nfig-opt{flex:1 1 auto;margin:-1px 0 0 -1px;min-height:34px;padding:4px 10px;font-family:var(--f-mono);font-size:.75rem;line-height:1.2;color:var(--muted);background:transparent;border:1px solid var(--rule);border-radius:0;cursor:pointer;white-space:nowrap;transition:color .15s,background-color .15s}
+.nfig-opt:hover{color:var(--ink)}
+.nfig-opt[aria-pressed="true"]{color:var(--ink);background:var(--surface);box-shadow:inset 0 -2px 0 var(--fig-blue)}
+.nfig-opt:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:0;position:relative;z-index:1}
+@container (max-width:440px){.nfig-seg4 .nfig-opt{flex-basis:50%}}
+.nfig-bar .btn{flex:none;font-size:.75rem}
+
+/* sliders */
+.nfig-sliders{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0 26px}
+.nfig-range{display:flex;align-items:center;gap:10px;min-height:36px;min-width:0;font-family:var(--f-mono);font-size:.75rem;color:var(--muted);transition:opacity .15s}
+.nfig-name{flex:none;min-width:var(--nfig-name,0);color:var(--ink-soft)}
+.nfig-val{flex:none;min-width:2.7em;text-align:right;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.nfig-range.is-off{opacity:.4}
+.nfig input[type="range"]{-webkit-appearance:none;appearance:none;flex:1 1 auto;width:100%;min-width:64px;height:32px;margin:0;padding:0;background:transparent;cursor:pointer;accent-color:var(--fig-blue)}
+.nfig input[type="range"]:disabled{cursor:default}
+.nfig input[type="range"]:focus{outline:none}
+.nfig input[type="range"]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.nfig input[type="range"]::-webkit-slider-runnable-track{height:2px;border-radius:1px;background:linear-gradient(to right,var(--fig-blue) var(--p,50%),var(--rule) var(--p,50%))}
+.nfig input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;box-sizing:border-box;width:16px;height:16px;margin-top:-7px;border-radius:50%;background:var(--fig-blue);border:2px solid var(--paper)}
+.nfig input[type="range"]::-moz-range-track{height:2px;border-radius:1px;background:var(--rule)}
+.nfig input[type="range"]::-moz-range-progress{height:2px;border-radius:1px;background:var(--fig-blue)}
+.nfig input[type="range"]::-moz-range-thumb{box-sizing:border-box;width:16px;height:16px;border-radius:50%;background:var(--fig-blue);border:2px solid var(--paper)}
+
+/* readout and caption */
+.nfig .nfig-read{margin:0;font-family:var(--f-mono);font-size:.75rem;line-height:1.5;color:var(--muted);white-space:pre-wrap;font-variant-numeric:tabular-nums}
+.nfig-read .nf-warn{color:var(--signal)}
+.nfig figcaption{font-size:var(--step--1);line-height:1.6;color:var(--muted)}
