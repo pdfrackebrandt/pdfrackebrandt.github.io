@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="lln">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Population">
+      <button type="button" class="nfig-opt" data-dist="normal" aria-pressed="true">Normal(0, 1)</button>
+      <button type="button" class="nfig-opt" data-dist="cauchy" aria-pressed="false">Cauchy(0, 1)</button>
+    </div>
+    <button type="button" class="btn nfig-new">New paths</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">draws N</span><input type="range" min="20" max="2000" step="20" value="1000" data-k="n"><span class="nfig-val" aria-hidden="true">1000</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 270" role="img" aria-label="Five independent running sample means plotted against n on a log scale, from n = 1 to N, with a dashed line at the true mean 0. In the Normal mode a shaded band of plus or minus 2σ over the square root of n narrows around the mean and the paths settle inside it. In the Cauchy mode there is no band and the paths keep jumping."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">at n = 1000 the five means lie between −0.04 and −0.01, band ±0.06</p>
+  <figcaption>Press New paths a few times: with Normal draws every path ends up inside the shaded band, which narrows like 1/√n. Switch to Cauchy, which has no mean: single huge draws keep yanking the averages away, however large N gets.</figcaption>
+</figure>

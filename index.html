@@ -19,8 +19,8 @@
 <link rel="alternate" type="text/markdown" href="/llms.txt" title="Plain text summary for AI agents">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/site.css?v=73256074">
-<script src="/assets/site.js?v=3a59a68c" defer></script>
+<link rel="stylesheet" href="/assets/site.css?v=bf215417">
+<script src="/assets/site.js?v=8ca11791" defer></script>
 <script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -45,15 +45,15 @@
 
   <div class="tabs-sentinel" aria-hidden="true"></div>
   <div class="tabbar">
-    <nav class="tabs" role="tablist" aria-label="Sections">
+    <nav class="tabs" role="tablist" aria-label="Sections" aria-owns="tab-notes">
       <a class="tab" role="tab" id="tab-research" href="#research" aria-controls="research" aria-selected="true">Research<span class="count">3</span></a>
       <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">2</span></a>
-      <a class="tab" role="tab" id="tab-notes" href="#notes" aria-controls="notes" aria-selected="false" tabindex="-1">Notes<span class="count">4</span></a>
     </nav>
     <div class="views" role="group" aria-label="Show research as" hidden>
       <button class="view" type="button" data-view="list" aria-pressed="true">List</button>
       <button class="view" type="button" data-view="visual" aria-pressed="false">Visual</button>
     </div>
+    <a class="tab tab-notes" role="tab" id="tab-notes" href="#notes" aria-controls="notes" aria-selected="false" tabindex="-1">Notes<span class="count tab-lock" data-locked><svg class="tab-lock-icon" viewBox="0 0 12 14" aria-hidden="true"><path d="M3.5 6.5V4.5a2.5 2.5 0 0 1 5 0v2"/><rect x="1.5" y="6.5" width="9" height="6.5" rx="1.2"/></svg></span></a>
   </div>
 
   <main id="main">
@@ -298,32 +298,19 @@
 
     <section class="panel" id="notes" role="tabpanel" aria-labelledby="tab-notes">
       <h2 class="vh">Notes</h2>
-      <div class="panel-head"><span></span><p class="kicker">Oxford MPhil Economics</p></div>
-      <div class="tools">
-        <div class="tool note-card">
-          <p class="eyebrow">Core Econometrics &middot; L1</p>
-          <h3><a href="/notes/econometrics-l1/">Probability, distributions and moments</a></h3>
-          <p>The axioms, CDFs and densities, moments, iterated expectations, total variance, and why zero correlation is not independence.</p>
-          <a class="go" href="/notes/econometrics-l1/">Read the notes &rarr;</a>
+      <div class="locked" data-lock>
+        <div class="lockbox">
+          <svg class="lock-icon" viewBox="0 0 32 40" aria-hidden="true"><path class="lock-shackle" d="M9 18v-6a7 7 0 0 1 14 0v6"/><rect class="lock-body" x="4" y="18" width="24" height="19" rx="3.5"/><path class="lock-hole" d="M16 25.5v4"/></svg>
+          <p class="lock-title">Private notes</p>
+          <p class="lock-sub">Type the password to open them.</p>
+          <form class="lock-form" novalidate>
+            <label class="lock-field"><span class="vh">Password</span><input type="password" name="password" autocomplete="current-password" placeholder="Password" spellcheck="false"></label>
+            <button class="lock-go" type="submit" aria-label="Open the notes"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5"/></svg></button>
+          </form>
+          <p class="lock-msg" role="status" aria-live="polite"></p>
         </div>
-        <div class="tool note-card">
-          <p class="eyebrow">Core Econometrics &middot; L2</p>
-          <h3><a href="/notes/econometrics-l2/">Estimation, asymptotics and confidence intervals</a></h3>
-          <p>LLN (weak and strong), CLT, Slutsky, consistency versus unbiasedness, and asymptotic intervals.</p>
-          <a class="go" href="/notes/econometrics-l2/">Read the notes &rarr;</a>
-        </div>
-        <div class="tool note-card">
-          <p class="eyebrow">Core Econometrics &middot; L3</p>
-          <h3><a href="/notes/econometrics-l3/">Matrix algebra review</a></h3>
-          <p>Rank, inverse, quadratic forms, and the matrix calculus used in the OLS first-order conditions.</p>
-          <a class="go" href="/notes/econometrics-l3/">Read the notes &rarr;</a>
-        </div>
-        <div class="tool note-card">
-          <p class="eyebrow">Core Econometrics &middot; L4</p>
-          <h3><a href="/notes/econometrics-l4/">OLS estimator and finite-sample properties</a></h3>
-          <p>The OLS formula, unbiasedness under OLS.1–3, variance under OLS.1–4, Gauss–Markov, and the residual maker.</p>
-          <a class="go" href="/notes/econometrics-l4/">Read the notes &rarr;</a>
-        </div>
+        <div class="sealed" hidden data-salt="+dtaHajVHSQX6GNHQa7WCw==" data-iter="310000" data-iv="Dpho3ynu5/2T6iUP">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</div>
+        <div class="unsealed"></div>
       </div>
     </section>
   </main>

@@ -6,6 +6,7 @@ Writes index.html, papers/<slug>/index.html, notes/index.html, notes/<slug>/inde
 llms.txt, llms-full.txt and assets/math.css. Never edit those generated files by hand.
 Paper explainers live in content/<slug>.md and lecture notes in content/notes/<slug>.md
 (Markdown with LaTeX math; see the notes above md_html).
+Lecture notes are private: they ship encrypted and open in the browser with the password (see the notes above seal).
 Standard library only, except that new or changed math is rendered once with Node (cd tools && npm install).
 """
 import gzip
@@ -21,7 +22,8 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = json.load(open(os.path.join(ROOT, 'data', 'site.json'), encoding='utf-8'))
 PAPERS = json.load(open(os.path.join(ROOT, 'data', 'papers.json'), encoding='utf-8'))
 NOTES_PATH = os.path.join(ROOT, 'data', 'notes.json')
-NOTES = json.load(open(NOTES_PATH, encoding='utf-8')) if os.path.exists(NOTES_PATH) else []
+NOTES = []        # loaded in main(): data/notes.json (local only, git ignores it) or its sealed copy data/notes.json.sealed
+PASSWORD = None   # set in main() from NOTES_PASSWORD or .notes-password
 BASE = SITE['url'].rstrip('/')
 VIEW = 'visual' if SITE.get('default_view') == 'visual' else 'list'   # how Research opens: 'list' or 'visual'
 YEAR = date.today().year
@@ -138,7 +140,9 @@ def md_inline(s):
         return '\x01%d\x01' % (len(keep) - 1)
 
     s = s.replace('\\$', stash('$'))
-    s = re.sub(r'\$([^$\n]+?)\$', lambda m: stash(math_token(m.group(1), False)), s)
+    # punctuation right after inline math stays on its line ($x$. never wraps the full stop to the next line)
+    s = re.sub(r'\$([^$\n]+?)\$([.,;:!?)\]]*)', lambda m: stash(
+        '<span class="mp">%s%s</span>' % (math_token(m.group(1), False), escape(m.group(2))) if m.group(2) else math_token(m.group(1), False)), s)
     s = re.sub(r'`([^`]+)`', lambda m: stash('<code>%s</code>' % escape(m.group(1))), s)
     s = escape(s, quote=False)
     s = re.sub(r'\[([^\]]+)\]\(([^)\s]+)\)', lambda m: '<a href="%s"%s>%s</a>' % (
@@ -380,11 +384,11 @@ NOTE_PANEL = """
 
     <section class="panel" id="notes" role="tabpanel" aria-labelledby="tab-notes">
       <h2 class="vh">Notes</h2>
-      <div class="panel-head"><span></span><p class="kicker">%s</p></div>
-      <div class="tools">
 %s
-      </div>
     </section>"""
+
+LOCK_GLYPH = ('<svg class="tab-lock-icon" viewBox="0 0 12 14" aria-hidden="true"><path d="M3.5 6.5V4.5a2.5 2.5 0 0 1 5 0v2"/>'
+              '<rect x="1.5" y="6.5" width="9" height="6.5" rx="1.2"/></svg>')
 
 
 def build_index():
@@ -402,11 +406,13 @@ def build_index():
                       for t in SITE['tools'])
     notes = '\n'.join(NOTE_CARD.format(tag=note_tag(n), url=note_url(n), title=escape(n['title']), summary=escape(n['summary']))
                       for n in NOTES)
-    notes_tab = notes_panel = ''
-    if NOTES:
-        notes_tab = ('\n      <a class="tab" role="tab" id="tab-notes" href="#notes" aria-controls="notes" aria-selected="false" tabindex="-1">'
-                     'Notes<span class="count">%d</span></a>' % len(NOTES))
-        notes_panel = NOTE_PANEL % (escape(SITE.get('notes_kicker', '')), notes)
+    notes_tab = notes_panel = owns = ''
+    if NOTES or LOCK.get('home'):
+        # the Notes tab sits at the right end of the tab row, after the List or Visual switch; aria-owns keeps it in the tablist
+        owns = ' aria-owns="tab-notes"'
+        notes_tab = ('\n    <a class="tab tab-notes" role="tab" id="tab-notes" href="#notes" aria-controls="notes" aria-selected="false" tabindex="-1">'
+                     'Notes<span class="count tab-lock" data-locked>%s</span></a>' % LOCK_GLYPH)
+        notes_panel = NOTE_PANEL % sealed_block('home', '      <div class="tools">\n%s\n      </div>' % notes, indent_by=6)
     topics = []
     for p in PAPERS:
         for t in [p['topic']] + list(p.get('tags', [])):
@@ -438,14 +444,14 @@ def build_index():
 
   <div class="tabs-sentinel" aria-hidden="true"></div>
   <div class="tabbar">
-    <nav class="tabs" role="tablist" aria-label="Sections">
+    <nav class="tabs" role="tablist" aria-label="Sections"{owns}>
       <a class="tab" role="tab" id="tab-research" href="#research" aria-controls="research" aria-selected="true">Research<span class="count">{np}</span></a>
-      <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">{nt}</span></a>{notes_tab}
+      <a class="tab" role="tab" id="tab-tools" href="#tools" aria-controls="tools" aria-selected="false" tabindex="-1">Tools<span class="count">{nt}</span></a>
     </nav>
     <div class="views" role="group" aria-label="Show research as" hidden>
       <button class="view" type="button" data-view="list" aria-pressed="{list_on}">List</button>
       <button class="view" type="button" data-view="visual" aria-pressed="{visual_on}">Visual</button>
-    </div>
+    </div>{notes_tab}
   </div>
 
   <main id="main">
@@ -472,7 +478,7 @@ def build_index():
 '''.format(name=escape(SITE['name']), bio=bio, socials=''.join(socials), np=len(PAPERS), nt=len(SITE['tools']),
            view=VIEW, list_on='true' if VIEW == 'list' else 'false', visual_on='true' if VIEW == 'visual' else 'false',
            tk=escape(SITE.get('tools_kicker', '')),
-           cards=cards, index=indent(index_list(PAPERS), 4), tools=tools, notes_tab=notes_tab, notes_panel=notes_panel)
+           cards=cards, index=indent(index_list(PAPERS), 4), tools=tools, notes_tab=notes_tab, notes_panel=notes_panel, owns=owns)
     return html
 
 
@@ -552,13 +558,129 @@ def build_paper(p):
     return html
 
 
+# ---------------------------------------------------------------------------
+# Private notes. Everything a visitor could read (the Notes panel on the home page, /notes/ and each note) is
+# encrypted at build time with AES-256-GCM under a key derived from the password (PBKDF2-SHA256), and decrypted in
+# the browser by assets/site.js once the visitor types the password. The plain Markdown never enters the repo:
+# content/notes/<slug>.md stays local (git ignores it) and the repo keeps content/notes/<slug>.md.sealed.
+# The password comes from the NOTES_PASSWORD environment variable or the file .notes-password (git ignores it too).
+# Without it the build still runs: it leaves notes/ as it is and reuses the sealed home panel from data/notes-lock.json.
+# Sealing needs Node (tools/seal.mjs, no packages). A short password keeps casual visitors out, not a determined attacker.
+
+LOCK_PATH = os.path.join(ROOT, 'data', 'notes-lock.json')
+LOCK = json.load(open(LOCK_PATH, encoding='utf-8')) if os.path.exists(LOCK_PATH) else {}
+SEAL_RE = re.compile('\x05S([\\w/.-]+)\x05(.*?)\x05E\x05', re.S)
+
+
+def notes_password():
+    pw = os.environ.get('NOTES_PASSWORD')
+    f = os.path.join(ROOT, '.notes-password')
+    if not pw and os.path.exists(f):
+        pw = open(f, encoding='utf-8').read().strip()
+    return pw or None
+
+
+def seal(mode, items):
+    run = subprocess.run(['node', os.path.join(ROOT, 'tools', 'seal.mjs')], capture_output=True, text=True,
+                         input=json.dumps({'mode': mode, 'password': PASSWORD, 'salt': LOCK['salt'], 'iter': LOCK['iter'], 'items': items}))
+    if run.returncode:
+        raise SystemExit('Sealing failed (wrong password?):\n' + run.stderr.strip().split('\n')[-1])
+    return json.loads(run.stdout)
+
+
+def setup_lock():
+    """Check the password against the stored check value, or start a new lock on the first build."""
+    if not PASSWORD:
+        return
+    if not LOCK.get('salt'):
+        import base64
+        LOCK.update(salt=base64.b64encode(os.urandom(16)).decode(), iter=310000)
+        LOCK['check'] = {k: v for k, v in seal('seal', [{'id': 'check', 'text': 'rackebrandt notes'}])[0].items() if k != 'id'}
+    else:
+        seal('open', [dict(LOCK['check'], id='check')])
+
+
+def load_notes():
+    """The list of notes is private too: the repo keeps only data/notes.json.sealed."""
+    sealed = NOTES_PATH + '.sealed'
+    if os.path.exists(NOTES_PATH):
+        text = open(NOTES_PATH, encoding='utf-8').read()
+        if PASSWORD:
+            box = {k: v for k, v in seal('seal', [{'id': 'notes.json', 'text': text}])[0].items() if k != 'id'}
+            old = json.load(open(sealed, encoding='utf-8')) if os.path.exists(sealed) else None
+            if box != old:
+                json.dump(box, open(sealed, 'w', encoding='utf-8'), indent=0)
+        return json.loads(text)
+    if os.path.exists(sealed) and PASSWORD:
+        return json.loads(seal('open', [dict(json.load(open(sealed, encoding='utf-8')), id='notes.json')])[0]['text'])
+    return []
+
+
 def note_source(n):
     f = os.path.join(ROOT, 'content', 'notes', n['slug'] + '.md')
-    return open(f, encoding='utf-8').read() if os.path.exists(f) else ''
+    sealed = f + '.sealed'
+    if os.path.exists(f):
+        text = open(f, encoding='utf-8').read()
+        if PASSWORD:
+            box = {k: v for k, v in seal('seal', [{'id': 'src/' + n['slug'], 'text': text}])[0].items() if k != 'id'}
+            old = json.load(open(sealed, encoding='utf-8')) if os.path.exists(sealed) else None
+            if box != old:
+                json.dump(box, open(sealed, 'w', encoding='utf-8'), indent=0)
+        return text
+    if os.path.exists(sealed) and PASSWORD:
+        return seal('open', [dict(json.load(open(sealed, encoding='utf-8')), id='src/' + n['slug'])])[0]['text']
+    return ''
+
+
+def sealed_block(sid, html, indent_by=4):
+    """Mark html for sealing; seal_pages swaps the marked span for the lock and the ciphertext after math is rendered."""
+    return indent('\x05S%s\x05%s\x05E\x05' % (sid, html), indent_by)
+
+
+LOCK_HTML = """<div class="locked" data-lock>
+  <div class="lockbox">
+    <svg class="lock-icon" viewBox="0 0 32 40" aria-hidden="true"><path class="lock-shackle" d="M9 18v-6a7 7 0 0 1 14 0v6"/><rect class="lock-body" x="4" y="18" width="24" height="19" rx="3.5"/><path class="lock-hole" d="M16 25.5v4"/></svg>
+    <p class="lock-title">Private notes</p>
+    <p class="lock-sub">Type the password to open them.</p>
+    <form class="lock-form" novalidate>
+      <label class="lock-field"><span class="vh">Password</span><input type="password" name="password" autocomplete="current-password" placeholder="Password" spellcheck="false"></label>
+      <button class="lock-go" type="submit" aria-label="Open the notes"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5"/></svg></button>
+    </form>
+    <p class="lock-msg" role="status" aria-live="polite"></p>
+  </div>
+  <div class="sealed" hidden data-salt="{salt}" data-iter="{iter}" data-iv="{iv}">{ct}</div>
+  <div class="unsealed"></div>
+</div>"""
+
+
+def lock_html(box, indent_text):
+    return indent(LOCK_HTML.format(salt=LOCK['salt'], iter=LOCK['iter'], iv=box['iv'], ct=box['ct']), len(indent_text)).lstrip()
+
+
+def seal_pages(pages):
+    """Encrypt every marked span. Without the password only the home panel can be filled, from the last sealed copy."""
+    found = {}
+    for path, html in pages.items():
+        for m in SEAL_RE.finditer(html):
+            found[m.group(1)] = m.group(2)
+    boxes = {}
+    if PASSWORD and found:
+        boxes = {b['id']: {'iv': b['iv'], 'ct': b['ct']} for b in seal('seal', [{'id': k, 'text': v.strip()} for k, v in found.items()])}
+        if LOCK.get('home') != boxes.get('home'):
+            LOCK['home'] = boxes.get('home')
+    elif LOCK.get('home'):
+        boxes['home'] = LOCK['home']
+
+    def swap(m):
+        box = boxes.get(m.group(1))
+        line_start = m.string.rfind('\n', 0, m.start()) + 1
+        return lock_html(box, m.string[line_start:m.start()]) if box else ''
+    return {path: SEAL_RE.sub(swap, html) for path, html in pages.items()}
 
 
 def note_head(title, desc, canonical, body):
-    extra = math_links() if '\x00M' in body else ''
+    extra = '<meta name="robots" content="noindex, nofollow">\n'
+    extra += math_links() if '\x00M' in body else ''
     if 'data-nfig' in body:
         extra += ('<link rel="stylesheet" href="/assets/notes.css?v=%s">\n<script src="/assets/notes.js?v=%s" defer></script>\n'
                   % (version('assets/notes.css'), version('assets/notes.js')))
@@ -580,13 +702,7 @@ def build_note(n):
         others = '\n      <p class="toc-label">%s</p>\n      <ol class="toc-list">%s</ol>' % (escape(n['course']), ''.join(
             '<li><a href="%s"%s>%s %s</a></li>' % (note_url(m), ' aria-current="page"' if m is n else '', escape(m['label']), escape(m['title']))
             for m in course))
-    html = note_head('%s: %s · %s' % (n['label'], n['title'], SITE['name']), n['summary'], canonical, body) + """
-<body>
-<a class="skip" href="#main">Skip to content</a>
-<div class="wrap">
-  <header class="page-top"><a class="back" href="/#notes">&larr; {name}</a></header>
-  <main id="main">
-  <article class="paper-page note-page">
+    article = """<article class="paper-page note-page">
     <header class="paper-header">
       <p class="eyebrow">{tag}</p>
       <h1>{title}</h1>
@@ -604,14 +720,19 @@ def build_note(n):
     <div class="explainer">
 {body}
     </div>
-  </article>
+  </article>""".format(tag=note_tag(n), title=escape(n['title']), lede=escape(n['summary']), toc=toc, others=others, body=indent(body, 6))
+    return note_head('Notes · %s' % SITE['name'], 'Private notes.', canonical, body) + """
+<body class="notes-body">
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="page-top"><a class="back" href="/#notes">&larr; {name}</a></header>
+  <main id="main">
+{article}
   </main>
 </div>
 </body>
 </html>
-""".format(name=escape(SITE['name']), tag=note_tag(n), title=escape(n['title']), lede=escape(n['summary']),
-           toc=toc, others=others, body=indent(body, 6))
-    return html
+""".format(name=escape(SITE['name']), article=sealed_block(note_url(n).strip('/'), article, 2))
 
 
 def build_notes_index():
@@ -627,24 +748,26 @@ def build_notes_index():
                        for n in NOTES if n['course'] == c)
         groups.append('      <section class="note-course">\n        <h2>%s</h2>\n        <ol class="note-rows">%s\n        </ol>\n      </section>'
                       % (escape(c), rows))
-    desc = 'Lecture notes by %s from the Oxford MPhil in Economics, with interactive figures.' % SITE['name']
-    return head('Notes · %s' % SITE['name'], desc, BASE + '/notes/') + """
-<body>
+    listing = """<div class="notes-index">
+  <header class="paper-header">
+    <p class="eyebrow">{kicker}</p>
+    <h1>Notes</h1>
+    <p class="lede">Lecture notes written to be read with the figures: move the sliders and watch the result.</p>
+  </header>
+{groups}
+</div>""".format(kicker=escape(SITE.get('notes_kicker', '')), groups='\n'.join(groups))
+    return note_head('Notes · %s' % SITE['name'], 'Private notes.', BASE + '/notes/', '') + """
+<body class="notes-body">
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
   <header class="page-top"><a class="back" href="/#notes">&larr; {name}</a></header>
-  <main id="main" class="notes-index">
-    <header class="paper-header">
-      <p class="eyebrow">{kicker}</p>
-      <h1>Notes</h1>
-      <p class="lede">Lecture notes written to be read with the figures: move the sliders and watch the result.</p>
-    </header>
-{groups}
+  <main id="main">
+{listing}
   </main>
 </div>
 </body>
 </html>
-""".format(name=escape(SITE['name']), kicker=escape(SITE.get('notes_kicker', '')), groups='\n'.join(groups))
+""".format(name=escape(SITE['name']), listing=sealed_block('notes', listing, 2))
 
 
 def build_llms():
@@ -660,9 +783,6 @@ def build_llms():
     for t in SITE['tools']:
         tags = (' (%s)' % ', '.join(t['tags'])) if t.get('tags') else ''
         lines.append('- %s%s: %s' % (t['name'], tags, plain(t['text'])))
-    if NOTES:
-        lines += ['', '## Notes', '']
-        lines += ['- [%s %s: %s](%s%s): %s' % (n['course'], n['label'], n['title'], BASE, note_url(n), n['summary']) for n in NOTES]
     lines += ['', '## Elsewhere', '']
     lines += ['- [%s](%s)' % (s['label'], s['url']) for s in SITE['socials']]
     lines += ['', '## Optional', '', '- [Full text of every paper summary](%s/llms-full.txt)' % BASE, '']
@@ -684,29 +804,37 @@ def build_llms_full():
 
 
 def main():
+    global PASSWORD, NOTES
+    PASSWORD = notes_password()
     slugs = [p['slug'] for p in PAPERS]
     assert len(slugs) == len(set(slugs)), 'duplicate slug'
     for p in PAPERS:
         for k in ('slug', 'title', 'year', 'status', 'topic', 'summary', 'text'):
             assert p.get(k), '%s is missing %s' % (p.get('slug'), k)
+    setup_lock()
+    NOTES = load_notes()
     pages = {os.path.join(ROOT, 'index.html'): build_index()}
     for p in PAPERS:
         pages[os.path.join(ROOT, 'papers', p['slug'], 'index.html')] = build_paper(p)
     slugs = [n['slug'] for n in NOTES]
     assert len(slugs) == len(set(slugs)), 'duplicate note slug'
-    if NOTES:
+    if NOTES and PASSWORD:
         pages[os.path.join(ROOT, 'notes', 'index.html')] = build_notes_index()
-    for n in NOTES:
-        for k in ('slug', 'course', 'label', 'title', 'summary'):
-            assert n.get(k), '%s is missing %s' % (n.get('slug'), k)
-        assert note_source(n), 'content/notes/%s.md is missing' % n['slug']
-        pages[os.path.join(ROOT, 'notes', n['slug'], 'index.html')] = build_note(n)
-    for path, html in resolve_math(pages).items():
+        for n in NOTES:
+            for k in ('slug', 'course', 'label', 'title', 'summary'):
+                assert n.get(k), '%s is missing %s' % (n.get('slug'), k)
+            assert note_source(n), 'content/notes/%s.md (or .md.sealed) is missing' % n['slug']
+            pages[os.path.join(ROOT, 'notes', n['slug'], 'index.html')] = build_note(n)
+    elif NOTES:
+        print('No notes password (NOTES_PASSWORD or .notes-password): notes/ left as it is.')
+    pages = resolve_math(pages)
+    pages = {path: html.replace('\x02MATHV\x02', version('assets/math.css')) for path, html in pages.items()}
+    for path, html in seal_pages(pages).items():
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        open(path, 'w', encoding='utf-8').write(html.replace('\x02MATHV\x02', version('assets/math.css')))
+        open(path, 'w', encoding='utf-8').write(html)
+    if PASSWORD:
+        json.dump(LOCK, open(LOCK_PATH, 'w', encoding='utf-8'), indent=1, sort_keys=True)
     urls = [BASE + '/'] + [BASE + url_of(p) for p in PAPERS]
-    if NOTES:
-        urls += [BASE + '/notes/'] + [BASE + note_url(n) for n in NOTES]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % (
         '\n'.join('  <url><loc>%s</loc></url>' % u for u in urls))
     open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write(sm)

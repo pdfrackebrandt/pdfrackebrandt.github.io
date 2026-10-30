@@ -72,20 +72,51 @@
 .nfig-read .nf-warn{color:var(--signal)}
 .nfig figcaption{font-size:var(--step--1);line-height:1.6;color:var(--muted)}
 
-/* Force Calibri only, no fancy fonts */
-body.note-page, body.note-page *,
-.notes-index, .notes-index *,
-.paper-page.note-page, .paper-page.note-page * {
-  font-family: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+/* L2 to L4 figures: running means, CLT histogram, determinant, OLS */
+.nf-path{fill:none;stroke:var(--fig-blue);stroke-width:1.4;stroke-opacity:.78;stroke-linejoin:round}
+.nf-band{fill:var(--fig-blue);fill-opacity:.1;stroke:none}
+.nf-hist{fill:var(--fig-blue);fill-opacity:.16;stroke:none}
+.nf-sw{stroke:var(--fig-blue);stroke-width:1}
+.nf-histline{fill:none;stroke:var(--fig-blue);stroke-width:1.25;stroke-linejoin:miter}
+.nf-ref{fill:none;stroke:var(--ink-soft);stroke-width:1.75;stroke-linejoin:round;stroke-linecap:round}
+.nf-unit{fill:none;stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3}
+.nf-par{fill:var(--fig-blue);fill-opacity:.15;stroke:var(--fig-blue);stroke-opacity:.4;stroke-width:1;stroke-linejoin:round;transition:fill .15s,stroke .15s}
+.nf-par.nf-neg{fill:var(--signal);stroke:var(--signal)}
+.nf-vec{stroke-width:2.25;stroke-linecap:round}
+.nf-v1{stroke:var(--fig-blue)}
+.nf-v2{stroke:var(--green)}
+.nf-head{stroke:none}
+.nf-head.nf-v1{fill:var(--fig-blue)}
+.nf-head.nf-v2{fill:var(--green)}
+.nf-knob{fill:var(--paper);stroke-width:2}
+.nf-hit{fill:transparent;stroke:none}
+.nf-ring{fill:none;stroke:var(--accent);stroke-width:1.5;opacity:0}
+.nf-handle{cursor:grab;outline:none;touch-action:none}
+.nf-handle:focus{outline:none}
+.nf-handle:focus-visible .nf-ring{opacity:1}
+.nfig .nf-c1{fill:var(--fig-blue)}
+.nfig .nf-c2{fill:var(--green)}
+.nfig .nf-vlab{font-size:13px;font-style:italic}
+.nfig .nf-sub{font-size:9px;font-style:normal}
+.nfig text.nf-halo{paint-order:stroke;stroke:var(--paper);stroke-width:3px;stroke-linejoin:round}
+.nf-abg{fill:var(--paper);fill-opacity:.85}
+.nf-mbg{fill:var(--paper);fill-opacity:.88;stroke:var(--rule-soft)}
+.nf-brk{fill:none;stroke:var(--muted);stroke-width:1.25}
+.nf-res{stroke:var(--signal);stroke-width:1.25;stroke-opacity:.75}
+.nf-ols{stroke:var(--ink-soft);stroke-width:1.75;stroke-linecap:round}
+.nf-pt2{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5;cursor:grab}
+.nf-meanpt{fill:var(--paper);stroke:var(--ink-soft);stroke-width:1.5}
+.nf-sel{fill:none;stroke:var(--accent);stroke-width:1.5;opacity:0}
+.nfig-plot:focus-visible .nf-sel{opacity:1}
+.nf-hide{display:none}
+.nfig-drag2{touch-action:pan-y}
+.nfig-drag2.is-drag,.nfig-drag2.is-drag .nf-handle,.nfig-drag2.is-drag .nf-pt2{cursor:grabbing}
+@container (max-width:520px){[data-nfig="det"] .nfig-read{min-height:3em}}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .nf-band{fill-opacity:.16}
+  :root:not([data-theme="light"]) .nf-hist{fill-opacity:.24}
+  :root:not([data-theme="light"]) .nf-par{fill-opacity:.22}
 }
-
-/* Colour coding for related concepts */
-.rel-axiom { color: #1a5f7a; }
-.rel-moment { color: #0d6e4f; }
-.rel-indep { color: #8b3a3a; }
-.rel-asymp { color: #5a4a8a; }
-.rel-ols { color: #2c5aa0; }
-.box.takeaway { border-left: 3px solid #0d6e4f; }
-.box.note { border-left: 3px solid #1a5f7a; }
-/* Fri Oct 30 20:08:21 UTC 2026 */
-/* Fri Oct 30 20:11:57 UTC 2026 */
+:root[data-theme="dark"] .nf-band{fill-opacity:.16}
+:root[data-theme="dark"] .nf-hist{fill-opacity:.24}
+:root[data-theme="dark"] .nf-par{fill-opacity:.22}

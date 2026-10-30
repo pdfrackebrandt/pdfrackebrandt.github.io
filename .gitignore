@@ -1,0 +1,4 @@
+# private notes: only the sealed copies go into the repo
+/.notes-password
+/data/notes.json
+/content/notes/*.md

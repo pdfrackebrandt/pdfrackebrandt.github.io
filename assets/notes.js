@@ -455,10 +455,396 @@
     watch(svg,draw);
   }
 
+  /* ---------- shared by the figures below ---------- */
+  function tw(e,s){ var w=0; try{ w=e.getComputedTextLength(); }catch(err){} return w>0?w:s.length*6.4; }
+  /* one row legend that wraps when it runs out of room; items are [kind, class, label], kind 'rect' or 'line'. Returns rows used. */
+  function key(g,items,x0,y,x1){
+    var x=x0, rows=1, i, it, t, w, off;
+    for(i=0;i<items.length;i++){
+      it=items[i]; off=it[0]==='rect'?16:20;
+      t=text(g,0,0,it[2],'nf-lab');
+      w=off+tw(t,it[2]);
+      if(i && x+w>x1){ x=x0; y+=16; rows++; }
+      if(it[0]==='rect') S('rect',{x:R(x),y:R(y-9),width:10,height:10,'class':it[1]},g);
+      else line(g,x,y-3.5,x+14,y-3.5,it[1]);
+      t.setAttribute('x',R(x+off)); t.setAttribute('y',R(y));
+      x+=w+16;
+    }
+    return rows;
+  }
+  function clip(svg,x,y,w,h){
+    var id='nfclip'+(++clipN), defs=S('defs',null,svg), cp=S('clipPath',{id:id},defs);
+    S('rect',{x:R(x),y:R(y),width:R(w),height:R(h)},cp);
+    return S('g',{'clip-path':'url(#'+id+')'},svg);
+  }
+  function local(svg,e,W,H){
+    var r=svg.getBoundingClientRect();
+    return [(e.clientX-r.left)*W/(r.width||W),(e.clientY-r.top)*H/(r.height||H)];
+  }
+  function capture(svg,e){ if(svg.setPointerCapture){ try{ svg.setPointerCapture(e.pointerId); }catch(err){} } }
+
+  /* ---------- 5. Law of large numbers ---------- */
+  function initLln(fig){
+    var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
+    if(!svg) return;
+    var K=5, NMAX=2000, seed=20261030, P={normal:[],cauchy:[]}, N=1000;
+    var H=272, mL=36, mR=28, top=32, bot=242, W=520, xs, ys;
+    var rn=range(fig,'n',0,function(v){ N=Math.round(v); draw(); });
+    if(rn) N=Math.round(rn.v());
+    var dist=seg(fig,'data-dist',function(v){ if(!P[v]||v===dist) return; dist=v; draw(); });
+    if(!P[dist]) dist='normal';
+    var nb=fig.querySelector('.nfig-new');
+    if(nb) nb.addEventListener('click',function(){ seed+=K; sample(); draw(); });
+    /* the same uniforms feed both populations: Normal by the inverse CDF, Cauchy by tan */
+    function sample(){
+      var k, i, rnd, u, sn, sc, mn, mc;
+      P.normal=[]; P.cauchy=[];
+      for(k=0;k<K;k++){
+        rnd=mulberry32(seed+k); mn=new Float64Array(NMAX); mc=new Float64Array(NMAX); sn=0; sc=0;
+        for(i=0;i<NMAX;i++){
+          u=rnd(); if(u<1e-12) u=1e-12;
+          sn+=invPhi(u); sc+=Math.tan(Math.PI*(u-0.5));
+          mn[i]=sn/(i+1); mc[i]=sc/(i+1);
+        }
+        P.normal.push(mn); P.cauchy.push(mc);
+      }
+    }
+    function draw(){
+      var g, gp, i, k, x, m, pts, up=[], dn=[], ns=[1], last, s, lo=Infinity, hi=-Infinity, ticks=[], dec=[1,10,100,1000], L=Math.log(N), normal=dist==='normal';
+      W=measure(svg); frame(svg,W,H);
+      xs=function(n){ return mL+Math.log(n)/L*(W-mL-mR); };
+      ys=lin(-3,3,bot,top);
+      g=S('g',null,svg);
+      for(i=0;i<dec.length;i++) if(dec[i]<N) ticks.push(dec[i]);
+      if(xs(N)-xs(ticks[ticks.length-1])>30) ticks.push(N);
+      for(i=0;i<ticks.length;i++){
+        x=C(xs(ticks[i]));
+        line(g,x,top,x,bot,'nf-grid'); line(g,x,bot,x,bot+4,'nf-ax');
+        text(g,xs(ticks[i]),bot+17,tl(ticks[i]),null,'middle');
+      }
+      yGrid(g,ys,[-2,-1,1,2],mL,W-mR);
+      text(g,mL-7,ys(0)+4,'0',null,'end');
+      line(g,mL,C(bot),W-mR,C(bot),'nf-ax');
+      text(g,mL-7,11,'mean','nf-title','end');
+      text(g,W-3,bot+17,'n','nf-title','end');
+      key(S('g',null,svg),normal?[['rect','nf-band nf-sw','μ ± 2σ/√n'],['line','nf-mean0','μ = 0']]:[['line','nf-mean0','median 0, but no mean']],mL+6,11,W-mR);
+      /* n values one per 0.75px, so a long path stays light */
+      last=xs(1);
+      for(i=2;i<N;i++){ x=xs(i); if(x-last>=0.75){ ns.push(i); last=x; } }
+      ns.push(N);
+      gp=clip(svg,mL,top,W-mR-mL,bot-top);
+      if(normal){
+        for(i=0;i<ns.length;i++){ s=2/Math.sqrt(ns[i]); up.push([xs(ns[i]),ys(s)]); dn.push([xs(ns[i]),ys(-s)]); }
+        S('path',{d:poly(up.concat(dn.reverse()))+'Z','class':'nf-band'},gp);
+      }
+      line(gp,mL,C(ys(0)),W-mR,C(ys(0)),'nf-mean0');
+      for(k=0;k<K;k++){
+        m=P[dist][k]; pts=[];
+        for(i=0;i<ns.length;i++) pts.push([xs(ns[i]),clamp(ys(m[ns[i]-1]),top-60,bot+60)]);
+        S('path',{d:poly(pts),'class':'nf-path'},gp);
+        lo=Math.min(lo,m[N-1]); hi=Math.max(hi,m[N-1]);
+      }
+      if(out) out.textContent='at n = '+N+' the five means lie between '+fmt(lo,2)+' and '+fmt(hi,2)+
+        (normal?', band ±'+(2/Math.sqrt(N)).toFixed(2):'; Cauchy has no mean, so there is no band');
+    }
+    sample(); draw();
+    watch(svg,draw);
+  }
+
+  /* ---------- 6. Central limit theorem ---------- */
+  function initClt(fig){
+    var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
+    if(!svg) return;
+    /* 4000 replications of 100 Exponential(1) draws, kept as running sums so any n costs one pass */
+    var R=4000, NMAX=100, CS=new Float64Array(R*NMAX), Z=new Float64Array(R), n=1, r, j, s, rnd=mulberry32(20261030);
+    for(r=0;r<R;r++){ s=0; for(j=0;j<NMAX;j++){ s-=Math.log(1-rnd()); CS[r*NMAX+j]=s; } }
+    var LO=-4, HI=4, BW=0.2, NB=40, YMAX=1.1;
+    var H=262, mL=36, mR=28, top=30, bot=232, W=520, xs, ys, el={};
+    var rn=range(fig,'n',0,function(v){ n=Math.round(v); update(); });
+    if(rn) n=Math.round(rn.v());
+    function draw(){
+      var g, t=[], v, step, p=[], i, z, rows;
+      W=measure(svg); frame(svg,W,H);
+      rows=key(S('g',null,svg),[['rect','nf-hist nf-sw','4000 standardised means'],['line','nf-ref','N(0, 1) density']],mL+6,11,W-mR);
+      top=rows>1?44:30;
+      xs=lin(LO,HI,mL,W-mR); ys=lin(0,YMAX,bot,top);
+      step=(W-mL-mR)>=360?1:2;
+      for(v=LO;v<=HI;v+=step) t.push(v);
+      g=S('g',null,svg);
+      xGrid(g,xs,t,top,bot,bot+17);
+      for(i=0;i<t.length;i++) line(g,C(xs(t[i])),bot,C(xs(t[i])),bot+4,'nf-ax');
+      yGrid(g,ys,[0,0.5,1],mL,W-mR);
+      text(g,mL-7,top-12,'f(z)','nf-title','end');
+      text(g,W-3,bot+17,'z','nf-title','end');
+      el.area=S('path',{'class':'nf-hist'},svg);
+      el.edge=S('path',{'class':'nf-histline'},svg);
+      for(i=0;i<=240;i++){ z=LO+(HI-LO)*i/240; p.push([xs(z),ys(phi(z))]); }
+      S('path',{d:poly(p),'class':'nf-ref'},svg);
+      update();
+    }
+    function update(){
+      var c=new Float64Array(NB), rt=Math.sqrt(n), m=0, m2=0, m3=0, i, b, z, d, tp=[], edge='', run=null, sk, y0=ys(0);
+      for(i=0;i<R;i++){
+        z=rt*(CS[i*NMAX+n-1]/n-1); Z[i]=z; m+=z;
+        b=Math.floor((z-LO)/BW);
+        if(b>=0 && b<NB) c[b]++;
+      }
+      m/=R;
+      for(i=0;i<R;i++){ d=Z[i]-m; m2+=d*d; m3+=d*d*d; }
+      m2/=R; m3/=R; sk=m3/Math.pow(m2,1.5);
+      /* step outline of the density histogram; the edge skips empty bins so it never runs along the axis */
+      for(b=0;b<NB;b++){
+        d=Math.min(c[b]/(R*BW),YMAX*1.03);
+        tp.push([xs(LO+b*BW),ys(d)],[xs(LO+(b+1)*BW),ys(d)]);
+        if(c[b]>0){ if(!run) run=[[xs(LO+b*BW),y0]]; run.push([xs(LO+b*BW),ys(d)],[xs(LO+(b+1)*BW),ys(d)]); }
+        if(run && (c[b]===0 || b===NB-1)){ run.push([run[run.length-1][0],y0]); edge+=poly(run); run=null; }
+      }
+      el.area.setAttribute('d',poly([[xs(LO),y0]].concat(tp,[[xs(HI),y0]]))+'Z');
+      el.edge.setAttribute('d',edge);
+      if(out) out.textContent='n = '+n+'   skewness '+fmt(sk,2)+'   theory 2/√n = '+(2/rt).toFixed(2);
+    }
+    draw();
+    watch(svg,draw);
+  }
+
+  /* ---------- 7. Determinant as signed area ---------- */
+  function initDet(fig){
+    var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
+    if(!svg) return;
+    var V=[[2,0.5],[0.5,1.5]], YR=3, H=300, pad=12, W=520, u=46, ox=260, oy=150, xr=5, el={}, drag=-1;
+    function px(x){ return ox+x*u; }
+    function py(y){ return oy-y*u; }
+    function snap(v){ return Math.round(v*2)/2; }
+    function lim(){ return Math.floor(xr*2)/2; }
+    function put(i,x,y){ V[i]=[clamp(snap(x),-lim(),lim()),clamp(snap(y),-YR,YR)]; }
+    function paren(v){ return v<0?'('+tl(v)+')':tl(v); }
+    var rb=fig.querySelector('.nfig-reset');
+    if(rb) rb.addEventListener('click',function(){ V=[[1,0],[0,1]]; update(); });
+    function keyer(i){
+      return function(e){
+        var k=e.key, x=V[i][0], y=V[i][1];
+        if(k==='ArrowRight') x+=0.5; else if(k==='ArrowLeft') x-=0.5;
+        else if(k==='ArrowUp') y+=0.5; else if(k==='ArrowDown') y-=0.5;
+        else return;
+        e.preventDefault(); put(i,x,y); update();
+      };
+    }
+    function draw(){
+      var g, gc, mg, i, v, L, h, t, sb;
+      W=measure(svg); frame(svg,W,H);
+      u=(H-2*pad)/(2*YR); ox=W/2; oy=H/2; xr=(W/2-pad)/u; L=Math.floor(xr);
+      for(i=0;i<2;i++) put(i,V[i][0],V[i][1]);
+      g=S('g',null,svg);
+      for(v=-L;v<=L;v++) if(v) line(g,C(px(v)),pad,C(px(v)),H-pad,'nf-grid');
+      for(v=-YR;v<=YR;v++) if(v) line(g,ox-xr*u,C(py(v)),ox+xr*u,C(py(v)),'nf-grid');
+      line(g,ox-xr*u,C(oy),ox+xr*u,C(oy),'nf-ax');
+      line(g,C(ox),pad,C(ox),H-pad,'nf-ax');
+      /* tick labels sit on the grid, so they get a paper halo */
+      for(v=-L;v<=L;v++) if(v) text(g,px(v),oy+15,tl(v),'nf-halo','middle');
+      for(v=-YR;v<=YR;v++) if(v) text(g,ox-6,py(v)+4,tl(v),'nf-halo','end');
+      gc=clip(svg,ox-xr*u,pad,2*xr*u,H-2*pad);
+      S('rect',{x:R(px(0)),y:R(py(1)),width:R(u),height:R(u),'class':'nf-unit'},gc);
+      el.par=S('path',{'class':'nf-par'},gc);
+      el.abg=S('rect',{rx:2,height:15,width:0,'class':'nf-abg'},gc);
+      el.area=text(gc,0,0,'','nf-lab','middle');
+      el.vec=[]; el.head=[]; el.h=[]; el.lab=[];
+      for(i=0;i<2;i++){
+        el.vec.push(line(svg,0,0,0,0,'nf-vec nf-v'+(i+1)));
+        el.head.push(S('path',{'class':'nf-head nf-v'+(i+1)},svg));
+      }
+      for(i=0;i<2;i++){
+        t=S('text',{'class':'nf-vlab nf-c'+(i+1),'text-anchor':'middle'},svg);
+        t.appendChild(document.createTextNode('a'));
+        sb=S('tspan',{dy:'3','class':'nf-sub'},t); sb.textContent=String(i+1);
+        el.lab.push(t);
+      }
+      for(i=0;i<2;i++){
+        h=S('g',{'class':'nf-handle',tabindex:'0',role:'slider','aria-roledescription':'draggable point','aria-label':'Tip of column a'+(i+1)+', arrow keys move it','aria-valuemin':-YR,'aria-valuemax':YR},svg);
+        S('circle',{r:18,'class':'nf-hit'},h);
+        S('circle',{r:11,'class':'nf-ring'},h);
+        S('circle',{r:5.5,'class':'nf-knob nf-v'+(i+1)},h);
+        h.addEventListener('keydown',keyer(i));
+        el.h.push(h);
+      }
+      /* the matrix itself, top left: column 1 in blue, column 2 in green, like the arrows */
+      mg=S('g',{'aria-hidden':'true'},svg);
+      S('rect',{x:4,y:4,width:120,height:52,rx:3,'class':'nf-mbg'},mg);
+      text(mg,12,34,'A =','nf-lab');
+      S('path',{d:'M50,13h-4v34h4M114,13h4v34h-4','class':'nf-brk'},mg);
+      el.m=[[text(mg,66,26,'','nf-c1','middle'),text(mg,98,26,'','nf-c2','middle')],[text(mg,66,43,'','nf-c1','middle'),text(mg,98,43,'','nf-c2','middle')]];
+      update();
+    }
+    function update(){
+      var a=V[0][0], c=V[0][1], b=V[1][0], d=V[1][1], det=a*d-b*c, i, T, x0=px(0), y0=py(0), dx, dy, len, ux, uy, hl, bx, by, sn, cx, cy, s, sp, ln=Math.hypot(a,c)*Math.hypot(b,d);
+      el.par.setAttribute('d',poly([[x0,y0],[px(a),py(c)],[px(a+b),py(c+d)],[px(b),py(d)]])+'Z');
+      el.par.setAttribute('class',det<0?'nf-par nf-neg':'nf-par');
+      for(i=0;i<2;i++){
+        T=[px(V[i][0]),py(V[i][1])]; dx=T[0]-x0; dy=T[1]-y0; len=Math.hypot(dx,dy);
+        el.h[i].setAttribute('transform','translate('+R(T[0])+','+R(T[1])+')');
+        el.h[i].setAttribute('aria-valuenow',V[i][0]);
+        el.h[i].setAttribute('aria-valuetext','a'+(i+1)+' = ('+tl(V[i][0])+', '+tl(V[i][1])+')');
+        if(len<16){
+          setLine(el.vec[i],x0,y0,x0,y0); el.head[i].setAttribute('d','');
+          el.lab[i].setAttribute('x',R(T[0]+12)); el.lab[i].setAttribute('y',R(T[1]-10));
+          continue;
+        }
+        ux=dx/len; uy=dy/len; hl=Math.min(10,len*0.4);
+        /* the head stops just short of the handle so both stay visible */
+        bx=T[0]-ux*(7+hl); by=T[1]-uy*(7+hl);
+        setLine(el.vec[i],x0,y0,bx+ux*2,by+uy*2);
+        el.head[i].setAttribute('d',poly([[T[0]-ux*7,T[1]-uy*7],[bx-uy*4.5,by+ux*4.5],[bx+uy*4.5,by-ux*4.5]])+'Z');
+        el.lab[i].setAttribute('x',R(T[0]+ux*21)); el.lab[i].setAttribute('y',R(T[1]+uy*21+4));
+      }
+      cx=px((a+b)/2); cy=py((c+d)/2);
+      if(Math.abs(det)>=1 && cx>ox-xr*u+14 && cx<ox+xr*u-14 && cy>pad+10 && cy<H-pad-6){
+        el.area.setAttribute('x',R(cx)); el.area.setAttribute('y',R(cy+4)); el.area.textContent=fmt(det,2);
+        s=tw(el.area,el.area.textContent)+8;
+        el.abg.setAttribute('x',R(cx-s/2)); el.abg.setAttribute('y',R(cy-7.5)); el.abg.setAttribute('width',R(s));
+      } else { el.area.textContent=''; el.abg.setAttribute('width',0); }
+      el.m[0][0].textContent=tl(a); el.m[0][1].textContent=tl(b); el.m[1][0].textContent=tl(c); el.m[1][1].textContent=tl(d);
+      if(!out) return;
+      sn=ln>0?Math.abs(det)/ln:0;
+      s='det A = ad − bc = '+paren(a)+' × '+paren(d)+' − '+paren(b)+' × '+paren(c)+' = '+fmt(det,2);
+      out.textContent=s;
+      if(Math.abs(det)<1e-9 || sn<0.2){
+        sp=document.createElement('span'); sp.className='nf-warn';
+        sp.textContent=Math.abs(det)<1e-9?', singular: the columns are collinear, so A has no inverse':', nearly singular: the columns are close to collinear';
+        out.appendChild(sp);
+      } else if(det<0) out.appendChild(document.createTextNode(', negative: a2 lies clockwise of a1'));
+    }
+    svg.addEventListener('pointerdown',function(e){
+      var p=local(svg,e,W,H), best=-1, bd=26, i, dd;
+      for(i=0;i<2;i++){ dd=Math.hypot(px(V[i][0])-p[0],py(V[i][1])-p[1]); if(dd<bd){ bd=dd; best=i; } }
+      if(best<0) return;
+      drag=best; e.preventDefault(); capture(svg,e);
+      try{ el.h[best].focus({preventScroll:true,focusVisible:false}); }catch(err){}
+      svg.classList.add('is-drag');
+    });
+    svg.addEventListener('pointermove',function(e){
+      if(drag<0) return;
+      var p=local(svg,e,W,H);
+      put(drag,(p[0]-ox)/u,(oy-p[1])/u); update();
+    });
+    function stop(){ drag=-1; svg.classList.remove('is-drag'); }
+    svg.addEventListener('pointerup',stop);
+    svg.addEventListener('pointercancel',stop);
+    /* a touch that starts on a handle drags it instead of scrolling the page */
+    svg.addEventListener('touchstart',function(e){
+      if(e.touches.length!==1) return;
+      var p=local(svg,e.touches[0],W,H), i;
+      for(i=0;i<2;i++) if(Math.hypot(px(V[i][0])-p[0],py(V[i][1])-p[1])<26){ e.preventDefault(); return; }
+    },{passive:false});
+    draw();
+    watch(svg,draw);
+  }
+
+  /* ---------- 8. OLS and the normal equations ---------- */
+  function initOls(fig){
+    var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
+    if(!svg) return;
+    var N=12, P0=[], P=[], sel=0, drag=-1, grab=[0,0], i, x, rnd=mulberry32(20261031);
+    for(i=0;i<N;i++){
+      x=0.6+(i+0.15+0.7*rnd())*8.8/N;
+      P0.push([Math.round(x*100)/100,Math.round(clamp(2+0.6*x+1.1*invPhi(0.02+0.96*rnd()),0.4,9.6)*100)/100]);
+    }
+    function reset(){ P=P0.map(function(p){ return [p[0],p[1]]; }); }
+    reset();
+    var H=290, mL=36, mR=28, top=24, bot=258, W=520, xs, ys, el={};
+    var rb=fig.querySelector('.nfig-reset');
+    if(rb) rb.addEventListener('click',function(){ reset(); update(); });
+    function draw(){
+      var g, gc, t=[0,2,4,6,8,10], rad;
+      W=measure(svg); frame(svg,W,H); rad=W>=420?5.5:5;
+      xs=lin(0,10,mL,W-mR); ys=lin(0,10,bot,top);
+      g=S('g',null,svg);
+      xGrid(g,xs,t,top,bot,bot+17);
+      yGrid(g,ys,t,mL,W-mR);
+      text(g,mL-7,11,'y','nf-title','end');
+      text(g,W-3,bot+17,'x','nf-title','end');
+      gc=clip(svg,mL,top,W-mR-mL,bot-top);
+      el.res=[];
+      for(i=0;i<N;i++) el.res.push(line(gc,0,0,0,0,'nf-res'));
+      el.fit=line(gc,0,0,0,0,'nf-ols');
+      el.mean=S('circle',{r:4.5,'class':'nf-meanpt'},svg);
+      el.sel=S('circle',{r:10,'class':'nf-sel'},svg);
+      el.pts=[];
+      for(i=0;i<N;i++) el.pts.push(S('circle',{r:rad,'class':'nf-pt2'},svg));
+      update();
+    }
+    function update(){
+      var mx=0, my=0, sxx=0, sxy=0, b0, b1, se=0, sxe=0, e, yh, ok, x0=0, x1=10, xa, xb, sp;
+      for(i=0;i<N;i++){ mx+=P[i][0]; my+=P[i][1]; }
+      mx/=N; my/=N;
+      for(i=0;i<N;i++){ sxx+=(P[i][0]-mx)*(P[i][0]-mx); sxy+=(P[i][0]-mx)*(P[i][1]-my); }
+      ok=sxx>1e-6;
+      b1=ok?sxy/sxx:0; b0=my-b1*mx;
+      for(i=0;i<N;i++){
+        at(el.pts[i],xs(P[i][0]),ys(P[i][1]));
+        e=P[i][1]-b0-b1*P[i][0]; se+=e; sxe+=P[i][0]*e; yh=b0+b1*P[i][0];
+        setLine(el.res[i],xs(P[i][0]),ys(P[i][1]),xs(P[i][0]),ys(clamp(yh,-1,11)));
+        el.res[i].setAttribute('class',ok?'nf-res':'nf-res nf-hide');
+      }
+      /* draw the fitted line only across the plotted box */
+      if(Math.abs(b1)>1e-9){ xa=(0-b0)/b1; xb=(10-b0)/b1; x0=Math.max(0,Math.min(xa,xb)); x1=Math.min(10,Math.max(xa,xb)); }
+      if(ok && x1>x0) setLine(el.fit,xs(x0),ys(b0+b1*x0),xs(x1),ys(b0+b1*x1));
+      else setLine(el.fit,0,0,0,0);
+      at(el.mean,xs(mx),ys(my));
+      at(el.sel,xs(P[sel][0]),ys(P[sel][1]));
+      if(!out) return;
+      if(!ok){
+        out.textContent='';
+        sp=document.createElement('span'); sp.className='nf-warn';
+        sp.textContent='every x is the same: X′X is singular, so no unique line fits';
+        out.appendChild(sp);
+        return;
+      }
+      out.textContent='intercept '+fmt(b0,2)+'   slope '+fmt(b1,2)+'   Σe = '+fmt(se,2)+'   Σxe = '+fmt(sxe,2);
+    }
+    svg.addEventListener('pointerdown',function(e){
+      var p=local(svg,e,W,H), best=-1, bd=24, dd;
+      for(i=0;i<N;i++){ dd=Math.hypot(xs(P[i][0])-p[0],ys(P[i][1])-p[1]); if(dd<bd){ bd=dd; best=i; } }
+      if(best<0) return;
+      drag=best; sel=best; grab=[xs(P[best][0])-p[0],ys(P[best][1])-p[1]];
+      e.preventDefault(); capture(svg,e);
+      try{ svg.focus({preventScroll:true,focusVisible:false}); }catch(err){}
+      svg.classList.add('is-drag');
+      update();
+    });
+    svg.addEventListener('pointermove',function(e){
+      if(drag<0) return;
+      var p=local(svg,e,W,H);
+      P[drag]=[Math.round(clamp(xs.inv(p[0]+grab[0]),0,10)*100)/100,Math.round(clamp(ys.inv(p[1]+grab[1]),0,10)*100)/100];
+      update();
+    });
+    function stop(){ drag=-1; svg.classList.remove('is-drag'); }
+    svg.addEventListener('pointerup',stop);
+    svg.addEventListener('pointercancel',stop);
+    svg.addEventListener('touchstart',function(e){
+      if(e.touches.length!==1) return;
+      var p=local(svg,e.touches[0],W,H);
+      for(i=0;i<N;i++) if(Math.hypot(xs(P[i][0])-p[0],ys(P[i][1])-p[1])<24){ e.preventDefault(); return; }
+    },{passive:false});
+    svg.addEventListener('keydown',function(e){
+      var k=e.key;
+      if(k==='ArrowRight') sel=(sel+1)%N;
+      else if(k==='ArrowLeft') sel=(sel+N-1)%N;
+      else if(k==='ArrowUp') P[sel][1]=Math.min(10,Math.round((P[sel][1]+0.25)*100)/100);
+      else if(k==='ArrowDown') P[sel][1]=Math.max(0,Math.round((P[sel][1]-0.25)*100)/100);
+      else return;
+      e.preventDefault(); update();
+    });
+    draw();
+    watch(svg,draw);
+  }
+
   /* ---------- boot ---------- */
-  var INIT={cdf:initCdf, normal:initNormal, corr:initCorr, totalvar:initTotalVar};
-  function boot(){
-    var figs=document.querySelectorAll('[data-nfig]'), i, f, fn;
+  var INIT={cdf:initCdf, normal:initNormal, corr:initCorr, totalvar:initTotalVar, lln:initLln, clt:initClt, det:initDet, ols:initOls};
+  /* Initialise every figure inside root that is not yet running. Safe to call again, for example after note content is inserted. */
+  function initNoteFigures(root){
+    var scope=root && root.querySelectorAll ? root : document, figs=[], list, i, f, fn;
+    if(scope.matches && scope.matches('[data-nfig]')) figs.push(scope);
+    list=scope.querySelectorAll('[data-nfig]');
+    for(i=0;i<list.length;i++) figs.push(list[i]);
     for(i=0;i<figs.length;i++){
       f=figs[i]; fn=INIT[f.getAttribute('data-nfig')];
       if(!fn || f.getAttribute('data-nfig-ready')) continue;
@@ -466,90 +852,8 @@
       try{ fn(f); }catch(err){ if(window.console && console.error) console.error(err); }
     }
   }
+  window.initNoteFigures=initNoteFigures;
+  function boot(){ initNoteFigures(document); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
   else boot();
 })();
-
-/* ---------- L2: LLN and CLT ---------- */
-function initLLN(fig){
-  var svg=fig.querySelector('.nfig-plot');
-  var read=fig.querySelector('.nfig-read');
-  var n=50, dist='normal';
-  function redraw(){
-    var W=measure(svg), H=220, pad=40;
-    frame(svg,W,H);
-    var g=S('g',{},svg);
-    var xs=lin(0,n,pad,W-pad);
-    var ys=lin(-3,3,H-pad,pad);
-    yGrid(g,ys,[-2,-1,0,1,2],pad,W-pad);
-    var pts=[], sum=0;
-    for(var i=1;i<=n;i++){
-      var x = dist==='cauchy' ? Math.tan(Math.PI*(Math.random()-0.5)) : randn();
-      sum += x;
-      pts.push([xs(i), ys(sum/i)]);
-    }
-    S('path',{d:poly(pts),'class':'nf-line'},g);
-    text(g, pad, 20, dist==='cauchy'?'Cauchy (no mean)':'Normal', 'nf-lab');
-    if(read) read.textContent='n='+n+'  mean of sample means ≈ '+(sum/n).toFixed(2);
-  }
-  fig.querySelectorAll('.nfig-opt').forEach(function(btn){
-    btn.onclick=function(){
-      dist=btn.getAttribute('data-dist');
-      fig.querySelectorAll('.nfig-opt').forEach(b=>b.setAttribute('aria-pressed','false'));
-      btn.setAttribute('aria-pressed','true');
-      redraw();
-    };
-  });
-  var slider=fig.querySelector('input[type=range]');
-  if(slider) slider.oninput=function(){ n=parseInt(slider.value); redraw(); };
-  redraw();
-  watch(svg,redraw);
-}
-function randn(){
-  var u=0,v=0;
-  while(u===0) u=Math.random();
-  while(v===0) v=Math.random();
-  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
-}
-function initCLT(fig){
-  var svg=fig.querySelector('.nfig-plot');
-  var read=fig.querySelector('.nfig-read');
-  var n=30;
-  function redraw(){
-    var W=measure(svg), H=220, pad=40;
-    frame(svg,W,H);
-    var g=S('g',{},svg);
-    var xs=lin(-4,4,pad,W-pad);
-    var ys=lin(0,0.5,H-pad,pad);
-    yGrid(g,ys,[0,0.1,0.2,0.3,0.4],pad,W-pad);
-    var bins=40, counts=new Array(bins).fill(0);
-    var trials=800;
-    for(var t=0;t<trials;t++){
-      var sum=0;
-      for(var i=0;i<n;i++) sum+=randn();
-      var z=sum/Math.sqrt(n);
-      var b=Math.floor((z+4)/8*bins);
-      if(b>=0 && b<bins) counts[b]++;
-    }
-    var maxc=Math.max.apply(null,counts);
-    for(var i=0;i<bins;i++){
-      var x1=xs(-4 + i*8/bins), x2=xs(-4 + (i+1)*8/bins);
-      var h=counts[i]/maxc*0.45;
-      S('rect',{x:x1,y:ys(h),width:Math.max(1,x2-x1-1),height:ys(0)-ys(h),'class':'nf-area'},g);
-    }
-    // normal density overlay
-    var pts=[];
-    for(var x=-4;x<=4;x+=0.1){
-      var f=Math.exp(-0.5*x*x)/Math.sqrt(2*Math.PI);
-      pts.push([xs(x), ys(f*0.8)]);
-    }
-    S('path',{d:poly(pts),'class':'nf-line'},g);
-    if(read) read.textContent='n='+n+'  histogram of standardised means (800 trials)';
-  }
-  var slider=fig.querySelector('input[type=range]');
-  if(slider) slider.oninput=function(){ n=parseInt(slider.value); redraw(); };
-  redraw();
-  watch(svg,redraw);
-}
-INIT.lln=initLLN;
-INIT.clt=initCLT;
