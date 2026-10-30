@@ -469,3 +469,87 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
   else boot();
 })();
+
+/* ---------- L2: LLN and CLT ---------- */
+function initLLN(fig){
+  var svg=fig.querySelector('.nfig-plot');
+  var read=fig.querySelector('.nfig-read');
+  var n=50, dist='normal';
+  function redraw(){
+    var W=measure(svg), H=220, pad=40;
+    frame(svg,W,H);
+    var g=S('g',{},svg);
+    var xs=lin(0,n,pad,W-pad);
+    var ys=lin(-3,3,H-pad,pad);
+    yGrid(g,ys,[-2,-1,0,1,2],pad,W-pad);
+    var pts=[], sum=0;
+    for(var i=1;i<=n;i++){
+      var x = dist==='cauchy' ? Math.tan(Math.PI*(Math.random()-0.5)) : randn();
+      sum += x;
+      pts.push([xs(i), ys(sum/i)]);
+    }
+    S('path',{d:poly(pts),'class':'nf-line'},g);
+    text(g, pad, 20, dist==='cauchy'?'Cauchy (no mean)':'Normal', 'nf-lab');
+    if(read) read.textContent='n='+n+'  mean of sample means ≈ '+(sum/n).toFixed(2);
+  }
+  fig.querySelectorAll('.nfig-opt').forEach(function(btn){
+    btn.onclick=function(){
+      dist=btn.getAttribute('data-dist');
+      fig.querySelectorAll('.nfig-opt').forEach(b=>b.setAttribute('aria-pressed','false'));
+      btn.setAttribute('aria-pressed','true');
+      redraw();
+    };
+  });
+  var slider=fig.querySelector('input[type=range]');
+  if(slider) slider.oninput=function(){ n=parseInt(slider.value); redraw(); };
+  redraw();
+  watch(svg,redraw);
+}
+function randn(){
+  var u=0,v=0;
+  while(u===0) u=Math.random();
+  while(v===0) v=Math.random();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+}
+function initCLT(fig){
+  var svg=fig.querySelector('.nfig-plot');
+  var read=fig.querySelector('.nfig-read');
+  var n=30;
+  function redraw(){
+    var W=measure(svg), H=220, pad=40;
+    frame(svg,W,H);
+    var g=S('g',{},svg);
+    var xs=lin(-4,4,pad,W-pad);
+    var ys=lin(0,0.5,H-pad,pad);
+    yGrid(g,ys,[0,0.1,0.2,0.3,0.4],pad,W-pad);
+    var bins=40, counts=new Array(bins).fill(0);
+    var trials=800;
+    for(var t=0;t<trials;t++){
+      var sum=0;
+      for(var i=0;i<n;i++) sum+=randn();
+      var z=sum/Math.sqrt(n);
+      var b=Math.floor((z+4)/8*bins);
+      if(b>=0 && b<bins) counts[b]++;
+    }
+    var maxc=Math.max.apply(null,counts);
+    for(var i=0;i<bins;i++){
+      var x1=xs(-4 + i*8/bins), x2=xs(-4 + (i+1)*8/bins);
+      var h=counts[i]/maxc*0.45;
+      S('rect',{x:x1,y:ys(h),width:Math.max(1,x2-x1-1),height:ys(0)-ys(h),'class':'nf-area'},g);
+    }
+    // normal density overlay
+    var pts=[];
+    for(var x=-4;x<=4;x+=0.1){
+      var f=Math.exp(-0.5*x*x)/Math.sqrt(2*Math.PI);
+      pts.push([xs(x), ys(f*0.8)]);
+    }
+    S('path',{d:poly(pts),'class':'nf-line'},g);
+    if(read) read.textContent='n='+n+'  histogram of standardised means (800 trials)';
+  }
+  var slider=fig.querySelector('input[type=range]');
+  if(slider) slider.oninput=function(){ n=parseInt(slider.value); redraw(); };
+  redraw();
+  watch(svg,redraw);
+}
+INIT.lln=initLLN;
+INIT.clt=initCLT;
