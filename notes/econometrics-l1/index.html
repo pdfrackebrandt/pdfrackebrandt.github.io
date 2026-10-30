@@ -29,6 +29,40 @@
 <script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
+
+<style>
+body, .note-page, .paper-page { font-family: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif !important; }
+h1, h2, h3, h4 { font-family: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif !important; }
+#gate { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; font-family: Calibri, "Segoe UI", sans-serif; }
+#gate input { font-size: 18px; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; width: 200px; }
+#gate button { font-size: 16px; padding: 8px 16px; background: #111; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+#gate p { margin: 0; color: #555; }
+</style>
+<div id="gate">
+  <p>Notes are for the class. Enter the password.</p>
+  <input type="password" id="pw" placeholder="password" autofocus>
+  <button onclick="checkPw()">Enter</button>
+  <p id="msg" style="color:#c00; min-height:1.2em;"></p>
+</div>
+<script>
+function checkPw() {
+  var v = document.getElementById('pw').value;
+  if (v === 'gato') {
+    sessionStorage.setItem('notes_ok', '1');
+    document.getElementById('gate').style.display = 'none';
+  } else {
+    document.getElementById('msg').textContent = 'Wrong password.';
+    document.getElementById('pw').value = '';
+  }
+}
+document.getElementById('pw').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPw();
+});
+if (sessionStorage.getItem('notes_ok') === '1') {
+  document.getElementById('gate').style.display = 'none';
+}
+</script>
+
 <a class="skip" href="#main">Skip to content</a>
 <div class="wrap">
   <header class="page-top"><a class="back" href="/#notes">&larr; Pedro F. Rackebrandt</a></header>
