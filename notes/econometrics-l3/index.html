@@ -47,16 +47,23 @@ if (sessionStorage.getItem('notes_ok') === '1') {
     <header class="paper-header">
       <p class="eyebrow">Core Econometrics &middot; L3</p>
       <h1>Matrix algebra review</h1>
-      <p class="lede">Rank, inverse, quadratic forms, and the matrix calculus used in the OLS first-order conditions.</p>
+      <p class="lede">The linear algebra needed for OLS: rank, invertibility, quadratic forms, and the derivatives that give the first-order conditions.</p>
       <p class="page-actions"><a href="/notes/">All notes</a></p>
     </header>
+
     <h2>1. Basic operations</h2>
-    <p>A <span class="rel-matrix">symmetric</span> matrix equals its transpose. The identity, diagonal matrices, and the vector of ones appear constantly. Addition is entrywise; multiplication is not commutative.</p>
-    <div class="box takeaway"><p class="box-label">Takeaway</p><p>X'X is symmetric and positive semidefinite. It is invertible exactly when X has full column rank.</p></div>
+    <p>A matrix is an array of numbers. A square matrix has the same number of rows and columns. A <span class="rel-matrix">symmetric</span> matrix equals its transpose. The identity matrix leaves any vector unchanged when multiplied. Diagonal matrices have zeros off the main diagonal.</p>
+    <p>Addition is entry by entry and needs identical dimensions. Scalar multiplication scales every entry. Matrix multiplication is not commutative: AB is not usually BA. The inner product of two vectors is their dot product.</p>
+    <div class="box takeaway"><p class="box-label">Takeaway</p><p>X'X is always symmetric. It is positive semidefinite: for any vector v, v'X'Xv ≥ 0. It is positive definite (and invertible) exactly when X has full column rank.</p></div>
+
     <h2>2. Rank, inverse and determinants</h2>
-    <p>Full column rank means the columns are linearly independent. The determinant of a 2×2 matrix is the signed area of the parallelogram spanned by its columns. A singular matrix has determinant zero and no inverse.</p>
+    <p>The rank of a matrix is the dimension of its column space (the number of linearly independent columns). Full column rank means the columns are linearly independent. A square matrix is invertible if and only if it has full rank and its determinant is nonzero.</p>
+    <p>The determinant of a 2×2 matrix is the signed area of the parallelogram spanned by its two columns. If the columns are collinear the area is zero and the matrix is singular. The inverse, when it exists, undoes multiplication: A A^{-1} = I.</p>
+    <div class="box note"><p class="box-label">Note</p><p>OLS next lecture rests on three facts: X'X is invertible exactly when X has full column rank, X'X is positive semidefinite, and the gradient of β'X'Xβ is 2X'Xβ.</p></div>
+
     <h2>3. Quadratic forms and derivatives</h2>
-    <p>The quadratic form β'Aβ is positive for all β ≠ 0 when A is positive definite. The gradient of β'X'Xβ with respect to β is 2X'Xβ. These two facts give the OLS first-order condition.</p>
+    <p>A quadratic form is β'Aβ. When A is positive definite the form is positive for every nonzero β. The derivative of a quadratic form with respect to the vector β is 2Aβ when A is symmetric. Setting the derivative of the OLS objective to zero gives the normal equations X'Xβ = X'y.</p>
+    <div class="box takeaway"><p class="box-label">Takeaway</p><p>The geometry of OLS is the projection of y onto the column space of X. The algebra is the inverse of X'X.</p></div>
   </article>
   </main>
 </div>
