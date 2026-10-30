@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/notes.css">
 <link rel="stylesheet" href="/assets/katex/katex.css">
+<script defer src="/assets/katex/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
 <script src="/assets/notes.js" defer></script>
 <style>
 body, body * { font-family: Calibri, "Segoe UI", "Helvetica Neue", Arial, sans-serif !important; }
@@ -49,17 +50,17 @@ if (sessionStorage.getItem('notes_ok') === '1') {
     <header class="paper-header">
       <p class="eyebrow">Core Econometrics &middot; L2</p>
       <h1>Estimation, asymptotics and confidence intervals</h1>
-      <p class="lede">What an estimator is, why the sample mean converges, when the average becomes normal, and how to build intervals that cover the truth with high probability.</p>
+      <p class="lede">What an estimator is, why the sample mean $\bar X_n$ converges, when the average becomes normal, and how to build intervals that cover the truth with high probability.</p>
       <p class="page-actions"><a href="/notes/">All notes</a></p>
     </header>
 
     <h2>1. Estimators and the analogy principle</h2>
     <p>A population quantity (mean, variance, CDF) is a function of an unknown distribution. The data are draws from that distribution, so sample analogues carry information about it. An <span class="rel-asymp">estimator</span> is a function of the random sample, hence a random variable. An estimate is the number it produces in one particular sample.</p>
-    <p>The analogy principle replaces each expectation by a sample average. The sample mean is the expectation under the empirical distribution that puts mass 1/n on each observation. The same idea gives the sample variance and the empirical CDF.</p>
+    <p>The analogy principle replaces each expectation by a sample average. The sample mean $\bar X_n$ is the expectation under the empirical distribution that puts mass 1/n on each observation. The same idea gives the sample variance and the empirical CDF.</p>
     <div class="box takeaway"><p class="box-label">Takeaway</p><p>An estimator is a random variable. Everything that follows describes its distribution, exactly at fixed n or approximately as n grows.</p></div>
 
     <h2>2. Law of large numbers</h2>
-    <p>The <span class="rel-asymp">weak LLN</span> says the sample mean converges in probability to the population mean. The <span class="rel-asymp">strong LLN</span> says it converges almost surely. Both need the same moment condition: a finite mean. If the mean does not exist (Cauchy), averaging fails and the path does not settle.</p>
+    <p>The <span class="rel-asymp">weak LLN</span> says the sample mean $\bar X_n$ converges in probability to the population mean $\mu$. The <span class="rel-asymp">strong LLN</span> says it converges almost surely. Both need the same moment condition: a finite mean. If the mean does not exist (Cauchy), averaging fails and the path does not settle.</p>
     <figure class="nfig" data-nfig="lln">
       <div class="nfig-seg" role="group">
         <button type="button" class="nfig-opt" data-dist="normal" aria-pressed="true">Normal</button>
@@ -73,18 +74,18 @@ if (sessionStorage.getItem('notes_ok') === '1') {
     <div class="box note"><p class="box-label">Note</p><p>The assumptions for the weak and strong LLN are the same. The difference is the mode of convergence.</p></div>
 
     <h2>3. Central limit theorem and Slutsky</h2>
-    <p>The <span class="rel-asymp">CLT</span> says that if the variance is finite, the standardised sample mean is approximately standard normal for large n. Standardised means (sample mean − true mean) / (standard error). <span class="rel-asymp">Slutsky</span> lets you replace any consistent estimator inside a continuous function without changing the limiting distribution. That is how we get asymptotic standard errors and confidence intervals.</p>
+    <p>The <span class="rel-asymp">CLT</span> says that if the variance is finite, the standardised sample mean $(\bar X_n - \mu)/(\sigma/\sqrt n)$ $\bar X_n$ is approximately standard normal for large n. Standardised means (sample mean $\bar X_n$ − true mean) / (standard error). <span class="rel-asymp">Slutsky</span> lets you replace any consistent estimator inside a continuous function without changing the limiting distribution. That is how we get asymptotic standard errors and confidence intervals.</p>
     <figure class="nfig" data-nfig="clt">
       <label>n: <input type="range" min="5" max="200" value="30"></label>
       <svg class="nfig-plot" viewBox="0 0 520 220"></svg>
       <p class="nfig-read"></p>
-      <figcaption>Histogram of standardised sample means. As n grows it matches the normal density more closely.</figcaption>
+      <figcaption>Histogram of standardised sample mean $(\bar X_n - \mu)/(\sigma/\sqrt n)$ $\bar X_n$s. As n grows it matches the normal density more closely.</figcaption>
     </figure>
     <div class="box takeaway"><p class="box-label">Takeaway</p><p>LLN tells you the average converges. CLT tells you the rate and the shape. Slutsky lets you plug in estimated variances.</p></div>
 
     <h2>4. Consistency versus unbiasedness</h2>
     <p>Unbiasedness is a finite-sample property: the expected value of the estimator equals the truth for every n. Consistency is asymptotic: the estimator converges in probability to the truth. An estimator can be biased for every finite n yet consistent (the bias shrinks). It can also be unbiased yet inconsistent if its variance does not shrink.</p>
-    <p>Example: the sample variance with divisor n is biased but consistent. The sample variance with divisor n−1 is unbiased (under normality) and also consistent.</p>
+    <p>Example: the sample variance with divisor $n$ is biased but consistent. The sample variance with divisor $n$−1 is unbiased (under normality) and also consistent.</p>
     <div class="box note"><p class="box-label">Note</p><p>Use limits rigorously: state the theory result, the context, the assumptions, then derive and conclude.</p></div>
   </article>
   </main>
