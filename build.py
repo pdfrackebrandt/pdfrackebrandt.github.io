@@ -145,7 +145,7 @@ def md_inline(s):
     s = s.replace('\\$', stash('$'))
     # punctuation right after inline math stays on its line ($x$. never wraps the full stop to the next line)
     s = re.sub(r'\$([^$\n]+?)\$([.,;:!?)]*)', lambda m: stash(
-        '<span class="mp">%s%s</span>' % (math_token(m.group(1), False), escape(m.group(2))) if m.group(2) else math_token(m.group(1), False)), s)
+        '<span class="mp">%s\x06%s\x06</span>' % (math_token(m.group(1), False), escape(m.group(2))) if m.group(2) else math_token(m.group(1), False)), s)
     s = re.sub(r'`([^`]+)`', lambda m: stash('<code>%s</code>' % escape(m.group(1))), s)
     s = escape(s, quote=False)
     # colour roles from the Word notes: [term]{.key} red key term, [Label.]{.label} purple sub label, [Question?]{.ask} green prompt
@@ -184,8 +184,10 @@ BOX_LABELS = {'short': 'In short', 'intuition': 'Intuition', 'note': 'Note!', 't
 FIG_SLOT = '\x04FIGURE\x04'
 
 
-# ::: name  (a box), or  ::: try <figure>  (a guided exercise on that figure); a line ::: closes it
-BOX_RE = re.compile(r'^:::[ \t]*(\w+)(?:[ \t]+([\w-]+))?[ \t]*\n(.*?)\n:::[ \t]*$', re.M | re.S)
+# ::: name  (a box), or  ::: try <figure>  (a guided exercise on that figure); a line ::: closes it.
+# ::: proof <title>  folds a proof away on the page (open it to read), ::: example <title>  is a worked example,
+# ::: check  holds ask: and answer: lines, questions to test yourself with the answers hidden
+BOX_RE = re.compile(r'^:::[ \t]*(\w+)(?:[ \t]+([^\n]*?))?[ \t]*\n(.*?)\n:::[ \t]*$', re.M | re.S)
 
 # A guided exercise ("Try it") turns a figure into steps. Inside  ::: try <figure>  each line starts with a field:
 #   eq:      live equation shown above the steps (TeX; \nv{key}{0.00} is a number the figure keeps current)
@@ -293,6 +295,30 @@ def try_tex(name, inner):
     return '\\begin{trybox}\n%s\n\\end{trybox}' % '\n\n'.join(body)
 
 
+def parse_check(inner):
+    """The ask: / answer: pairs of a ::: check box; a line with no field continues the one above."""
+    pairs, last = [], None
+    for line in inner.split('\n'):
+        if not line.strip():
+            continue
+        m = re.match(r'^\s*(ask|answer):\s?(.*)$', line)
+        if m and m.group(1) == 'ask':
+            pairs.append([m.group(2).strip(), ''])
+            last = 0
+        elif m:
+            if not pairs or pairs[-1][1]:
+                raise SystemExit('::: check: answer: without its ask: %r' % line)
+            pairs[-1][1] = m.group(2).strip()
+            last = 1
+        elif last is not None:
+            pairs[-1][last] += ' ' + line.strip()
+        else:
+            raise SystemExit('::: check: a line before the first ask: %r' % line)
+    if not pairs or any(not a for _, a in pairs):
+        raise SystemExit('::: check: every ask: needs an answer:')
+    return pairs
+
+
 def md_html(src):
     raw = []
 
@@ -300,6 +326,18 @@ def md_html(src):
         kind, name, inner = m.group(1), m.group(2), m.group(3)
         if kind == 'try':
             raw.append(try_html(name, inner))
+            return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
+        if kind == 'proof':
+            raw.append('<details class="box proof"><summary><span class="box-label">Proof</span>%s</summary><div class="proof-body">%s</div></details>'
+                       % ((' <span class="proof-title">%s</span>' % md_inline(name)) if name else '', md_html(inner)))
+            return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
+        if kind == 'example':
+            raw.append('<div class="box example"><p class="box-label">Example%s</p>%s</div>' % ((': ' + md_inline(name)) if name else '', md_html(inner)))
+            return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
+        if kind == 'check':
+            qs = ''.join('<li><p class="nf-ask">%s</p><button class="chk-reveal" type="button" aria-expanded="false">Show answer</button>'
+                         '<div class="chk-answer" hidden>%s</div></li>' % (md_inline(q), md_html(a)) for q, a in parse_check(inner))
+            raw.append('<div class="box check"><p class="box-label">Check yourself</p><ol class="chk">%s</ol></div>' % qs)
             return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
         label = BOX_LABELS.get(kind, '')
         raw.append('<div class="box %s">%s%s</div>' % (kind, '<p class="box-label">%s</p>' % label if label else '', md_html(inner)))
@@ -401,6 +439,9 @@ def resolve_math(pages):
 
     html_of = {k: re.sub(r'<[a-zA-Z][^>]*\sstyle="[^"]*"[^>]*>', classify, v) for k, v in used.items()}
     out = {path: re.sub('\x00M(\\d+)\x00', lambda m: html_of[keys[int(m.group(1))]], html) for path, html in pages.items()}
+    # punctuation after inline math goes inside the formula's last box, so a line can never break between them
+    # (a nowrap wrapper is not enough: browsers may break after an inline block whatever the parent says)
+    out = {path: re.sub('(</span></span></span>)\x06([^\x06]*)\x06', r'<span class="mp-p">\2</span>\1', html) for path, html in out.items()}
     rules = ''.join('.%s{%s}\n' % (n, ';'.join(d.strip() + '!important' for d in styles[n].split(';') if d.strip())) for n in sorted(styles))
     with open(os.path.join(ROOT, 'assets', 'math.css'), 'w', encoding='utf-8') as fh:
         fh.write('/* Generated by build.py: KaTeX layout values as classes, so the page needs no inline styles. */\n' + rules)
@@ -1084,8 +1125,16 @@ def md_tex(src, figs):
     box_env = {'short': 'shortbox', 'intuition': 'intuitionbox', 'note': 'notebox', 'takeaway': 'takeawaybox'}
 
     def fence(m):
-        if m.group(1) == 'try':
-            raw.append(try_tex(m.group(2), m.group(3)))
+        kind, name, inner = m.group(1), m.group(2), m.group(3)
+        if kind == 'try':
+            raw.append(try_tex(name, inner))
+        elif kind == 'proof':
+            raw.append('\\begin{proof}[%s]\n%s\n\\end{proof}' % ('Proof' + (': ' + tex_inline(name) if name else ''), md_tex(inner, figs)))
+        elif kind == 'example':
+            raw.append('\\begin{examplebox}[%s]\n%s\n\\end{examplebox}' % ('Example' + (': ' + tex_inline(name) if name else ''), md_tex(inner, figs)))
+        elif kind == 'check':
+            raw.append('\\begin{checkbox}\n\\begin{enumerate}[leftmargin=*]\n%s\\end{enumerate}\n\\end{checkbox}' % ''.join(
+                '  \\item \\askq{%s}\\par\\textit{Answer:} %s\n' % (tex_inline(q), tex_inline(a)) for q, a in parse_check(inner)))
         else:
             raw.append('\\begin{%s}\n%s\n\\end{%s}' % (box_env.get(m.group(1), 'shortbox'), md_tex(m.group(3), figs), box_env.get(m.group(1), 'shortbox')))
         return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
@@ -1139,7 +1188,7 @@ TEX_PREAMBLE = r"""\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \setlength{\emergencystretch}{2em}
 \IfFileExists{carlito.sty}{\usepackage[sfdefault,lining]{carlito}}{\renewcommand{\familydefault}{\sfdefault}}
-\usepackage{amsmath,amssymb,mathtools}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
 \usepackage[margin=2.3cm]{geometry}
 \usepackage{xcolor,graphicx,booktabs,tabularx,array,enumitem,titlesec,caption}
 \usepackage[most]{tcolorbox}
@@ -1174,6 +1223,8 @@ TEX_PREAMBLE = r"""\documentclass[11pt,a4paper]{article}
 \newtcolorbox{trybox}{enhanced,frame hidden,colback=white,borderline west={1.5pt}{0pt}{askgreen},sharp corners,title={\textbf{Try it} \normalfont\small (live in Rikuy and on the website)},coltitle=askgreen,colbacktitle=white,attach title to upper={\par}}
 \newcommand{\trystep}[1]{\par\smallskip\textcolor{labelpurple}{\textbf{#1}}\par}
 \newcommand{\nv}[2]{#2}
+\newtcolorbox{examplebox}[1][Example]{enhanced,frame hidden,colback=white,borderline west={1.5pt}{0pt}{labelpurple},sharp corners,title={\textbf{#1}},coltitle=labelpurple,colbacktitle=white,attach title to upper={\par}}
+\newtcolorbox{checkbox}{colback=white,colframe=askgreen,boxrule=0.5pt,arc=2pt,title={\textbf{Check yourself}},coltitle=askgreen,colbacktitle=white,attach title to upper={\par}}
 \newtcolorbox{resultbox}{colback=white,colframe=black!25,arc=2pt,boxrule=0.5pt}
 \title{\vspace{-1.5em}\textbf{@LABEL@: @TITLE@}}
 \author{@COURSE@ \quad\textperiodcentered\quad Pedro F. Rackebrandt}

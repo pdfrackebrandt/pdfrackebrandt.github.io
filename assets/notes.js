@@ -966,6 +966,18 @@
       try{ var api=fn(f); if(api && typeof api.get==='function') f.nfApi=api; }catch(err){ if(window.console && console.error) console.error(err); }
     }
     initTry(scope);
+    initChecks(scope);
+  }
+  /* Check yourself: each Show answer opens the answer under it */
+  function initChecks(scope){
+    var bs=(scope.querySelectorAll ? scope : document).querySelectorAll('.chk-reveal:not([data-wired])'), i;
+    for(i=0;i<bs.length;i++){
+      bs[i].setAttribute('data-wired','1');
+      bs[i].addEventListener('click', function(){
+        var box=this.nextElementSibling, open=box.hidden;
+        box.hidden=!open; this.setAttribute('aria-expanded', open ? 'true' : 'false'); this.textContent=open ? 'Hide answer' : 'Show answer';
+      });
+    }
   }
   window.initNoteFigures=initNoteFigures;
 

@@ -157,3 +157,23 @@
 /* KaTeX's invisible struts in a line of math can reach over the button above it; keep the buttons on top and clickable */
 .nf-try button{position:relative;z-index:1}
 .nf-try .katex .vlist-t{pointer-events:none}
+
+/* teaching boxes: a folded proof, a worked example, questions to check yourself (build.py ::: proof / example / check) */
+.box.proof{border-left:2px solid var(--rule);padding:0 0 0 14px}
+.box.proof > summary{list-style:none;display:flex;align-items:baseline;gap:10px;cursor:pointer;min-height:32px;align-items:center}
+.box.proof > summary::-webkit-details-marker{display:none}
+.box.proof > summary::before{content:"";flex:none;width:6px;height:6px;border-right:1.5px solid var(--c-label);border-bottom:1.5px solid var(--c-label);transform:rotate(-45deg);transition:transform .2s}
+.box.proof[open] > summary::before{transform:translateY(-2px) rotate(45deg)}
+.explainer .box.proof .box-label{margin:0;font-weight:700;color:var(--c-label);font-size:1rem}
+.box.proof .proof-title{color:var(--ink-soft)}
+.box.proof .proof-body{display:flex;flex-direction:column;gap:12px;padding:6px 0 4px}
+.box.example{border-left:2px solid var(--c-label);padding:2px 0 2px 16px}
+.explainer .box.example .box-label{color:var(--c-label)}
+.box.check{border:1px solid var(--rule);border-radius:4px;padding:12px 16px 14px}
+.explainer .box.check .box-label{color:var(--c-ask)}
+.chk{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:chk}
+.chk > li{display:flex;flex-direction:column;gap:8px}
+.explainer .chk p.nf-ask{margin:0;font-weight:700;color:var(--c-ask)}
+.chk-reveal{align-self:flex-start;font-family:var(--f-mono);font-size:.75rem;color:var(--ink-soft);background:none;border:1px solid var(--rule);border-radius:3px;padding:6px 12px;min-height:34px;cursor:pointer;position:relative;z-index:1}
+.chk-reveal:hover{border-color:var(--c-ask);color:var(--ink)}
+.chk-answer{border-left:2px solid var(--rule);padding:2px 0 2px 12px;display:flex;flex-direction:column;gap:8px}
