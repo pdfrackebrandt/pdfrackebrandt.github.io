@@ -1,0 +1,19 @@
+<figure class="nfig" data-nfig="mi2-convex">
+  <div class="nfig-seg" role="group" aria-label="Utility function">
+    <button type="button" class="nfig-opt" data-fam="sqrt" aria-pressed="true">√x₁ + √x₂</button>
+    <button type="button" class="nfig-opt" data-fam="min" aria-pressed="false">min{x₁, x₂}</button>
+    <button type="button" class="nfig-opt" data-fam="sq" aria-pressed="false">x₁² + x₂²</button>
+  </div>
+  <div class="nfig-seg" role="group" aria-label="Representation">
+    <button type="button" class="nfig-opt" data-rep="u" aria-pressed="true">utility u</button>
+    <button type="button" class="nfig-opt" data-rep="u4" aria-pressed="false">utility u⁴</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">weight on y </span>λ</span><input type="range" min="0" max="1" step="0.05" value="0.5" data-k="lam"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 380" role="group" aria-label="Two bundles y and z, the dashed chord between them, and the purple mixture m = λy + (1 − λ)z on it. The shading is the set of bundles at least as good as the worse of y and z, and the curves are the indifference curves through y and z. Drag y or z, or focus one and use the arrow keys."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">u(y) = 4.24   u(z) = 3.86   u(m) = 4.24 at λ = 0.50
+m is strictly better than the worse of y and z: the quasiconcavity test passes
+u(m) ≥ λu(y) + (1 − λ)u(z) = 4.05: the concavity test passes</p>
+  <figcaption>Drag y and z and move λ: m = λy + (1 − λ)z is the purple dot on the chord. The shading is the set of bundles at least as good as the worse of y and z, so convexity says m must land in it. Switch u to u⁴ to change the utility numbers but not the preferences.</figcaption>
+</figure>

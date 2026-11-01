@@ -154,3 +154,6 @@
 .nf-where{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
 .nf-live .katex .nv{transition:color .2s}
 @media (prefers-reduced-motion: reduce){.nf-dot,.nf-reveal,.nf-setup{transition:none}}
+/* KaTeX's invisible struts in a line of math can reach over the button above it; keep the buttons on top and clickable */
+.nf-try button{position:relative;z-index:1}
+.nf-try .katex .vlist-t{pointer-events:none}

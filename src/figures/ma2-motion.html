@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="ma2-motion">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn ma2-half">Start at k*/2</button>
+    <button type="button" class="btn ma2-twice">Start at 2k*</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">capital share α</span><input type="range" min="0.2" max="0.5" step="0.01" value="0.3" data-k="alpha"><span class="nfig-val" aria-hidden="true">0.30</span></label>
+    <label class="nfig-range"><span class="nfig-name">discount factor β</span><input type="range" min="0.2" max="1" step="0.01" value="0.5" data-k="beta"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name">CRRA σ</span><input type="range" min="0.5" max="4" step="0.1" value="1" data-k="sigma"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+  </div>
+  <svg class="nfig-plot ma2-drag" viewBox="0 0 520 330" role="group" aria-label="Left: the law of motion k t+1 = g(k t) of the two period OLG model with Cobb Douglas production, against the 45 degree line, with the staircase that starts from k0 and the tangent at the steady state k*. Right: the same path k0, k1, k2 and so on over generations. Press or drag on the left panel, or focus the knob and use the arrow keys, to move k0."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">k* = 0.125   R* = f′(k*) = 1.29   slope g′(k*) = 0.30
+k0 = 0.0313 → 0.0825 → 0.110 → 0.120   (k/k* = 0.25, 0.66, 0.88, 0.96)</p>
+  <figcaption>Press or drag on the left panel to choose k0, and move α, β and σ (σ = 1 is log utility). The staircase goes up to the curve and across to the 45 degree line once per generation; the purple line is the tangent at k*. On the right the same path over time.</figcaption>
+</figure>

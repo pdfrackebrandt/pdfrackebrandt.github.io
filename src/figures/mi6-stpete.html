@@ -1,0 +1,18 @@
+<figure class="nfig" data-nfig="mi6-stpete">
+  <div class="nfig-seg" role="group" aria-label="Utility">
+    <button type="button" class="nfig-opt" data-util="lin" aria-pressed="true">Linear</button>
+    <button type="button" class="nfig-opt" data-util="log" aria-pressed="false">Log (Bernoulli)</button>
+    <button type="button" class="nfig-opt" data-util="bnd" aria-pressed="false">Bounded (CARA)</button>
+  </div>
+  <div class="nfig-seg" role="group" aria-label="Prizes">
+    <button type="button" class="nfig-opt" data-prize="two" aria-pressed="true">prize 2ᵐ</button>
+    <button type="button" class="nfig-opt" data-prize="super" aria-pressed="false">prize e^(2ᵐ), Menger</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">bank size </span>K</span><input type="range" min="1" max="40" step="1" value="10" data-k="k"><span class="nfig-val" aria-hidden="true">10</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 280" role="img" aria-label="Bars for the terms of the expected utility of the St. Petersburg game: bar m is the probability that the first tail comes on toss m times the utility of the prize paid then. The last bar collects every game that reaches toss K, when the bank pays all it holds."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">the bank holds 2ᴷ = 1,024 (K = 10)
+E[x] = 11.00: each toss before K adds 2⁻ᵐ × 2ᵐ = 1, so a risk neutral player’s certainty equivalent is 11.00</p>
+  <figcaption>Each bar is one term of the expected utility of the St. Petersburg game when the bank can pay at most the prize of toss K. Flat bars mean the sum grows without limit as the bank grows; shrinking bars mean it converges.</figcaption>
+</figure>

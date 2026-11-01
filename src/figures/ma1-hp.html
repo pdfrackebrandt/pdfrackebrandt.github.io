@@ -1,0 +1,20 @@
+<figure class="nfig" data-nfig="ma1-hp">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Simulated data">
+      <button type="button" class="nfig-opt" data-data="tc" aria-pressed="true">Trend plus cycle</button>
+      <button type="button" class="nfig-opt" data-data="rw" aria-pressed="false">Random walk</button>
+    </div>
+    <div class="nfig-seg" role="group" aria-label="Filter">
+      <button type="button" class="nfig-opt" data-flt="hp" aria-pressed="true">HP filter</button>
+      <button type="button" class="nfig-opt" data-flt="ham" aria-pressed="false">Hamilton</button>
+    </div>
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">smoothing </span>λ</span><input type="range" min="0" max="11" step="1" value="6" data-k="lam"><span class="nfig-val" aria-hidden="true">1600</span></label>
+    <label class="nfig-range"><span class="nfig-name">sample ends</span><input type="range" min="120" max="200" step="1" value="200" data-k="cut"><span class="nfig-val" aria-hidden="true">year 50</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 330" role="img" aria-label="Fifty years of simulated quarterly log GDP. Top panel: the series, its estimated trend and, for the trend plus cycle data, the true trend dashed. Bottom panel: the estimated cycle, the data minus the trend, against the true cycle dashed. When the sample is cut short, the faint line is the cycle estimated from the full sample, and a red segment at the cut shows how much the last real time estimate is later revised."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">HP, λ = 1600: sd of the cycle 1.18% (true 1.38%), correlation with the true cycle 0.96</p>
+  <figcaption>Simulated data, not US data: log GDP is a trend with slowly drifting growth plus an AR(2) cycle, or a pure random walk with drift. Slide λ to set how smooth the trend must be, switch to Hamilton's regression filter, and cut the sample short to see the cycle as it looks in real time.</figcaption>
+</figure>

@@ -1,0 +1,29 @@
+/* Core Macroeconomics L3 figures, drawn by /assets/figs/ma3.js. Colours come from the site tokens, so dark mode follows.
+   The saddle path is red and the c dot = 0 line green, the colours of their symbols in the Try it equations. */
+.nfig .ma3-it{font-style:italic}
+.nfig .ma3-small{font-size:10px}
+.nfig .ma3-cdl{fill:var(--c-ask)}
+.ma3-sp{fill:none;stroke:var(--c-key);stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round}
+.ma3-faint{stroke-opacity:.38;stroke-dasharray:5 4}
+.ma3-path{fill:none;stroke:var(--fig-blue);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.ma3-kd{fill:none;stroke:var(--ink-soft);stroke-width:1.75;stroke-linejoin:round}
+.ma3-cd{fill:none;stroke:var(--c-ask);stroke-width:1.75}
+.ma3-old{stroke-dasharray:5 4;stroke-opacity:.5}
+.ma3-gr{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3}
+.ma3-ray{fill:none;stroke:var(--c-label);stroke-width:1.5;stroke-dasharray:2 3}
+.ma3-arr{stroke:var(--muted);stroke-width:1.25;stroke-linecap:round}
+.ma3-arrh{fill:var(--muted);stroke:none}
+.ma3-jump{stroke:var(--fig-blue);stroke-width:2}
+.ma3-jumph{fill:var(--fig-blue);stroke:none}
+.ma3-ssd{fill:var(--ink);stroke:var(--paper);stroke-width:1.5}
+.ma3-ssold{fill:var(--paper);stroke:var(--ink-soft);stroke-width:1.5}
+.ma3-start{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.ma3-zero{fill:none;stroke:var(--signal);stroke-width:2;stroke-linecap:round}
+.ma3-c{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+.ma3-k{fill:none;stroke:var(--ink-soft);stroke-width:1.75;stroke-dasharray:6 3;stroke-linejoin:round}
+.ma3-ref{stroke:var(--faint);stroke-width:1;stroke-dasharray:4 4}
+.ma3-shock{stroke:var(--faint);stroke-width:1;stroke-dasharray:2 3}
+.ma3-gline{stroke:var(--c-ask);stroke-width:1.5;stroke-dasharray:5 4}
+.nf-knob.ma3-knob{stroke:var(--fig-blue)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ma3-faint{stroke-opacity:.6}}
+:root[data-theme="dark"] .ma3-faint{stroke-opacity:.6}

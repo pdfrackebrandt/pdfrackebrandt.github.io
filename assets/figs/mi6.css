@@ -1,0 +1,43 @@
+/* Core Micro L6 figures, drawn by /assets/figs/mi6.js. Colours come from the site tokens, so dark mode follows. */
+.nfig .mi6-it{font-style:italic}
+.nfig .mi6-small{font-size:10px}
+.nf-knob.mi6-kx{stroke:var(--ink)}
+/* Allais: the triangle, its indifference lines, and the two parallel segments in red, the colour of V(A) - V(B) in the Try it box */
+.mi6-tri{fill:none;stroke:var(--muted);stroke-width:1.25;stroke-linejoin:round}
+.mi6-ind{stroke:var(--fig-blue);stroke-opacity:.28;stroke-width:1;fill:none}
+.mi6-indk{stroke-opacity:.8;stroke-width:1.5}
+.mi6-cc{stroke:var(--c-key);stroke-width:2.5;stroke-linecap:round}
+.mi6-lot{fill:var(--paper);stroke:var(--ink);stroke-width:1.75}
+.mi6-lot.mi6-pick{fill:var(--ink)}
+.nfig .mi6-lotlab{fill:var(--ink);font-size:12px;font-weight:700}
+.mi6-barrow{stroke:var(--muted);stroke-width:1.25}
+.mi6-bhead{fill:var(--muted);stroke:none}
+/* St. Petersburg: one bar per term of the expected utility sum */
+.mi6-bar{fill:var(--fig-blue);fill-opacity:.55;stroke:none}
+.mi6-bar.mi6-last{fill-opacity:.22;stroke:var(--fig-blue);stroke-width:1;stroke-dasharray:2 2}
+.mi6-off{fill:var(--signal)}
+/* certainty equivalent: the chord, E[u] on it, and the risk premium P in red, as in the Try it box */
+.mi6-chord{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:5 4}
+.mi6-eu{fill:var(--paper);stroke:var(--fig-blue);stroke-width:2}
+.nfig .mi6-eul{fill:var(--fig-blue)}
+.mi6-pline{fill:none;stroke:var(--c-key);stroke-width:2;stroke-linejoin:round}
+.nfig .mi6-plab{fill:var(--c-key);font-weight:700;font-size:12px}
+/* Arrow Pratt: the quadratic approximation in purple, the colour of the term in the Try it box */
+.mi6-apl{fill:none;stroke:var(--c-label);stroke-width:2;stroke-dasharray:6 4;stroke-linecap:round}
+.mi6-apd{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+/* wealth: three utilities */
+.mi6-wc{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+.mi6-wl{fill:none;stroke:var(--c-label);stroke-width:2;stroke-linejoin:round}
+.mi6-wq{fill:none;stroke:var(--muted);stroke-width:2;stroke-dasharray:7 4;stroke-linejoin:round}
+.mi6-wdc{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.mi6-wdl{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.mi6-wdq{fill:var(--muted);stroke:var(--paper);stroke-width:1.5}
+.mi6-ref{stroke:var(--faint);stroke-width:1;stroke-dasharray:2 3}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .mi6-ind{stroke-opacity:.4}
+  :root:not([data-theme="light"]) .mi6-bar{fill-opacity:.62}
+}
+:root[data-theme="dark"] .mi6-ind{stroke-opacity:.4}
+:root[data-theme="dark"] .mi6-bar{fill-opacity:.62}
+/* KaTeX lifts superscripts with tall invisible struts; in these Try it panels they would sit over the button above a line of math and swallow its clicks */
+.nf-try[data-for^="mi6-"] .katex .vlist-t{pointer-events:none}

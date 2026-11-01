@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="ma4-ak">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn ma4-bgp">Set c₀/k₀ = ρ</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">initial consumption to capital ratio </span>c₀/k₀</span><input type="range" min="0.01" max="0.08" step="0.001" value="0.05" data-k="x0"><span class="nfig-val" aria-hidden="true">0.050</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">technology </span>A</span><input type="range" min="0.06" max="0.2" step="0.01" value="0.12" data-k="a"><span class="nfig-val" aria-hidden="true">0.12</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">discount rate </span>ρ</span><input type="range" min="0.01" max="0.06" step="0.005" value="0.04" data-k="rho"><span class="nfig-val" aria-hidden="true">0.040</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 344" role="img" aria-label="The AK model with log utility and depreciation 0.05. Top: capital and consumption as indices equal to 1 at time 0, on a log scale, over 80 years. Bottom: the ratio of consumption to capital, with a dashed line at rho. Consumption always grows at A minus delta minus rho; capital grows at the same rate only when c0 over k0 equals rho."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">ċ/c = A − δ − ρ = 3.0%   k̇/k at t = 0: A − δ − c₀/k₀ = 2.0%
+c₀/k₀ &gt; ρ: c keeps growing at 3.0% but capital runs out at t = 40.2: infeasible</p>
+  <figcaption>The AK model with log utility and δ = 0.05, starting from k₀ = 1. The household picks c₀; the Euler equation then fixes the growth of consumption at A − δ − ρ whatever c₀ is, and the resource constraint decides what happens to capital. Move c₀/k₀ and watch the blue capital line bend away from the green consumption line unless c₀/k₀ = ρ.</figcaption>
+</figure>

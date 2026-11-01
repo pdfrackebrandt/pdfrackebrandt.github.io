@@ -1,0 +1,71 @@
+/* Core Micro L5 figures, drawn by /assets/figs/mi5.js. Colours come from the site tokens, so dark mode follows. */
+.nfig .mi5-small{font-size:10px;fill:var(--muted)}
+.mi5-tri{fill:var(--fig-blue);fill-opacity:.035;stroke:var(--ink-soft);stroke-width:1.25;stroke-linejoin:round}
+.nf-knob.mi5-k0{stroke:var(--ink)}
+.nfig text.mi5-ink{fill:var(--ink-soft)}
+.mi5-tog[aria-pressed="true"]{color:var(--ink);border-color:var(--fig-blue);box-shadow:inset 0 -2px 0 var(--fig-blue)}
+[data-nfig^="mi5-"] .nfig-read{min-height:3em}
+/* simplex: the drop to each side has its probability's colour; p3, the height, is red as in its Try it equation */
+.mi5-drop{stroke-width:2;stroke-linecap:round}
+.mi5-rt{fill:none;stroke-width:1}
+.mi5-s1{stroke:var(--fig-blue)}
+.mi5-s2{stroke:var(--green)}
+.mi5-s3{stroke:var(--c-key)}
+.nfig text.mi5-f1{fill:var(--fig-blue)}
+.nfig text.mi5-f2{fill:var(--green)}
+.nfig text.mi5-f3{fill:var(--c-key)}
+.nfig text.mi5-dl{font-size:12px;font-style:italic}
+.mi5-area{stroke:none;fill-opacity:.13}
+.mi5-c1{fill:var(--fig-blue)}
+.mi5-c2{fill:var(--green)}
+.mi5-c3{fill:var(--c-key)}
+/* compound lotteries: the reduced point is red, like the reduced lottery in its Try it equation */
+.mi5-seg{stroke:var(--ink-soft);stroke-width:1.25}
+.mi5-red{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.nfig text.mi5-redt{fill:var(--c-key)}
+.mi5-ghost{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:5 4}
+.mi5-gdot{fill:var(--paper);stroke:var(--muted);stroke-width:1.5}
+.mi5-br{stroke:var(--ink-soft);stroke-width:1.25;fill:none;stroke-linejoin:round}
+.mi5-node{fill:var(--ink-soft)}
+.nfig text.mi5-tt{font-size:11px}
+/* independence: the mixtures M and M' are purple, like U(M) - U(M') in its Try it equation */
+.mi5-ray{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 3}
+.mi5-chord{stroke:var(--ink-soft);stroke-width:1;stroke-opacity:.6}
+.mi5-chordm{stroke:var(--c-label);stroke-width:1.5}
+.mi5-mdot{fill:var(--paper);stroke:var(--c-label);stroke-width:2}
+.nfig text.mi5-mt{fill:var(--c-label);font-size:12px;font-style:italic}
+.mi5-lev{stroke:var(--ink-soft);stroke-opacity:.38;stroke-width:1;fill:none}
+.mi5-arr{stroke:var(--muted);stroke-width:1.25}
+.mi5-arrh{fill:var(--muted);stroke:none}
+.mi5-wc{fill:var(--signal);fill-opacity:.08;stroke:none}
+.mi5-sw{stroke:var(--signal);stroke-opacity:.5;stroke-width:1}
+.mi5-wcedge{stroke:var(--fig-blue);stroke-width:4;stroke-linecap:round;stroke-opacity:.75}
+.mi5-wctop{fill:var(--fig-blue)}
+/* expected utility: the probe's line and its matching gamble on the best and worst side (red, as in the equation) */
+.mi5-plev{stroke:var(--ink);stroke-width:1.75;stroke-linecap:round}
+.mi5-lev2{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.mi5-cal{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.nfig text.mi5-calt{fill:var(--c-key)}
+.mi5-pt{fill:var(--ink-soft);stroke:var(--paper);stroke-width:1.5}
+/* matching pennies: A's payoffs and lines; q* is red, as in its Try it equation */
+.mi5-cell{fill:none;stroke:var(--rule);stroke-width:1}
+.mi5-cell.mi5-hot{fill:var(--fig-blue);fill-opacity:.07;stroke:var(--fig-blue);stroke-opacity:.45}
+.nfig .mi5-pa{fill:var(--fig-blue)}
+.nfig .mi5-pb{fill:var(--muted)}
+.mi5-lh{stroke:var(--fig-blue);stroke-width:2;stroke-linecap:round}
+.mi5-lt{stroke:var(--green);stroke-width:2;stroke-linecap:round}
+.nfig text.mi5-fh{fill:var(--fig-blue)}
+.nfig text.mi5-ft{fill:var(--green)}
+.mi5-qs{stroke:var(--c-key);stroke-width:1.25;stroke-dasharray:4 3}
+.mi5-qdot{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.nfig text.mi5-qt{fill:var(--c-key)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .mi5-tri{fill-opacity:.06}
+  :root:not([data-theme="light"]) .mi5-area{fill-opacity:.2}
+  :root:not([data-theme="light"]) .mi5-wc{fill-opacity:.14}
+  :root:not([data-theme="light"]) .mi5-lev{stroke-opacity:.45}
+}
+:root[data-theme="dark"] .mi5-tri{fill-opacity:.06}
+:root[data-theme="dark"] .mi5-area{fill-opacity:.2}
+:root[data-theme="dark"] .mi5-wc{fill-opacity:.14}
+:root[data-theme="dark"] .mi5-lev{stroke-opacity:.45}

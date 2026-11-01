@@ -1,0 +1,19 @@
+<figure class="nfig" data-nfig="mi3-roy">
+  <div class="nfig-seg" role="group" aria-label="Preferences">
+    <button type="button" class="nfig-opt" data-pref="cd" aria-pressed="true">Cobb Douglas</button>
+    <button type="button" class="nfig-opt" data-pref="ql" aria-pressed="false">Quasilinear, slide 46</button>
+  </div>
+  <div class="nfig-seg" role="group" aria-label="Utility function used">
+    <button type="button" class="nfig-opt" data-tr="id" aria-pressed="true">utility u</button>
+    <button type="button" class="nfig-opt" data-tr="two" aria-pressed="false">utility 2u</button>
+    <button type="button" class="nfig-opt" data-tr="exp" aria-pressed="false">utility exp(u)</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of good 1 </span>p₁</span><input type="range" min="0.4" max="4" step="0.05" value="2" data-k="p1"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">wealth </span>w</span><input type="range" min="0.5" max="8" step="0.1" value="4" data-k="w"><span class="nfig-val" aria-hidden="true">4.0</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 420" role="img" aria-label="Top: indirect utility v against the price of good 1, with its red tangent at the current price. Bottom: the Marshallian demand curve x1 against the same price axis, with a red ring at the value Roy's identity gives from the top panel."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">v = 1.41   ∂v/∂p₁ = −0.35   ∂v/∂w = λ = 0.35
+Roy: x₁ = −(∂v/∂p₁)/(∂v/∂w) = 1.00   demand solved directly: x₁ = 1.00</p>
+  <figcaption>Indirect utility for u = √(x₁x₂) or u = ln x₁ + x₂ with p₂ = 1, plotted against p₁ on the horizontal axis of both panels. The red ring below sits at minus the red slope above divided by λ; the blue curve below is demand solved directly. Switch the utility to 2u or exp(u): v and its slopes change, the ring does not.</figcaption>
+</figure>

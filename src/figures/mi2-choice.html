@@ -1,0 +1,19 @@
+<figure class="nfig" data-nfig="mi2-choice">
+  <div class="nfig-seg" role="group" aria-label="Utility function">
+    <button type="button" class="nfig-opt" data-fam="cd" aria-pressed="true">x₁x₂²</button>
+    <button type="button" class="nfig-opt" data-fam="sub" aria-pressed="false">x₁ + 2x₂</button>
+    <button type="button" class="nfig-opt" data-fam="min" aria-pressed="false">min{x₁, x₂}</button>
+    <button type="button" class="nfig-opt" data-fam="sq" aria-pressed="false">x₁² + x₂²</button>
+    <button type="button" class="nfig-opt" data-fam="ql" aria-pressed="false">x₁ + 4 ln x₂</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of good 1 </span>p₁</span><input type="range" min="0.5" max="3" step="0.1" value="1" data-k="p1"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of good 2 </span>p₂</span><input type="range" min="0.5" max="3" step="0.1" value="1" data-k="p2"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">wealth </span>w</span><input type="range" min="1" max="12" step="0.5" value="9" data-k="w"><span class="nfig-val" aria-hidden="true">9.0</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 380" role="img" aria-label="The budget set for prices p1, p2 and wealth w, with the indifference curve through the best affordable bundle x star, marked by a purple dot. For perfect substitutes at equal value per pound a purple band covers the whole budget line. For x1 squared plus x2 squared a red ring marks the tangency point and a dashed circle its indifference curve."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">x₁x₂² at p = (1.00, 1.00), w = 9.0
+x* = (3.00, 6.00), u = 108.00
+tangency: MRS = x₂/(2x₁) = 1.00 = p₁/p₂; budget shares 1/3 and 2/3</p>
+  <figcaption>Pick a utility and move the prices and wealth. The purple dot is the best affordable bundle x*, found from the first order or corner conditions. For x₁² + x₂² the red ring is the point where the MRS equals the price ratio, and the dashed circle is its indifference curve.</figcaption>
+</figure>

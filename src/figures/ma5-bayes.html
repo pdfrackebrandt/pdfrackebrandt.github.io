@@ -1,0 +1,9 @@
+<figure class="nfig" data-nfig="ma5-bayes">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">prior sd τ</span><input type="range" min="0.005" max="0.1" step="0.005" value="0.03" data-k="tau"><span class="nfig-val" aria-hidden="true">0.030</span></label>
+    <label class="nfig-range"><span class="nfig-name">sample size T</span><input type="range" min="1" max="200" step="1" value="10" data-k="t"><span class="nfig-val" aria-hidden="true">10</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 262" role="img" aria-label="Three densities over the labour share alpha: the prior centred at 0.67 in blue, the likelihood of the data in orange and the posterior in green, each with a dashed line at its peak. The posterior mode alpha hat is marked under the axis."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">prior 0.670 ± 0.030</p>
+  <figcaption>The prior for the labour share α is normal with mean 0.67 and standard deviation τ. The data are simulated, not real: T quarterly readings of the labour share drawn from a normal with mean 0.62 and standard deviation 0.05, so the likelihood peaks at their mean x̄. The posterior mode α̂ is a weighted average of x̄ and 0.67, with weights set by the two precisions.</figcaption>
+</figure>

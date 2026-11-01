@@ -1,0 +1,59 @@
+/* Macro L5 figures, drawn by /assets/figs/ma5.js. Colours come from the site tokens, so dark mode follows. */
+.nfig .ma5-it{font-style:italic}
+.nfig .ma5-small{font-size:10px}
+.notes-body .nfig[data-nfig^="ma5-"] p.nfig-read,.nfig[data-nfig^="ma5-"] p.nfig-read{font-size:.75rem;line-height:1.5;min-height:3em}
+.nfig[data-nfig="ma5-irf"] p.nfig-read{min-height:4.5em}
+[data-nfig="ma5-irf"],[data-nfig="ma5-moments"]{--nfig-name:6.6em}
+[data-nfig="ma5-bayes"]{--nfig-name:8.2em}
+[data-nfig="ma5-taylor"]{--nfig-name:1.6em}
+
+/* Taylor: the function in blue, the first order line in purple and the error in red, as in the Try it equation (\kp, \kr) */
+.ma5-f,.ma5-pct{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+.ma5-log{fill:none;stroke:var(--c-ask);stroke-width:5;stroke-opacity:.45;stroke-linecap:round}
+.ma5-tan{fill:none;stroke:var(--c-label);stroke-width:1.6;stroke-linecap:round}
+.ma5-err{stroke:var(--c-key);stroke-width:3;stroke-linecap:butt}
+.ma5-tdot{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.ma5-fdot,.ma5-pdot{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.ma5-odot{fill:var(--paper);stroke:var(--c-label);stroke-width:1.75}
+.ma5-ldot{fill:var(--c-ask);stroke:var(--paper);stroke-width:1.5}
+
+/* saddle path: the stable root in blue, the other root dashed, the gap from the path red as in its Try it equation (\kr) */
+.ma5-sp{stroke:var(--fig-blue);stroke-opacity:.45;stroke-width:6;stroke-linecap:round}
+.ma5-un{stroke:var(--c-flag);stroke-width:1.75;stroke-dasharray:6 4}
+.ma5-path{fill:none;stroke:var(--ink-soft);stroke-width:1.25;stroke-linejoin:round}
+.ma5-pdot2{fill:var(--ink-soft)}
+.ma5-gap{stroke:var(--c-key);stroke-width:2.5;stroke-linecap:butt}
+.nf-knob.ma5-kh{stroke:var(--ink)}
+.ma5-tk{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+.ma5-tc{fill:none;stroke:var(--green);stroke-width:2;stroke-linejoin:round;stroke-dasharray:5 3}
+
+/* prior, likelihood and posterior in the colours of slide 40; the prior mean is blue as in the Try it equation (\kb) */
+.ma5-prior{fill:none;stroke:var(--c-eq);stroke-width:2;stroke-linejoin:round}
+.ma5-lik{fill:none;stroke:var(--c-flag);stroke-width:2;stroke-linejoin:round}
+.ma5-post{fill:none;stroke:var(--c-ask);stroke-width:2.25;stroke-linejoin:round}
+.ma5-priorf{fill:var(--c-eq);fill-opacity:.08;stroke:none}
+.ma5-likf{fill:var(--c-flag);fill-opacity:.08;stroke:none}
+.ma5-postf{fill:var(--c-ask);fill-opacity:.12;stroke:none}
+.ma5-mprior{stroke:var(--c-eq);stroke-width:1.25;stroke-dasharray:3 3}
+.ma5-mlik{stroke:var(--c-flag);stroke-width:1.25;stroke-dasharray:3 3}
+.ma5-mpost{stroke:var(--c-ask);stroke-width:1.5;stroke-dasharray:4 3}
+.nfig text.ma5-ahat{fill:var(--c-ask);font-size:13px}
+
+/* impulse responses: the benchmark stays as a faint dashed line; technology is purple as in the Try it equation (\kp) */
+.ma5-cur{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+.ma5-cura{fill:none;stroke:var(--c-label);stroke-width:2;stroke-linejoin:round}
+.ma5-bline{fill:none;stroke:var(--muted);stroke-width:1.25;stroke-dasharray:4 3;stroke-opacity:.8}
+.nfig .ma5-ca{fill:var(--c-label)}
+
+/* moments: model bars, data ticks; the wage is red as in the Try it equation (\kr) */
+.ma5-bar{fill:var(--fig-blue);fill-opacity:.55;stroke:none}
+.ma5-barw{fill:var(--c-key);fill-opacity:.7}
+.ma5-data{stroke:var(--ink);stroke-width:2.5;stroke-linecap:butt}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ma5-priorf,:root:not([data-theme="light"]) .ma5-likf{fill-opacity:.13}
+  :root:not([data-theme="light"]) .ma5-postf{fill-opacity:.18}
+  :root:not([data-theme="light"]) .ma5-bar{fill-opacity:.7}
+}
+:root[data-theme="dark"] .ma5-priorf,:root[data-theme="dark"] .ma5-likf{fill-opacity:.13}
+:root[data-theme="dark"] .ma5-postf{fill-opacity:.18}
+:root[data-theme="dark"] .ma5-bar{fill-opacity:.7}

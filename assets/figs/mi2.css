@@ -1,0 +1,73 @@
+/* Core Micro L2 figures, drawn by /assets/figs/mi2.js. Colours come from the site tokens, so dark mode follows.
+   Every class starts with mi2- because each note page loads the styles of every lecture. */
+.nfig .mi2-vlab{font-size:13px;font-style:italic}
+.nfig .mi2-it{font-style:italic}
+.nfig .mi2-cp{fill:var(--c-label)}
+.nfig .mi2-cb{fill:var(--fig-blue)}
+.nfig .mi2-cg{fill:var(--c-ask)}
+.nf-knob.mi2-kp{stroke:var(--c-label)}
+.nf-knob.mi2-kb{stroke:var(--fig-blue)}
+.nf-knob.mi2-kg{stroke:var(--c-ask)}
+/* budget set and lines */
+.mi2-set{fill:var(--fig-blue);fill-opacity:.09;stroke:none}
+.mi2-bline{stroke:var(--fig-blue);stroke-width:2;stroke-linecap:round}
+.mi2-ref{stroke:var(--faint);stroke-width:1.25;stroke-dasharray:5 4}
+/* indifference maps */
+.mi2-up{fill:var(--fig-blue);fill-opacity:.12;stroke:none}
+.mi2-icf{fill:none;stroke:var(--ink-soft);stroke-opacity:.3;stroke-width:1;stroke-linejoin:round}
+.mi2-ic{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.mi2-ic2{stroke:var(--c-ask)}
+.mi2-band{fill:var(--c-ask);fill-opacity:.2;stroke:var(--c-ask);stroke-width:1.25}
+.mi2-bliss{fill:var(--ink-soft)}
+/* small steps from x: green better, grey no better, red worse */
+.mi2-arr{stroke-width:2;stroke-linecap:round}
+.mi2-arrh{stroke:none}
+.mi2-arr.mi2-good{stroke:var(--c-ask)}.mi2-arrh.mi2-good{fill:var(--c-ask)}
+.mi2-arr.mi2-same{stroke:var(--faint)}.mi2-arrh.mi2-same{fill:var(--faint)}
+.mi2-arr.mi2-bad{stroke:var(--c-key)}.mi2-arrh.mi2-bad{fill:var(--c-key)}
+/* convexity: the chord and its mixture m, purple like m in the Try it equation */
+.mi2-chord{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:4 3}
+.mi2-mix{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+/* lexicographic: slices, the wedge where u and the ordering disagree, and the utility intervals */
+.mi2-frame{fill:none;stroke:var(--rule);stroke-width:1}
+.mi2-lexup{fill:var(--fig-blue);fill-opacity:.1;stroke:none}
+.mi2-wedge{fill:var(--c-key);fill-opacity:.16;stroke:none}
+.mi2-slice{fill:none;stroke:var(--fig-blue);stroke-opacity:.5;stroke-width:1}
+.mi2-slice.mi2-clash{stroke:var(--c-key);stroke-opacity:.55}
+.mi2-midslice{stroke:var(--fig-blue);stroke-width:2.5}
+.mi2-kline{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:5 3}
+.mi2-pt{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.mi2-pt.mi2-ptbad{fill:var(--c-key)}
+.mi2-bar{fill:var(--fig-blue);fill-opacity:.55;stroke:none}
+.mi2-bar.mi2-clash{fill:var(--c-key);fill-opacity:.45}
+.mi2-q{fill:var(--ink)}
+/* MRS: x blue, alpha x purple, x + t e1 green, as in the Try it equations */
+.mi2-guide{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3}
+.mi2-icm{fill:none;stroke:var(--fig-blue);stroke-opacity:.55;stroke-width:1.5}
+.mi2-icp{stroke:var(--c-label)}
+.mi2-icg{stroke:var(--c-ask)}
+.mi2-tan{stroke:var(--fig-blue);stroke-width:2.5;stroke-linecap:round}
+.mi2-tanp{stroke:var(--c-label)}
+.mi2-tang{stroke:var(--c-ask)}
+.mi2-dotp{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.mi2-dotg{fill:var(--c-ask);stroke:var(--paper);stroke-width:1.5}
+/* choice: the optimum in purple like x* in the Try it equations; the tangency of a nonconvex map in red */
+.mi2-opt{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.mi2-optseg{stroke:var(--c-label);stroke-opacity:.75;stroke-width:5;stroke-linecap:round}
+.mi2-tanpt{fill:var(--paper);stroke:var(--c-key);stroke-width:1.75}
+.mi2-tanc{fill:none;stroke:var(--c-key);stroke-opacity:.6;stroke-width:1.25;stroke-dasharray:4 3}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .mi2-set{fill-opacity:.14}
+  :root:not([data-theme="light"]) .mi2-up{fill-opacity:.18}
+  :root:not([data-theme="light"]) .mi2-lexup{fill-opacity:.15}
+  :root:not([data-theme="light"]) .mi2-wedge{fill-opacity:.22}
+  :root:not([data-theme="light"]) .mi2-icf{stroke-opacity:.38}
+}
+:root[data-theme="dark"] .mi2-set{fill-opacity:.14}
+:root[data-theme="dark"] .mi2-up{fill-opacity:.18}
+:root[data-theme="dark"] .mi2-lexup{fill-opacity:.15}
+:root[data-theme="dark"] .mi2-wedge{fill-opacity:.22}
+:root[data-theme="dark"] .mi2-icf{stroke-opacity:.38}
+/* KaTeX's invisible struts in a do: line reach up over the Show answer button above it and swallow its clicks
+   (math in notes is now set at text size); math in these lines is never a target, so let clicks pass through */
+.nf-try[data-for^="mi2-"] .nf-do .katex{pointer-events:none}

@@ -1,0 +1,42 @@
+/* Core Macroeconomics L2 figures, drawn by /assets/figs/ma2.js. Colours come from the site tokens, so dark mode follows. */
+/* law of motion: the 45 degree line, the staircase from k0 and the time path */
+.ma2-45{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:5 4;fill:none}
+.ma2-stair{fill:none;stroke:var(--ink-soft);stroke-width:1.25;stroke-opacity:.8;stroke-linejoin:round}
+.ma2-path{fill:none;stroke:var(--ink-soft);stroke-width:1.25;stroke-opacity:.7}
+.ma2-pt{fill:var(--ink-soft);stroke:var(--paper);stroke-width:1}
+/* the tangent at k*, purple like g'(k*) in its Try it equation */
+.ma2-tan{stroke:var(--c-label);stroke-width:1.75;stroke-linecap:round}
+.nf-knob.ma2-kb{stroke:var(--ink)}
+.nfig text.ma2-k0{fill:var(--ink)}
+/* an unstable steady state: an open red circle, red like g'(k_L) in its Try it equation */
+.ma2-un{fill:var(--paper);stroke:var(--c-key);stroke-width:2}
+.ma2-unl{stroke:var(--c-key);stroke-width:1;stroke-dasharray:2 3;stroke-opacity:.8}
+/* life cycle: income in grey, debt shaded red like max debt in its Try it equation */
+.ma2-inc{fill:none;stroke:var(--faint);stroke-width:2;stroke-linejoin:round}
+.ma2-ret{stroke:var(--rule);stroke-width:1;stroke-dasharray:3 3}
+.ma2-assets{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+.ma2-debt{fill:var(--c-key);fill-opacity:.2;stroke:none}
+.nfig text.ma2-dlab{fill:var(--c-key)}
+/* golden rule: the overaccumulation region, the golden rule line, and the transition bar in red like C_0 */
+.ma2-ineff{fill:var(--signal);fill-opacity:.07;stroke:none}
+.nfig text.ma2-ilab{fill:var(--signal);font-size:10px}
+.ma2-gr{stroke:var(--green);stroke-width:1.5;stroke-dasharray:5 3}
+.ma2-grdot{fill:var(--paper);stroke:var(--green);stroke-width:2}
+.nfig text.ma2-grlab{fill:var(--green)}
+.ma2-bar{fill:var(--fig-blue);fill-opacity:.75}
+.ma2-bar0{fill:var(--c-key);fill-opacity:.8}
+/* pensions: the no pension curve for reference, and the new steady state in purple like k* in its Try it equation */
+.ma2-base{fill:none;stroke:var(--muted);stroke-width:1.25;stroke-dasharray:4 3}
+.ma2-old{fill:var(--paper);stroke:var(--muted);stroke-width:1.75}
+.ma2-new{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.ma2-newl{stroke:var(--c-label);stroke-width:1.25;stroke-dasharray:4 3}
+.nfig text.ma2-nlab{fill:var(--c-label)}
+.nfig-plot.ma2-drag{touch-action:pan-y;cursor:crosshair}
+.nfig-plot.ma2-drag.is-drag,.nfig-plot.ma2-drag.is-drag .nf-handle{cursor:grabbing}
+@container (max-width:520px){[data-nfig^="ma2-"] .nfig-read{min-height:4.5em}}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ma2-debt{fill-opacity:.28}
+  :root:not([data-theme="light"]) .ma2-ineff{fill-opacity:.12}
+}
+:root[data-theme="dark"] .ma2-debt{fill-opacity:.28}
+:root[data-theme="dark"] .ma2-ineff{fill-opacity:.12}

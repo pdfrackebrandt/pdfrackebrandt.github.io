@@ -1,0 +1,21 @@
+<figure class="nfig" data-nfig="ma1-ge">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Curvature sigma">
+      <button type="button" class="nfig-opt" data-sg="0.5" aria-pressed="false">σ = 0.5</button>
+      <button type="button" class="nfig-opt" data-sg="1" aria-pressed="true">σ = 1, log</button>
+      <button type="button" class="nfig-opt" data-sg="2" aria-pressed="false">σ = 2</button>
+      <button type="button" class="nfig-opt" data-sg="3" aria-pressed="false">σ = 3</button>
+    </div>
+    <button type="button" class="btn ma1-clear">Clear the market</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">gross interest rate </span>R</span><input type="range" min="0.8" max="2.1" step="0.001" value="1.05" data-k="R"><span class="nfig-val" aria-hidden="true">1.050</span></label>
+    <label class="nfig-range"><span class="nfig-name">growth g</span><input type="range" min="-0.05" max="0.2" step="0.01" value="0.1" data-k="g"><span class="nfig-val" aria-hidden="true">10%</span></label>
+    <label class="nfig-range"><span class="nfig-name">split s</span><input type="range" min="0" max="1" step="0.05" value="0.7" data-k="s"><span class="nfig-val" aria-hidden="true">0.70</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">discount factor </span>β</span><input type="range" min="0.85" max="0.99" step="0.01" value="0.95" data-k="beta"><span class="nfig-val" aria-hidden="true">0.95</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 380" role="img" aria-label="An Edgeworth box for two households. The width is the 100 units of fruit today and the height the fruit tomorrow. Household 1 measures from the bottom left corner, household 2 from the top right. E is the endowment; the blue line through it has slope minus R. The blue and green dots are what each household would choose at that R, with their indifference curves, and the red segment between them is the excess demand. The green band is the diagonal, where both households have the same consumption growth."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">R = 1.100:  household 1 saves −1.28, household 2 saves −1.28, total −2.56  more borrowing than lending, so R must rise
+R* = (1 + g)^σ/β = 1.158   r* = 15.8%   δ + σg = 15.3%</p>
+  <figcaption>Two households share 100 units of fruit today and 100(1 + g) tomorrow; household 1 gets the share s of today's fruit and 1 − s of tomorrow's. Slide R and watch the two chosen points: the market clears when they meet, which happens on the green diagonal. Move the split, growth, β and σ to see what sets R.</figcaption>
+</figure>

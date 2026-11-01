@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="ma2-life">
+  <div class="nfig-seg" role="group" aria-label="Borrowing">
+    <button type="button" class="nfig-opt" data-mode="borrow" aria-pressed="true">Borrowing allowed</button>
+    <button type="button" class="nfig-opt" data-mode="limit" aria-pressed="false">No borrowing</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">interest rate r</span><input type="range" min="0" max="0.08" step="0.005" value="0.05" data-k="r"><span class="nfig-val" aria-hidden="true">0.050</span></label>
+    <label class="nfig-range"><span class="nfig-name">impatience ρ</span><input type="range" min="0" max="0.08" step="0.005" value="0.02" data-k="rho"><span class="nfig-val" aria-hidden="true">0.020</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 360" role="img" aria-label="Top panel: a worker's income by age, rising from 1 at age 20 to a peak in the early forties and falling to zero at retirement at 65, together with the consumption path that solves the life cycle problem. Bottom panel: the household's assets at the start of each age, shaded red where they are negative (debt)."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">Euler: c grows +1.46% a year; c is 1.03 at 20 and 2.43 at 79
+debt peaks at 0.03 (age 21); assets positive from age 23; assets peak at 22.5 at 65</p>
+  <figcaption>One generation's life, born penniless at 20, retired at 65, gone at 80, with σ = 2 and a fixed annual interest rate r. Move r and the impatience rate ρ, where β = 1/(1 + ρ), and switch borrowing off. Consumption follows the Euler equation wherever the household can borrow or save freely.</figcaption>
+</figure>

@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="mi6-wealth">
+  <div class="nfig-seg" role="group" aria-label="Kind of risk">
+    <button type="button" class="nfig-opt" data-mode="add" aria-pressed="true">Fixed risk ± h</button>
+    <button type="button" class="nfig-opt" data-mode="prop" aria-pressed="false">Proportional risk ± s of wealth</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">h</span><input type="range" min="1" max="9" step="0.5" value="5" data-k="h"><span class="nfig-val" aria-hidden="true">5.0</span></label>
+    <label class="nfig-range"><span class="nfig-name">s</span><input type="range" min="0.05" max="0.45" step="0.05" value="0.2" data-k="s"><span class="nfig-val" aria-hidden="true">0.20</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 300" role="group" aria-label="The exact risk premium against initial wealth from 10 to 40 for three utilities that share absolute risk aversion 0.05 at wealth 20: CARA, the log and quadratic utility. With a fixed risk the premium is shown in money; with a proportional risk, as a share of wealth. Drag the wealth marker along the axis, or focus it and use the arrow keys."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">x₀ = 20.0, risk ± 5.0, 50/50
+P:   CARA 0.62   log 0.64   quadratic 0.62</p>
+  <figcaption>Three agents with the same absolute risk aversion at wealth 20 face a 50/50 risk. CARA is exponential utility with r = 0.05, log is u = ln x, and quadratic is u = x − 0.0125x², which peaks at 40. Drag the wealth marker and switch between a fixed and a proportional risk.</figcaption>
+</figure>

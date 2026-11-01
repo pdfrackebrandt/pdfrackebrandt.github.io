@@ -1,0 +1,10 @@
+<figure class="nfig" data-nfig="mi6-ap">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">relative risk aversion </span>r</span><input type="range" min="0" max="4" step="0.1" value="1" data-k="r"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">initial wealth </span>x₀</span><input type="range" min="11" max="50" step="1" value="20" data-k="x0"><span class="nfig-val" aria-hidden="true">20</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 300" role="group" aria-label="The exact risk premium P(t) of a CRRA agent with wealth x0 facing plus or minus 10t with equal chance, plotted against t from 0 to 1, together with the Arrow Pratt approximation one half times r_A(x0) times 100 times t squared. Drag the marker along the t axis, or focus it and use the arrow keys."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">x₀ = 20, r = 1.0 (u = ln x): r_A(x₀) = r/x₀ = 0.050, σ² = 100
+at t = 0.40: exact P = 0.404   ½ r_A σ² t² = 0.400</p>
+  <figcaption>Wealth is x₀ + tz, where z is 10 or −10 with equal chance, so σ² = 100. The blue curve is the exact premium P(t) and the purple dashed curve the second order approximation from the slides. Drag the marker to choose t.</figcaption>
+</figure>

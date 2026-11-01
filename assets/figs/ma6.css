@@ -1,0 +1,57 @@
+/* Core Macroeconomics L6 figures, drawn by /assets/figs/ma6.js. Colours come from the site tokens, so dark mode follows.
+   Colour links with the Try it equations: purple (--c-label) is divisible labour and the ray e/w, red (--c-key) the
+   lottery, the no shirking condition and the wage curve, blue (--c-eq) job creation, green (--c-ask) the Beveridge curve. */
+.nfig .ma6-it{font-style:italic}
+.ma6-ref{fill:none;stroke:var(--faint);stroke-width:1.25;stroke-dasharray:5 4}
+.ma6-guide{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+.ma6-open{fill:var(--paper);stroke:var(--muted);stroke-width:1.5}
+.ma6-ring{fill:none;stroke:var(--c-eq);stroke-width:1.5}
+.ma6-deq{fill:var(--ink);stroke:var(--paper);stroke-width:1.5}
+.ma6-dem{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nfig .ma6-tdem{fill:var(--fig-blue)}
+/* lotteries: divisible labour purple, the lottery red */
+.ma6-div{fill:none;stroke:var(--c-label);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ma6-lot{fill:none;stroke:var(--c-key);stroke-width:2;stroke-linecap:round}
+.ma6-gap{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:2 3}
+.ma6-ddiv{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.ma6-dlot{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.nf-knob.ma6-klot{stroke:var(--c-key)}
+.nfig .ma6-tdiv{fill:var(--c-label)}
+.nfig .ma6-tlot{fill:var(--c-key)}
+/* Solow condition */
+.ma6-eff{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ma6-ray{fill:none;stroke:var(--c-label);stroke-width:1.5;stroke-linecap:round}
+.ma6-tan{stroke:var(--c-ask);stroke-width:1.75;stroke-dasharray:6 4}
+.ma6-xmark{stroke:var(--ink-soft);stroke-width:1.25}
+.ma6-dstar{fill:var(--c-ask);stroke:var(--paper);stroke-width:1.5}
+.nf-knob.ma6-kray{stroke:var(--c-label)}
+.nfig .ma6-tstar{fill:var(--c-ask)}
+.nfig-read .ma6-ok{color:var(--c-ask)}
+/* Shapiro Stiglitz */
+.ma6-nsc{fill:none;stroke:var(--c-key);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ma6-region{fill:var(--c-key);fill-opacity:.06;stroke:none}
+.ma6-comp{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:6 4}
+.ma6-ubr{fill:none;stroke:var(--ink-soft);stroke-width:1.25}
+.nfig .ma6-tnsc{fill:var(--c-key)}
+/* search and matching: wage curve red, job creation blue, Beveridge curve green, as on the slides */
+.ma6-wc{fill:none;stroke:var(--c-key);stroke-width:2;stroke-linecap:round}
+.ma6-jc{fill:none;stroke:var(--c-eq);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ma6-bc{fill:none;stroke:var(--c-ask);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nfig .ma6-twc{fill:var(--c-key)}
+.nfig .ma6-tjc{fill:var(--c-eq)}
+.nfig .ma6-tbc{fill:var(--c-ask)}
+/* dynamics: u purple, v blue; the part still to come is faint */
+.ma6-trail{fill:none;stroke:var(--ink-soft);stroke-width:1.5;stroke-linejoin:round}
+.ma6-fu{fill:none;stroke:var(--c-label);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.ma6-fv{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.ma6-future{stroke-opacity:.25;stroke-width:1.5}
+.ma6-cursor{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.nfig .ma6-tu{fill:var(--c-label)}
+.nfig .ma6-tv{fill:var(--fig-blue)}
+.nfig-bar .ma6-show[aria-pressed="true"]{border-color:var(--c-ask);color:var(--c-ask)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ma6-region{fill-opacity:.1}
+  :root:not([data-theme="light"]) .ma6-future{stroke-opacity:.35}
+}
+:root[data-theme="dark"] .ma6-region{fill-opacity:.1}
+:root[data-theme="dark"] .ma6-future{stroke-opacity:.35}

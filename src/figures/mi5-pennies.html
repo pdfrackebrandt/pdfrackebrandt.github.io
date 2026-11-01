@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="mi5-pennies">
+  <div class="nfig-seg nfig-seg4" role="group" aria-label="Transformation of the payoffs">
+    <button type="button" class="nfig-opt" data-tf="id" aria-pressed="true">u</button>
+    <button type="button" class="nfig-opt" data-tf="aff" aria-pressed="false">3 + 2u</button>
+    <button type="button" class="nfig-opt" data-tf="exp" aria-pressed="false">eᵘ</button>
+    <button type="button" class="nfig-opt" data-tf="cube" aria-pressed="false">u³</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">payoff to A at Heads, Heads: </span>h</span><input type="range" min="1" max="3" step="0.25" value="1" data-k="h"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 300" role="img" aria-label="The payoff matrix of matching pennies with A's payoff at (Heads, Heads) equal to h, after a transformation of every payoff. Beside it, A's expected utility from Heads and from Tails as straight lines in q, the probability that B plays Heads. They cross at q star, the mix of B that makes A indifferent. B's own mix p star stays at one half."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">A: Heads pays 1.00 or −1.00, Tails pays −1.00 or 1.00
+q* = (ũ(1) − ũ(−1)) / (ũ(h) + ũ(1) − 2ũ(−1)) = 2.000 / 4.000 = 0.500   p* = 0.500</p>
+  <figcaption>A wins h when both play Heads (1 in matching pennies) and 1 when both play Tails; every other payoff is as on slide 49. The lines are A's expected utility from Heads and from Tails against q, B's chance of Heads, and they cross at B's equilibrium mix q*. Move h and switch the transformation applied to every payoff.</figcaption>
+</figure>

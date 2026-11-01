@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="ma1-gain">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Observations per year">
+      <button type="button" class="nfig-opt" data-fq="1" aria-pressed="false">Annual</button>
+      <button type="button" class="nfig-opt" data-fq="4" aria-pressed="true">Quarterly</button>
+      <button type="button" class="nfig-opt" data-fq="12" aria-pressed="false">Monthly</button>
+    </div>
+    <button type="button" class="btn ma1-ru">Ravn Uhlig λ</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">smoothing </span>λ</span><input type="range" min="0" max="6" step="0.01" value="3.2" data-k="lam"><span class="nfig-val" aria-hidden="true">1600</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 270" role="img" aria-label="The share G of a cycle of each length that the HP filter keeps in the cycle, against the length of the cycle in years on a log scale. A green band marks cycles of 6 to 32 quarters. The red dotted marker shows where half is kept. The purple curve is the power of the HP cycle of a random walk, scaled to peak at 1, with its peak marked. The dashed grey curve is the quarterly filter with lambda 1600, for reference."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">λ = 1600, 4 observations a year:  half of a cycle is kept at 39.7 quarters (9.92 years);  an 8 year cycle keeps 0.70
+the HP cycle of a random walk peaks at 30.1 quarters (7.53 years);  this is the Ravn Uhlig λ for this frequency</p>
+  <figcaption>Pick the data frequency and slide λ. Cycles shorter than the red marker stay mostly in the cycle and longer ones go mostly to the trend. The purple curve is the cycle the filter manufactures from a random walk, which has no cycle of its own.</figcaption>
+</figure>

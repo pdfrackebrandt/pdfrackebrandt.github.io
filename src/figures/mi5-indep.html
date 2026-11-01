@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="mi5-indep">
+  <div class="nfig-seg" role="group" aria-label="Preference over lotteries">
+    <button type="button" class="nfig-opt" data-pref="eu" aria-pressed="true">Expected utility</button>
+    <button type="button" class="nfig-opt" data-pref="ml" aria-pressed="false">Most likely</button>
+    <button type="button" class="nfig-opt" data-pref="wc" aria-pressed="false">Worst case</button>
+  </div>
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">mixing weight </span>α</span><input type="range" min="0.05" max="0.95" step="0.05" value="0.5" data-k="a"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 320" role="group" aria-label="Lotteries over three prizes, minus 2 pounds, 4 pounds and 10 pounds, in the probability triangle. Three draggable lotteries L, L prime and L double prime. The purple points M and M prime are the mixtures alpha L plus (1 minus alpha) L double prime and alpha L prime plus (1 minus alpha) L double prime, on the dashed rays from L double prime. The background shows the indifference sets of the chosen preference: expected utility with u = 0, 0.6, 1; ranking by the largest probability; or ranking by the worst possible prize."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">expected utility:   U(L) = 0.240   U(L′) = 0.500   so L ≺ L′
+mixed with L″ at α = 0.50:   U(M) = 0.620   U(M′) = 0.750   so M ≺ M′, the same order</p>
+  <figcaption>Mixing with a common lottery L′′ shrinks the whole picture towards L′′ by the factor α, so the purple segment from M to M′ is a scaled copy of the segment from L to L′. Pick a preference, drag the three lotteries and move α, and watch whether M and M′ keep the order of L and L′.</figcaption>
+</figure>

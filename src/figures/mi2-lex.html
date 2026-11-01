@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="mi2-lex">
+  <div class="nfig-seg nfig-seg4" role="group" aria-label="Number of slices">
+    <button type="button" class="nfig-opt" data-n="5" aria-pressed="false">5 slices</button>
+    <button type="button" class="nfig-opt" data-n="11" aria-pressed="true">11 slices</button>
+    <button type="button" class="nfig-opt" data-n="21" aria-pressed="false">21 slices</button>
+    <button type="button" class="nfig-opt" data-n="101" aria-pressed="false">101 slices</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">weight on good 1, </span>k</span><input type="range" min="1" max="120" step="1" value="4" data-k="k"><span class="nfig-val" aria-hidden="true">4</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 330" role="img" aria-label="Top: the unit square of bundles with vertical slices at evenly spaced values of x1. The bold slice at x1 = 0.5, the shaded region to its right and the slice itself are the bundles the lexicographic ordering ranks at least as high as (0.5, 0). The dashed line is the indifference line of the candidate utility u = x1 + x2/k through (0.5, 0), and the red wedge between it and the bold slice is where u and the ordering disagree. Bottom: on a utility axis, the interval from u(a, 0) to u(a, 1) for each slice, in two rows; the bars turn red when neighbouring intervals overlap."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">u(x) = x₁ + x₂/k with k = 4: the slice x₁ = a fills I(a) = (a, a + 0.250); the 11 slices are 0.10 apart
+overlap: u(0.40, 1) = 0.650 &gt; u(0.5, 0) = 0.500, yet lexicographic ranks (0.5, 0) strictly above (0.40, 1)</p>
+  <figcaption>Top: bundles in the unit square, with vertical slices at x₁ = a. The candidate utility u = x₁ + x₂/k ranks the red wedge above (0.5, 0), while the lexicographic ordering ranks all of it below. Bottom: the interval of utility I(a) that each slice fills; with up to 21 slices a dot marks a rational number inside each. Raise k, then add slices.</figcaption>
+</figure>

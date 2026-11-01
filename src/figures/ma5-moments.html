@@ -1,0 +1,10 @@
+<figure class="nfig" data-nfig="ma5-moments">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">persistence ρ</span><input type="range" min="0" max="0.99" step="0.01" value="0.95" data-k="rho"><span class="nfig-val" aria-hidden="true">0.95</span></label>
+    <label class="nfig-range"><span class="nfig-name">1/Frisch χ</span><input type="range" min="0" max="3" step="0.1" value="0" data-k="chi"><span class="nfig-val" aria-hidden="true">0.0</span></label>
+    <label class="nfig-range"><span class="nfig-name">shock sd σ</span><input type="range" min="0.001" max="0.08" step="0.0005" value="0.07" data-k="sig"><span class="nfig-val" aria-hidden="true">0.0700</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 230" role="img" aria-label="Two bar charts, one row each for consumption, investment, hours, labour productivity, the real wage and technology. Left: standard deviation relative to output. Right: correlation with output. Bars are the model's HP filtered moments; black ticks are the US data of slide 3. The wage bars are red."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">sd(Y): model 17.91 percent, data 1.81</p>
+  <figcaption>Bars: the model's moments after the HP filter with smoothing parameter 1600, computed exactly from the solution (the limit of simulating a very long sample, filtering it and measuring). Ticks: the US data of slide 3 (King and Rebelo 1999). The shock size σ starts at slide 37's 0.07; it scales every standard deviation and leaves the relative ones and the correlations unchanged.</figcaption>
+</figure>

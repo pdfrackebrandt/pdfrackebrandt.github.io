@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="ma3-phase">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+    <button type="button" class="btn ma3-onpath">Start on the saddle path</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">capital share </span>α</span><input type="range" min="0.2" max="0.5" step="0.01" value="0.3" data-k="alpha"><span class="nfig-val" aria-hidden="true">0.30</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">depreciation </span>δ</span><input type="range" min="0.02" max="0.2" step="0.01" value="0.1" data-k="delta"><span class="nfig-val" aria-hidden="true">0.10</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">impatience </span>ρ</span><input type="range" min="0.01" max="0.1" step="0.005" value="0.05" data-k="rho"><span class="nfig-val" aria-hidden="true">0.050</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">inverse elasticity of intertemporal substitution </span>σ</span><input type="range" min="0.25" max="5" step="0.05" value="2" data-k="sigma"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 480" role="group" aria-label="Phase diagram of the Ramsey model with y = k to the power alpha: capital k across, consumption c up. The green vertical line is the c dot = 0 locus, the dark hump the k dot = 0 locus, the dashed line the golden rule, and the red curve the saddle path computed from the model. Click or drag to choose a starting point; the blue path shows where the economy goes, and the panel below shows c and k over time as a percentage of the steady state."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">steady state k = 2.69, c = 1.077   golden rule k = 4.80   stable root −0.122, half life 5.7
+start k₀ = 0.81, c₀ = 0.581; the saddle path at k₀ has c = 0.581, so the economy converges to the steady state</p>
+  <figcaption>The Ramsey phase diagram with Cobb Douglas output and CRRA utility. Click or drag to pick a start (k₀, c₀): on the red saddle path the economy converges, above it capital runs out, below it capital piles up and the transversality condition fails. The lower panel shows c and k over time.</figcaption>
+</figure>

@@ -1,0 +1,41 @@
+/* Core Micro L3 figures, drawn by /assets/figs/mi3.js. Colours come from the site tokens, so dark mode follows. */
+.nfig .mi3-it{font-style:italic}
+.nfig .mi3-tb{fill:var(--fig-blue)}
+.nfig .mi3-tr{fill:var(--c-key)}
+.nfig .mi3-tp{fill:var(--c-label)}
+/* budget lines: the current one solid, the old one dashed and faint, the compensated one purple like SE */
+.mi3-bud{stroke:var(--ink-soft);stroke-width:1.75;stroke-linecap:round}
+.mi3-bud0{stroke:var(--faint);stroke-width:1.25;stroke-dasharray:5 4}
+.mi3-comp{stroke:var(--c-label);stroke-width:1.5;stroke-dasharray:6 4;stroke-opacity:.85}
+/* indifference curves */
+.mi3-ic{fill:none;stroke:var(--green);stroke-width:1.75;stroke-linejoin:round}
+.mi3-ic2{fill:none;stroke:var(--green);stroke-width:1.25;stroke-opacity:.55;stroke-dasharray:4 3}
+/* demand paths, value functions and points */
+.mi3-path{fill:none;stroke:var(--fig-blue);stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round}
+.mi3-e{fill:none;stroke:var(--fig-blue);stroke-width:2.25;stroke-linejoin:round}
+.mi3-dot{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.mi3-rdot{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.mi3-pdot{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.mi3-ring{fill:var(--paper);stroke:var(--c-key);stroke-width:2}
+.mi3-pring{fill:var(--paper);stroke:var(--c-label);stroke-width:2}
+/* budget shares: b1 is red, as in its Try it equation */
+.mi3-b1{fill:none;stroke:var(--c-key);stroke-width:2;stroke-linejoin:round}
+.mi3-b2{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+/* the slope of the indifference curve at the bundle, purple like the MRS in its Try it equation */
+.mi3-tanp{stroke:var(--c-label);stroke-width:2.25;stroke-linecap:round}
+/* the tangent to v, red like dv/dp1 in Roy's identity */
+.mi3-tanr{stroke:var(--c-key);stroke-width:2;stroke-linecap:round}
+/* the cost of the old bundle, purple like p.h(p0) in its Try it equation */
+.mi3-old{fill:none;stroke:var(--c-label);stroke-width:1.75;stroke-dasharray:6 4;stroke-linecap:round}
+.mi3-gap{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:2 3}
+/* substitution effect purple, income effect red, as in the Slutsky Try it equation */
+.mi3-se{stroke:var(--c-label);stroke-width:2.25;stroke-linecap:round}
+.mi3-seh{fill:var(--c-label);stroke:none}
+.mi3-ie{stroke:var(--c-key);stroke-width:2.25;stroke-linecap:round}
+.mi3-ieh{fill:var(--c-key);stroke:none}
+.nf-knob.mi3-knob{stroke:var(--c-label)}
+[data-nfig="mi3-ump"] .nfig-plot{touch-action:pan-y}
+[data-nfig="mi3-ump"] .nfig-plot.is-drag,[data-nfig="mi3-ump"] .nfig-plot.is-drag .nf-handle{cursor:grabbing}
+/* the box of a KaTeX subscript in the do: line reaches up over the Show answer button above it; lift this lecture's
+   Try it buttons so a click on them lands on them */
+.nf-try[data-for^="mi3-"] button{position:relative;z-index:1}

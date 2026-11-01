@@ -1,0 +1,13 @@
+<figure class="nfig" data-nfig="ma5-irf">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn ma5-bench">Benchmark</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">persistence ρ</span><input type="range" min="0" max="0.99" step="0.01" value="0.95" data-k="rho"><span class="nfig-val" aria-hidden="true">0.95</span></label>
+    <label class="nfig-range"><span class="nfig-name">1/Frisch χ</span><input type="range" min="0" max="3" step="0.1" value="0" data-k="chi"><span class="nfig-val" aria-hidden="true">0.0</span></label>
+    <label class="nfig-range"><span class="nfig-name">depreciation δ</span><input type="range" min="0.01" max="0.1" step="0.005" value="0.025" data-k="delta"><span class="nfig-val" aria-hidden="true">0.025</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 440" role="img" aria-label="Eight small panels of impulse responses over 40 quarters to a one percent technology innovation in quarter 1, in percent deviations from the steady state: output, consumption, investment, hours, capital at the start of the quarter, technology, the real wage and the return on capital. When the sliders move away from the benchmark calibration, the benchmark responses stay as faint dashed lines."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">quarter 1: ŷ 1.96   ĉ 0.53   î 6.39   ĥ 1.44   ŵ 0.53</p>
+  <figcaption>Responses, in percent deviations from the steady state, to a one percent innovation to technology in quarter 1, computed from the solution c = S₁k + S₂a, k′ = S₃k + S₄a of Section 6. The benchmark is the lecture's calibration with χ = 0 (linear disutility of hours); moving a slider keeps the benchmark as a faint dashed line. χ above 0 makes labour supply less elastic, which goes beyond the slides.</figcaption>
+</figure>

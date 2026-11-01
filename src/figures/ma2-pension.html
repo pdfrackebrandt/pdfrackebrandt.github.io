@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="ma2-pension">
+  <div class="nfig-seg" role="group" aria-label="Pension system">
+    <button type="button" class="nfig-opt" data-sys="none" aria-pressed="true">No pension</button>
+    <button type="button" class="nfig-opt" data-sys="ff" aria-pressed="false">Fully funded</button>
+    <button type="button" class="nfig-opt" data-sys="payg" aria-pressed="false">Pay as you go</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">contribution d</span><input type="range" min="0" max="0.15" step="0.005" value="0.05" data-k="d"><span class="nfig-val" aria-hidden="true">0.050</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 330" role="img" aria-label="Left: the law of motion with the chosen pension system, against the 45 degree line, with the no pension law of motion dashed for reference. Right: capital over the generations after the system starts at t = 0 from the no pension steady state."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">no pension: k* = 0.125, private saving 0.125
+pick a pension system to compare</p>
+  <figcaption>The slides' pension economy: log utility with β = 0.5, Cobb Douglas production with α = 0.3, no depreciation and no population growth; private saving cannot be negative. Pick a system and move the contribution d. On the right the system starts at t = 0, from the no pension steady state.</figcaption>
+</figure>

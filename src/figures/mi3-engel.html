@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="mi3-engel">
+  <div class="nfig-seg" role="group" aria-label="Preferences">
+    <button type="button" class="nfig-opt" data-pref="cd" aria-pressed="true">Cobb Douglas</button>
+    <button type="button" class="nfig-opt" data-pref="sg" aria-pressed="false">Stone Geary</button>
+    <button type="button" class="nfig-opt" data-pref="ql" aria-pressed="false">Quasilinear, slide 46</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">wealth </span>w</span><input type="range" min="0.5" max="20" step="0.5" value="10" data-k="w"><span class="nfig-val" aria-hidden="true">10.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of good 1 </span>p₁</span><input type="range" min="0.5" max="3" step="0.1" value="1" data-k="p1"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of good 2 </span>p₂</span><input type="range" min="0.5" max="3" step="0.1" value="1" data-k="p2"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 420" role="img" aria-label="Top: the budget line, the demanded bundle x(p, w), the indifference curve through it and the wealth expansion path traced as w rises at fixed prices. Bottom: the budget shares b1 and b2 against wealth, with the current w marked."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">x(p, w) = (5.00, 5.00)   b₁ = 0.50   b₂ = 0.50
+ε₁w = 1.00, normal, unit elastic   ε₂w = 1.00, normal, unit elastic
+b₁ε₁w + b₂ε₂w = 1.00 (Engel aggregation)</p>
+  <figcaption>Demand computed from three utility functions: Cobb Douglas u = √(x₁x₂), Stone Geary u = √((x₁ − 2)x₂) with a subsistence need of 2 units of good 1, and the quasilinear u = ln x₁ + x₂ of slide 46. Move w to trace the expansion path on top and the budget shares below; move both prices to change the path.</figcaption>
+</figure>
