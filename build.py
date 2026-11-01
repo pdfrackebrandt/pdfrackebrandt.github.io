@@ -1036,13 +1036,17 @@ def widget_html(name):
         if os.path.exists(os.path.join(ROOT, c)):
             css.append(open(os.path.join(ROOT, c), encoding='utf-8').read())
     css.append('html,body{margin:0;background:transparent}.rikuy-widget{padding:4px 2px 8px}')
+    # the frame may load nothing from outside (Rikuy allows fonts only as data), so the site's web fonts go and the
+    # system font takes over; the caption goes too, since the LaTeX caption under the figure says the same
+    css = [re.sub(r'@font-face\s*\{[^}]*\}\s*', '', c) for c in css]
+    fig = re.sub(r'<figcaption[^>]*>.*?</figcaption>\s*', '', figure(name), flags=re.S)
     post = ("(function(){var last=0;function send(){var h=Math.ceil(document.documentElement.scrollHeight);"
             "if(h!==last){last=h;parent.postMessage({rikuy:'height',px:h},'*');}}"
             "if(window.ResizeObserver) new ResizeObserver(send).observe(document.body); window.addEventListener('load',send); send();})();")
     return ('<!doctype html>\n<html lang="en" data-theme="light">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>%s</title>\n<style>\n%s\n</style>\n</head>\n'
             '<body>\n<div class="rikuy-widget explainer">\n%s\n</div>\n<script>\n%s\n</script>\n</body>\n</html>\n'
-            % (name, '\n'.join(css), figure(name), '\n'.join(js + [post]).replace('</script', '<\\/script')))
+            % (name, '\n'.join(css), fig, '\n'.join(js + [post]).replace('</script', '<\\/script')))
 
 
 SHOTS = os.path.join(ROOT, 'data', 'figshots')
