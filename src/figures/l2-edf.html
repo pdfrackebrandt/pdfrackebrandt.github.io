@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="l2-edf">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Population">
+      <button type="button" class="nfig-opt" data-dist="norm" aria-pressed="false">Normal(0, 1)</button>
+      <button type="button" class="nfig-opt" data-dist="expo" aria-pressed="true">Exponential(1)</button>
+      <button type="button" class="nfig-opt" data-dist="cauchy" aria-pressed="false">Cauchy(0, 1)</button>
+    </div>
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">sample size n</span><input type="range" min="0" max="12" step="1" value="4" data-k="n"><span class="nfig-val" aria-hidden="true">50</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag" viewBox="0 0 520 272" tabindex="0" role="slider" aria-label="The empirical distribution function of a sample, a step function, drawn over the true cdf. A guide at the point a marks the edf value and the true F(a) with a band of two standard deviations of the edf. A red bar marks the largest vertical gap between the two curves. Arrow keys move the guide." aria-valuemin="-0.5" aria-valuemax="5" aria-valuenow="1"></svg>
+  <p class="fig-note nfig-read" aria-live="polite">n = 50   at a = 1.00 the edf is 0.70, F(a) = 0.63 ± 0.14   largest gap 0.096</p>
+  <figcaption>The step function jumps by 1/n at each observation. Move across the plot to read the edf against F(a); press New sample a few times and the edf lands inside the shaded band at a in about 95 samples out of 100. Slide n up and the steps hug the curve, the red largest gap shrinking like 1/√n. Pick Cauchy: the edf converges just as well, because indicators are bounded even when the mean does not exist.</figcaption>
+</figure>

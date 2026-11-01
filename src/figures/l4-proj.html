@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="l4-proj">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-snap">Move Xb to the OLS point</button>
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">turn the view</span><input type="range" min="0" max="359" step="1" value="322" data-k="turn"><span class="nfig-val" aria-hidden="true">322</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 340" role="group" aria-label="Observation space with N = 3 and K = 2. The columns X1 and X2 of X span a green plane, col(X). The vector y rises above the plane; its projection y hat = Py lies in the plane and the residual u hat = My joins them at a right angle. A draggable point Xb sits in the plane, joined to y and to y hat by dashed lines. Focus the point and use the arrow keys to move it; the slider turns the view."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">ŷ = 0.54 X₁ + 0.51 X₂   X′û = (0.00, 0.00)
+‖y‖² = ‖ŷ‖² + ‖û‖² = 5.14 + 4.00 = 9.14
+b = (1.00, 0.90)   ‖y − Xb‖² = 4.00 + 3.42 = 7.42</p>
+  <figcaption>Drag the blue point Xb anywhere in the green plane col(X), spanned by the columns X₁ and X₂ (here N = 3, K = 2). The dashed path from y to Xb is always longer than the red residual û: the readout splits its squared length by Pythagoras into ‖û‖² plus the squared distance from Xb to ŷ. Press the button and that extra term is zero. Drag empty space or move the slider to turn the picture: û stays at a right angle to the plane, which is X′û = 0.</figcaption>
+</figure>

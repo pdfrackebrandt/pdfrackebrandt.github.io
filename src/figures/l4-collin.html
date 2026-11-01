@@ -1,0 +1,8 @@
+<figure class="nfig" data-nfig="l4-collin">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">correlation r of x₂ and x₃</span><input type="range" min="-0.98" max="0.98" step="0.02" value="0" data-k="r"><span class="nfig-val" aria-hidden="true">0.00</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 300" role="img" aria-label="First: scatter of the two regressors x2 and x3, 50 points with sample correlation r. Second: 800 draws of the two slope estimates with X held fixed, around the true values (1, 1), with the 95 percent ellipse implied by sigma squared times the inverse of X prime X. As r moves towards 1 the cloud stretches along the line where the two estimates sum to 2."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">r = 0.00   slope variance × 1/(1 − r²) = × 1.00   sd 0.141   corr of the two estimates 0.00</p>
+  <figcaption>The first panel shows the regressors x₂ and x₃ (N = 50, intercept included); the second, 800 draws of the two slope estimates with X held fixed and σ = 1, with the 95% ellipse from σ²(X′X)⁻¹. Slide r towards 1: the cloud stays centred on the truth, so there is no bias, but it stretches along the line where the two estimates sum to 2. Each slope gets noisy by the factor 1/(1 − r²) in variance while their sum stays sharp. At r = 1 the rank of X drops and the ellipse becomes an infinite line.</figcaption>
+</figure>

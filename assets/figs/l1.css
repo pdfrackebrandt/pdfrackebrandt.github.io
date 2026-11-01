@@ -1,0 +1,6 @@
+/* Lecture 1 figures (assets/figs/l1.js). Colours only through the site tokens, so dark mode follows. */
+.l1-curve{fill:none;stroke:var(--faint);stroke-width:1.5;stroke-linecap:round}
+.l1-cm,.l1-cmk{fill:none;stroke:var(--green);stroke-width:2}
+.l1-bar{stroke:var(--fig-blue);stroke-opacity:.45;stroke-width:1}
+[data-nfig="l1-joint"] .nf-w{fill-opacity:.42}
+[data-nfig="l1-square"] .nf-dot{fill-opacity:.8}

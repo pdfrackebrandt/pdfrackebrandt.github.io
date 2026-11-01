@@ -15,6 +15,7 @@ import json
 import os
 import re
 import subprocess
+import unicodedata
 from datetime import date
 from html import escape, unescape
 
@@ -34,7 +35,7 @@ ICONS = {n: open(os.path.join(ROOT, 'src', 'icons', n + '.svg'), encoding='utf-8
 # Scripts only from this site and GoatCounter; no inline script anywhere.
 CSP = ("default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self'; "
        "img-src 'self' data: https://pedrofrackebrandt.goatcounter.com; "
-       "connect-src https://pedrofrackebrandt.goatcounter.com; font-src 'self'; "
+       "connect-src 'self' https://pedrofrackebrandt.goatcounter.com; font-src 'self'; "
        "object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests")
 
 
@@ -121,6 +122,8 @@ def help_html(p):
 # Rendered math is cached in data/math-cache.json.gz; Node and tools/node_modules are needed only for new math.
 
 MATH_PATH = os.path.join(ROOT, 'data', 'math-cache.json.gz')
+# math that appears only inside sealed notes is cached apart, in a file git ignores, so the public cache gives none of it away
+MATH_PRIVATE = os.path.join(ROOT, 'data', 'math-cache-private.json.gz')
 MATH_JOBS = []
 UNSHIPPED = re.compile(r'\\(mathfrak|mathscr|mathsf|mathtt|texttt|textsf|frak|Bbb)\b')
 
@@ -141,10 +144,12 @@ def md_inline(s):
 
     s = s.replace('\\$', stash('$'))
     # punctuation right after inline math stays on its line ($x$. never wraps the full stop to the next line)
-    s = re.sub(r'\$([^$\n]+?)\$([.,;:!?)\]]*)', lambda m: stash(
+    s = re.sub(r'\$([^$\n]+?)\$([.,;:!?)]*)', lambda m: stash(
         '<span class="mp">%s%s</span>' % (math_token(m.group(1), False), escape(m.group(2))) if m.group(2) else math_token(m.group(1), False)), s)
     s = re.sub(r'`([^`]+)`', lambda m: stash('<code>%s</code>' % escape(m.group(1))), s)
     s = escape(s, quote=False)
+    # colour roles from the Word notes: [term]{.key} red key term, [Label.]{.label} purple sub label, [Question?]{.ask} green prompt
+    s = re.sub(r'\[([^\[\]]+)\]\{\.(key|label|ask)\}', lambda m: '<span class="c-%s">%s</span>' % (m.group(2), m.group(1)), s)
     s = re.sub(r'\[([^\]]+)\]\(([^)\s]+)\)', lambda m: '<a href="%s"%s>%s</a>' % (
         m.group(2).replace('"', '%22'), '' if m.group(2).startswith(('/', '#')) else ' rel="noopener noreferrer"', m.group(1)), s)
     s = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', s)
@@ -175,7 +180,7 @@ def md_table(lines):
     return '<div class="table"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (th, tb)
 
 
-BOX_LABELS = {'short': 'In short', 'intuition': 'Intuition', 'note': 'Note', 'takeaway': 'Takeaway'}
+BOX_LABELS = {'short': 'In short', 'intuition': 'Intuition', 'note': 'Note!', 'takeaway': 'Takeaway!'}
 FIG_SLOT = '\x04FIGURE\x04'
 
 
@@ -189,7 +194,7 @@ def md_html(src):
         return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
 
     src = re.sub(r'^:::[ \t]*(\w+)[ \t]*\n(.*?)\n:::[ \t]*$', fence, src.replace('\r', ''), flags=re.M | re.S)
-    src = re.sub(r'\$\$(.+?)\$\$', lambda m: '\n\n$$%s$$\n\n' % m.group(1), src, flags=re.S)
+    src = re.sub(r'\$\$(!?)(.+?)\$\$', lambda m: '\n\n$$%s%s$$\n\n' % (m.group(1), m.group(2)), src, flags=re.S)
     out = []
     for block in re.split(r'\n\s*\n', src.strip()):
         lines = [l for l in block.split('\n') if l.strip()]
@@ -205,6 +210,9 @@ def md_html(src):
             out.append(figure(block.strip()[6:-2]))
         elif block.lstrip().startswith(('<svg', '<figure')):
             out.append(block.strip())
+        elif block.strip().startswith('$$!'):
+            # $$! ... $$ is a key result, set in the Word notes' blue
+            out.append('<div class="eq eq-key">%s</div>' % math_token(block.strip()[3:-2], True))
         elif block.strip().startswith('$$'):
             out.append('<div class="eq">%s</div>' % math_token(block.strip()[2:-2], True))
         elif first.startswith('#'):
@@ -234,9 +242,22 @@ def explainer(p):
 
 def resolve_math(pages):
     """Swap math tokens for KaTeX HTML. Inline styles become classes in assets/math.css (the CSP blocks style attributes)."""
-    disk = json.loads(gzip.decompress(open(MATH_PATH, 'rb').read())) if os.path.exists(MATH_PATH) else {}
-    cache = dict(disk)
+    def load(path):
+        return json.loads(gzip.decompress(open(path, 'rb').read())) if os.path.exists(path) else {}
+
+    def save(path, data, old):
+        if data != old:
+            with open(path, 'wb') as fh, gzip.GzipFile(fileobj=fh, mode='wb', mtime=0, filename='') as gz:
+                gz.write(json.dumps(data, ensure_ascii=False, indent=0, sort_keys=True).encode('utf-8'))
+
+    disk, disk_private = load(MATH_PATH), load(MATH_PRIVATE)
+    cache = {**disk_private, **disk}
     keys = [('D ' if d else 'I ') + t for t, d in MATH_JOBS]
+    # a formula is public when some page shows it outside a sealed region
+    public = set()
+    for html in pages.values():
+        for i in re.findall('\x00M(\\d+)\x00', SEAL_RE.sub('', html)):
+            public.add(keys[int(i)])
     missing = sorted(set(k for k in keys if k not in cache))
     if missing:
         tool = os.path.join(ROOT, 'tools', 'tex.mjs')
@@ -248,9 +269,9 @@ def resolve_math(pages):
             raise SystemExit('KaTeX could not render the math:\n' + run.stderr.strip().split('\n')[-1])
         cache.update(zip(missing, json.loads(run.stdout)))
     used = {k: cache[k] for k in sorted(set(keys))}
-    if used != disk:
-        with open(MATH_PATH, 'wb') as fh, gzip.GzipFile(fileobj=fh, mode='wb', mtime=0, filename='') as gz:
-            gz.write(json.dumps(used, ensure_ascii=False, indent=0, sort_keys=True).encode('utf-8'))
+    save(MATH_PATH, {k: v for k, v in used.items() if k in public}, disk)
+    if os.path.exists(MATH_PRIVATE) or PASSWORD:
+        save(MATH_PRIVATE, {k: v for k, v in used.items() if k not in public}, disk_private)
     styles = {}
 
     def classify(m):
@@ -682,7 +703,15 @@ def note_head(title, desc, canonical, body):
     if 'data-nfig' in body:
         extra += ('<link rel="stylesheet" href="/assets/notes.css?v=%s">\n<script src="/assets/notes.js?v=%s" defer></script>\n'
                   % (version('assets/notes.css'), version('assets/notes.js')))
+        extra += ''.join('<link rel="stylesheet" href="/assets/figs/%s?v=%s">\n' % (f, version('assets/figs/' + f)) for f in fig_files('.css'))
+        extra += ''.join('<script src="/assets/figs/%s?v=%s" defer></script>\n' % (f, version('assets/figs/' + f)) for f in fig_files('.js'))
     return head(title, desc, canonical, extra)
+
+
+def fig_files(ext):
+    """Each lecture's own figures: assets/figs/<lecture>.js registers them with NF.register, <lecture>.css styles them."""
+    d = os.path.join(ROOT, 'assets', 'figs')
+    return sorted(f for f in os.listdir(d) if f.endswith(ext)) if os.path.isdir(d) else []
 
 
 def toc_items(body):
@@ -705,7 +734,7 @@ def build_note(n):
       <p class="eyebrow">{tag}</p>
       <h1>{title}</h1>
       <p class="lede">{lede}</p>
-      <p class="page-actions"><a href="/notes/">All notes</a></p>
+      <p class="page-actions"><a href="/notes/">All notes</a><span aria-hidden="true">&middot;</span><button class="linkbtn rikuy-dl" type="button" data-rikuy="{dl}">Download for Rikuy</button></p>
     </header>
     <nav class="toc toc-wide" aria-label="On this page">
       <p class="toc-label">On this page</p>
@@ -718,7 +747,8 @@ def build_note(n):
     <div class="explainer">
 {body}
     </div>
-  </article>""".format(tag=note_tag(n), title=escape(n['title']), lede=escape(n['summary']), toc=toc, others=others, body=indent(body, 6))
+  </article>""".format(tag=note_tag(n), title=escape(n['title']), lede=escape(n['summary']), toc=toc, others=others, body=indent(body, 6),
+           dl=note_url(n) + 'rikuy.sealed')
     return note_head('Notes · %s' % SITE['name'], 'Private notes.', canonical, body) + """
 <body class="notes-body">
 <a class="skip" href="#main">Skip to content</a>
@@ -766,6 +796,322 @@ def build_notes_index():
 </body>
 </html>
 """.format(name=escape(SITE['name']), listing=sealed_block('notes', listing, 2))
+
+
+# ---------------------------------------------------------------------------
+# Rikuy export. Each note also becomes a LaTeX project for Rikuy (Pedro's LaTeX editor): main.tex from the same
+# Markdown, rikuy.sty, every figure as a standalone widget (widgets/<name>.html, live in Rikuy) and as a picture
+# (figures/<name>.png, what any TeX compile prints). The zip is sealed like the note and downloaded from its page.
+# Pictures come from tools/figshots.py (Playwright), cached in data/figshots/ by the widget's hash.
+
+TEX_UNICODE = {'\u2212': '\\ensuremath{-}', '\u00d7': '\\ensuremath{\\times}', '\u2264': '\\ensuremath{\\le}', '\u2265': '\\ensuremath{\\ge}',
+               '\u2260': '\\ensuremath{\\ne}', '\u2192': '\\ensuremath{\\to}', '\u21d2': '\\ensuremath{\\Rightarrow}', '\u2248': '\\ensuremath{\\approx}',
+               '\u221e': '\\ensuremath{\\infty}', '\u00b1': '\\ensuremath{\\pm}', '\u2026': '\\ldots{}', '\u2014': '---', '\u2013': '--',
+               '\u00b7': '\\ensuremath{\\cdot}', '\u2032': "\\ensuremath{'}", '\u221a': '\\ensuremath{\\surd}', '\u2016': '\\ensuremath{\\|}',
+               '\u03b5': '\\ensuremath{\\varepsilon}', '\u2009': '\\,', '\u00a0': '~', '\u2223': '\\ensuremath{\\mid}',
+               '\u22a5': '\\ensuremath{\\perp}', '\u2208': '\\ensuremath{\\in}', '\u2211': '\\ensuremath{\\sum}', '\u2245': '\\ensuremath{\\cong}',
+               '\u2286': '\\ensuremath{\\subseteq}', '\u2229': '\\ensuremath{\\cap}', '\u222a': '\\ensuremath{\\cup}', '\u2205': '\\ensuremath{\\emptyset}',
+               '\u21a6': '\\ensuremath{\\mapsto}', '\u2202': '\\ensuremath{\\partial}', '\u2207': '\\ensuremath{\\nabla}', '\u2261': '\\ensuremath{\\equiv}'}
+TEX_SPECIAL = {'\\': '\\textbackslash{}', '&': '\\&', '%': '\\%', '#': '\\#', '_': '\\_', '{': '\\{', '}': '\\}', '~': '\\textasciitilde{}', '^': '\\textasciicircum{}'}
+# figure captions write symbols as plain Unicode (they are also the web caption); pdflatex knows only Latin 1 and a few
+# more, so superscripts, subscripts, Greek letters and accented symbols become math here
+TEX_SUP = dict(zip('\u2070\u00b9\u00b2\u00b3\u2074\u2075\u2076\u2077\u2078\u2079\u207b\u207a\u207f\u1d40', '0123456789-+nT'))
+TEX_SUB = dict(zip('\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089\u1d62\u2c7c\u2099\u2096\u209c', '0123456789ijnkt'))
+TEX_ACCENT = {'\u0302': 'hat', '\u0304': 'bar', '\u0305': 'bar', '\u0303': 'tilde', '\u0307': 'dot', '\u0308': 'ddot', '\u030c': 'check',
+              '\u0301': 'acute', '\u0300': 'grave'}
+TEX_GREEK_CAPS = ('gamma', 'delta', 'theta', 'lambda', 'xi', 'pi', 'sigma', 'upsilon', 'phi', 'psi', 'omega')
+
+
+def tex_greek(ch):
+    """A Greek letter as a math command (without $), or None."""
+    m = re.match(r'GREEK (SMALL|CAPITAL) LETTER ([A-Z]+)$', unicodedata.name(ch, ''))
+    if not m:
+        return None
+    w = {'lamda': 'lambda', 'epsilon': 'varepsilon', 'omicron': 'o'}.get(m.group(2).lower(), m.group(2).lower())
+    if m.group(1) == 'CAPITAL':
+        return '\\' + w.capitalize() if w in TEX_GREEK_CAPS else dict(
+            alpha='A', beta='B', varepsilon='E', zeta='Z', eta='H', iota='I', kappa='K', mu='M', nu='N', o='O', rho='P', tau='T', chi='X').get(w)
+    return w if w == 'o' else '\\' + w
+
+
+def tex_text(s):
+    s, out, i = unicodedata.normalize('NFC', s), [], 0
+    while i < len(s):
+        ch = s[i]
+        for table, mark in ((TEX_SUP, '^'), (TEX_SUB, '_')):
+            if ch in table:
+                j = i
+                while j < len(s) and s[j] in table:
+                    j += 1
+                out.append('\\ensuremath{%s{%s}}' % (mark, ''.join(table[c] for c in s[i:j])))
+                i = j
+                break
+        else:
+            j = i + 1
+            while j < len(s) and unicodedata.combining(s[j]):
+                j += 1
+            parts = unicodedata.normalize('NFD', s[i:j])
+            if (j > i + 1 or ord(ch) > 0xff) and len(parts) > 1 and all(c in TEX_ACCENT for c in parts[1:]):
+                base = tex_greek(parts[0]) or parts[0]
+                for c in parts[1:]:
+                    base = '\\%s{%s}' % (TEX_ACCENT[c], base)
+                out.append('\\ensuremath{%s}' % base)
+            elif ch in TEX_SPECIAL or ch in TEX_UNICODE:
+                out.append(TEX_SPECIAL.get(ch) or TEX_UNICODE[ch])
+            elif tex_greek(ch):
+                g = tex_greek(ch)
+                out.append('\\ensuremath{%s}' % g if g.startswith('\\') else g)
+            elif ord(ch) <= 0xff or ch in '\u2018\u2019\u201c\u201d':
+                out.append(ch)
+            else:
+                plain = unicodedata.normalize('NFKD', ch).encode('ascii', 'ignore').decode()
+                print('warning: no LaTeX for %r (U+%04X), writing %r' % (ch, ord(ch), plain))
+                out.append(tex_text(plain))
+            i = j
+    return ''.join(out)
+
+
+def tex_inline(s):
+    keep = []
+
+    def stash(t):
+        keep.append(t)
+        return '\x01%d\x01' % (len(keep) - 1)
+
+    s = s.replace('\\$', stash('\\$'))
+    s = re.sub(r'\$([^$\n]+?)\$', lambda m: stash('$%s$' % m.group(1).strip()), s)
+    s = re.sub(r'`([^`]+)`', lambda m: stash('\\texttt{%s}' % tex_text(m.group(1))), s)
+    s = re.sub(r'\[([^\]]+)\]\(([^)\s]+)\)', lambda m: stash('\\href{%s}{%s}' % (
+        (BASE + m.group(2) if m.group(2).startswith('/') else m.group(2)).replace('%', '\\%').replace('#', '\\#'), tex_inline(m.group(1)))), s)
+    s = tex_text(s)
+    s = re.sub(r'\[([^\[\]]+)\]\\\{\.(key|label|ask)\\\}', lambda m: '\\%s{%s}' % (
+        {'key': 'keyterm', 'label': 'sublabel', 'ask': 'askq'}[m.group(2)], m.group(1)), s)
+    s = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', s)
+    s = re.sub(r'(?<![*\w])\*(?![\s*])(.+?)(?<![\s*])\*(?![*\w])', r'\\emph{\1}', s)
+    return re.sub('\x01(\\d+)\x01', lambda m: keep[int(m.group(1))], s)
+
+
+def tex_items(lines, marker):
+    items = []
+    for line in lines:
+        m = marker.match(line)
+        if m:
+            items.append(line[m.end():])
+        elif items:
+            items[-1] += ' ' + line.strip()
+    return ''.join('  \\item %s\n' % tex_inline(i) for i in items)
+
+
+def tex_table(lines):
+    rows = [[c.strip() for c in l.strip().strip('|').split('|')] for l in lines if not re.match(r'^\|?[\s:|-]+\|?$', l)]
+    n = max(len(r) for r in rows)
+    spec = '@{}' + '>{\\raggedright\\arraybackslash}X' * n + '@{}'
+    head_row = ' & '.join('\\textbf{%s}' % tex_inline(c) for c in rows[0])
+    body = ''.join(' & '.join(tex_inline(c) for c in r) + ' \\\\\n' for r in rows[1:])
+    return ('\\begin{center}%s\n\\begin{tabularx}{\\linewidth}{%s}\n\\toprule\n%s \\\\\n\\midrule\n%s\\bottomrule\n\\end{tabularx}\n\\end{center}'
+            % ('\\footnotesize' if n >= 5 else '\\small', spec, head_row, body))
+
+
+def figure_caption(name):
+    m = re.search(r'<figcaption[^>]*>(.*?)</figcaption>', figure(name), re.S)
+    return unescape(re.sub(r'<[^>]+>', '', m.group(1))).strip() if m else ''
+
+
+def md_tex(src, figs):
+    """The note's Markdown as a LaTeX body; figs collects the figure names in order."""
+    raw = []
+    box_env = {'short': 'shortbox', 'intuition': 'intuitionbox', 'note': 'notebox', 'takeaway': 'takeawaybox'}
+
+    def fence(m):
+        raw.append('\\begin{%s}\n%s\n\\end{%s}' % (box_env.get(m.group(1), 'shortbox'), md_tex(m.group(2), figs), box_env.get(m.group(1), 'shortbox')))
+        return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
+
+    src = re.sub(r'^:::[ \t]*(\w+)[ \t]*\n(.*?)\n:::[ \t]*$', fence, src.replace('\r', ''), flags=re.M | re.S)
+    src = re.sub(r'\$\$(!?)(.+?)\$\$', lambda m: '\n\n$$%s%s$$\n\n' % (m.group(1), m.group(2)), src, flags=re.S)
+    out = []
+    for block in re.split(r'\n\s*\n', src.strip()):
+        lines = [l for l in block.split('\n') if l.strip()]
+        if not lines:
+            continue
+        first = lines[0]
+        tok = re.fullmatch(r'\s*\x03(\d+)\x03\s*', block)
+        figm = re.fullmatch(r'\[\[fig ([\w-]+)\]\]', block.strip())
+        if tok:
+            out.append(raw[int(tok.group(1))])
+        elif figm:
+            name = figm.group(1)
+            figs.append(name)
+            cap = figure_caption(name)
+            out.append('\\begin{figure}[ht]\n\\centering\n\\rikuywidget[width=0.92\\linewidth]{widgets/%s.html}{figures/%s.png}\n%s\\end{figure}'
+                       % (name, name, ('\\caption*{\\small %s}\n' % tex_text(cap)) if cap else ''))
+        elif block.strip() == '[[figure]]' or block.lstrip().startswith(('<svg', '<figure')):
+            continue
+        elif block.strip().startswith('$$!'):
+            out.append('\\begin{equation*}\n\\color{keyblue}%s\n\\end{equation*}' % block.strip()[3:-2].strip())
+        elif block.strip().startswith('$$'):
+            out.append('\\[\n%s\n\\]' % block.strip()[2:-2].strip())
+        elif first.startswith('#'):
+            level = len(first) - len(first.lstrip('#'))
+            text = first.lstrip('#').strip()
+            out.append('\\%s*{%s}' % ('section' if level <= 2 else 'subsection', tex_inline(text)))
+            if lines[1:]:
+                out.append(md_tex('\n'.join(lines[1:]), figs))
+        elif first.startswith('- '):
+            out.append('\\begin{itemize}\n%s\\end{itemize}' % tex_items(lines, re.compile(r'- ')))
+        elif re.match(r'\d+\. ', first):
+            out.append('\\begin{enumerate}\n%s\\end{enumerate}' % tex_items(lines, re.compile(r'\d+\. ')))
+        elif first.startswith('>'):
+            out.append('\\begin{resultbox}\n%s\n\\end{resultbox}' % md_tex('\n'.join(re.sub(r'^>\s?', '', l) for l in lines), figs))
+        elif first.startswith('|'):
+            out.append(tex_table(lines))
+        else:
+            out.append(tex_inline(' '.join(l.strip() for l in lines)))
+    return '\n\n'.join(out)
+
+
+TEX_PREAMBLE = r"""\documentclass[11pt,a4paper]{article}
+% Exported from @URL@ for Rikuy. Figures are live in Rikuy; any other TeX prints their pictures.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\emergencystretch}{2em}
+\IfFileExists{carlito.sty}{\usepackage[sfdefault,lining]{carlito}}{\renewcommand{\familydefault}{\sfdefault}}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{xcolor,graphicx,booktabs,tabularx,array,enumitem,titlesec,caption}
+\usepackage[most]{tcolorbox}
+\usepackage[hidelinks]{hyperref}
+\usepackage{rikuy}
+% Pedro's colours
+\definecolor{keyred}{HTML}{C00000}
+\definecolor{labelpurple}{HTML}{A02B93}
+\definecolor{askgreen}{HTML}{3E8E23}
+\definecolor{headgreen}{HTML}{4EA72E}
+\definecolor{flagorange}{HTML}{E97132}
+\definecolor{keyblue}{HTML}{0F9ED5}
+\newcommand{\keyterm}[1]{\textcolor{keyred}{#1}}
+\newcommand{\sublabel}[1]{\textcolor{labelpurple}{\textbf{#1}}}
+\newcommand{\askq}[1]{\textcolor{askgreen}{\textbf{#1}}}
+\newcommand{\kr}[1]{\textcolor{keyred}{#1}}
+\newcommand{\kp}[1]{\textcolor{labelpurple}{#1}}
+\newcommand{\kg}[1]{\textcolor{askgreen}{#1}}
+\newcommand{\kb}[1]{\textcolor{keyblue}{#1}}
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\N}{\mathbb{N}}
+\titleformat{\section}{\color{headgreen}\Large\bfseries}{}{0pt}{}
+\titleformat{\subsection}{\color{headgreen}\large\bfseries}{}{0pt}{}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlist{itemsep=2pt,topsep=3pt}
+\tcbset{boxsep=0pt,left=8pt,right=8pt,top=6pt,bottom=6pt,breakable,before skip=8pt,after skip=8pt}
+\newtcolorbox{shortbox}{colback=black!4,colframe=black!4,arc=2pt,title={\textbf{In short}},coltitle=black,fonttitle=\large,attach title to upper={\par}}
+\newtcolorbox{intuitionbox}{enhanced,frame hidden,colback=white,borderline west={1.5pt}{0pt}{keyblue},sharp corners,title={\textbf{Intuition}},coltitle=keyblue,colbacktitle=white,attach title to upper={\par}}
+\newtcolorbox{notebox}{colback=black!4,colframe=black!4,arc=2pt,title={\textbf{Note!}},coltitle=flagorange,colbacktitle=black!4,attach title to upper={\ }}
+\newtcolorbox{takeawaybox}{enhanced,frame hidden,colback=white,borderline west={1.5pt}{0pt}{flagorange},sharp corners,title={\textbf{Takeaway!}},coltitle=flagorange,colbacktitle=white,attach title to upper={\ }}
+\newtcolorbox{resultbox}{colback=white,colframe=black!25,arc=2pt,boxrule=0.5pt}
+\title{\vspace{-1.5em}\textbf{@LABEL@: @TITLE@}}
+\author{@COURSE@ \quad\textperiodcentered\quad Pedro F. Rackebrandt}
+\date{}
+\begin{document}
+\maketitle
+\vspace{-2em}
+"""
+
+
+def tex_document(n, body):
+    head = (TEX_PREAMBLE.replace('@URL@', BASE + note_url(n)).replace('@LABEL@', tex_text(n['label']))
+            .replace('@TITLE@', tex_text(n['title'])).replace('@COURSE@', tex_text(n['course'])))
+    return head + body + '\n\n\\end{document}\n'
+
+
+def widget_html(name):
+    """A figure as a page of its own for Rikuy's sandboxed frame: the site's styles and scripts inline, light theme,
+    and it posts its height to the editor."""
+    src = 'assets/figs/%s.js' % name.split('-')[0] if not name.startswith('note-') else None
+    css = [open(os.path.join(ROOT, 'assets', 'site.css'), encoding='utf-8').read(),
+           open(os.path.join(ROOT, 'assets', 'notes.css'), encoding='utf-8').read()]
+    js = [open(os.path.join(ROOT, 'assets', 'notes.js'), encoding='utf-8').read()]
+    if src and os.path.exists(os.path.join(ROOT, src)):
+        js.append(open(os.path.join(ROOT, src), encoding='utf-8').read())
+        c = src[:-3] + '.css'
+        if os.path.exists(os.path.join(ROOT, c)):
+            css.append(open(os.path.join(ROOT, c), encoding='utf-8').read())
+    css.append('html,body{margin:0;background:transparent}.rikuy-widget{padding:4px 2px 8px}')
+    post = ("(function(){var last=0;function send(){var h=Math.ceil(document.documentElement.scrollHeight);"
+            "if(h!==last){last=h;parent.postMessage({rikuy:'height',px:h},'*');}}"
+            "if(window.ResizeObserver) new ResizeObserver(send).observe(document.body); window.addEventListener('load',send); send();})();")
+    return ('<!doctype html>\n<html lang="en" data-theme="light">\n<head>\n<meta charset="utf-8">\n'
+            '<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>%s</title>\n<style>\n%s\n</style>\n</head>\n'
+            '<body>\n<div class="rikuy-widget explainer">\n%s\n</div>\n<script>\n%s\n</script>\n</body>\n</html>\n'
+            % (name, '\n'.join(css), figure(name), '\n'.join(js + [post]).replace('</script', '<\\/script')))
+
+
+SHOTS = os.path.join(ROOT, 'data', 'figshots')
+
+
+def figshot(name, html):
+    """The picture a TeX compile prints for a widget, cached by the widget's hash; made by tools/figshots.py."""
+    digest = hashlib.sha1(html.encode('utf-8')).hexdigest()[:12]
+    png = os.path.join(SHOTS, '%s-%s.png' % (name, digest))
+    if not os.path.exists(png):
+        os.makedirs(SHOTS, exist_ok=True)
+        tmp = png + '.html'
+        open(tmp, 'w', encoding='utf-8').write(html)
+        run = subprocess.run(['python3', os.path.join(ROOT, 'tools', 'figshots.py'), tmp, png], capture_output=True, text=True)
+        os.remove(tmp)
+        if run.returncode or not os.path.exists(png):
+            print('No picture for figure %s (needs Python Playwright): %s' % (name, run.stderr.strip().split('\n')[-1:]))
+            return None
+        for old in os.listdir(SHOTS):
+            if old.startswith(name + '-') and old != os.path.basename(png):
+                os.remove(os.path.join(SHOTS, old))
+    return open(png, 'rb').read()
+
+
+def rikuy_zip(n, src):
+    import io
+    import zipfile
+    figs = []
+    body = md_tex(src, figs)
+    files = {'main.tex': tex_document(n, body).encode('utf-8'),
+             'rikuy.sty': open(os.path.join(ROOT, 'assets', 'rikuy.sty'), 'rb').read(),
+             'README.txt': ('%s %s: %s\n\nOpen this folder (or the zip) in Rikuy: the figures are live there.\n'
+                            'Any other LaTeX (Overleaf, a desktop TeX Live) compiles main.tex with the pictures in figures/.\n'
+                            % (n['course'], n['label'], n['title'])).encode('utf-8')}
+    for name in dict.fromkeys(figs):
+        html = widget_html(name)
+        files['widgets/%s.html' % name] = html.encode('utf-8')
+        png = figshot(name, html)
+        if png:
+            files['figures/%s.png' % name] = png
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, 'w', zipfile.ZIP_DEFLATED) as z:
+        for path in sorted(files):
+            info = zipfile.ZipInfo(path, date_time=(2026, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            z.writestr(info, files[path])
+    return buf.getvalue()
+
+
+def write_rikuy_downloads():
+    """Seal each note's Rikuy zip next to its page (notes/<slug>/rikuy.sealed), fetched by the page's download button."""
+    import base64
+    items, zips = [], {}
+    for n in NOTES:
+        data = rikuy_zip(n, note_source(n))
+        zips[n['slug']] = data
+        items.append({'id': 'rikuy/' + n['slug'], 'text': base64.b64encode(data).decode()})
+    if not items:
+        return
+    for box in seal('seal', items):
+        slug = box['id'].split('/', 1)[1]
+        out = {'iv': box['iv'], 'ct': box['ct'], 'salt': LOCK['salt'], 'iter': LOCK['iter'], 'name': rikuy_name(next(n for n in NOTES if n['slug'] == slug))}
+        open(os.path.join(ROOT, 'notes', slug, 'rikuy.sealed'), 'w', encoding='utf-8').write(json.dumps(out))
+    return zips
+
+
+def rikuy_name(n):
+    return re.sub(r'[^A-Za-z0-9]+', '_', '%s %s %s' % (n['course'], n['label'], n['title'])).strip('_') + '.zip'
+
 
 
 def build_llms():
@@ -832,6 +1178,7 @@ def main():
         open(path, 'w', encoding='utf-8').write(html)
     if PASSWORD:
         json.dump(LOCK, open(LOCK_PATH, 'w', encoding='utf-8'), indent=1, sort_keys=True)
+        write_rikuy_downloads()
     urls = [BASE + '/'] + [BASE + url_of(p) for p in PAPERS]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % (
         '\n'.join('  <url><loc>%s</loc></url>' % u for u in urls))

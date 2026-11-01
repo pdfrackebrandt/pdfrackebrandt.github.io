@@ -69,6 +69,8 @@
 
 /* readout and caption */
 .nfig .nfig-read{margin:0;font-family:var(--f-mono);font-size:.75rem;line-height:1.5;color:var(--muted);white-space:pre-wrap;font-variant-numeric:tabular-nums}
+/* the notes page sets every paragraph of the text to 17px; the readouts stay small */
+.notes-body .explainer .nfig p.nfig-read{font-size:.75rem;line-height:1.5;color:var(--muted)}
 .nfig-read .nf-warn{color:var(--signal)}
 .nfig figcaption{font-size:var(--step--1);line-height:1.6;color:var(--muted)}
 

@@ -1,0 +1,27 @@
+<figure class="nfig" data-nfig="l2-coverage">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Population">
+      <button type="button" class="nfig-opt" data-pop="norm" aria-pressed="false">Normal</button>
+      <button type="button" class="nfig-opt" data-pop="expo" aria-pressed="true">Exponential</button>
+      <button type="button" class="nfig-opt" data-pop="logn" aria-pressed="false">Lognormal</button>
+    </div>
+    <button type="button" class="btn nfig-new">New samples</button>
+  </div>
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Standard deviation">
+      <button type="button" class="nfig-opt" data-sig="est" aria-pressed="true">σ estimated</button>
+      <button type="button" class="nfig-opt" data-sig="known" aria-pressed="false">σ known</button>
+    </div>
+    <div class="nfig-seg" role="group" aria-label="Confidence level">
+      <button type="button" class="nfig-opt" data-lev="0" aria-pressed="false">90%</button>
+      <button type="button" class="nfig-opt" data-lev="1" aria-pressed="true">95%</button>
+      <button type="button" class="nfig-opt" data-lev="2" aria-pressed="false">99%</button>
+    </div>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">sample size n</span><input type="range" min="0" max="9" step="1" value="1" data-k="n"><span class="nfig-val" aria-hidden="true">10</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 300" role="img" aria-label="Fifty confidence intervals for the mean, one per row, each from a fresh sample of a population with mean 1 and standard deviation 1. A dashed vertical line marks the true mean 1. Intervals that cover it are blue; intervals that miss it are red."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">41 of these 50 intervals cover µ = 1</p>
+  <figcaption>Every population has mean 1 and standard deviation 1; each row is the interval from one sample. The true mean never moves, the intervals do. Press New samples and count the red ones. With skewed data and σ estimated, small samples cover well under the nominal level and almost every miss lies below 1. Raise n, or switch to σ known, and the long run share climbs to the nominal level.</figcaption>
+</figure>

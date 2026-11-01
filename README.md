@@ -22,7 +22,7 @@ Each paper page can carry a longer explanation with math: write `content/<slug>.
 `**bold**`, `*italic*`, `[link](url)`, `` `code` ``, `$inline math$` and `$$display math$$` (LaTeX, write `\$` for a dollar sign).
 
 Math is rendered at build time with KaTeX into plain HTML and CSS, so the page runs no script for it and the CSP stays strict.
-Rendered math is cached in `data/math-cache.json.gz`, so `python3 build.py` needs nothing else until you add or change math.
+Rendered math is cached in `data/math-cache.json.gz`, so `python3 build.py` needs nothing else until you add or change math. Math that appears only in the private notes goes to `data/math-cache-private.json.gz`, which git ignores; without it the build renders that math again with KaTeX.
 Then run `cd tools && npm install` once (Node 18 or later) and build again.
 
 ## Lecture notes (private)
@@ -37,6 +37,14 @@ and `assets/site.js` decrypts them in the browser once the visitor types the pas
    `[[fig name]]` inlines `src/figures/name.html`, driven by `assets/notes.js` and styled by `assets/notes.css`).
    If you only have the repo, the build opens the sealed copies (`data/notes.json.sealed`, `content/notes/<slug>.md.sealed`) with the password.
 3. Run `python3 build.py` (sealing needs Node; no packages). It writes the sealed copies and `data/notes-lock.json` (salt, a password check, the sealed home panel). Commit those, never the plain files.
+
+Colours follow Pedro's Word notes: `[term]{.key}` red key term, `[Label.]{.label}` purple sub label, `[Question?]{.ask}` green prompt,
+`$$! ... $$` a blue key equation, and `\kr{}` `\kp{}` `\kg{}` `\kb{}` to colour a symbol inside math; `::: note` and `::: takeaway` print orange Note! and Takeaway!.
+Each lecture's own figures live in `assets/figs/<lecture>.js` (registered with `NF.register`) and `assets/figs/<lecture>.css`, with snippets `src/figures/<lecture>-<name>.html`.
+
+Each note also has a "Download for Rikuy" button: a LaTeX project (main.tex from the same Markdown, `assets/rikuy.sty`, every figure as a standalone
+widget in `widgets/` and as a picture in `figures/`), sealed like the note in `notes/<slug>/rikuy.sealed`. Rikuy runs the widgets live; any other TeX prints the pictures.
+The pictures come from `tools/figshots.py` (Python Playwright) and are cached in `data/figshots/` by the widget's hash.
 
 Without the password the build still runs: it leaves `notes/` alone and reuses the sealed home panel.
 A short password keeps visitors out; it does not stop someone determined to guess it offline. Old commits still hold earlier plain versions.

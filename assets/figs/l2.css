@@ -1,0 +1,47 @@
+/* L2 figures (assets/figs/l2.js). Colours come from the site tokens only, so dark mode follows. */
+/* the readout keeps the small mono size of notes.css; the note page rule for paragraphs would otherwise enlarge it */
+.notes-body .nfig[data-nfig^="l2-"] p.nfig-read,.nfig[data-nfig^="l2-"] p.nfig-read{font-size:.75rem;line-height:1.5;min-height:3em}
+.nfig[data-nfig="l2-modes"] p.nfig-read,.nfig[data-nfig="l2-mse"] p.nfig-read,.nfig[data-nfig="l2-coverage"] p.nfig-read{min-height:4.5em}
+
+/* modes of convergence: one row per sample path, a mark wherever the path misses */
+.l2-mk-early{fill:var(--faint);fill-opacity:.55}
+.l2-mk-late{fill:var(--signal)}
+.l2-cursor{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:4 3}
+
+/* edf against the true cdf */
+.l2-gap{stroke:var(--signal);stroke-width:2.5;stroke-linecap:butt}
+.l2-bar{fill:var(--fig-blue);fill-opacity:.2}
+.l2-truept{fill:var(--paper);stroke:var(--ink-soft);stroke-width:1.5}
+
+/* square root n scaling: the inner band is the middle half */
+.l2-band50{fill:var(--fig-blue);fill-opacity:.2}
+
+/* two sample variances */
+.l2-s1{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+.l2-s2{fill:none;stroke:var(--green);stroke-width:2;stroke-linejoin:round}
+.l2-s1.l2-dash,.l2-s2.l2-dash{stroke-width:1.25;stroke-dasharray:3 3}
+.l2-s1f{fill:var(--fig-blue);fill-opacity:.08;stroke:none}
+.l2-s2f{fill:var(--green);fill-opacity:.08;stroke:none}
+.l2-bv1{fill:var(--fig-blue);fill-opacity:.35}
+.l2-bb1{fill:var(--fig-blue)}
+.l2-bv2{fill:var(--green);fill-opacity:.35}
+.l2-bb2{fill:var(--green)}
+
+/* confidence intervals */
+.l2-ci{stroke:var(--fig-blue);stroke-width:1.6;stroke-opacity:.8;stroke-linecap:butt}
+.l2-ci.l2-miss{stroke:var(--signal);stroke-width:2.2;stroke-opacity:1}
+.l2-cdot{fill:var(--fig-blue)}
+.l2-cdot.l2-miss{fill:var(--signal)}
+.l2-mu{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:4 3}
+
+/* translucent fills read weaker on the dark page */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l2-band50{fill-opacity:.3}
+  :root:not([data-theme="light"]) .l2-s1f,:root:not([data-theme="light"]) .l2-s2f{fill-opacity:.14}
+  :root:not([data-theme="light"]) .l2-bar{fill-opacity:.3}
+  :root:not([data-theme="light"]) .l2-mk-early{fill-opacity:.75}
+}
+:root[data-theme="dark"] .l2-band50{fill-opacity:.3}
+:root[data-theme="dark"] .l2-s1f,:root[data-theme="dark"] .l2-s2f{fill-opacity:.14}
+:root[data-theme="dark"] .l2-bar{fill-opacity:.3}
+:root[data-theme="dark"] .l2-mk-early{fill-opacity:.75}

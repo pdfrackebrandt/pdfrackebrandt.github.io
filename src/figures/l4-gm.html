@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="l4-gm">
+  <div class="nfig-seg" role="group" aria-label="Alternative linear unbiased estimator">
+    <button type="button" class="nfig-opt" data-alt="ends" aria-pressed="true">Two end points</button>
+    <button type="button" class="nfig-opt" data-alt="groups" aria-pressed="false">Group means</button>
+    <button type="button" class="nfig-opt" data-alt="weighted" aria-pressed="false">Weighted by 1/x</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">move away from OLS</span><input type="range" min="0" max="1" step="0.05" value="1" data-k="t"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 360" role="img" aria-label="Top: the weight each slope estimator puts on each of the 20 observations, OLS as open circles on a straight line, the alternative as red stems. Bottom: histograms of 4000 OLS slopes and 4000 alternative slopes computed on the same error draws, both centred on the true slope 0.5, the alternative wider."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">Σa = 0.000   Σax = 1.000   mean 0.501
+Var ratio = 1 + Σd²/Σw² = 3.68   simulated 3.58</p>
+  <figcaption>Three other linear unbiased estimators of the slope, for x = 1, …, 20 and σ² = 1. Top, the weight each puts on every yᵢ: the OLS weights w lie on a straight line in x, and every alternative a meets the same two unbiasedness constraints Σa = 0 and Σax = 1. Bottom, 8000 slopes of each, computed on the same draws: both are centred on β₂, and the alternative is always wider. Slide towards OLS to blend the two: the variance falls as 1 + Σd²/Σw², where d = a − w is how far the weights sit from OLS. That is the identity of the proof, the variance of the alternative equals the OLS variance plus σ²DD′, in one coordinate.</figcaption>
+</figure>

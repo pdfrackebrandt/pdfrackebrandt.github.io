@@ -1,0 +1,57 @@
+/* L4 figures (assets/figs/l4.js). Colours only through the site tokens, so dark mode follows. */
+
+/* projection of y onto col(X) */
+.l4-plane{fill:var(--green);fill-opacity:.09;stroke:var(--green);stroke-opacity:.45;stroke-width:1;stroke-linejoin:round}
+.l4-pgrid{stroke:var(--green);stroke-opacity:.16;stroke-width:1}
+.l4-dot{stroke:var(--faint);stroke-width:1;stroke-dasharray:2 3}
+.l4-xv{stroke:var(--green);stroke-width:2;stroke-linecap:round}
+.l4-yh{stroke:var(--fig-blue);stroke-width:2.5;stroke-linecap:round}
+.l4-uh{stroke:var(--signal);stroke-width:2.5;stroke-linecap:round}
+.l4-y{stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.l4-head{stroke:none}
+.l4-xv.l4-head{fill:var(--green)}
+.l4-yh.l4-head{fill:var(--fig-blue)}
+.l4-uh.l4-head{fill:var(--signal)}
+.l4-y.l4-head{fill:var(--ink)}
+.l4-ra{fill:none;stroke:var(--muted);stroke-width:1}
+.l4-cand{stroke:var(--fig-blue);stroke-width:1.25;stroke-dasharray:4 3}
+.l4-cand2{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:4 3}
+.l4-origin{fill:var(--muted)}
+.nfig text.l4-tg{fill:var(--green)}
+.nfig text.l4-tf{fill:var(--muted)}
+.nfig text.l4-tb{fill:var(--fig-blue)}
+.nfig text.l4-tr{fill:var(--signal)}
+.nfig text.l4-ti{fill:var(--ink)}
+.nfig text.l4-tb,.nfig text.l4-tr{font-size:12px}
+[data-nfig="l4-proj"] .nfig-plot{cursor:move}
+[data-nfig="l4-proj"] .nfig-read,[data-nfig="l4-sampling"] .nfig-read,[data-nfig="l4-gm"] .nfig-read,[data-nfig="l4-dof"] .nfig-read{min-height:3em}
+
+/* collinearity */
+.l4-frame{fill:none;stroke:var(--rule);stroke-width:1}
+.l4-xpt{fill:var(--green);fill-opacity:.7}
+.l4-cloud{fill:var(--fig-blue);fill-opacity:.32}
+.l4-ell{fill:var(--fig-blue);fill-opacity:.06;stroke:var(--fig-blue);stroke-width:1.5}
+
+/* sampling distributions and Gauss Markov */
+.l4-meanline{stroke:var(--fig-blue);stroke-width:2}
+.l4-meanalt{stroke:var(--signal);stroke-width:2}
+.l4-althist{fill:var(--signal);fill-opacity:.13;stroke:none}
+.l4-altline{fill:none;stroke:var(--signal);stroke-width:1.25;stroke-linejoin:miter}
+.l4-sw2{stroke:var(--signal);stroke-width:1}
+.l4-stem{stroke:var(--signal);stroke-width:1.5;stroke-opacity:.6}
+.l4-walt{fill:var(--signal)}
+.l4-wols{fill:var(--paper);stroke:var(--fig-blue);stroke-width:1.75}
+.l4-wline{stroke:var(--fig-blue);stroke-width:1;stroke-opacity:.5}
+.l4-swo{fill:var(--paper);stroke:var(--fig-blue);stroke-width:1.5}
+.l4-swa{fill:var(--signal)}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l4-plane{fill-opacity:.14}
+  :root:not([data-theme="light"]) .l4-cloud{fill-opacity:.45}
+  :root:not([data-theme="light"]) .l4-althist{fill-opacity:.2}
+}
+:root[data-theme="dark"] .l4-plane{fill-opacity:.14}
+:root[data-theme="dark"] .l4-cloud{fill-opacity:.45}
+:root[data-theme="dark"] .l4-althist{fill-opacity:.2}
+.l4-swr{fill:none;stroke:var(--signal);stroke-width:1.5}
+.l4-alt2{stroke-width:1.75}

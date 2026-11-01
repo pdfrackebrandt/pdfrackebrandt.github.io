@@ -1,0 +1,61 @@
+/* L3 figures, drawn by /assets/figs/l3.js. Colours come from the site tokens, so dark mode follows. */
+.nfig .l3-it{font-style:italic}
+.nfig .l3-small{font-size:10px}
+.nfig .l3-rlab{fill:var(--signal)}
+.nfig .l3-cb{fill:var(--ink)}
+.nfig .l3-cbh{fill:var(--fig-blue)}
+/* projection */
+.l3-span{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:5 4;fill:none}
+.l3-pvec{stroke:var(--fig-blue);stroke-opacity:.3;stroke-width:6;stroke-linecap:round}
+.l3-res{stroke:var(--signal);stroke-width:2;stroke-linecap:round}
+.l3-rt{fill:none;stroke:var(--signal);stroke-width:1}
+.l3-pdot{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+/* rank */
+.l3-lat{stroke:var(--fig-blue);stroke-opacity:.16;stroke-width:1;fill:none}
+.l3-lat0{stroke-opacity:.34}
+.l3-colsp{stroke:var(--green);stroke-opacity:.22;stroke-width:12;stroke-linecap:round}
+.l3-path1{stroke:var(--fig-blue);stroke-width:1.75;stroke-dasharray:5 3;fill:none}
+.l3-path2{stroke:var(--green);stroke-width:1.75;stroke-dasharray:5 3;fill:none}
+.l3-miss{stroke:var(--signal);stroke-width:1.25;stroke-dasharray:2 3}
+.l3-mdot{fill:var(--paper);stroke:var(--signal);stroke-width:1.5}
+.nf-knob.l3-kb{stroke:var(--ink)}
+/* volume */
+.l3-rot{touch-action:pan-y;cursor:grab}
+.l3-rot.is-drag{cursor:grabbing}
+.l3-rot:focus{outline:none}
+.l3-rot:focus-visible{outline:1.5px solid var(--accent);outline-offset:4px}
+.l3-drop{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:2 3}
+.l3-foot{fill:var(--ink-soft)}
+.l3-plane{fill:var(--green);fill-opacity:.1;stroke:var(--green);stroke-opacity:.35;stroke-width:1}
+.l3-face{fill:var(--fig-blue);fill-opacity:.1;stroke:none}
+.l3-edge{stroke:var(--fig-blue);stroke-opacity:.55;stroke-width:1.1}
+.l3-neg .l3-face{fill:var(--signal)}
+.l3-neg .l3-edge{stroke:var(--signal)}
+/* quadratic form: bands of x'Ax, blue above zero and red below */
+.l3-frame{fill:none;stroke:var(--rule);stroke-width:1}
+.l3-p0,.l3-p1,.l3-p2,.l3-p3,.l3-p4,.l3-p5,.l3-p6{fill:var(--fig-blue)}
+.l3-n0,.l3-n1,.l3-n2,.l3-n3,.l3-n4,.l3-n5,.l3-n6{fill:var(--signal)}
+.l3-p7,.l3-p8{fill:var(--fig-blue)}.l3-n7,.l3-n8{fill:var(--signal)}
+.l3-p0,.l3-n0{fill-opacity:.02}.l3-p1,.l3-n1{fill-opacity:.05}.l3-p2,.l3-n2{fill-opacity:.08}.l3-p3,.l3-n3{fill-opacity:.11}
+.l3-p4,.l3-n4{fill-opacity:.14}.l3-p5,.l3-n5{fill-opacity:.17}.l3-p6,.l3-n6{fill-opacity:.2}.l3-p7,.l3-n7{fill-opacity:.23}.l3-p8,.l3-n8{fill-opacity:.26}
+.l3-sw{stroke:none}
+.l3-lev{fill:none;stroke:var(--ink-soft);stroke-opacity:.42;stroke-width:1;stroke-linejoin:round}
+.l3-zero{fill:none;stroke:var(--green);stroke-width:2;stroke-linecap:round}
+.l3-plev{fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linejoin:round}
+.l3-eig{stroke:var(--ink-soft);stroke-width:1.5;stroke-linecap:round}
+.l3-eigh{fill:var(--ink-soft);stroke:none}
+.l3-grad{stroke:var(--c-label);stroke-width:2;stroke-linecap:round}
+.l3-gradh{fill:var(--c-label);stroke:none}
+.nf-knob.l3-kp{stroke:var(--ink)}
+/* least squares */
+.l3-minline{stroke:var(--fig-blue);stroke-opacity:.6;stroke-width:4;stroke-linecap:round}
+.l3-bhat{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.l3-beta{fill:none;stroke:var(--signal);stroke-width:2;stroke-linecap:round}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l3-face{fill-opacity:.16}
+  :root:not([data-theme="light"]) .l3-plane{fill-opacity:.14}
+  :root:not([data-theme="light"]) .l3-lat{stroke-opacity:.24}
+}
+:root[data-theme="dark"] .l3-face{fill-opacity:.16}
+:root[data-theme="dark"] .l3-plane{fill-opacity:.14}
+:root[data-theme="dark"] .l3-lat{stroke-opacity:.24}

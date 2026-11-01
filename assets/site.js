@@ -438,9 +438,27 @@
       if(animate && !reduce) setTimeout(function(){ lock.classList.remove('is-opening'); lock.classList.add('is-open'); }, 900);
       lock.querySelector('.sealed').remove();
       if(window.initNoteFigures) window.initNoteFigures(out);
+      Array.prototype.forEach.call(out.querySelectorAll('.rikuy-dl'), download);
       initToc();
       tabCount(lock);
       if(location.hash && location.hash.length>1){ var tgt=document.getElementById(decodeURIComponent(location.hash.slice(1))); if(tgt && out.contains(tgt)) tgt.scrollIntoView(); }
+    }
+    // Download for Rikuy: the note's LaTeX project, sealed like the note, opened here and saved as a zip
+    function download(btn){
+      btn.addEventListener('click', function(){
+        var pass=recall(), label=btn.textContent; if(!pass || btn.disabled) return;
+        btn.disabled=true; btn.textContent='Preparing…';
+        fetch(btn.getAttribute('data-rikuy'), {cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }).then(function(box){
+          return keyFor(pass, box.salt, box.iter).then(function(k){ return crypto.subtle.decrypt({name:'AES-GCM', iv:bytes(box.iv)}, k, bytes(box.ct)); }).then(function(buf){
+            var url=URL.createObjectURL(new Blob([bytes(new TextDecoder().decode(buf))], {type:'application/zip'}));
+            var a=document.createElement('a'); a.href=url; a.download=box.name || 'notes.zip'; document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+            btn.textContent='Downloaded';
+          });
+        }).catch(function(){ btn.textContent='Download failed, try again'; }).then(function(){
+          setTimeout(function(){ btn.disabled=false; btn.textContent=label; }, 2200);
+        });
+      });
     }
     function wire(lock){
       var form=lock.querySelector('.lock-form'), input=form.querySelector('input'), msg=lock.querySelector('.lock-msg'), busy=false;

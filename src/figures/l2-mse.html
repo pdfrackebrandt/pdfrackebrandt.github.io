@@ -1,0 +1,8 @@
+<figure class="nfig" data-nfig="l2-mse">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">sample size n</span><input type="range" min="3" max="50" step="1" value="5" data-k="n"><span class="nfig-val" aria-hidden="true">5</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 290" role="img" aria-label="Sampling densities of the two sample variances for normal data with true variance 1: dividing by n minus 1 in blue, dividing by n in green, each with a dashed line at its mean. Below, two bars split each estimator's mean squared error into variance and squared bias."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">n = 5</p>
+  <figcaption>Normal data with σ² = 1. The blue estimator is centred on the truth; the green one sits a fraction 1/n too low but is less spread out. Read the bars: the green squared bias is a sliver, the variance saving is larger, so dividing by n has the smaller mean squared error at every n. Slide n up and both collapse onto 1, which is consistency.</figcaption>
+</figure>

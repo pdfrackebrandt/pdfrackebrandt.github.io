@@ -4,6 +4,10 @@ import katex from 'katex';
 
 let input = '';
 for await (const chunk of process.stdin) input += chunk;
+// \kr \kp \kg \kb colour a symbol (red, purple, green, blue) to tie it to the text, as in the Word notes;
+// they become classes (\htmlClass, the only trusted command) so the site's light and dark themes pick the shade.
+const macros = { '\\kr': '\\htmlClass{kr}{#1}', '\\kp': '\\htmlClass{kp}{#1}', '\\kg': '\\htmlClass{kg}{#1}', '\\kb': '\\htmlClass{kb}{#1}' };
+const trust = (ctx) => ctx.command === '\\htmlClass' && /^k[rpgb]$/.test(ctx.class);
 const out = JSON.parse(input).map(({ tex, display }) =>
-  katex.renderToString(tex, { displayMode: !!display, output: 'htmlAndMathml', throwOnError: true, strict: 'error', trust: false }));
+  katex.renderToString(tex, { displayMode: !!display, output: 'htmlAndMathml', throwOnError: true, strict: (code) => (code === 'htmlExtension' ? 'ignore' : 'error'), trust, macros: { ...macros } }));
 process.stdout.write(JSON.stringify(out));

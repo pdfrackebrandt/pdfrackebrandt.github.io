@@ -1,0 +1,12 @@
+<figure class="nfig" data-nfig="l3-ols">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">collinearity </span>ρ</span><input type="range" min="0" max="1" step="0.01" value="0.6" data-k="rho"><span class="nfig-val" aria-hidden="true">0.60</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 300" role="group" aria-label="Level curves of the least squares objective S(b) over the two slopes b1 and b2, for 50 simulated observations of y = x1 + x2 + u, where x2 has correlation ρ with x1. The dot marks the minimiser b hat and the cross the true β = (1, 1). A draggable probe shows the direction of the gradient of S."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">ρ = 0.60   X′X = [59.8  40.5; 40.5  67.2]   det X′X = 2384   b̂ = (1.27, 0.66)
+at the probe b = (2.20, 0.20): ∂S/∂b = 2(X′Xb − X′y) = (74.3, 13.9)</p>
+  <figcaption>Slide ρ up and the bowl stretches into a long valley along b₁ + b₂ = constant: the data pin down the sum of the slopes but less and less how to split it. At ρ = 1, x₂ = x₁, X has rank 1, X′X is singular and the bottom is a whole line. Drag the probe onto b̂ and the gradient vanishes: that is the normal equations.</figcaption>
+</figure>

@@ -1,0 +1,18 @@
+<figure class="nfig" data-nfig="l4-sampling">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg nfig-seg4" role="group" aria-label="Error assumptions">
+      <button type="button" class="nfig-opt" data-mode="normal" aria-pressed="true">OLS.1 to OLS.5</button>
+      <button type="button" class="nfig-opt" data-mode="skewed" aria-pressed="false">Skewed</button>
+      <button type="button" class="nfig-opt" data-mode="hetero" aria-pressed="false">Heteroskedastic</button>
+      <button type="button" class="nfig-opt" data-mode="omitted" aria-pressed="false">Omitted z</button>
+    </div>
+    <button type="button" class="btn nfig-new">New draws</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">sample size N</span><input type="range" min="5" max="100" step="1" value="20" data-k="n"><span class="nfig-val" aria-hidden="true">20</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 270" role="img" aria-label="Histogram of 4000 OLS slope estimates from samples that share the same x values, with the normal density N(beta2, sigma squared over Sxx) drawn on top, a dashed line at the true slope 0.5 and a solid line at the mean of the estimates."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">mean 0.498   sd 0.104   formula σ/√Sxx = 0.106
+OLS.1 to OLS.5 hold: the histogram is exactly N(β₂, σ²/Sxx)</p>
+  <figcaption>Each of 4000 samples keeps the same x values and draws fresh errors with σ² = 1; the histogram collects the 4000 OLS slopes. With every assumption in place it sits on the solid curve N(β₂, σ²/Sxx), centred on the dashed truth, and it narrows as N grows. Then break one assumption at a time. Skewed errors keep the mean and the spread. Heteroskedastic errors keep the mean but not the spread the formula gives. An omitted variable z that rises with x moves the centre itself.</figcaption>
+</figure>

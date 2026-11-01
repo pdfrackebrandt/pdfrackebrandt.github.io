@@ -853,6 +853,11 @@
     }
   }
   window.initNoteFigures=initNoteFigures;
+  /* Lecture figure files (assets/figs/*.js, loaded after this one) add their figures with NF.register(name, init)
+     and reuse the drawing helpers below. */
+  window.NF={register:function(name,fn){ INIT[name]=fn; }, S:S, R:R, C:C, clamp:clamp, text:text, line:line, setLine:setLine, at:at,
+    poly:poly, fmt:fmt, tl:tl, lin:lin, measure:measure, frame:frame, watch:watch, yGrid:yGrid, xGrid:xGrid, seg:seg, range:range,
+    phi:phi, Phi:Phi, invPhi:invPhi, mulberry32:mulberry32, tw:tw, key:key, clip:clip, local:local, capture:capture, reduce:reduce, MINUS:MINUS};
   function boot(){ initNoteFigures(document); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
   else boot();
