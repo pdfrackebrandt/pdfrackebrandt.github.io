@@ -284,6 +284,23 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .note-card h3 a{color:var(--ink)}
 .note-card h3 a:hover{color:var(--accent)}
 .note-card .go{margin-left:0;align-self:flex-start}
+/* notes by course: cards first, each course's lectures in place (site.js initCourses) */
+.course-card .eyebrow{font-size:.7rem;color:var(--muted)}
+.course-card h3 a{color:var(--ink)}
+.course-card h3 a:hover{color:var(--accent)}
+.course-card .go{margin-left:0;align-self:flex-start}
+.course-card p.course-who{color:var(--muted);font-size:var(--step--1)}
+.course-chips{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.course-chips a{display:inline-flex;align-items:center;min-height:30px;padding:0 11px;border:1px solid var(--rule);border-radius:999px;font-size:.78rem;color:var(--ink-soft);transition:border-color .15s,color .15s}
+.course-chips a:hover{border-color:var(--c-head,var(--accent));color:var(--ink)}
+.course-head{display:flex;flex-direction:column;gap:6px;margin-bottom:22px}
+.course-head h3{font-size:var(--step-2,1.5rem);line-height:1.2;font-weight:700}
+.course-head .course-meta{color:var(--muted);font-size:var(--step--1)}
+.course-back{align-self:flex-start;font-size:.8rem;color:var(--link);min-height:32px;display:inline-flex;align-items:center}
+.course-back:hover{color:var(--accent)}
+.course-view.is-entering{animation:course-in .28s ease-out}
+@keyframes course-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.notes-index .courses{display:flex;flex-direction:column}
 
 /* all notes */
 .notes-index{max-width:44rem;display:flex;flex-direction:column;gap:clamp(26px,5vw,40px);padding-block:clamp(10px,3vw,24px) 48px}

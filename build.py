@@ -513,6 +513,56 @@ NOTE_CARD = """        <div class="tool note-card">
           <a class="go" href="{url}">Read the notes &rarr;</a>
         </div>"""
 
+def course_slug(name):
+    return re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-')
+
+
+def courses():
+    """The notes grouped by course, in the order courses first appear; lecturers and term come from the notes' entries."""
+    out = []
+    for n in NOTES:
+        c = next((x for x in out if x['name'] == n['course']), None)
+        if c is None:
+            c = {'name': n['course'], 'slug': course_slug(n['course']), 'notes': [], 'who': [], 'term': n.get('term', '')}
+            out.append(c)
+        c['notes'].append(n)
+        if n.get('lecturer') and n['lecturer'] not in c['who']:
+            c['who'].append(n['lecturer'])
+    return out
+
+
+def courses_html(root, prefix):
+    """Course cards, and for each course a view of its lectures. The views open in place from the URL hash
+    (prefix + course slug), so the back button and links work; assets/site.js initCourses does the switching."""
+    cards, views = [], []
+    for c in courses():
+        k = len(c['notes'])
+        meta = ' &middot; '.join(x for x in (escape(c['term']), '%d lecture%s' % (k, '' if k == 1 else 's')) if x)
+        who = escape(' and '.join(c['who']))
+        chips = ''.join('<li><a href="%s" title="%s">%s</a></li>' % (note_url(n), escape(n['title']), escape(n['label'])) for n in c['notes'])
+        cards.append("""        <div class="tool course-card">
+          <p class="eyebrow">{meta}</p>
+          <h3><a href="{href}">{name}</a></h3>{who}
+          <ol class="course-chips" aria-label="Lectures">{chips}</ol>
+          <a class="go" href="{href}">Open the course &rarr;</a>
+        </div>""".format(meta=meta, href=prefix + c['slug'], name=escape(c['name']), chips=chips,
+                         who=('\n          <p class="course-who">%s</p>' % who) if who else ''))
+        # inside a course the course name is already the heading, so each card is labelled by its lecture alone
+        notes = '\n'.join(NOTE_CARD.format(tag=escape(n['label']), url=note_url(n), title=escape(n['title']), summary=escape(n['summary']))
+                          for n in c['notes'])
+        views.append("""      <section class="course-view" data-course-view="{slug}" hidden>
+        <div class="course-head">
+          <a class="course-back" href="{root}">&larr; All courses</a>
+          <h3>{name}</h3>{meta}
+        </div>
+        <div class="tools">
+{notes}
+        </div>
+      </section>""".format(slug=c['slug'], root=root, name=escape(c['name']), notes=notes,
+                           meta=('\n          <p class="course-meta">%s</p>' % ' &middot; '.join(x for x in (who, escape(c['term'])) if x)) if (who or c['term']) else ''))
+    return '<div class="courses" data-courses>\n      <div class="tools course-grid">\n%s\n      </div>\n%s\n    </div>' % ('\n'.join(cards), '\n'.join(views))
+
+
 NOTE_PANEL = """
 
     <section class="panel" id="notes" role="tabpanel" aria-labelledby="tab-notes">
@@ -537,15 +587,13 @@ def build_index():
         </div>'''.format(name=escape(t['name']), text=escape(t['text']),
                          tags=('\n          <div class="paper-tags">%s</div>' % ''.join('<span class="tag">%s</span>' % escape(x) for x in t['tags'])) if t.get('tags') else '')
                       for t in SITE['tools'])
-    notes = '\n'.join(NOTE_CARD.format(tag=note_tag(n), url=note_url(n), title=escape(n['title']), summary=escape(n['summary']))
-                      for n in NOTES)
     notes_tab = notes_panel = owns = ''
     if NOTES or LOCK.get('home'):
         # the Notes tab sits at the right end of the tab row, after the List or Visual switch; aria-owns keeps it in the tablist
         owns = ' aria-owns="tab-notes"'
         notes_tab = ('\n    <a class="tab tab-notes" role="tab" id="tab-notes" href="#notes" aria-controls="notes" aria-selected="false" tabindex="-1">'
                      'Notes<span class="count tab-lock" data-locked>%s</span></a>' % LOCK_GLYPH)
-        notes_panel = NOTE_PANEL % sealed_block('home', '      <div class="tools">\n%s\n      </div>' % notes, indent_by=6)
+        notes_panel = NOTE_PANEL % sealed_block('home', '      ' + courses_html('#notes', '#notes/'), indent_by=6)
     topics = []
     for p in PAPERS:
         for t in [p['topic']] + list(p.get('tags', [])):
@@ -856,7 +904,7 @@ def build_note(n):
       <p class="eyebrow">{tag}</p>
       <h1>{title}</h1>
       <p class="lede">{lede}</p>
-      <p class="page-actions"><a href="/notes/">All notes</a><span aria-hidden="true">&middot;</span><button class="linkbtn rikuy-dl" type="button" data-rikuy="{dl}">Download for Rikuy</button></p>
+      <p class="page-actions"><a href="/#notes/{course}">All lectures</a><span aria-hidden="true">&middot;</span><button class="linkbtn rikuy-dl" type="button" data-rikuy="{dl}">Download for Rikuy</button></p>
     </header>
     <nav class="toc toc-wide" aria-label="On this page">
       <details class="toc-group" open>
@@ -871,7 +919,7 @@ def build_note(n):
     <div class="explainer">
 {body}
     </div>
-  </article>""".format(tag=note_tag(n), title=escape(n['title']), lede=escape(n['summary']), toc=toc, others=others, body=indent(body, 6),
+  </article>""".format(tag=note_tag(n), title=escape(n['title']), lede=escape(n['summary']), toc=toc, others=others, body=indent(body, 6), course=course_slug(n['course']),
            dl=note_url(n) + 'rikuy.sealed')
     return note_head('Notes · %s' % SITE['name'], 'Private notes.', canonical, body) + """
 <body class="notes-body">
@@ -888,26 +936,14 @@ def build_note(n):
 
 
 def build_notes_index():
-    courses = []
-    for n in NOTES:
-        if n['course'] not in courses:
-            courses.append(n['course'])
-    groups = []
-    for c in courses:
-        rows = ''.join("""
-        <li class="note-row"><a href="{url}"><span class="note-label">{label}</span><span class="note-title">{title}</span></a>
-          <p>{summary}</p></li>""".format(url=note_url(n), label=escape(n['label']), title=escape(n['title']), summary=escape(n['summary']))
-                       for n in NOTES if n['course'] == c)
-        groups.append('      <section class="note-course">\n        <h2>%s</h2>\n        <ol class="note-rows">%s\n        </ol>\n      </section>'
-                      % (escape(c), rows))
     listing = """<div class="notes-index">
   <header class="paper-header">
     <p class="eyebrow">{kicker}</p>
     <h1>Notes</h1>
     <p class="lede">Lecture notes written to be read with the figures: move the sliders and watch the result.</p>
   </header>
-{groups}
-</div>""".format(kicker=escape(SITE.get('notes_kicker', '')), groups='\n'.join(groups))
+  {groups}
+</div>""".format(kicker=escape(SITE.get('notes_kicker', '')), groups=courses_html('/notes/', '#'))
     return note_head('Notes · %s' % SITE['name'], 'Private notes.', BASE + '/notes/', '') + """
 <body class="notes-body">
 <a class="skip" href="#main">Skip to content</a>

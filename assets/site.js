@@ -289,7 +289,7 @@
       // a locked panel takes the cursor straight to its password field
       var field=panelOf(t).querySelector('.locked:not(.is-open) input');
       if(field && opts.push) setTimeout(function(){ field.focus({preventScroll:true}); }, 60);
-      if(opts.push) history.replaceState(null,'','#'+t.getAttribute('aria-controls'));
+      if(opts.push){ history.replaceState(null,'','#'+t.getAttribute('aria-controls')); routeCourses(); }
       if(opts.scroll && wrap.classList.contains('stuck') && sentinel){
         window.scrollTo({top: sentinel.getBoundingClientRect().top+window.pageYOffset, behavior: reduce?'auto':'smooth'});
       }
@@ -304,7 +304,7 @@
       });
     });
     function fromHash(initial){
-      var id=(location.hash||'').slice(1), hit=null;
+      var id=(location.hash||'').slice(1).split('/')[0], hit=null;
       tabs.forEach(function(t){ if(t.getAttribute('aria-controls')===id) hit=t; });
       if(!hit && initial!==true) return;
       select(hit||tabs[0]);
@@ -387,6 +387,34 @@
   }
 
   // lecture notes: the contents column marks the section being read
+  // notes by course: the course cards, and each course's lectures shown in place when the hash names the course
+  // (#notes/core-macroeconomics on the home page, #core-macroeconomics on /notes/), so back and forward work
+  var courseRoots=[];
+  function routeCourses(){
+    var m=(location.hash||'').match(/^#(?:notes\/)?([a-z0-9-]+)$/), slug=m ? m[1] : '';
+    courseRoots.forEach(function(root){
+      var grid=root.querySelector('.course-grid'), views=root.querySelectorAll('.course-view'), shown=null;
+      Array.prototype.forEach.call(views, function(v){
+        var on=v.getAttribute('data-course-view')===slug;
+        if(on && v.hidden){ shown=v; v.classList.remove('is-entering'); void v.offsetWidth; v.classList.add('is-entering'); }
+        v.hidden=!on;
+        if(on && !shown) shown=v;
+      });
+      grid.hidden=!!shown;
+      if(shown && root.getBoundingClientRect().top<0){
+        var top=document.querySelector('.tabs-sentinel'), y=(top||root).getBoundingClientRect().top+window.pageYOffset-8;
+        window.scrollTo({top:Math.max(0,y), behavior:'auto'});
+      }
+    });
+  }
+  function initCourses(scope){
+    Array.prototype.forEach.call((scope||document).querySelectorAll('[data-courses]'), function(root){
+      if(courseRoots.indexOf(root)<0) courseRoots.push(root);
+    });
+    routeCourses();
+  }
+  window.addEventListener('hashchange', routeCourses);
+
   // a link to a place inside a folded section opens that section first
   function openTo(el){ for(var d=el && el.closest('details.nsec'); d; d=d.parentElement && d.parentElement.closest('details.nsec')) d.open=true; }
   function initFold(){
@@ -437,7 +465,7 @@
     function forget(){ try{ sessionStorage.removeItem(KEY); }catch(e){} }
     function tabCount(lock){
       var mark=document.querySelector('.tab-lock[data-locked]'); if(!mark || !lock.closest('#notes')) return;
-      var n=lock.querySelectorAll('.unsealed .note-card').length;
+      var n=lock.querySelectorAll('.unsealed .course-card').length || lock.querySelectorAll('.unsealed .note-card').length;
       mark.removeAttribute('data-locked'); mark.classList.add('is-counted'); mark.textContent=n ? String(n) : '';
     }
     function reveal(lock, html, animate){
@@ -447,6 +475,7 @@
       if(animate && !reduce) setTimeout(function(){ lock.classList.remove('is-opening'); lock.classList.add('is-open'); }, 900);
       lock.querySelector('.sealed').remove();
       if(window.initNoteFigures) window.initNoteFigures(out);
+      initCourses(out);
       Array.prototype.forEach.call(out.querySelectorAll('.rikuy-dl'), download);
       initToc();
       tabCount(lock);
