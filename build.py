@@ -831,9 +831,19 @@ def toc_items(body):
                    for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', body))
 
 
+def fold_sections(body):
+    """Each top level section of a note folds: its h2 becomes the summary of an open <details>, with a chevron on the left."""
+    parts = re.split(r'(?m)^(?=<h2 id=")', body)
+    out = [parts[0]]
+    for part in parts[1:]:
+        head, _, rest = part.partition('\n')
+        out.append('<details class="nsec" open><summary>%s</summary><div class="nsec-body">\n%s</div></details>\n' % (head, rest))
+    return ''.join(out)
+
+
 def build_note(n):
     canonical = BASE + note_url(n)
-    body = md_html(note_source(n))
+    body = fold_sections(md_html(note_source(n)))
     toc = toc_items(body)
     course = [m for m in NOTES if m['course'] == n['course']]
     others = ''

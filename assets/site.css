@@ -364,6 +364,16 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .c-label{color:var(--c-label);font-weight:600}
 .c-ask{color:var(--c-ask);font-weight:700}
 .notes-body .explainer h2,.notes-body .explainer h3{color:var(--c-head)}
+/* note sections fold: the heading is the summary of an open <details>, the chevron sits to its left */
+.nsec > summary{list-style:none;display:flex;align-items:center;gap:12px;cursor:pointer;margin-top:clamp(16px,3.5vw,26px)}
+.nsec > summary::-webkit-details-marker{display:none}
+.nsec > summary::before{content:"";flex:none;width:8px;height:8px;margin-left:2px;border-right:2px solid var(--c-head);border-bottom:2px solid var(--c-head);transform:translateY(-3px) rotate(45deg);transition:transform .2s}
+.nsec:not([open]) > summary::before{transform:rotate(-45deg)}
+.nsec > summary h2{margin-top:0}
+.nsec:not([open]) + .nsec > summary{margin-top:4px}
+.nsec > summary:hover h2{opacity:.85}
+.nsec > summary:focus-visible{outline:2px solid var(--c-head);outline-offset:4px;border-radius:2px}
+.nsec-body{display:flex;flex-direction:column;gap:14px;margin-top:14px}
 .notes-body .box.note .box-label,.notes-body .box.takeaway .box-label{color:var(--c-flag)}
 .notes-body .box.takeaway{border-left-color:var(--c-flag)}
 .eq-key,.eq-key .katex{color:var(--c-eq)}

@@ -1,0 +1,76 @@
+/* Core Micro L1 figures, drawn by /assets/figs/mi1.js. Colours come from the site tokens, so dark mode follows. */
+.nfig .mi1-it{font-style:italic}
+.mi1-frame{fill:none;stroke:var(--rule);stroke-width:1}
+.nfig text.mi1-warnt{fill:var(--c-key)}
+/* clickable marks: pills, ranking chips, menu chips and menu headers */
+.mi1-pill,.mi1-vchip,.mi1-chip,.mi1-obs{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
+.mi1-pill:focus-visible .mi1-pbg,.mi1-vchip:focus-visible .mi1-vbg,.mi1-chip:focus-visible .mi1-cbg,.mi1-obs:focus-visible .mi1-box{stroke:var(--accent);stroke-width:2}
+/* a preference on four alternatives */
+.mi1-edge{stroke:var(--ink-soft);stroke-width:1.5;stroke-linecap:round;fill:none}
+.mi1-edge.mi1-ind{stroke:var(--muted);stroke-dasharray:5 4}
+.mi1-edge.mi1-none{stroke:var(--rule);stroke-dasharray:1 4}
+.mi1-head{fill:var(--ink-soft);stroke:none}
+/* the triple that breaks transitivity, and a Condorcet cycle, are red like the red terms in their Try it boxes */
+.mi1-edge.mi1-bad{stroke:var(--c-key);stroke-width:2}
+.mi1-head.mi1-badh{fill:var(--c-key)}
+.mi1-pbg{fill:var(--paper);stroke:var(--rule);stroke-width:1}
+.mi1-pill:hover .mi1-pbg{stroke:var(--c-ask)}
+.nfig text.mi1-ptx{fill:var(--ink);font-size:11.5px}
+.mi1-pbad .mi1-pbg{stroke:var(--c-key)}
+.nfig .mi1-pbad text.mi1-ptx{fill:var(--c-key)}
+.mi1-node{fill:var(--paper);stroke:var(--ink-soft);stroke-width:1.5}
+.mi1-node.mi1-best{fill:var(--fig-blue);stroke:var(--fig-blue)}
+.nfig text.mi1-nl{fill:var(--ink);font-size:14px;font-style:italic}
+.nfig text.mi1-nlb{fill:var(--paper)}
+.mi1-sdot{fill:var(--paper);stroke:var(--fig-blue);stroke-width:1.5}
+.mi1-sdot.mi1-soff{stroke:var(--faint);stroke-dasharray:2 2}
+.nfig text.mi1-stx{fill:var(--ink);font-style:italic}
+/* majority rule */
+.mi1-vbg{fill:var(--surface);stroke:var(--rule);stroke-width:1}
+.mi1-vchip:hover .mi1-vbg{stroke:var(--c-ask)}
+.nfig text.mi1-vtx{fill:var(--ink);font-size:13px;font-style:italic}
+/* ordinal utility */
+.mi1-lev{fill:none;stroke:var(--faint);stroke-width:1}
+.mi1-lev.mi1-levk{stroke:var(--fig-blue);stroke-width:1.5}
+.nfig text.mi1-llab{fill:var(--fig-blue)}
+.mi1-band{fill:var(--fig-blue);fill-opacity:.12;stroke:none}
+.mi1-better{stroke:var(--muted);stroke-width:1.25;stroke-linecap:round}
+.mi1-betterh{fill:var(--muted);stroke:none}
+.mi1-insbg{fill:var(--paper);fill-opacity:.94;stroke:var(--rule)}
+.mi1-inset{pointer-events:none}
+/* f is purple, like v = f(u) in the figure's Try it box */
+.mi1-insline{fill:none;stroke:var(--c-label);stroke-width:1.75;stroke-linejoin:round}
+.nfig text.mi1-instx{fill:var(--c-label);font-size:10.5px}
+.mi1-ab{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+.mi1-mid{fill:var(--paper);stroke:var(--ink-soft);stroke-width:1.5}
+/* lexicographic preferences */
+.mi1-up{fill:var(--fig-blue);fill-opacity:.1;stroke:none}
+.mi1-wedge{fill:var(--c-key);fill-opacity:.2;stroke:none}
+.mi1-open{stroke:var(--fig-blue);stroke-width:1.5;stroke-dasharray:3 3}
+.mi1-ray{stroke:var(--fig-blue);stroke-width:3.5;stroke-linecap:round}
+/* the weighted sum u is purple, like u in its Try it box */
+.mi1-uline{stroke:var(--c-label);stroke-width:1.75;stroke-dasharray:6 4}
+.mi1-ia{fill:var(--fig-blue);fill-opacity:.5}
+.mi1-ib{fill:var(--green);fill-opacity:.5}
+.mi1-ov{fill:var(--c-key);fill-opacity:.28}
+.mi1-mark1{stroke:var(--fig-blue);stroke-width:2.5}
+.mi1-mark2{stroke:var(--green);stroke-width:2.5}
+/* WARP */
+.mi1-card{fill:var(--paper);stroke:var(--rule);stroke-width:1}
+.mi1-card.is-off{fill:var(--surface);stroke-dasharray:4 3}
+.mi1-box{fill:var(--paper);stroke:var(--muted);stroke-width:1.25}
+.mi1-tick{fill:none;stroke:var(--c-ask);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mi1-cbg{fill:var(--paper);stroke:var(--fig-blue);stroke-width:1.5}
+.mi1-chip.is-on .mi1-cbg{fill:var(--fig-blue)}
+.nfig text.mi1-ctx{fill:var(--ink);font-size:13px;font-style:italic}
+.nfig .mi1-chip.is-on text.mi1-ctx{fill:var(--paper)}
+.mi1-chip.is-off{opacity:.35}
+.nfig text.mi1-vline{fill:var(--ink-soft);font-size:12px}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .mi1-up{fill-opacity:.16}
+  :root:not([data-theme="light"]) .mi1-band{fill-opacity:.18}
+  :root:not([data-theme="light"]) .mi1-wedge{fill-opacity:.26}
+}
+:root[data-theme="dark"] .mi1-up{fill-opacity:.16}
+:root[data-theme="dark"] .mi1-band{fill-opacity:.18}
+:root[data-theme="dark"] .mi1-wedge{fill-opacity:.26}

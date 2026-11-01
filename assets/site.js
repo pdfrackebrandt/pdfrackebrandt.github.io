@@ -387,6 +387,15 @@
   }
 
   // lecture notes: the contents column marks the section being read
+  // a link to a place inside a folded section opens that section first
+  function openTo(el){ for(var d=el && el.closest('details.nsec'); d; d=d.parentElement && d.parentElement.closest('details.nsec')) d.open=true; }
+  function initFold(){
+    document.addEventListener('click', function(e){
+      var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+      var t=document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); if(t) openTo(t);
+    });
+    window.addEventListener('hashchange', function(){ if(location.hash.length>1) openTo(document.getElementById(decodeURIComponent(location.hash.slice(1)))); });
+  }
   function initToc(){
     var nav=document.querySelector('.toc-wide'); if(!nav) return;
     var links=Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
@@ -441,7 +450,7 @@
       Array.prototype.forEach.call(out.querySelectorAll('.rikuy-dl'), download);
       initToc();
       tabCount(lock);
-      if(location.hash && location.hash.length>1){ var tgt=document.getElementById(decodeURIComponent(location.hash.slice(1))); if(tgt && out.contains(tgt)) tgt.scrollIntoView(); }
+      if(location.hash && location.hash.length>1){ var tgt=document.getElementById(decodeURIComponent(location.hash.slice(1))); if(tgt && out.contains(tgt)){ openTo(tgt); tgt.scrollIntoView(); } }
     }
     // Download for Rikuy: the note's LaTeX project, sealed like the note, opened here and saved as a zip
     function download(btn){
@@ -485,6 +494,6 @@
     });
   }
 
-  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initCite(); initToc(); initLocks(); initHurdle(); initRegime(); }
+  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initCite(); initFold(); initToc(); initLocks(); initHurdle(); initRegime(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
