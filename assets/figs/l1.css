@@ -4,3 +4,12 @@
 .l1-bar{stroke:var(--fig-blue);stroke-opacity:.45;stroke-width:1}
 [data-nfig="l1-joint"] .nf-w{fill-opacity:.42}
 [data-nfig="l1-square"] .nf-dot{fill-opacity:.8}
+/* colour links to the Try it equations: red \kr, purple \kp */
+.nfig .l1-p1{stroke:var(--c-label)}
+.nfig text.l1-p1t{fill:var(--c-label)}
+.nfig .l1-gap{stroke:var(--c-key);stroke-width:2.5;stroke-linecap:butt;fill:none}
+.nfig .l1-fitk{stroke:var(--c-key)}
+.nfig .l1-tail{fill:var(--c-key);fill-opacity:.2}
+.nfig .l1-qg{stroke:var(--c-label)}
+.nfig .l1-qd{fill:var(--c-label)}
+.nfig text.l1-qt{fill:var(--c-label)}

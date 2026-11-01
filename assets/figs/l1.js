@@ -94,7 +94,7 @@
   NF.register('l1-joint',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var w, c=[0,0], H=292, mL=36, mR=44, top=34, bot=262, gap=3, W=520, pw, ys, el={}, drag=null;
+    var w, c=[0,0], H=292, mL=36, mR=44, top=34, bot=262, gap=3, W=520, pw, ys, el={}, drag=null, api=null;
     function reset(){ w=0.4; c=[1/3,0.75]; }
     reset();
     function q(v){ return Math.round(v*100)/100; }
@@ -124,7 +124,7 @@
     function draw(){
       var g, rows, i, k;
       W=measure(svg); frame(svg,W,H); pw=W-mL-mR;
-      rows=key(S('g',null,svg),[['rect','nf-w','wage over 1000 (X₁ = 1)'],['rect','nf-area','X₁ = 0'],['line','nf-mean0','P(X₁ = 1)']],mL,11,W-mR);
+      rows=key(S('g',null,svg),[['rect','nf-w','wage over 1000 (X₁ = 1)'],['rect','nf-area','X₁ = 0'],['line','nf-mean0 l1-p1','P(X₁ = 1)'],['line','l1-gap','c₁ − c₀']],mL,11,W-mR);
       top=rows>1?50:34;
       ys=lin(0,1,bot,top);
       g=S('g',null,svg);
@@ -136,8 +136,10 @@
         el.lab.push([text(svg,0,0,'','nf-lab','middle'),text(svg,0,0,'','nf-lab','middle')]);
         el.cl.push(text(svg,0,bot+18,'',null,'middle'));
       }
-      el.p1=line(svg,0,0,0,0,'nf-mean0');
-      el.p1t=text(svg,W-mR+5,0,'','nf-lab');
+      /* P(X₁ = 1) in purple and the gap between the levels, c₁ − c₀, in red: the colours of the Try it equation */
+      el.p1=line(svg,0,0,0,0,'nf-mean0 l1-p1');
+      el.p1t=text(svg,W-mR+5,0,'','nf-lab l1-p1t');
+      el.gap=line(svg,0,0,0,0,'l1-gap');
       el.h=[handle(svg,'Share with a degree, P(X₂ = 1): the boundary between the columns. Left and right arrows move it.'),
             handle(svg,'P(X₁ = 1 | X₂ = 0), the level in the no degree column. Up and down arrows move it.'),
             handle(svg,'P(X₁ = 1 | X₂ = 1), the level in the degree column. Up and down arrows move it.')];
@@ -170,13 +172,16 @@
       el.h[0].setAttribute('aria-valuenow',q(w)); el.h[0].setAttribute('aria-valuetext','P(X₂ = 1) = '+fmt(w,2));
       setLine(el.p1,mL,ys(p1),W-mR,ys(p1));
       el.p1t.setAttribute('y',R(ys(p1)+4)); el.p1t.textContent=fmt(p1,2);
-      if(!out) return;
-      s='f(1,1) = '+fmt(f11,3)+' against P(X₁=1) P(X₂=1) = '+fmt(p1,2)+' × '+fmt(w,2)+' = '+fmt(prod,3)+': ';
-      out.textContent=s+(fmt(f11,3)===fmt(prod,3)?'independent':'dependent')+
-        '\nP(X₁=1 | X₂=0) = '+fmt(c[0],2)+'   P(X₁=1 | X₂=1) = '+fmt(c[1],2)+'   P(X₁=1) = '+fmt(p1,2)+
-        '\nCov = '+fmt(cov,3)+'   ';
-      if(v1<1e-12) warn(out,'Corr undefined: X₁ is constant');
-      else out.appendChild(document.createTextNode('Corr = '+fmt(cov/Math.sqrt(v1*w*(1-w)),3)));
+      setLine(el.gap,bx(),ys(c[0]),bx(),ys(c[1]));
+      if(out){
+        s='f(1,1) = '+fmt(f11,3)+' against P(X₁=1) P(X₂=1) = '+fmt(p1,2)+' × '+fmt(w,2)+' = '+fmt(prod,3)+': ';
+        out.textContent=s+(fmt(f11,3)===fmt(prod,3)?'independent':'dependent')+
+          '\nP(X₁=1 | X₂=0) = '+fmt(c[0],2)+'   P(X₁=1 | X₂=1) = '+fmt(c[1],2)+'   P(X₁=1) = '+fmt(p1,2)+
+          '\nCov = '+fmt(cov,3)+'   ';
+        if(v1<1e-12) warn(out,'Corr undefined: X₁ is constant');
+        else out.appendChild(document.createTextNode('Corr = '+fmt(cov/Math.sqrt(v1*w*(1-w)),3)));
+      }
+      if(api) api.changed();
     }
     function pick(p){
       var b=bx(), k, d, best=null, bd=24, cs=cols();
@@ -211,22 +216,40 @@
       if(Math.hypot(p[0]-b,p[1]-top)<26 || (Math.abs(p[0]-b)<12 && p[1]>top && p[1]<bot)){ e.preventDefault(); return; }
       for(k=0;k<2;k++) if(p[0]>=cs[k][0] && p[0]<=cs[k][1] && Math.abs(p[1]-ys(c[k]))<16){ e.preventDefault(); return; }
     },{passive:false});
+    /* Try it: w = P(X₂ = 1), the levels c₀ and c₁, and what the readout derives from them.
+       set takes reset (the Slide 68 table button), w, c0, c1 (dragged values, to 0.01) and indep (Make independent), in that order. */
+    api=NF.api({
+      get:function(){
+        var p1=(1-w)*c[0]+w*c[1], f11=w*c[1], prod=p1*w, cov=w*(1-w)*(c[1]-c[0]), v1=p1*(1-p1);
+        return {w:w, c0:c[0], c1:c[1], p1:p1, f11:f11, prod:prod, indep:fmt(f11,3)===fmt(prod,3), wv:w*(1-w), gap:c[1]-c[0],
+          cov:cov, corr:v1<1e-12?'undefined':cov/Math.sqrt(v1*w*(1-w)), bayes:p1>1e-12?f11/p1:0};
+      },
+      set:function(st){
+        if(st.reset){ if(rb) rb.click(); else { reset(); update(); } }
+        if('w' in st) w=clamp(q(+st.w),0.1,0.9);
+        if('c0' in st) c[0]=clamp(q(+st.c0),0,1);
+        if('c1' in st) c[1]=clamp(q(+st.c1),0,1);
+        update();
+        if(st.indep){ if(ib) ib.click(); else { c=[(1-w)*c[0]+w*c[1],(1-w)*c[0]+w*c[1]]; update(); } }
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 2. Slide 96: Y = X squared ---------- */
   NF.register('l1-square',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var s=0.5, X=[-2,-1,1,2], H=292, mL=36, mR=28, top=34, bot=258, W=520, xs, ys, el={};
-    var rs=range(fig,'s',2,function(v){ s=v; update(); });
+    var s=0.5, X=[-2,-1,1,2], H=292, mL=36, mR=28, top=34, bot=258, W=520, xs, ys, el={}, moves=0, api=null;
+    var rs=range(fig,'s',2,function(v){ s=v; moves++; update(); });
     if(rs) s=rs.v();
     function probs(){ return [(1-s)/2,(1-s)/2,s/2,s/2]; }
     function draw(){
       var g, gc, rows, i, x, p=[];
       W=measure(svg); frame(svg,W,H);
-      rows=key(S('g',null,svg),[['line','l1-curve','Y = X²'],['line','nf-fit','best linear fit'],['line','l1-cmk','E(X | Y)'],['line','nf-hread','E(X)']],mL+6,11,W-mR);
+      rows=key(S('g',null,svg),[['line','l1-curve','Y = X²'],['line','nf-fit l1-fitk','best linear fit'],['line','l1-cmk','E(X | Y)'],['line','nf-hread','E(X)']],mL+6,11,W-mR);
       top=rows>1?52:36;
       xs=lin(-2.6,2.6,mL,W-mR); ys=lin(0,5,bot,top);
       g=S('g',null,svg);
@@ -238,7 +261,8 @@
       for(i=0;i<=120;i++){ x=-2.6+5.2*i/120; p.push([xs(x),ys(x*x)]); }
       S('path',{d:poly(p),'class':'l1-curve'},gc);
       el.ex=line(gc,0,0,0,0,'nf-hread');
-      el.fit=line(gc,0,0,0,0,'nf-fit');
+      /* the best line in red: its slope is Cov / Var(X), and the Try it equation colours Cov red */
+      el.fit=line(gc,0,0,0,0,'nf-fit l1-fitk');
       el.cm=[S('circle',{r:8,'class':'l1-cm'},svg),S('circle',{r:8,'class':'l1-cm'},svg)];
       el.dot=[]; el.pl=[];
       for(i=0;i<4;i++){ el.dot.push(S('circle',{'class':'nf-dot'},svg)); el.pl.push(text(svg,0,0,'','nf-lab nf-halo','middle')); }
@@ -256,15 +280,26 @@
       setLine(el.ex,xs(ex),top,xs(ex),bot);
       el.ext.setAttribute('x',R(xs(ex)));
       at(el.cm[0],xs(cm1),ys(1)); at(el.cm[1],xs(cm4),ys(4));
-      if(!out) return;
-      out.textContent='Cov(X, Y) = '+fmt(cov,3)+'   Corr = '+fmt(cov/Math.sqrt(vx*vy),3)+'   best line slope = '+fmt(b,3)+
-        '\nP(Y = 4 | X = '+NF.MINUS+'2) = 1, but P(Y = 4) = 0.50: Y depends on X'+
-        '\nE(X | Y = 1) = '+fmt(cm1,2)+'   E(X | Y = 4) = '+fmt(cm4,2)+'   E(X) = '+fmt(ex,2)+': ';
-      if(mi) out.appendChild(document.createTextNode('X is mean independent of Y'));
-      else warn(out,'X is not mean independent of Y');
+      if(out){
+        out.textContent='Cov(X, Y) = '+fmt(cov,3)+'   Corr = '+fmt(cov/Math.sqrt(vx*vy),3)+'   best line slope = '+fmt(b,3)+
+          '\nP(Y = 4 | X = '+NF.MINUS+'2) = 1, but P(Y = 4) = 0.50: Y depends on X'+
+          '\nE(X | Y = 1) = '+fmt(cm1,2)+'   E(X | Y = 4) = '+fmt(cm4,2)+'   E(X) = '+fmt(ex,2)+': ';
+        if(mi) out.appendChild(document.createTextNode('X is mean independent of Y'));
+        else warn(out,'X is not mean independent of Y');
+      }
+      if(api) api.changed();
     }
+    /* Try it: the slider, the moments behind Cov = E(X³) − E(X)E(Y), the conditional means of X, and how often the slider moved */
+    api=NF.api({
+      get:function(){
+        var d=2*s-1, ex=1.5*d, vx=2.5-ex*ex, cov=0.75*d;
+        return {s:s, ex:ex, ex3:4.5*d, cov:cov, corr:cov/Math.sqrt(vx*2.25), slope:cov/vx, cm1:d, cm4:2*d, mi:Math.abs(d)<1e-9, moves:moves};
+      },
+      set:function(st){ if('s' in st && rs) rs.set(st.s); }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 3. Chi squared, t and F built from standard normals ---------- */
@@ -288,7 +323,7 @@
         for(j=0;j<K;j++){ u=norm(); sb+=u*u; B[r*K+j]=sb; }
       }
     })();
-    var n=3, p=10, mode, H=300, mL=40, mR=28, top=34, bot=262, W=520, el={};
+    var n=3, p=10, mode, H=300, mL=40, mR=28, top=34, bot=262, W=520, el={}, share=0, api=null;
     var nm=fig.querySelector('.l1-nm');
     var rn=range(fig,'n',0,function(v){ n=Math.round(v); draw(); });
     var rp=range(fig,'p',0,function(v){ p=Math.round(v); draw(); });
@@ -312,7 +347,8 @@
       }
     }
     function draw(){
-      var lo, hi, nb, bw, dens, cut, g, gc, i, x, b, c, ymax=0, yst, xst, xs, ys, pts=[], tp=[], edge='', run=null, y0, d, rows, items, tail=[], kk, lab, xt, share=0, s1, s2;
+      var lo, hi, nb, bw, dens, cut, g, gc, i, x, b, c, ymax=0, yst, xst, xs, ys, pts=[], tp=[], edge='', run=null, y0, d, rows, items, tail=[], kk, lab, xt, s1, s2;
+      share=0;
       draws();
       if(mode==='chi'){
         lo=0; hi=n<=2?8:Math.ceil((n+4.5*Math.sqrt(2*n))/5)*5; nb=40;
@@ -336,7 +372,7 @@
       W=measure(svg); frame(svg,W,H);
       items=[['rect','nf-hist nf-sw','4000 draws'],['line','nf-line','exact density']];
       if(mode==='t') items.push(['line','nf-ref','N(0, 1)']);
-      items.push(['rect','nf-area',mode==='chi'?'top 5%':mode==='t'?'|T| > 2':'F > 4']);
+      items.push(['rect','nf-area l1-tail',mode==='chi'?'top 5%':mode==='t'?'|T| > 2':'F > 4']);
       rows=key(S('g',null,svg),items,mL+6,11,W-mR);
       top=rows>1?50:34;
       xs=lin(lo,hi,mL,W-mR); ys=lin(0,ymax,bot,top); y0=ys(0);
@@ -350,12 +386,12 @@
       text(g,mL-7,top-12,'f(x)','nf-title','end');
       text(g,W-3,bot+17,'x','nf-title','end');
       gc=clip(svg,mL,top-4,W-mR-mL,bot-top+4);
-      /* tail area under the exact density */
+      /* tail area under the exact density, in red: the tail probability the Try it equations colour red */
       function area(a,z){
         var q=[[xs(a),y0]], j, v;
         for(j=0;j<=80;j++){ v=a+(z-a)*j/80; q.push([xs(v),ys(Math.min(dens(v),ymax*1.2))]); }
         q.push([xs(z),y0]);
-        S('path',{d:poly(q)+'Z','class':'nf-area'},gc);
+        S('path',{d:poly(q)+'Z','class':'nf-area l1-tail'},gc);
       }
       if(cut<hi) area(cut,hi);
       if(mode==='t') area(lo,-cut);
@@ -377,6 +413,7 @@
       kk=mode==='t'?[-cut,cut]:[cut];
       for(i=0;i<kk.length;i++) if(kk[i]<hi) line(svg,C(xs(kk[i])),top,C(xs(kk[i])),bot,'nf-guide');
       if(mode==='chi' && cut<hi){ lab=text(svg,xs(cut)+5,top+11,'q = '+cut.toFixed(2),'nf-lab nf-halo'); if(xs(cut)+70>W-mR){ lab.setAttribute('x',R(xs(cut)-5)); lab.setAttribute('text-anchor','end'); } }
+      if(api) api.changed();
       if(!out) return;
       if(mode==='chi'){
         s1='n = '+n+': mean '+n+', variance '+(2*n)+', 95% quantile q = '+cut.toFixed(2);
@@ -394,8 +431,19 @@
       }
       out.textContent=s1+'\n'+s2;
     }
+    /* Try it: the view and degrees of freedom, the exact tail probabilities the readout quotes (t with n df, t with p df, F(n, p) above 4),
+       the chi squared 95% quantile with n df and its root, and the simulated share in the current view */
+    api=NF.api({
+      get:function(){ var q=chiQ(0.95,n); return {dist:mode, n:n, p:p, ttail:tTail2(2,n), tp:tTail2(2,p), ftail:fSf(4,n,p), q:q, rq:Math.sqrt(q), share:share}; },
+      set:function(st){
+        if('dist' in st) NF.press(fig,'data-dist',st.dist);
+        if('n' in st && rn) rn.set(st.n);
+        if('p' in st && rp) rp.set(st.p);
+      }
+    });
     lock(); draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 4. Quantile function and the probability integral transform ---------- */
@@ -415,13 +463,13 @@
     };
     var NU=2000, U=new Float64Array(NU), FX=new Float64Array(NU), i, rnd=mulberry32(20261102);
     for(i=0;i<NU;i++){ U[i]=rnd(); if(U[i]<1e-9) U[i]=1e-9; }
-    var tau=0.3, H=334, mL=36, mR=28, tF=34, bF=150, tH=204, bH=296, W=520, xs, yF, xh, yh, el={}, drag=0, NB=20, HMAX=2.2;
+    var tau=0.3, H=334, mL=36, mR=28, tF=34, bF=150, tH=204, bH=296, W=520, xs, yF, xh, yh, el={}, drag=0, NB=20, HMAX=2.2, share=0, api=null;
     var dist=seg(fig,'data-dist',function(v){ if(!DST[v]||v===dist) return; dist=v; draw(); });
     if(!DST[dist]) dist='norm';
     function draw(){
       var d=DST[dist], g, gc, p=[], k, x, c=new Float64Array(NB), b, y, top, rows;
       W=measure(svg); frame(svg,W,H);
-      rows=key(S('g',null,svg),[['line','nf-line','F(x)'],['line','nf-guide','τ to Q(τ)'],['rect','nf-hist nf-sw','F(X) for 2000 draws'],['line','nf-ref','uniform density']],mL+6,11,W-mR);
+      rows=key(S('g',null,svg),[['line','nf-line','F(x)'],['line','nf-guide l1-qg','τ to Q(τ)'],['rect','nf-hist nf-sw','F(X) for 2000 draws'],['line','nf-ref','uniform density']],mL+6,11,W-mR);
       tF=rows>1?50:34; top=tF;
       xs=lin(-3,3,mL,W-mR); yF=lin(0,1,bF,tF);
       xh=lin(0,1,mL,W-mR); yh=lin(0,HMAX,bH,tH);
@@ -448,10 +496,11 @@
         for(k=0;k<=300;k++){ x=-3+6*k/300; p.push([xs(x),yF(d.F(x))]); }
         S('path',{d:poly(p),'class':'nf-line'},gc);
       }
-      el.gh=line(svg,0,0,0,0,'nf-guide'); el.gv=line(svg,0,0,0,0,'nf-guide');
-      el.qd=S('circle',{r:4.5,'class':'nf-dot'},svg);
+      /* the path from τ to the quantile q in purple, the colour of Q(τ) in the Try it equation */
+      el.gh=line(svg,0,0,0,0,'nf-guide l1-qg'); el.gv=line(svg,0,0,0,0,'nf-guide l1-qg');
+      el.qd=S('circle',{r:4.5,'class':'nf-dot l1-qd'},svg);
       el.tl=text(svg,mL+4,0,'','nf-lab nf-halo');
-      el.ql=text(svg,0,bF-6,'','nf-lab nf-halo');
+      el.ql=text(svg,0,bF-6,'','nf-lab nf-halo l1-qt');
       /* histogram of F(X), with X = Q(U) drawn by the inverse CDF */
       for(k=0;k<NU;k++){ FX[k]=d.F(d.Q(U[k])); b=Math.floor(FX[k]*NB); if(b>=NB) b=NB-1; c[b]++; }
       gc=clip(svg,mL,tH-4,W-mR-mL,bH-tH+4);
@@ -467,7 +516,8 @@
       update();
     }
     function update(){
-      var d=DST[dist], q=d.Q(tau), Fq=d.F(q), px=xs(clamp(q,-3.2,3.2)), py=yF(tau), share=0, k, ex=d.cdf(tau), s;
+      var d=DST[dist], q=d.Q(tau), Fq=d.F(q), px=xs(clamp(q,-3.2,3.2)), py=yF(tau), k, ex=d.cdf(tau), s;
+      share=0;
       setLine(el.gh,mL,py,px,py); setLine(el.gv,px,py,px,bF);
       at(el.qd,px,py);
       el.tl.setAttribute('y',R(py-5)); el.tl.textContent='τ = '+tau.toFixed(3);
@@ -480,13 +530,15 @@
       s='τ = '+tau.toFixed(3)+'   q = Q(τ) = '+fmt(q,3)+'   F(q) = '+Fq.toFixed(3);
       if(Fq>tau+1e-6) s+=', F jumps over τ at q';
       else if(dist==='flat' && Math.abs(tau-0.5)<1e-9) s+=', F is flat at τ on ['+NF.MINUS+'0.6, 0.6]: Q takes the left end';
-      if(!out) return;
-      out.textContent=s+'\nP(F(X) ≤ τ) = '+ex.toFixed(3)+' ';
-      if(Math.abs(ex-tau)>1e-9) warn(out,'≠ τ');
-      else out.appendChild(document.createTextNode('= τ'));
-      out.appendChild(document.createTextNode('   share of draws: '+share.toFixed(3)));
       svg.setAttribute('aria-valuenow',tau.toFixed(3));
       svg.setAttribute('aria-valuetext','tau = '+tau.toFixed(3)+', q = '+fmt(q,3));
+      if(out){
+        out.textContent=s+'\nP(F(X) ≤ τ) = '+ex.toFixed(3)+' ';
+        if(Math.abs(ex-tau)>1e-9) warn(out,'≠ τ');
+        else out.appendChild(document.createTextNode('= τ'));
+        out.appendChild(document.createTextNode('   share of draws: '+share.toFixed(3)));
+      }
+      if(api) api.changed();
     }
     function setTau(v){ v=Math.round(clamp(v,0.005,0.995)*200)/200; if(Math.abs(v-0.5)<0.006) v=0.5; tau=v; update(); }
     function fromPointer(e){
@@ -516,8 +568,17 @@
       e.preventDefault();
       tau=Math.round(clamp(v,0.005,0.995)*200)/200; update();
     });
+    /* Try it: the distribution, τ, the quantile q = Q(τ), F(q), P(F(X) ≤ τ) and the share of the draws, and whether F jumps over τ at q */
+    api=NF.api({
+      get:function(){ var d=DST[dist], q=d.Q(tau), Fq=d.F(q); return {dist:dist, tau:tau, q:q, fq:Fq, pit:d.cdf(tau), share:share, jump:Fq>tau+1e-6}; },
+      set:function(st){
+        if('dist' in st && DST[st.dist]) NF.press(fig,'data-dist',st.dist);
+        if('tau' in st) setTau(+st.tau);
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* figures already on the page when this file loads (a standalone widget page) start now */

@@ -55,7 +55,7 @@
   NF.register('l2-modes',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var K=30, N=10000, seed=20261030, T={spike:[],spike2:[],tall:[]}, cur=100, drag=false;
+    var K=30, N=10000, seed=20261030, T={spike:[],spike2:[],tall:[]}, cur=100, drag=false, nl=0, news=0, api=null;
     var NV=[1,2,3,4,5,6,8,10,13,16,20,25,32,40,50,63,79,100,126,158,200,251,316,398,501,631,794,1000];
     var EX={
       spike:{p:'1/n', pv:function(n){ return 1/n; }, tail:function(){ return '1'; }, m:'1/n', mv:function(n){ return 1/n; }, v:['yes','no','yes']},
@@ -68,7 +68,9 @@
     var rs=steps(fig,'n',NV,function(v){ cur=v; update(); });
     if(rs) cur=NV[rs.i()];
     var nb=fig.querySelector('.nfig-new');
-    if(nb) nb.addEventListener('click',function(){ seed+=2*K+1; sample(); marks(); update(); });
+    if(nb) nb.addEventListener('click',function(){ seed+=2*K+1; news++; sample(); marks(); update(); });
+    /* the Try it steps name the sequences A, B, C as the text does */
+    var SEQ={spike:'a',spike2:'b',tall:'c'}, QES={a:'spike',b:'spike2',c:'tall'};
     /* the same uniforms drive both spike sequences, so the 1/n² marks are a subset of the 1/n marks */
     function sample(){
       var k, m, u, a, b, rnd, U;
@@ -123,7 +125,7 @@
       }
     }
     function update(){
-      var x=xs(cur), late={}, nl=0, i, b, e, d=EX[ex], x0=xs(1)-0.9, s1, s2, k;
+      var x=xs(cur), late={}, i, b, e, d=EX[ex], x0=xs(1)-0.9, s1, s2, k;
       setLine(el.cur,x,top-4,x,bot);
       el.curLab.setAttribute('x',R(clamp(x,mL+18,W-mR-18)));
       el.curLab.textContent='n = '+cur;
@@ -139,44 +141,59 @@
         if(b[2]>=cur){ b[1].setAttribute('x',R(xs(cur)-0.9)); b[1].setAttribute('width',R(xs(b[2])-xs(cur)+1.8)); late[i]=1; }
         else b[1].setAttribute('width',0);
       }
+      nl=0;
       for(k in late) if(Object.prototype.hasOwnProperty.call(late,k)) nl++;
+      if(api) api.changed();
       if(!out) return;
       s1='at n = '+cur+':  P(miss at n) = '+d.p+' = '+num(d.pv(cur))+'   P(a miss at some m ≥ n) = '+d.tail(cur)+'   E(X²) = '+d.m+' = '+num(d.mv(cur));
       s2='in probability '+d.v[0]+', almost surely '+d.v[1]+', in mean square '+d.v[2]+';  '+nl+' of '+K+' rows miss at or after n (up to n = '+N+')';
       out.textContent=s1+'\n'+s2;
     }
-    function fromPointer(e){
-      var p=local(svg,e,W,H), n=Math.round(clamp(xs.inv(p[0]),1,1000)), i, best=0;
+    /* the cursor at any n from 1 to 1000; the slider shows the nearest of its stops but labels the exact n */
+    function goTo(n){
+      var i, best=0;
+      n=Math.round(clamp(n,1,1000));
       for(i=0;i<NV.length;i++) if(Math.abs(Math.log(NV[i]/n))<Math.abs(Math.log(NV[best]/n))) best=i;
       cur=n; if(rs) rs.show(best,String(n)); update();
     }
+    function fromPointer(e){ goTo(xs.inv(local(svg,e,W,H)[0])); }
     svg.addEventListener('pointerdown',function(e){ drag=true; capture(svg,e); fromPointer(e); });
     svg.addEventListener('pointermove',function(e){ if(drag) fromPointer(e); });
     function stop(){ drag=false; }
     svg.addEventListener('pointerup',stop);
     svg.addEventListener('pointercancel',stop);
+    /* the Try it steps read the sequence, the cursor, the two moments and how many rows still miss after it */
+    api=NF.api({
+      get:function(){ var d=EX[ex]; return {seq:SEQ[ex], n:cur, late:nl, clean:K-nl, p:d.pv(cur), mse:d.mv(cur), pm:num(d.pv(cur)), ms:num(d.mv(cur)), news:news}; },
+      set:function(st){
+        if('seq' in st && QES[st.seq]) NF.press(fig,'data-ex',QES[st.seq]);
+        if('n' in st) goTo(+st.n);
+        if('news' in st && nb) while(news<+st.news) nb.click();
+      }
+    });
     sample(); draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 2. The empirical distribution function ---------- */
   NF.register('l2-edf',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var NV=[5,10,20,30,50,75,100,150,200,300,500,750,1000], NMAX=1000, seed=20261030, U=new Float64Array(NMAX), X=[], n=50, a=1, D=0, drag=false;
+    var NV=[5,10,20,30,50,75,100,150,200,300,500,750,1000], NMAX=1000, seed=20261030, U=new Float64Array(NMAX), X=[], n=50, a=1, D=0, drag=false, news=0, api=null, G={};
     var P={
       norm:{lo:-3.5,hi:3.5,t:[-3,-2,-1,0,1,2,3],a0:0.5,step:0.1,F:Phi,Q:invPhi},
       expo:{lo:-0.5,hi:5,t:[0,1,2,3,4,5],a0:1,step:0.1,F:function(x){ return x<0?0:1-Math.exp(-x); },Q:function(u){ return -Math.log(1-u); }},
       cauchy:{lo:-8,hi:8,t:[-8,-4,0,4,8],a0:1,step:0.25,F:function(x){ return 0.5+Math.atan(x)/Math.PI; },Q:function(u){ return Math.tan(Math.PI*(u-0.5)); }}
     };
     var H=272, mL=36, mR=28, top=44, bot=236, W=520, xs, ys, el={};
-    var pop=seg(fig,'data-dist',function(v){ if(!P[v]||v===pop) return; pop=v; a=P[v].a0; draw(); });
+    var pop=seg(fig,'data-dist',function(v){ if(!P[v]||v===pop) return; pop=v; a=P[v].a0; news=0; draw(); });
     if(!P[pop]) pop='expo';
     a=P[pop].a0;
     var rs=steps(fig,'n',NV,function(v){ n=v; resample(); paint(); guide(); });
     if(rs) n=NV[rs.i()];
     var nb=fig.querySelector('.nfig-new');
-    if(nb) nb.addEventListener('click',function(){ seed++; fill(); resample(); paint(); guide(); });
+    if(nb) nb.addEventListener('click',function(){ seed++; news++; fill(); resample(); paint(); guide(); });
     /* one stream of uniforms, pushed through each inverse cdf: switching populations keeps the same ranks */
     function fill(){ var r=mulberry32(seed), i; for(i=0;i<NMAX;i++) U[i]=unit(r()); }
     function resample(){
@@ -235,6 +252,8 @@
       if(out) out.textContent=s;
       svg.setAttribute('aria-valuenow',+a.toFixed(2));
       svg.setAttribute('aria-valuetext',s.replace(/ {3}/g,', '));
+      G={edf:Fh, f:F, sd2:2*sd, inside:Fh>=lo-1e-12 && Fh<=hi+1e-12};
+      if(api) api.changed();
     }
     function fromPointer(e){
       var d=P[pop], p=local(svg,e,W,H);
@@ -257,20 +276,37 @@
       e.preventDefault();
       a=+clamp(Math.round(x/s)*s,d.lo,d.hi).toFixed(6); guide();
     });
+    /* n from the slider's stops: the nearest one */
+    function setN(v){
+      var i, best=0;
+      for(i=0;i<NV.length;i++) if(Math.abs(NV[i]-v)<Math.abs(NV[best]-v)) best=i;
+      n=NV[best]; if(rs) rs.show(best); resample(); paint(); guide();
+    }
+    /* the Try it steps read the population, n, the guide's readings and the largest gap, scaled by the square root of n */
+    api=NF.api({
+      get:function(){ return {pop:pop, n:n, a:a, edf:G.edf, f:G.f, sd2:G.sd2, inside:G.inside, gap:D, rt:D*Math.sqrt(n), news:news}; },
+      set:function(st){
+        if('pop' in st && P[st.pop]) NF.press(fig,'data-dist',st.pop);
+        if('n' in st) setN(+st.n);
+        if('a' in st){ a=Math.round(clamp(+st.a,P[pop].lo,P[pop].hi)*100)/100; guide(); }
+        if('news' in st && nb) while(news<+st.news) nb.click();
+      }
+    });
     fill(); draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 3. Why the square root of n ---------- */
   NF.register('l2-rootn',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var K=5, NMAX=10000, seed=20261030, P=[], A=0.25, Z90=1.6448536269514722, Z50=0.6744897501960817;
+    var K=5, NMAX=10000, seed=20261030, P=[], A=0.25, Z90=1.6448536269514722, Z50=0.6744897501960817, news=0, api=null, END=[0,0];
     var H=276, mL=36, mR=28, top=30, bot=246, W=520, xs, ys;
     var ra=range(fig,'a',2,function(v){ A=Math.round(v*100)/100; draw(); });
     if(ra) A=Math.round(ra.v()*100)/100;
     var nb=fig.querySelector('.nfig-new');
-    if(nb) nb.addEventListener('click',function(){ seed+=K; sample(); draw(); });
+    if(nb) nb.addEventListener('click',function(){ seed+=K; news++; sample(); draw(); });
     /* running sums of N(0, 1) draws: the sample mean of the first n is S[n − 1]/n */
     function sample(){
       var k, i, s, r, arr;
@@ -319,6 +355,8 @@
         S('path',{d:poly(pts),'class':'nf-path'},gp);
         v=Math.pow(NMAX,A-1)*P[k][NMAX-1]; lo=Math.min(lo,v); hi=Math.max(hi,v);
       }
+      END=[lo,hi];
+      if(api) api.changed();
       if(!out) return;
       w=Z90*Math.pow(NMAX,e);
       if(Math.abs(e)<1e-9){
@@ -333,15 +371,24 @@
       }
       out.textContent=s1+'\n'+s2;
     }
+    /* the Try it steps read the power, the variance exponent 2a − 1, the 90% band at the last n and where the paths end */
+    api=NF.api({
+      get:function(){ return {a:A, p:2*A-1, band:Z90*Math.pow(NMAX,A-0.5), lo:END[0], hi:END[1], news:news}; },
+      set:function(st){
+        if('a' in st && ra) ra.set(st.a);
+        if('news' in st && nb) while(news<+st.news) nb.click();
+      }
+    });
     sample(); draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 4. Bias against variance: two sample variances ---------- */
   NF.register('l2-mse',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var n=5, XMAX=3.5, YMAX=2.3;
+    var n=5, XMAX=3.5, YMAX=2.3, api=null;
     var H=300, mL=36, mR=28, top=30, bot=190, W=520, xs, ys, el={}, bx, by=[0,0];
     var rn=range(fig,'n',0,function(v){ n=Math.round(v); update(); });
     if(rn) n=Math.round(rn.v());
@@ -396,9 +443,16 @@
       }
       if(out) out.textContent='n = '+n+'\ndivide by n − 1:  bias 0, variance '+v1.toFixed(3)+', MSE '+m1.toFixed(3)+
         '\ndivide by n:  bias '+fmt(-1/n,3)+', variance '+v2.toFixed(3)+', MSE '+m2.toFixed(3);
+      if(api) api.changed();
     }
+    /* the Try it steps read n and the parts of both mean squared errors (normal data, σ² = 1) */
+    api=NF.api({
+      get:function(){ var v1=2/(n-1), v2=2*(n-1)/(n*n), b2=1/(n*n); return {n:n, v1:v1, v2:v2, bias:-1/n, bias2:b2, mse1:v1, mse2:v2+b2, gain:v1-v2-b2, ratio:(v2+b2)/v1}; },
+      set:function(st){ if('n' in st && rn) rn.set(st.n); }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 5. Confidence interval coverage ---------- */
@@ -410,11 +464,14 @@
     var POP={
       norm:function(u){ return 1+invPhi(u); },
       expo:function(u){ return -Math.log(1-u); },
-      logn:function(u){ return Math.exp(SL*invPhi(u)-SL*SL/2); }   /* mean 1, sd 1, skewness 4 */
+      logn:function(u){ return Math.exp(SL*invPhi(u)-SL*SL/2); },   /* mean 1, sd 1, skewness 4 */
+      /* a proportion: 1 with probability 0.2, moved to 3 and 0 moved to 0.5, so mean 1 and sd 1 like the others;
+         the interval for µ = 1 covers exactly when the usual interval for p = 0.2 does */
+      bern:function(u){ return u<0.2?3:0.5; }
     };
-    var seed=20261030, U=new Float64Array(ROWS*NMAX), LR={}, n=10, ni=1;
+    var seed=20261030, U=new Float64Array(ROWS*NMAX), LR={}, n=10, ni=1, news=0, api=null, ST={};
     var H=300, mL=36, mR=28, top=30, rowH=4.2, bot=0, W=520, xs, el={};
-    var pop=seg(fig,'data-pop',function(v){ if(!POP[v]||v===pop) return; pop=v; update(); });
+    var pop=seg(fig,'data-pop',function(v){ if(!POP[v]||v===pop) return; pop=v; news=0; update(); });
     if(!POP[pop]) pop='expo';
     var sig=seg(fig,'data-sig',function(v){ sig=v; update(); });
     var lev=+seg(fig,'data-lev',function(v){ lev=+v; update(); });
@@ -422,7 +479,7 @@
     var rs=steps(fig,'n',NV,function(v,i){ n=v; ni=i; update(); });
     if(rs){ ni=rs.i(); n=NV[ni]; }
     var nb=fig.querySelector('.nfig-new');
-    if(nb) nb.addEventListener('click',function(){ seed++; fill(); update(); });
+    if(nb) nb.addEventListener('click',function(){ seed++; news++; fill(); update(); });
     function fill(){ var r=mulberry32(seed), i; for(i=0;i<U.length;i++) U[i]=unit(r()); }
     /* the long run: REPS samples of NMAX draws, checked at every n on the slider, for both σ modes and all levels */
     function longRun(p){
@@ -484,14 +541,34 @@
         el.dot[k].setAttribute('class',miss?'l2-cdot l2-miss':'l2-cdot');
         if(!miss) hit++;
       }
-      if(!out) return;
       wid=2*c*(md?lr.sumS[ni]/REPS:1)/q;
       sp=nl+nh>0?Math.round(100*nl/(nl+nh)):0;
+      ST={cover:hit, lr:100*cv, below:sp, width:wid};
+      if(api) api.changed();
+      if(!out) return;
       out.textContent=hit+' of these '+ROWS+' intervals cover µ = 1\nlong run: '+(100*cv).toFixed(1)+'% of '+REPS.toLocaleString('en-GB')+' samples cover (nominal '+Math.round(LEV[lev]*100)+
         '%), mean width '+wid.toFixed(2)+'\n'+(nl+nh>0?'of the misses, '+sp+'% lie entirely below µ and '+(100-sp)+'% entirely above':'no interval missed');
     }
+    /* the Try it steps read the controls, the count of these 50 that cover, the long run share, the side of the misses
+       and the mean width; set picks options and the n stop as a click would */
+    var LV={90:'0',95:'1',99:'2'};
+    api=NF.api({
+      get:function(){ return {pop:pop, sig:sig, level:Math.round(LEV[lev]*100), n:n, cover:ST.cover, miss:ROWS-ST.cover, lr:ST.lr, below:ST.below, width:ST.width, news:news}; },
+      set:function(st){
+        var i, best=0;
+        if('pop' in st && POP[st.pop]) NF.press(fig,'data-pop',st.pop);
+        if('sig' in st) NF.press(fig,'data-sig',String(st.sig));
+        if('level' in st && LV[st.level]) NF.press(fig,'data-lev',LV[st.level]);
+        if('n' in st){
+          for(i=0;i<NV.length;i++) if(Math.abs(NV[i]-st.n)<Math.abs(NV[best]-st.n)) best=i;
+          ni=best; n=NV[best]; if(rs) rs.show(best); update();
+        }
+        if('news' in st && nb) while(news<+st.news) nb.click();
+      }
+    });
     fill(); draw();
     watch(svg,draw);
+    return api;
   });
 
   /* figures already on the page when this file loads (a standalone widget page) start now */

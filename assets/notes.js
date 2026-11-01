@@ -133,8 +133,9 @@
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
     function samples(f,lo,hi,n){ var a=[], i, x; for(i=0;i<=n;i++){ x=lo+(hi-lo)*i/n; a.push([x,f(x)]); } return a; }
+    /* Bernoulli opens just left of the atom at 0, so the reader steps onto the jump */
     var D={
-      bern:{lo:-1,hi:2,x0:0,step:0.25,top:1,ft:[0,0.5,1],xt:[-1,0,1,2],atoms:[0,1],mass:[0.7,0.3],
+      bern:{lo:-1,hi:2,x0:-0.5,step:0.25,top:1,ft:[0,0.5,1],xt:[-1,0,1,2],atoms:[0,1],mass:[0.7,0.3],
         F:function(x){ return x<0?0:x<1?0.7:1; },
         p:function(x){ return x===0?0.7:x===1?0.3:0; }},
       unif:{lo:-0.5,hi:1.5,x0:0.5,step:0.05,top:1.25,ft:[0,0.5,1],xt:[-0.5,0,0.5,1,1.5],
@@ -149,7 +150,7 @@
         pts:function(){ return [[-1,0],[0,0]].concat(samples(function(x){ return Math.exp(-x); },0,5,150)); }}
     };
     var H=262, mL=36, mR=28, tF=22, bF=112, tf=148, bf=236;
-    var W=520, xs, yF, yf, el={}, drag=false;
+    var W=520, xs, yF, yf, el={}, drag=false, api=null;
     var key=seg(fig,'data-dist',function(v){ if(!D[v]||v===key) return; key=v; gx=D[v].x0; draw(); });
     if(!D[key]) key='norm';
     var gx=D[key].x0;
@@ -172,13 +173,14 @@
       el.area=null; el.stems=[]; el.df=null;
       if(d.p){
         gs=S('g',null,svg);
-        line(gs,xs(0),yF(0),xs(0),yF(0.7),'nf-jump');
-        line(gs,xs(1),yF(0.7),xs(1),yF(1),'nf-jump');
+        /* the jumps P(X = x) in red and the left limits F(x−) (open dots) in purple, as in the Try it equation */
+        a=[line(gs,xs(0),yF(0),xs(0),yF(0.7),'nf-jump'),line(gs,xs(1),yF(0.7),xs(1),yF(1),'nf-jump')];
+        for(i=0;i<2;i++){ a[i].style.setProperty('stroke','var(--c-key)'); a[i].style.setProperty('stroke-width','1.75'); }
         line(gs,xs(d.lo),yF(0),xs(0),yF(0),'nf-line nf-flat');
         line(gs,xs(0),yF(0.7),xs(1),yF(0.7),'nf-line nf-flat');
         line(gs,xs(1),yF(1),xs(d.hi),yF(1),'nf-line nf-flat');
-        S('circle',{cx:R(xs(0)),cy:R(yF(0)),r:4,'class':'nf-open'},gs);
-        S('circle',{cx:R(xs(1)),cy:R(yF(0.7)),r:4,'class':'nf-open'},gs);
+        S('circle',{cx:R(xs(0)),cy:R(yF(0)),r:4,'class':'nf-open'},gs).style.setProperty('stroke','var(--c-label)');
+        S('circle',{cx:R(xs(1)),cy:R(yF(0.7)),r:4,'class':'nf-open'},gs).style.setProperty('stroke','var(--c-label)');
         S('circle',{cx:R(xs(0)),cy:R(yF(0.7)),r:4,'class':'nf-dot'},gs);
         S('circle',{cx:R(xs(1)),cy:R(yF(1)),r:4,'class':'nf-dot'},gs);
         for(i=0;i<d.atoms.length;i++){
@@ -224,6 +226,7 @@
       if(out) out.textContent=s;
       svg.setAttribute('aria-valuenow',+x.toFixed(2));
       svg.setAttribute('aria-valuetext',s.replace(/ {3}/g,', '));
+      if(api) api.changed();
     }
     function fromPointer(e){
       var d=D[key], r=svg.getBoundingClientRect(), x, i;
@@ -254,15 +257,27 @@
       x=clamp(Math.round(x/s)*s,d.lo,d.hi);
       gx=+x.toFixed(6); update();
     });
+    /* Try it: the guide's x, F(x), the left limit F(x−) and the jump P(X = x) between them */
+    api=makeApi({
+      get:function(){
+        var d=D[key], F=d.F(gx), L=d.p?d.F(gx-1e-9):F;
+        return {dist:key, x:gx, cdf:F, left:L, jump:F-L, dens:d.p?d.p(gx):d.f(gx)};
+      },
+      set:function(st){
+        if('dist' in st && D[st.dist]) press(fig,'data-dist',st.dist);
+        if('x' in st){ var d=D[key]; gx=clamp(+st.x,d.lo,d.hi); update(); }
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   }
 
   /* ---------- 2. Normal density ---------- */
   function initNormal(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var H=250, mL=36, mR=28, top=18, bot=220, W=520, xs, ys, el={};
+    var H=250, mL=36, mR=28, top=18, bot=220, W=520, xs, ys, el={}, api=null;
     var mu=0, sd=1;
     var rm=range(fig,'mu',1,function(v){ mu=v; update(); });
     var rs=range(fig,'sd',2,function(v){ sd=v; update(); });
@@ -285,6 +300,9 @@
       el.area=S('path',{'class':'nf-area'},svg);
       el.curve=S('path',{'class':'nf-line'},svg);
       el.lab=text(svg,0,0,'68.3%','nf-lab','middle');
+      /* the peak 1/(σ√(2π)) in red, the term the Try it equation colours red */
+      el.pk=S('circle',{r:4.5,'class':'nf-dot'},svg);
+      el.pk.style.setProperty('fill','var(--c-key)');
       update();
     }
     function dens(x){ return phi((x-mu)/sd)/sd; }
@@ -302,19 +320,28 @@
       over=Math.round(pk*100)>100;
       el.one.setAttribute('class',over?'nf-one nf-hot':'nf-one');
       el.oneLab.setAttribute('class',over?'nf-hot':'');
-      if(!out) return;
-      out.textContent='μ = '+fmt(mu,1)+'   σ = '+fmt(sd,2)+'   peak = '+pk.toFixed(2);
-      if(over){ sp=document.createElement('span'); sp.className='nf-warn'; sp.textContent=', above 1: a density is not a probability'; out.appendChild(sp); }
+      at(el.pk,xs(mu),ys(pk));
+      if(out){
+        out.textContent='μ = '+fmt(mu,1)+'   σ = '+fmt(sd,2)+'   peak = '+pk.toFixed(2);
+        if(over){ sp=document.createElement('span'); sp.className='nf-warn'; sp.textContent=', above 1: a density is not a probability'; out.appendChild(sp); }
+      }
+      if(api) api.changed();
     }
+    /* Try it: the sliders and the peak height */
+    api=makeApi({
+      get:function(){ var pk=phi(0)/sd; return {mu:mu, sd:sd, peak:pk, over:Math.round(pk*100)>100}; },
+      set:function(st){ if('mu' in st && rm) rm.set(st.mu); if('sd' in st && rs) rs.set(st.sd); }
+    });
     draw();
     watch(svg,draw);
+    return api;
   }
 
   /* ---------- 3. Correlation is not dependence ---------- */
   function initCorr(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var N=300, seed=20261030, z1=[], z2=[], rho=0.6, cur=null, raf=0, clipId='nfclip'+(++clipN);
+    var N=300, seed=20261030, z1=[], z2=[], rho=0.6, cur=null, raf=0, clipId='nfclip'+(++clipN), r=0, news=0, api=null;
     var H=280, mL=36, mR=28, top=27, bot=250, W=520, xs, ys, el={};
     var Y={normal:{lo:-4,hi:4,t:[-4,-2,0,2,4]}, square:{lo:-2,hi:10,t:[-2,0,2,4,6,8,10]}};
     var rr=range(fig,'rho',2,function(v){ rho=v; place(false); });
@@ -322,7 +349,7 @@
     var mode=seg(fig,'data-mode',function(v){ if(!Y[v]||v===mode) return; mode=v; lock(); draw(true); });
     if(!Y[mode]) mode='normal';
     var nb=fig.querySelector('.nfig-new');
-    if(nb) nb.addEventListener('click',function(){ seed++; sample(); place(true); });
+    if(nb) nb.addEventListener('click',function(){ seed++; news++; sample(); place(true); });
     function lock(){
       if(!rr) return;
       var off=mode!=='normal';
@@ -362,7 +389,7 @@
     }
     function apply(Q){ for(var i=0;i<N;i++) at(el.pts[i],Q[i][0],Q[i][1]); cur=Q; }
     function place(animate){
-      var P=data(), Q=[], n=P.length, mx=0, my=0, sxx=0, syy=0, sxy=0, i, dx, dy, r, b, a, x0=-4, x1=4, lo=Y[mode].lo, hi=Y[mode].hi, xa, xb;
+      var P=data(), Q=[], n=P.length, mx=0, my=0, sxx=0, syy=0, sxy=0, i, dx, dy, b, a, x0=-4, x1=4, lo=Y[mode].lo, hi=Y[mode].hi, xa, xb;
       for(i=0;i<n;i++){ mx+=P[i][0]; my+=P[i][1]; }
       mx/=n; my/=n;
       for(i=0;i<n;i++){ dx=P[i][0]-mx; dy=P[i][1]-my; sxx+=dx*dx; syy+=dy*dy; sxy+=dx*dy; Q.push([xs(P[i][0]),ys(P[i][1])]); }
@@ -370,6 +397,7 @@
       if(Math.abs(b)>1e-9){ xa=(lo-a)/b; xb=(hi-a)/b; x0=Math.max(x0,Math.min(xa,xb)); x1=Math.min(x1,Math.max(xa,xb)); }
       setLine(el.fit,xs(x0),ys(a+b*x0),xs(x1),ys(a+b*x1));
       if(out) out.textContent='r = '+fmt(r,2)+(mode==='normal'?'':', yet Y depends on X');
+      if(api) api.changed();
       cancelAnimationFrame(raf);
       if(!animate || reduce || !cur || cur.length!==N){ apply(Q); return; }
       var from=cur, t0=0;
@@ -382,8 +410,19 @@
       }
       raf=requestAnimationFrame(step);
     }
+    /* Try it: the mode, ρ, the population correlation (0 for Y = X² + noise, as E(X³) = 0), the sample r and the New sample presses */
+    api=makeApi({
+      get:function(){ return {mode:mode, rho:rho, truth:mode==='normal'?rho:0, r:r, news:news}; },
+      set:function(st){
+        var k;
+        if('mode' in st && Y[st.mode]) press(fig,'data-mode',st.mode);
+        if('rho' in st && rr && mode==='normal') rr.set(st.rho);
+        if('new' in st && nb) for(k=0;k<Math.min(+st['new'],10);k++) nb.click();
+      }
+    });
     sample(); lock(); draw(false);
     watch(svg,function(){ cur=null; draw(false); });
+    return api;
   }
 
   /* ---------- 4. Law of total variance ---------- */
@@ -392,13 +431,16 @@
     if(!svg) return;
     var b=1, s=0.6, Q=[], J=[], i;
     for(i=0;i<15;i++){ Q.push(invPhi((i+0.5)/15)); J.push(((i*0.6180339887498949)%1)*2-1); }
-    var mL=36, mR=40, top=18, bot=192, by=244, bh=12, W=520, H=288, ys, cx=[], jw=16, el={};
+    var mL=36, mR=40, top=18, bot=192, by=244, bh=12, W=520, H=288, ys, cx=[], jw=16, el={}, api=null;
     var rb=range(fig,'b',2,function(v){ b=v; update(); });
     var rs=range(fig,'s',2,function(v){ s=v; update(); });
     if(rb) b=rb.v();
     if(rs) s=rs.v();
+    /* the between part (the group means and its bar) in the blue the Try it equation gives Var[E(Y|X)] */
+    function eqBlue(e,prop){ e.style.setProperty(prop,'var(--c-eq)'); return e; }
     function legend(g,x,y,cls,name,formula){
-      S('rect',{x:R(x),y:R(y-9),width:10,height:10,'class':cls},g);
+      var sw=S('rect',{x:R(x),y:R(y-9),width:10,height:10,'class':cls},g);
+      if(cls==='nf-b') eqBlue(sw,'fill');
       var t=S('text',{x:R(x+16),y:R(y)},g), a=S('tspan',{'class':'nf-lab'},t), v;
       a.textContent=name;
       t.appendChild(document.createTextNode(' '+formula+' = '));
@@ -424,12 +466,12 @@
         var gd=S('g',null,svg), arr=[];
         for(i=0;i<15;i++) arr.push(S('circle',{r:W>=420?3.4:3,'class':'nf-dw'},gd));
         el.dots.push(arr);
-        el.means.push(line(svg,0,0,0,0,'nf-mean'));
+        el.means.push(eqBlue(line(svg,0,0,0,0,'nf-mean'),'stroke'));
       }
       text(g,mL,by-8,'Var(Y)','nf-title');
       S('rect',{x:mL,y:by,width:R(pw),height:bh,'class':'nf-track'},svg);
       el.w=S('rect',{x:mL,y:by,height:bh,width:0,'class':'nf-w'},svg);
-      el.b=S('rect',{x:mL,y:by,height:bh,width:0,'class':'nf-b'},svg);
+      el.b=eqBlue(S('rect',{x:mL,y:by,height:bh,width:0,'class':'nf-b'},svg),'fill');
       el.tot=text(svg,0,by+bh-2,'','nf-lab');
       g=S('g',null,svg);
       el.lw=legend(g,mL,by+bh+24,'nf-w','within','E[Var(Y|X)]');
@@ -453,9 +495,19 @@
       el.lw.textContent=w2.toFixed(2);
       el.lb.textContent=b2.toFixed(2);
       if(out) out.textContent='Var(Y) = '+tot.toFixed(2)+' = '+w2.toFixed(2)+' within + '+b2.toFixed(2)+' between   R² = '+(bv/(wv+bv)).toFixed(2);
+      if(api) api.changed();
     }
+    /* Try it: the sliders and the two parts, rounded as the readout shows them so that they add up on screen */
+    api=makeApi({
+      get:function(){
+        var w2=Math.round(s*s*100)/100, b2=Math.round(2/3*b*b*100)/100;
+        return {b:b, s:s, within:w2, between:b2, total:w2+b2, r2:(2/3*b*b)/(s*s+2/3*b*b)};
+      },
+      set:function(st){ if('b' in st && rb) rb.set(st.b); if('s' in st && rs) rs.set(st.s); }
+    });
     draw();
     watch(svg,draw);
+    return api;
   }
 
   /* ---------- shared by the figures below ---------- */
@@ -490,30 +542,38 @@
   function initLln(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var K=5, NMAX=2000, seed=20261030, P={normal:[],cauchy:[]}, N=1000;
+    var K=5, NMAX=2000, seed=20261030, P={normal:[],pareto:[],cauchy:[]}, N=1000, news=0, api=null, ST={};
     var H=272, mL=36, mR=28, top=32, bot=242, W=520, xs, ys;
     var rn=range(fig,'n',0,function(v){ N=Math.round(v); draw(); });
     if(rn) N=Math.round(rn.v());
-    var dist=seg(fig,'data-dist',function(v){ if(!P[v]||v===dist) return; dist=v; draw(); });
+    /* a third population between the two: its mean exists but its variance does not (the gap in slide 24's weak LLN) */
+    var sg=fig.querySelector('.nfig-seg'), cb=fig.querySelector('.nfig-opt[data-dist="cauchy"]'), pb;
+    if(sg && cb && !fig.querySelector('.nfig-opt[data-dist="pareto"]')){
+      pb=document.createElement('button'); pb.type='button'; pb.className='nfig-opt'; pb.setAttribute('data-dist','pareto');
+      pb.setAttribute('aria-pressed','false'); pb.textContent='Infinite variance'; sg.insertBefore(pb,cb);
+    }
+    var dist=seg(fig,'data-dist',function(v){ if(!P[v]||v===dist) return; dist=v; news=0; draw(); });
     if(!P[dist]) dist='normal';
     var nb=fig.querySelector('.nfig-new');
-    if(nb) nb.addEventListener('click',function(){ seed+=K; sample(); draw(); });
-    /* the same uniforms feed both populations: Normal by the inverse CDF, Cauchy by tan */
+    if(nb) nb.addEventListener('click',function(){ seed+=K; news++; sample(); draw(); });
+    /* the same uniforms feed all three populations: Normal by the inverse CDF, Cauchy by tan, and a symmetric
+       Pareto tail with index 1.5 (density like |x|^(−2.5): E|X| = 2, infinite variance, mean 0) */
     function sample(){
-      var k, i, rnd, u, sn, sc, mn, mc;
-      P.normal=[]; P.cauchy=[];
+      var k, i, rnd, u, sn, sp, sc, mn, mp, mc;
+      P.normal=[]; P.pareto=[]; P.cauchy=[];
       for(k=0;k<K;k++){
-        rnd=mulberry32(seed+k); mn=new Float64Array(NMAX); mc=new Float64Array(NMAX); sn=0; sc=0;
+        rnd=mulberry32(seed+k); mn=new Float64Array(NMAX); mp=new Float64Array(NMAX); mc=new Float64Array(NMAX); sn=0; sp=0; sc=0;
         for(i=0;i<NMAX;i++){
           u=rnd(); if(u<1e-12) u=1e-12;
           sn+=invPhi(u); sc+=Math.tan(Math.PI*(u-0.5));
-          mn[i]=sn/(i+1); mc[i]=sc/(i+1);
+          sp+=u<0.5?1-Math.pow(2*u,-2/3):Math.pow(2*(1-u),-2/3)-1;
+          mn[i]=sn/(i+1); mp[i]=sp/(i+1); mc[i]=sc/(i+1);
         }
-        P.normal.push(mn); P.cauchy.push(mc);
+        P.normal.push(mn); P.pareto.push(mp); P.cauchy.push(mc);
       }
     }
     function draw(){
-      var g, gp, i, k, x, m, pts, up=[], dn=[], ns=[1], last, s, lo=Infinity, hi=-Infinity, ticks=[], dec=[1,10,100,1000], L=Math.log(N), normal=dist==='normal';
+      var g, gp, i, k, x, m, pts, up=[], dn=[], ns=[1], last, s, lo=Infinity, hi=-Infinity, big=0, inside=0, ticks=[], dec=[1,10,100,1000], L=Math.log(N), normal=dist==='normal';
       W=measure(svg); frame(svg,W,H);
       xs=function(n){ return mL+Math.log(n)/L*(W-mL-mR); };
       ys=lin(-3,3,bot,top);
@@ -530,7 +590,7 @@
       line(g,mL,C(bot),W-mR,C(bot),'nf-ax');
       text(g,mL-7,11,'mean','nf-title','end');
       text(g,W-3,bot+17,'n','nf-title','end');
-      key(S('g',null,svg),normal?[['rect','nf-band nf-sw','μ ± 2σ/√n'],['line','nf-mean0','μ = 0']]:[['line','nf-mean0','median 0, but no mean']],mL+6,11,W-mR);
+      key(S('g',null,svg),normal?[['rect','nf-band nf-sw','μ ± 2σ/√n'],['line','nf-mean0','μ = 0']]:[['line','nf-mean0',dist==='pareto'?'μ = 0, but σ² infinite':'median 0, but no mean']],mL+6,11,W-mR);
       /* n values one per 0.75px, so a long path stays light */
       last=xs(1);
       for(i=2;i<N;i++){ x=xs(i); if(x-last>=0.75){ ns.push(i); last=x; } }
@@ -545,13 +605,26 @@
         m=P[dist][k]; pts=[];
         for(i=0;i<ns.length;i++) pts.push([xs(ns[i]),clamp(ys(m[ns[i]-1]),top-60,bot+60)]);
         S('path',{d:poly(pts),'class':'nf-path'},gp);
-        lo=Math.min(lo,m[N-1]); hi=Math.max(hi,m[N-1]);
+        lo=Math.min(lo,m[N-1]); hi=Math.max(hi,m[N-1]); big=Math.max(big,Math.abs(m[N-1]));
+        if(Math.abs(m[N-1])<=2/Math.sqrt(N)) inside++;
       }
+      ST={lo:lo, hi:hi, big:big, inside:inside};
       if(out) out.textContent='at n = '+N+' the five means lie between '+fmt(lo,2)+' and '+fmt(hi,2)+
-        (normal?', band ±'+(2/Math.sqrt(N)).toFixed(2):'; Cauchy has no mean, so there is no band');
+        (normal?', band ±'+(2/Math.sqrt(N)).toFixed(2):dist==='pareto'?'; σ² is infinite, so there is no band, but the mean exists':'; Cauchy has no mean, so there is no band');
+      if(api) api.changed();
     }
+    /* the Try it steps read the population, N, where the five means end, the band and how many end inside it */
+    api=makeApi({
+      get:function(){ return {dist:dist, n:N, lo:ST.lo, hi:ST.hi, big:ST.big, spread:ST.hi-ST.lo, band:2/Math.sqrt(N), inside:ST.inside, news:news}; },
+      set:function(st){
+        if('dist' in st) press(fig,'data-dist',String(st.dist));
+        if('n' in st && rn) rn.set(st.n);
+        if('news' in st && nb) while(news<+st.news) nb.click();
+      }
+    });
     sample(); draw();
     watch(svg,draw);
+    return api;
   }
 
   /* ---------- 6. Central limit theorem ---------- */
@@ -559,7 +632,7 @@
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
     /* 4000 replications of 100 Exponential(1) draws, kept as running sums so any n costs one pass */
-    var R=4000, NMAX=100, CS=new Float64Array(R*NMAX), Z=new Float64Array(R), n=1, r, j, s, rnd=mulberry32(20261030);
+    var R=4000, NMAX=100, CS=new Float64Array(R*NMAX), Z=new Float64Array(R), n=1, r, j, s, rnd=mulberry32(20261030), api=null, ST={};
     for(r=0;r<R;r++){ s=0; for(j=0;j<NMAX;j++){ s-=Math.log(1-rnd()); CS[r*NMAX+j]=s; } }
     var LO=-4, HI=4, BW=0.2, NB=40, YMAX=1.1;
     var H=262, mL=36, mR=28, top=30, bot=232, W=520, xs, ys, el={};
@@ -586,9 +659,10 @@
       update();
     }
     function update(){
-      var c=new Float64Array(NB), rt=Math.sqrt(n), m=0, m2=0, m3=0, i, b, z, d, tp=[], edge='', run=null, sk, y0=ys(0);
+      var c=new Float64Array(NB), rt=Math.sqrt(n), m=0, m2=0, m3=0, i, b, z, d, tp=[], edge='', run=null, sk, y0=ys(0), nl=0, nr=0;
       for(i=0;i<R;i++){
         z=rt*(CS[i*NMAX+n-1]/n-1); Z[i]=z; m+=z;
+        if(z<-1.959963984540054) nl++; else if(z>1.959963984540054) nr++;
         b=Math.floor((z-LO)/BW);
         if(b>=0 && b<NB) c[b]++;
       }
@@ -604,10 +678,18 @@
       }
       el.area.setAttribute('d',poly([[xs(LO),y0]].concat(tp,[[xs(HI),y0]]))+'Z');
       el.edge.setAttribute('d',edge);
+      ST={skew:sk, left:100*nl/R, right:100*nr/R};
       if(out) out.textContent='n = '+n+'   skewness '+fmt(sk,2)+'   theory 2/√n = '+(2/rt).toFixed(2);
+      if(api) api.changed();
     }
+    /* the Try it steps read n, the simulated and theoretical skewness, and the shares beyond ±1.96 in percent */
+    api=makeApi({
+      get:function(){ return {n:n, skew:ST.skew, theory:2/Math.sqrt(n), left:ST.left, right:ST.right}; },
+      set:function(st){ if('n' in st && rn) rn.set(st.n); }
+    });
     draw();
     watch(svg,draw);
+    return api;
   }
 
   /* ---------- 7. Determinant as signed area ---------- */
@@ -763,7 +845,7 @@
     }
     function reset(){ P=P0.map(function(p){ return [p[0],p[1]]; }); }
     reset();
-    var H=290, mL=36, mR=28, top=24, bot=258, W=520, xs, ys, el={};
+    var H=290, mL=36, mR=28, top=24, bot=258, W=520, xs, ys, el={}, api=null, st={};
     var rb=fig.querySelector('.nfig-reset');
     if(rb) rb.addEventListener('click',function(){ reset(); update(); });
     function draw(){
@@ -786,7 +868,7 @@
       update();
     }
     function update(){
-      var mx=0, my=0, sxx=0, sxy=0, b0, b1, se=0, sxe=0, e, yh, ok, x0=0, x1=10, xa, xb, sp;
+      var mx=0, my=0, sxx=0, sxy=0, b0, b1, se=0, sxe=0, sx2e=0, e, yh, ok, x0=0, x1=10, xa, xb, sp, moved=0;
       for(i=0;i<N;i++){ mx+=P[i][0]; my+=P[i][1]; }
       mx/=N; my/=N;
       for(i=0;i<N;i++){ sxx+=(P[i][0]-mx)*(P[i][0]-mx); sxy+=(P[i][0]-mx)*(P[i][1]-my); }
@@ -794,7 +876,8 @@
       b1=ok?sxy/sxx:0; b0=my-b1*mx;
       for(i=0;i<N;i++){
         at(el.pts[i],xs(P[i][0]),ys(P[i][1]));
-        e=P[i][1]-b0-b1*P[i][0]; se+=e; sxe+=P[i][0]*e; yh=b0+b1*P[i][0];
+        e=P[i][1]-b0-b1*P[i][0]; se+=e; sxe+=P[i][0]*e; sx2e+=P[i][0]*P[i][0]*e; yh=b0+b1*P[i][0];
+        if(P[i][0]!==P0[i][0] || P[i][1]!==P0[i][1]) moved++;
         setLine(el.res[i],xs(P[i][0]),ys(P[i][1]),xs(P[i][0]),ys(clamp(yh,-1,11)));
         el.res[i].setAttribute('class',ok?'nf-res':'nf-res nf-hide');
       }
@@ -804,6 +887,9 @@
       else setLine(el.fit,0,0,0,0);
       at(el.mean,xs(mx),ys(my));
       at(el.sel,xs(P[sel][0]),ys(P[sel][1]));
+      /* state for the Try it steps: x squared is not a column of X, so nothing makes the residuals orthogonal to it */
+      st={b0:b0, b1:b1, se:se, sxe:sxe, sx2e:sx2e, mx:mx, my:my, sxx:sxx, ok:ok, moved:moved, dy1:Math.round((P[0][1]-P0[0][1])*100)/100};
+      if(api) api.changed();
       if(!out) return;
       if(!ok){
         out.textContent='';
@@ -847,8 +933,22 @@
       else return;
       e.preventDefault(); update();
     });
+    /* Try it: reset=1 presses Reset points; yK=v puts point K (1 is the leftmost) at height v, as a vertical drag would */
+    api=makeApi({
+      get:function(){ return st; },
+      set:function(o){
+        var k, j;
+        if(o.reset && rb) rb.click();
+        for(k in o) if(Object.prototype.hasOwnProperty.call(o,k) && /^y\d+$/.test(k)){
+          j=parseInt(k.slice(1),10)-1;
+          if(j>=0 && j<N) P[j][1]=Math.round(clamp(+o[k],0,10)*100)/100;
+        }
+        update();
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   }
 
   /* ---------- boot ---------- */
@@ -974,12 +1074,16 @@
         if(!(L.key in st)) return;
         var t=liveText(st[L.key], L.dec);
         if(L.el.textContent===t) return;
-        L.el.textContent=''; var s=document.createElement('span'); s.className='mord'; s.textContent=t; L.el.appendChild(s);
+        // KaTeX may put the space before a following relation or sign inside the span: keep those .mspace children
+        var s=document.createElement('span'), first=null; s.className='mord'; s.textContent=t;
+        [].slice.call(L.el.childNodes).forEach(function(k){ if(k.nodeType===1 && k.classList.contains('mspace')) return; if(first) L.el.removeChild(k); else first=k; });
+        if(first) L.el.replaceChild(s, first); else L.el.insertBefore(s, L.el.firstChild);
       });
       steps.forEach(function(stepEl, j){
         var goal=stepEl.getAttribute('data-goal'), status=stepEl.querySelector('.nf-status');
         if(!goal || !status) return;
-        if(!done[j] && goalMet(goal, st)){ done[j]=true; if(j===cur) openNotice(stepEl); dots.children[j].classList.add('is-done'); }
+        // only the step on screen can complete: dragging through a later step's target on the way does not count
+        if(!done[j] && j===cur && goalMet(goal, st)){ done[j]=true; openNotice(stepEl); dots.children[j].classList.add('is-done'); }
         var t=done[j] ? 'Done' : (j===cur ? 'Your turn' : '');
         if(status.textContent!==t){ status.textContent=t; status.classList.toggle('is-done', !!done[j]); }
       });

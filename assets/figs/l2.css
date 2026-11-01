@@ -5,33 +5,34 @@
 
 /* modes of convergence: one row per sample path, a mark wherever the path misses */
 .l2-mk-early{fill:var(--faint);fill-opacity:.55}
-.l2-mk-late{fill:var(--signal)}
+/* red as in the Try it equations (\kr): a miss the path has not yet left behind */
+.l2-mk-late{fill:var(--c-key)}
 .l2-cursor{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:4 3}
 
 /* edf against the true cdf */
-.l2-gap{stroke:var(--signal);stroke-width:2.5;stroke-linecap:butt}
+.l2-gap{stroke:var(--c-key);stroke-width:2.5;stroke-linecap:butt}
 .l2-bar{fill:var(--fig-blue);fill-opacity:.2}
 .l2-truept{fill:var(--paper);stroke:var(--ink-soft);stroke-width:1.5}
 
 /* square root n scaling: the inner band is the middle half */
 .l2-band50{fill:var(--fig-blue);fill-opacity:.2}
 
-/* two sample variances */
-.l2-s1{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
-.l2-s2{fill:none;stroke:var(--green);stroke-width:2;stroke-linejoin:round}
+/* two sample variances, in the blue and green of their MSEs in the Try it equation (\kb, \kg) */
+.l2-s1{fill:none;stroke:var(--c-eq);stroke-width:2;stroke-linejoin:round}
+.l2-s2{fill:none;stroke:var(--c-ask);stroke-width:2;stroke-linejoin:round}
 .l2-s1.l2-dash,.l2-s2.l2-dash{stroke-width:1.25;stroke-dasharray:3 3}
-.l2-s1f{fill:var(--fig-blue);fill-opacity:.08;stroke:none}
-.l2-s2f{fill:var(--green);fill-opacity:.08;stroke:none}
-.l2-bv1{fill:var(--fig-blue);fill-opacity:.35}
-.l2-bb1{fill:var(--fig-blue)}
-.l2-bv2{fill:var(--green);fill-opacity:.35}
-.l2-bb2{fill:var(--green)}
+.l2-s1f{fill:var(--c-eq);fill-opacity:.08;stroke:none}
+.l2-s2f{fill:var(--c-ask);fill-opacity:.08;stroke:none}
+.l2-bv1{fill:var(--c-eq);fill-opacity:.35}
+.l2-bb1{fill:var(--c-eq)}
+.l2-bv2{fill:var(--c-ask);fill-opacity:.35}
+.l2-bb2{fill:var(--c-ask)}
 
 /* confidence intervals */
 .l2-ci{stroke:var(--fig-blue);stroke-width:1.6;stroke-opacity:.8;stroke-linecap:butt}
-.l2-ci.l2-miss{stroke:var(--signal);stroke-width:2.2;stroke-opacity:1}
+.l2-ci.l2-miss{stroke:var(--c-key);stroke-width:2.2;stroke-opacity:1}
 .l2-cdot{fill:var(--fig-blue)}
-.l2-cdot.l2-miss{fill:var(--signal)}
+.l2-cdot.l2-miss{fill:var(--c-key)}
 .l2-mu{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:4 3}
 
 /* translucent fills read weaker on the dark page */

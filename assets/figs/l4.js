@@ -77,7 +77,7 @@
     /* OLS by the normal equations X'X b = X'y, solved as a 2 by 2 system */
     var g11=dot3(X1,X1), g12=dot3(X1,X2), g22=dot3(X2,X2), r1=dot3(X1,Y), r2=dot3(X2,Y), dt=g11*g22-g12*g12;
     var BH=[(g22*r1-g12*r2)/dt,(g11*r2-g12*r1)/dt], YH=comb(BH[0],BH[1]), U=sub3(Y,YH);
-    var LO=-0.2, HI=1.3, B0=[1,0.9], b=B0.slice(), snapped=false;
+    var LO=-0.2, HI=1.3, B0=[1,0.9], b=B0.slice(), snapped=false, api=null;
     var az=322, ev=26, EVLO=12, EVHI=40, W=520, H=340, u=48, cx=260, cy=170, E={}, drag=null;
     var C0=comb((LO+HI)/2,(LO+HI)/2);
     C0[2]=0.8;
@@ -198,6 +198,7 @@
       E.h.setAttribute('transform','translate('+R(pb[0])+','+R(pb[1])+')');
       E.h.setAttribute('aria-valuenow',b[0]);
       E.h.setAttribute('aria-valuetext','b = ('+fmt(b[0],2)+', '+fmt(b[1],2)+')'+(snapped?', the OLS point':''));
+      if(api) api.changed();
       if(!out) return;
       xu=[dot3(X1,U),dot3(X2,U)]; uu=dot3(U,U); yy=dot3(Y,Y); hh=dot3(YH,YH);
       gg=dot3(sub3(YH,XB),sub3(YH,XB));
@@ -258,15 +259,29 @@
       var p=local(svg,e.touches[0],W,H), pb=proj(comb(b[0],b[1]));
       if(Math.hypot(pb[0]-p[0],pb[1]-p[1])<24) e.preventDefault();
     },{passive:false});
+    /* the Try it steps read the candidate b, the Pythagoras split and the view, and can move b, snap, reset or turn */
+    api=NF.api({
+      get:function(){
+        var XB=comb(b[0],b[1]), g=dot3(sub3(YH,XB),sub3(YH,XB)), uu=dot3(U,U);
+        return {b1:b[0], b2:b[1], snap:snapped, dist:uu+g, gap:g, uu:uu, xu1:dot3(X1,U), xu2:dot3(X2,U), turn:az, bh1:BH[0], bh2:BH[1]};
+      },
+      set:function(st){
+        if(st.reset && rb) rb.click();
+        if('turn' in st) setTurn(+st.turn);
+        if('b1' in st || 'b2' in st) setB('b1' in st?+st.b1:b[0],'b2' in st?+st.b2:b[1],true);
+        if(st.snap && bb) bb.click();
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 2. Correlated regressors and the joint sampling distribution of two slopes ---------- */
   NF.register('l4-collin',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var N=50, RD=800, r=0, q1=[], q2=[], A=new Float64Array(RD), B=new Float64Array(RD), rnd=mulberry32(20261104), i, m1=0, m2=0, s1=0, s2=0, c=0;
+    var N=50, RD=800, r=0, q1=[], q2=[], A=new Float64Array(RD), B=new Float64Array(RD), rnd=mulberry32(20261104), i, m1=0, m2=0, s1=0, s2=0, c=0, api=null, abar=0, bbar=0;
     /* two orthonormal centred vectors: x2 and x3 are built from them so their sample correlation is exactly r */
     for(i=0;i<N;i++){ q1.push(gauss(rnd)); q2.push(gauss(rnd)); m1+=q1[i]; m2+=q2[i]; }
     m1/=N; m2/=N;
@@ -277,7 +292,7 @@
     s2=Math.sqrt(s2);
     for(i=0;i<N;i++) q2[i]/=s2;
     /* a = q1'u and b = q2'u are iid N(0, 1) when u ~ N(0, I) */
-    for(i=0;i<RD;i++){ A[i]=gauss(rnd); B[i]=gauss(rnd); }
+    for(i=0;i<RD;i++){ A[i]=gauss(rnd); B[i]=gauss(rnd); abar+=A[i]/RD; bbar+=B[i]/RD; }
     var rr=range(fig,'r',2,function(v){ r=v; update(); });
     if(rr) r=rr.v();
     var W=520, H=300, E={}, P1, P2, wide;
@@ -307,8 +322,9 @@
       g=S('g',null,svg);
       axes(g,P1,[-2,0,2],'regressors',sublab(svg,'x','2','nf-title'));
       E.y1=sublab(g,'x','3','nf-title'); place(E.y1,P1.x0+6,P1.y0+14,'start');
-      axes(g,P2,[0,1,2],'estimates, the truth at the cross',rich(svg,['estimate of β','2'],'nf-title'));
-      E.y2=rich(g,['estimate of β','3'],'nf-title'); place(E.y2,P2.x0+6,P2.y0+14,'start');
+      E.x2=rich(svg,['estimate of β','2'],'nf-title nf-halo');
+      axes(g,P2,[0,1,2],'estimates, the truth at the cross',E.x2);
+      E.y2=rich(g,['estimate of β','3'],'nf-title nf-halo'); place(E.y2,P2.x0+6,P2.y0+14,'start');
       line(g,P2.x0,C(P2.ys(1)),P2.x0+P2.side,C(P2.ys(1)),'nf-mean0');
       line(g,C(P2.xs(1)),P2.y0,C(P2.xs(1)),P2.y0+P2.side,'nf-mean0');
       gx=clip(svg,P1.x0,P1.y0,P1.side,P1.side);
@@ -318,6 +334,8 @@
       E.ell=S('path',{'class':'l4-ell'},gb);
       E.bp=[];
       for(i=0;i<RD;i++) E.bp.push(S('circle',{r:wide?1.7:1.6,'class':'l4-cloud'},gb));
+      /* the axis names go on top, with a halo, so a stretched cloud never hides them */
+      svg.appendChild(E.x2); svg.appendChild(E.y2);
       update();
     }
     function update(){
@@ -329,14 +347,20 @@
       l1=Math.sqrt(1/(N*(1+r)))*rad; l2=Math.sqrt(1/(N*(1-r)))*rad;
       for(k=0;k<=72;k++){ t=k/72*2*Math.PI; e.push([P2.xs(1+ca*(l1*Math.cos(t)+l2*Math.sin(t))),P2.ys(1+ca*(l1*Math.cos(t)-l2*Math.sin(t)))]); }
       E.ell.setAttribute('d',poly(e)+'Z');
+      if(api) api.changed();
       if(!out) return;
       out.textContent='r = '+fmt(r,2)+'   slope variance × 1/(1 − r²) = × '+inf.toFixed(2)+'   sd '+sd.toFixed(3)+'   corr of the two estimates '+fmt(-r,2);
       if(Math.abs(r)>=0.9) warn(out,r>0?'\nnear collinear: the data pin down little more than β₂ + β₃':'\nnear collinear: the data pin down little more than β₂ − β₃');
-      api.changed();
     }
-    /* the Try it steps read the state and can set r */
-    var api=NF.api({
-      get:function(){ var inf=1/(1-r*r); return {r:r, vif:inf, sd:Math.sqrt(inf/N), corr:-r}; },
+    /* the Try it steps read the state and can set r. With sigma = 1 and unit spread in each regressor:
+       Var(b2 + b3) = 2/(N(1 + r)), Var(b2 - b3) = 2/(N(1 - r)), and N(1 - r^2) is the sample size that
+       uncorrelated regressors would need for the same Var(b2). m2, m3 average the 800 drawn estimates. */
+    api=NF.api({
+      get:function(){
+        var inf=1/(1-r*r), s=Math.sqrt(1-r*r), rn=Math.sqrt(N);
+        return {r:r, vif:inf, sd:Math.sqrt(inf/N), corr:-r, sdsum:Math.sqrt(2/(N*(1+r))), sddif:Math.sqrt(2/(N*(1-r))), neff:N*(1-r*r),
+          m2:1+(abar-r*bbar/s)/rn, m3:1+bbar/(s*rn)};
+      },
       set:function(st){ if('r' in st && rr) rr.set(st.r); }
     });
     draw();
@@ -348,7 +372,7 @@
   NF.register('l4-sampling',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var NMAX=100, RS=4000, seed=20261105, Z=new Float64Array(RS*NMAX), EX=new Float64Array(RS*NMAX), X=[], ZO=[], b2=0.5, gam=0.5, N=20, i, rnd;
+    var NMAX=100, RS=4000, seed=20261105, Z=new Float64Array(RS*NMAX), EX=new Float64Array(RS*NMAX), X=[], ZO=[], b2=0.5, gam=0.5, N=20, i, rnd, api=null, last={};
     var LO=-0.15, HI=1.15, sl=new Float64Array(RS);
     rnd=mulberry32(20261031);
     for(i=0;i<NMAX;i++){ X.push(Math.round((0.3+9.4*rnd())*100)/100); }
@@ -367,7 +391,7 @@
     function draw(){
       var g, rows;
       W=measure(svg); frame(svg,W,H);
-      rows=key(S('g',null,svg),[['rect','nf-hist nf-sw','4000 OLS slopes'],['line','nf-ref','N(β₂, σ²/Sxx), the formula'],['line','nf-mean0','true β₂']],mL,11,W-mR);
+      rows=key(S('g',null,svg),[['rect','nf-hist nf-sw','4000 OLS slopes'],['line','l4-fcurve','N(β₂, σ²/Sxx), the formula'],['line','nf-mean0','true β₂']],mL,11,W-mR);
       top=rows>1?50:34;
       xs=lin(LO,HI,mL,W-mR);
       g=S('g',null,svg);
@@ -377,7 +401,7 @@
       E.gc=clip(svg,mL,top-4,W-mR-mL,bot-top+4);
       E.area=S('path',{'class':'nf-hist'},E.gc);
       E.edge=S('path',{'class':'nf-histline'},E.gc);
-      E.curve=S('path',{'class':'nf-ref'},E.gc);
+      E.curve=S('path',{'class':'l4-fcurve'},E.gc);
       E.truth=line(E.gc,C(xs(b2)),top-4,C(xs(b2)),bot,'nf-mean0');
       E.mean=line(E.gc,0,0,0,0,'l4-meanline');
       update();
@@ -410,6 +434,8 @@
       for(k=0;k<=240;k++){ v=LO+(HI-LO)*k/240; p.push([xs(v),ys(phi((v-b2)/sd)/sd)]); }
       E.curve.setAttribute('d',poly(p));
       setLine(E.mean,C(xs(ms[0])),top-4,C(xs(ms[0])),bot);
+      last={mean:ms[0], sd:ms[1], fsd:sd, sand:Math.sqrt(sw), dhat:bias, bmean:b2+gam*bias, sxx:sxx};
+      if(api) api.changed();
       if(!out) return;
       msg='mean '+ms[0].toFixed(3)+'   sd '+ms[1].toFixed(3)+'   formula σ/√Sxx = '+sd.toFixed(3);
       if(mode==='hetero') msg+='   sandwich '+Math.sqrt(sw).toFixed(3);
@@ -420,15 +446,25 @@
       else if(mode==='skewed') out.appendChild(document.createTextNode('\nOLS.5 fails: mean and spread still right, shape only roughly normal'));
       else out.appendChild(document.createTextNode('\nOLS.1 to OLS.5 hold: the histogram is exactly N(β₂, σ²/Sxx)'));
     }
+    /* the Try it steps read the summary of the 4000 slopes and the theory beside it; they can pick a mode, set N or redraw */
+    api=NF.api({
+      get:function(){ return {mode:mode, n:N, mean:last.mean, sd:last.sd, fsd:last.fsd, sand:last.sand, dhat:last.dhat, bmean:last.bmean, sxx:last.sxx, draws:seed-20261105}; },
+      set:function(st){
+        if('mode' in st) NF.press(fig,'data-mode',st.mode);
+        if('n' in st && rn) rn.set(st.n);
+        if(st['new'] && nb) nb.click();
+      }
+    });
     sample(); draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 4. Gauss Markov: OLS against other linear unbiased slope estimators ---------- */
   NF.register('l4-gm',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var N=20, RS=8000, b2=0.5, X=[], WO=[], xb=0, sxx=0, i, k, rnd=mulberry32(20261106), U=new Float64Array(RS*N), so=new Float64Array(RS), sa=new Float64Array(RS);
+    var N=20, RS=8000, b2=0.5, X=[], WO=[], xb=0, sxx=0, i, k, rnd=mulberry32(20261106), U=new Float64Array(RS*N), so=new Float64Array(RS), sa=new Float64Array(RS), api=null, last={};
     for(i=0;i<N;i++){ X.push(i+1); xb+=i+1; }
     xb/=N;
     for(i=0;i<N;i++) sxx+=(X[i]-xb)*(X[i]-xb);
@@ -505,12 +541,24 @@
       ac=density(sa,RS,LO,BW,NB);
       hp=histPaths(ac,LO,BW,hx,hy,PK*1.3);
       E.aarea.setAttribute('d',hp.area); E.aedge.setAttribute('d',hp.edge);
-      if(!out) return;
       ms=meanSd(sa,RS); mo=meanSd(so,RS);
+      last={sa:sa0, sax:sax, mean:ms[0], omean:mo[0], ratio:1+dd/ow, dr:dd/ow, sim:ms[1]*ms[1]/(mo[1]*mo[1])};
+      if(api) api.changed();
+      if(!out) return;
       out.textContent='Σa = '+fmt(sa0,3)+'   Σax = '+fmt(sax,3)+'   mean '+ms[0].toFixed(3)+'\nVar ratio = 1 + Σd²/Σw² = '+(1+dd/ow).toFixed(2)+'   simulated '+(ms[1]*ms[1]/(mo[1]*mo[1])).toFixed(2);
     }
+    /* the Try it steps read the constraints, the variance ratio (theory and simulation) and the blend; they can pick
+       an alternative and set the blend t */
+    api=NF.api({
+      get:function(){ return {alt:alt, t:t, sa:last.sa, sax:last.sax, mean:last.mean, omean:last.omean, ratio:last.ratio, dr:last.dr, sim:last.sim}; },
+      set:function(st){
+        if('alt' in st) NF.press(fig,'data-alt',st.alt);
+        if('t' in st && rt) rt.set(st.t);
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 5. Degrees of freedom: dividing the residual sum of squares by N or by N - K ---------- */
@@ -534,7 +582,7 @@
     }
     var rk=range(fig,'k',0,function(v){ K=Math.round(v); update(); });
     if(rk) K=Math.round(rk.v());
-    var W=520, H=270, mL=16, mR=16, top=34, bot=236, xs, E={}, LO=0, HI=3, BW=0.05, NB=60, A1=new Float64Array(RS), A2=new Float64Array(RS);
+    var W=520, H=270, mL=16, mR=16, top=34, bot=236, xs, E={}, LO=0, HI=3, BW=0.05, NB=60, A1=new Float64Array(RS), A2=new Float64Array(RS), api=null, last={};
     function draw(){
       var g, rows, t=[0,0.5,1,1.5,2,2.5,3];
       W=measure(svg); frame(svg,W,H);
@@ -569,11 +617,19 @@
       hp=histPaths(c2,LO,BW,xs,ys,pk*1.3); E.a2.setAttribute('d',hp.area); E.e2.setAttribute('d',hp.edge);
       setLine(E.m1,C(xs(m1)),top-4,C(xs(m1)),bot);
       setLine(E.m2,C(xs(m2)),top-4,C(xs(m2)),bot);
+      last={m1:m1, m2:m2, sd1:meanSd(A1,RS)[1]};
+      if(api) api.changed();
       if(!out) return;
       out.textContent='K = '+K+'   N − K = '+(N-K)+'   mean of û′û/(N − K) = '+m1.toFixed(2)+'\nmean of û′û/N = '+m2.toFixed(2)+', theory (N − K)/N = '+((N-K)/N).toFixed(2);
     }
+    /* the Try it steps read K, the degrees of freedom and both means (with the theory (N - K)/N); they can set K */
+    api=NF.api({
+      get:function(){ return {k:K, n:N, dof:N-K, m1:last.m1, m2:last.m2, theory:(N-K)/N, sd1:last.sd1}; },
+      set:function(st){ if('k' in st && rk) rk.set(st.k); }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* notes.js may have booted before this file loaded; start any L4 figure still waiting */

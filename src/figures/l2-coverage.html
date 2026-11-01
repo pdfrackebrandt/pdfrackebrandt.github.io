@@ -4,6 +4,7 @@
       <button type="button" class="nfig-opt" data-pop="norm" aria-pressed="false">Normal</button>
       <button type="button" class="nfig-opt" data-pop="expo" aria-pressed="true">Exponential</button>
       <button type="button" class="nfig-opt" data-pop="logn" aria-pressed="false">Lognormal</button>
+      <button type="button" class="nfig-opt" data-pop="bern" aria-pressed="false">Proportion</button>
     </div>
     <button type="button" class="btn nfig-new">New samples</button>
   </div>
@@ -23,5 +24,5 @@
   </div>
   <svg class="nfig-plot" viewBox="0 0 520 300" role="img" aria-label="Fifty confidence intervals for the mean, one per row, each from a fresh sample of a population with mean 1 and standard deviation 1. A dashed vertical line marks the true mean 1. Intervals that cover it are blue; intervals that miss it are red."></svg>
   <p class="fig-note nfig-read" aria-live="polite">41 of these 50 intervals cover µ = 1</p>
-  <figcaption>Every population has mean 1 and standard deviation 1; each row is the interval from one sample. The true mean never moves, the intervals do. Press New samples and count the red ones. With skewed data and σ estimated, small samples cover well under the nominal level and almost every miss lies below 1. Raise n, or switch to σ known, and the long run share climbs to the nominal level.</figcaption>
+  <figcaption>Every population has mean 1 and standard deviation 1; Proportion is a 0 or 1 variable with p = 0.2, moved to that mean and spread. Each row is the interval from one sample, red when it misses µ = 1. The long run line checks 10,000 further samples at the same settings.</figcaption>
 </figure>

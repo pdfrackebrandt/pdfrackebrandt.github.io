@@ -1156,6 +1156,9 @@ def widget_html(name):
         c = src[:-3] + '.css'
         if os.path.exists(os.path.join(ROOT, c)):
             css.append(open(os.path.join(ROOT, c), encoding='utf-8').read())
+    elif not src:
+        # the shared note-* figures take their lecture's colours from that lecture's css (scoped by data-nfig), so carry them all
+        css += [open(os.path.join(ROOT, 'assets', 'figs', f), encoding='utf-8').read() for f in fig_files('.css')]
     css.append('html,body{margin:0;background:transparent}.rikuy-widget{padding:4px 2px 8px}')
     # the frame may load nothing from outside (Rikuy allows fonts only as data), so the site's web fonts go and the
     # system font takes over; the caption goes too, since the LaTeX caption under the figure says the same

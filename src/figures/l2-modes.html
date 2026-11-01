@@ -12,5 +12,5 @@
   </div>
   <svg class="nfig-plot nfig-drag" viewBox="0 0 520 300" role="img" aria-label="Thirty independent sample paths, one per row, against n on a log scale from 1 to 10000. A mark sits wherever a path is away from its limit 0. A dashed cursor splits the axis: marks to its left are grey, marks at or after it are red. Drag across the plot or use the slider to move the cursor."></svg>
   <p class="fig-note nfig-read" aria-live="polite">at n = 100:  P(miss at n) = 1/n = 0.01   P(a miss at some m ≥ n) = 1   E(X²) = 1/n = 0.01</p>
-  <figcaption>Each row is one path of the sequence and each mark is a time n at which the path is away from 0. Move the cursor right. In A the chance of a mark at any single n dies out, yet red marks keep appearing in almost every row: convergence in probability without almost sure convergence. In B the rows go clean. In C each row has one block of misses and then stops for good, so it converges almost surely, but the misses are of size n and its mean square error grows.</figcaption>
+  <figcaption>Each row is one path of the chosen sequence and each mark a time n at which that path is away from 0, on a log scale up to n = 10000. Marks at or after the dashed cursor are red: a red mark means the path has not settled by n. Drag across the plot or use the slider to move the cursor.</figcaption>
 </figure>
