@@ -70,6 +70,8 @@
     if(!cur && bs.length){ cur=bs[0].getAttribute(attr); pick(cur); }
     return cur;
   }
+  /* press(fig, attr, value): choose an option of a seg() group as a click would, for a figure's api.set */
+  function press(fig,attr,v){ var b=fig.querySelector('.nfig-opt['+attr+'="'+v+'"]'); if(b && b.getAttribute('aria-pressed')!=='true') b.click(); return !!b; }
   /* range input: keeps the value label and the filled track in step */
   function range(fig,key,dec,cb){
     var inp=fig.querySelector('input[data-k="'+key+'"]');
@@ -83,7 +85,8 @@
     }
     inp.addEventListener('input',function(){ cb(sync()); });
     sync();
-    return {el:inp, wrap:wrap, v:function(){ return parseFloat(inp.value); }};
+    // set(v) moves the slider as a person would (snapped to its step) and runs the figure's callback
+    return {el:inp, wrap:wrap, v:function(){ return parseFloat(inp.value); }, set:function(v){ inp.value=String(clamp(+v,lo,hi)); cb(sync()); }};
   }
 
   /* ---------- distributions ---------- */
@@ -702,6 +705,7 @@
         el.abg.setAttribute('x',R(cx-s/2)); el.abg.setAttribute('y',R(cy-7.5)); el.abg.setAttribute('width',R(s));
       } else { el.area.textContent=''; el.abg.setAttribute('width',0); }
       el.m[0][0].textContent=tl(a); el.m[0][1].textContent=tl(b); el.m[1][0].textContent=tl(c); el.m[1][1].textContent=tl(d);
+      if(api) api.changed();
       if(!out) return;
       sn=ln>0?Math.abs(det)/ln:0;
       s='det A = ad − bc = '+paren(a)+' × '+paren(d)+' − '+paren(b)+' × '+paren(c)+' = '+fmt(det,2);
@@ -734,8 +738,18 @@
       var p=local(svg,e.touches[0],W,H), i;
       for(i=0;i<2;i++) if(Math.hypot(px(V[i][0])-p[0],py(V[i][1])-p[1])<26){ e.preventDefault(); return; }
     },{passive:false});
+    /* the Try it steps read the entries (a11 a21 is column 1), the determinant and the area, and can place both tips */
+    var api=makeApi({
+      get:function(){ var det=V[0][0]*V[1][1]-V[1][0]*V[0][1]; return {a11:V[0][0], a21:V[0][1], a12:V[1][0], a22:V[1][1], det:det, area:Math.abs(det)}; },
+      set:function(st){
+        if('a11' in st || 'a21' in st) put(0,'a11' in st?+st.a11:V[0][0],'a21' in st?+st.a21:V[0][1]);
+        if('a12' in st || 'a22' in st) put(1,'a12' in st?+st.a12:V[1][0],'a22' in st?+st.a22:V[1][1]);
+        update();
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   }
 
   /* ---------- 8. OLS and the normal equations ---------- */
@@ -849,13 +863,133 @@
       f=figs[i]; fn=INIT[f.getAttribute('data-nfig')];
       if(!fn || f.getAttribute('data-nfig-ready')) continue;
       f.setAttribute('data-nfig-ready','1');
-      try{ fn(f); }catch(err){ if(window.console && console.error) console.error(err); }
+      try{ var api=fn(f); if(api && typeof api.get==='function') f.nfApi=api; }catch(err){ if(window.console && console.error) console.error(err); }
     }
+    initTry(scope);
   }
   window.initNoteFigures=initNoteFigures;
+
+  /* A figure's handle for its Try it steps: get() returns its state as plain values, set(obj) applies the keys it
+     knows and redraws, on(cb) hears every change. The figure calls api.changed() at the end of each redraw. */
+  function makeApi(o){
+    var subs=[], api={
+      get:function(){ return o.get(); },
+      set:function(st){ o.set(st || {}); api.changed(); },
+      on:function(cb){ subs.push(cb); },
+      changed:function(){ for(var i=0;i<subs.length;i++){ try{ subs[i](); }catch(err){ if(window.console && console.error) console.error(err); } } }
+    };
+    return api;
+  }
+
+  /* Try it: the steps under a figure. One step shows at a time; Set it up hands the figure a state, a goal met
+     from the figure's own state marks the step done and opens what to notice, and \nv numbers follow the figure. */
+  function parsePairs(str){
+    var o={}, parts=(str||'').split(/\s+/), i, kv;
+    for(i=0;i<parts.length;i++){ if(!parts[i]) continue; kv=parts[i].split('='); o[kv[0]]=numOr(kv.slice(1).join('=')); }
+    return o;
+  }
+  function numOr(v){ return (/^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$/).test(v) ? parseFloat(v) : v; }
+  function goalMet(goal, st){
+    if(!goal) return false;
+    var parts=goal.split(/\s+and\s+/), i, m, a, b, op;
+    for(i=0;i<parts.length;i++){
+      m=parts[i].match(/^\s*([a-z][a-z0-9]*)\s*(==|!=|<=|>=|<|>|=)\s*([\w.+-]+)\s*$/);
+      if(!m || !(m[1] in st)) return false;
+      a=st[m[1]]; b=numOr(m[3]); op=m[2];
+      if(typeof a==='boolean') a=String(a);
+      if(typeof b==='number' && typeof a!=='number') a=parseFloat(a);
+      if(op==='=' || op==='=='){ if(typeof b==='number' ? Math.abs(a-b)>1e-9 : String(a)!==String(b)) return false; }
+      else if(op==='!='){ if(typeof b==='number' ? Math.abs(a-b)<=1e-9 : String(a)===String(b)) return false; }
+      else if(op==='<'){ if(!(a<b)) return false; }
+      else if(op==='<='){ if(!(a<=b+1e-9)) return false; }
+      else if(op==='>'){ if(!(a>b)) return false; }
+      else if(op==='>='){ if(!(a>=b-1e-9)) return false; }
+    }
+    return true;
+  }
+  function liveText(v, dec){
+    if(typeof v==='number' && isFinite(v)){ var t=v.toFixed(dec); if(/^-0?\.?0*$/.test(t)) t=t.slice(1); return t.replace('-', MINUS); }
+    return String(v);
+  }
+  function initTry(scope){
+    var panels=(scope.querySelectorAll ? scope : document).querySelectorAll('.nf-try:not([data-try-ready])'), i;
+    for(i=0;i<panels.length;i++) wireTry(panels[i]);
+  }
+  function wireTry(panel){
+    var fig=document.querySelector('[data-nfig="'+panel.getAttribute('data-for')+'"]');
+    if(!fig || !fig.getAttribute('data-nfig-ready')) return;
+    panel.setAttribute('data-try-ready','1');
+    var api=fig.nfApi || null, steps=[].slice.call(panel.querySelectorAll('.nf-step')), cur=0, done=[], queued=false;
+    var live=[].slice.call(panel.querySelectorAll('[class*="nv-"]')).map(function(el){
+      var m=el.className.match(/\bnv-([a-z][a-z0-9]*)\b/), t=el.textContent.replace(MINUS,'-'), d=t.indexOf('.');
+      return {el:el, key:m ? m[1] : '', dec:d<0 ? 0 : t.length-d-1};
+    });
+    panel.classList.add('is-stepped');
+    if(!api) panel.classList.add('no-api');
+    // the step dots and the Back / Next bar
+    var dots=document.createElement('div'); dots.className='nf-dots'; dots.setAttribute('role','group'); dots.setAttribute('aria-label','Steps');
+    steps.forEach(function(st, k){
+      var b=document.createElement('button'); b.type='button'; b.className='nf-dot'; b.textContent=String(k+1);
+      b.setAttribute('aria-label','Step '+(k+1)); b.addEventListener('click', function(){ show(k); }); dots.appendChild(b);
+    });
+    var head=panel.querySelector('.nf-try-head'), count=panel.querySelector('.nf-try-count');
+    if(count) count.remove();
+    head.appendChild(dots);
+    var nav=document.createElement('div'); nav.className='nf-nav';
+    var back=document.createElement('button'); back.type='button'; back.className='nf-back'; back.textContent='Back';
+    var where=document.createElement('span'); where.className='nf-where';
+    var next=document.createElement('button'); next.type='button'; next.className='nf-next'; next.textContent='Next step';
+    nav.appendChild(back); nav.appendChild(where); nav.appendChild(next); panel.appendChild(nav);
+    back.addEventListener('click', function(){ show(cur-1); });
+    next.addEventListener('click', function(){ show(cur+1); });
+    // reveal buttons: Show answer, What to notice
+    [].forEach.call(panel.querySelectorAll('.nf-reveal'), function(b){
+      b.addEventListener('click', function(){
+        var box=b.nextElementSibling, open=box.hidden;
+        box.hidden=!open; b.setAttribute('aria-expanded', open ? 'true' : 'false');
+        b.textContent=open ? (b.classList.contains('nf-reveal-notice') ? 'Hide' : 'Hide answer') : (b.classList.contains('nf-reveal-notice') ? 'What to notice' : 'Show answer');
+      });
+    });
+    steps.forEach(function(st, k){
+      var setup=st.querySelector('.nf-setup');
+      if(setup && api) setup.addEventListener('click', function(){ api.set(parsePairs(st.getAttribute('data-set'))); fig.scrollIntoView({block:'nearest', behavior: reduce ? 'auto' : 'smooth'}); });
+    });
+    function openNotice(st){
+      var b=st.querySelector('.nf-reveal-notice'); if(!b) return;
+      var box=b.nextElementSibling; if(box.hidden){ box.hidden=false; b.setAttribute('aria-expanded','true'); b.textContent='Hide'; }
+    }
+    function show(k){
+      cur=clamp(k, 0, steps.length-1);
+      steps.forEach(function(st, j){ st.classList.toggle('is-current', j===cur); });
+      [].forEach.call(dots.children, function(b, j){ b.classList.toggle('is-current', j===cur); b.classList.toggle('is-done', !!done[j]); if(j===cur) b.setAttribute('aria-current','step'); else b.removeAttribute('aria-current'); });
+      where.textContent='Step '+(cur+1)+' of '+steps.length;
+      back.disabled=cur===0; next.disabled=cur===steps.length-1;
+      update();
+    }
+    function update(){
+      queued=false;
+      if(!api) return;
+      var st=api.get() || {};
+      live.forEach(function(L){
+        if(!(L.key in st)) return;
+        var t=liveText(st[L.key], L.dec);
+        if(L.el.textContent===t) return;
+        L.el.textContent=''; var s=document.createElement('span'); s.className='mord'; s.textContent=t; L.el.appendChild(s);
+      });
+      steps.forEach(function(stepEl, j){
+        var goal=stepEl.getAttribute('data-goal'), status=stepEl.querySelector('.nf-status');
+        if(!goal || !status) return;
+        if(!done[j] && goalMet(goal, st)){ done[j]=true; if(j===cur) openNotice(stepEl); dots.children[j].classList.add('is-done'); }
+        var t=done[j] ? 'Done' : (j===cur ? 'Your turn' : '');
+        if(status.textContent!==t){ status.textContent=t; status.classList.toggle('is-done', !!done[j]); }
+      });
+    }
+    if(api) api.on(function(){ if(!queued){ queued=true; requestAnimationFrame(update); } });
+    show(0);
+  }
   /* Lecture figure files (assets/figs/*.js, loaded after this one) add their figures with NF.register(name, init)
      and reuse the drawing helpers below. */
-  window.NF={register:function(name,fn){ INIT[name]=fn; }, S:S, R:R, C:C, clamp:clamp, text:text, line:line, setLine:setLine, at:at,
+  window.NF={register:function(name,fn){ INIT[name]=fn; }, api:makeApi, press:press, S:S, R:R, C:C, clamp:clamp, text:text, line:line, setLine:setLine, at:at,
     poly:poly, fmt:fmt, tl:tl, lin:lin, measure:measure, frame:frame, watch:watch, yGrid:yGrid, xGrid:xGrid, seg:seg, range:range,
     phi:phi, Phi:Phi, invPhi:invPhi, mulberry32:mulberry32, tw:tw, key:key, clip:clip, local:local, capture:capture, reduce:reduce, MINUS:MINUS};
   function boot(){ initNoteFigures(document); }

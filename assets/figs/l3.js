@@ -15,14 +15,16 @@
   function setVec(v,x0,y0,x1,y1,gap){
     var dx=x1-x0, dy=y1-y0, len=Math.hypot(dx,dy), ux, uy, hl, bx, by, tx, ty;
     gap=gap||0;
-    if(len<gap+8){ setLine(v.l,x0,y0,x0,y0); v.h.setAttribute('d',''); return false; }
+    /* a zero length line with round caps still paints a dot, so a hidden arrow is made invisible */
+    if(len<gap+8){ setLine(v.l,x0,y0,x0,y0); v.l.setAttribute('visibility','hidden'); v.h.setAttribute('d',''); return false; }
+    v.l.removeAttribute('visibility');
     ux=dx/len; uy=dy/len; hl=Math.min(10,(len-gap)*0.45);
     tx=x1-ux*gap; ty=y1-uy*gap; bx=tx-ux*hl; by=ty-uy*hl;
     setLine(v.l,x0,y0,bx+ux*2,by+uy*2);
     v.h.setAttribute('d',poly([[tx,ty],[bx-uy*4.5,by+ux*4.5],[bx+uy*4.5,by-ux*4.5]])+'Z');
     return true;
   }
-  function hideVec(v){ setLine(v.l,0,0,0,0); v.h.setAttribute('d',''); }
+  function hideVec(v){ setLine(v.l,0,0,0,0); v.l.setAttribute('visibility','hidden'); v.h.setAttribute('d',''); }
   /* italic vector name with an optional subscript, as in the det figure */
   function vlab(g,name,sub,cls){
     var t=S('text',{'class':'nf-vlab '+cls,'text-anchor':'middle'},g), s;
@@ -184,12 +186,13 @@
   NF.register('l3-proj',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var X0=[3,1], Y0=[1,2.5], V=[X0.slice(),Y0.slice()], YR=3, H=300, pad=12, W=520, F, el={}, hs=[];
+    var X0=[3,1], Y0=[1,2.5], V=[X0.slice(),Y0.slice()], YR=3, H=300, pad=12, W=520, F, el={}, hs=[], again=0, api;
     function lim(){ return Math.floor(F.xr*10)/10; }
-    function put(i,x,y){ V[i]=[clamp(Math.round(x*10)/10,-lim(),lim()),clamp(Math.round(y*10)/10,-YR,YR)]; }
-    onClick(fig,'.nfig-reset',function(){ V=[X0.slice(),Y0.slice()]; update(); });
-    onClick(fig,'.l3-iota',function(){ V[0]=[1,1]; update(); });
-    onClick(fig,'.l3-again',function(){ var q=proj(); if(q){ V[1]=[q.p[0],q.p[1]]; update(); } });
+    /* again counts presses of Move y to Py since x or y last moved some other way */
+    function put(i,x,y){ V[i]=[clamp(Math.round(x*10)/10,-lim(),lim()),clamp(Math.round(y*10)/10,-YR,YR)]; again=0; }
+    onClick(fig,'.nfig-reset',function(){ V=[X0.slice(),Y0.slice()]; again=0; update(); });
+    onClick(fig,'.l3-iota',function(){ V[0]=[1,1]; again=0; update(); });
+    onClick(fig,'.l3-again',function(){ var q=proj(); if(q){ V[1]=[q.p[0],q.p[1]]; again++; update(); } });
     function proj(){
       var x=V[0], y=V[1], xx=x[0]*x[0]+x[1]*x[1], xy, c;
       if(xx<1e-12) return null;
@@ -216,7 +219,8 @@
       update();
     }
     function keyer(i){ return function(dx,dy,big){ var s=big?0.5:0.1; put(i,V[i][0]+dx*s,V[i][1]+dy*s); update(); }; }
-    function update(){
+    function update(){ paint(); if(api) api.changed(); }
+    function paint(){
       var x=V[0], y=V[1], q=proj(), o=[F.px(0),F.py(0)], i, T, d, ux, uy, P, Y, ex, ey, el2, ax, ay, sz, s, n;
       for(i=0;i<2;i++){
         T=[F.px(V[i][0]),F.py(V[i][1])];
@@ -265,15 +269,32 @@
     }
     dragger(svg,function(){ return [W,H]; },function(){ return V.map(function(v){ return [F.px(v[0]),F.py(v[1])]; }); },
       function(i,x,y){ put(i,(x-F.ox)/F.u,(F.oy-y)/F.u); update(); },focusOf(function(){ return hs; }));
+    /* the Try it steps read the vectors, the projection and the press count, and can place x and y or press Move y to Py */
+    api=NF.api({
+      get:function(){
+        var x=V[0], y=V[1], q=proj(), o={x1:x[0], x2:x[1], y1:y[0], y2:y[1], again:again, iota:x[0]===x[1] && x[0]!==0, ybar:(y[0]+y[1])/2};
+        if(q){ o.xx=q.xx; o.xy=q.xy; o.c=q.c; o.p1=q.p[0]; o.p2=q.p[1]; o.e1=q.e[0]; o.e2=q.e[1]; o.xme=x[0]*q.e[0]+x[1]*q.e[1];
+          o.on=Math.hypot(q.e[0],q.e[1])<1e-9; o.p11=x[0]*x[0]/q.xx; o.p12=x[0]*x[1]/q.xx; o.p22=x[1]*x[1]/q.xx; o.trp=o.p11+o.p22; }
+        return o;
+      },
+      set:function(st){
+        var b=fig.querySelector('.l3-again'), k;
+        if('x1' in st || 'x2' in st) put(0,'x1' in st?+st.x1:V[0][0],'x2' in st?+st.x2:V[0][1]);
+        if('y1' in st || 'y2' in st) put(1,'y1' in st?+st.y1:V[1][0],'y2' in st?+st.y2:V[1][1]);
+        update();
+        if('again' in st && b) for(k=0;k<+st.again;k++) b.click();
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 2. Rank: which b can Ac = b reach ---------- */
   NF.register('l3-span',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var A0=[[2,0.5],[-0.5,1.5]], B0=[2,2.5], V=[A0[0].slice(),A0[1].slice(),B0.slice()], YR=3, H=300, pad=12, W=520, F, el={}, hs=[];
+    var A0=[[2,0.5],[-0.5,1.5]], B0=[2,2.5], V=[A0[0].slice(),A0[1].slice(),B0.slice()], YR=3, H=300, pad=12, W=520, F, el={}, hs=[], cur={}, api;
     function lim(st){ return Math.floor(F.xr/st)*st; }
     function put(i,x,y){ var st=i<2?0.5:0.25; V[i]=[clamp(Math.round(x/st)*st,-lim(st),lim(st)),clamp(Math.round(y/st)*st,-YR,YR)]; }
     onClick(fig,'.nfig-reset',function(){ V=[A0[0].slice(),A0[1].slice(),B0.slice()]; update(); });
@@ -306,7 +327,8 @@
         line(g,F.px(p[0]-L*ux),F.py(p[1]-L*uy),F.px(p[0]+L*ux),F.py(p[1]+L*uy),k?'l3-lat':'l3-lat l3-lat0');
       }
     }
-    function update(){
+    function update(){ paint(); if(api) api.changed(); }
+    function paint(){
       var a=V[0][0], c=V[0][1], b=V[1][0], d=V[1][1], B=V[2], det=a*d-b*c, o=[F.px(0),F.py(0)], i, T, dd, rank, dir, on, s, k, c1, c2, m, msg, w=false, nd, ux, uy;
       for(i=0;i<3;i++){
         T=[F.px(V[i][0]),F.py(V[i][1])];
@@ -320,17 +342,21 @@
       setLine(el.band,0,0,0,0); setLine(el.miss,0,0,0,0); el.mdot.setAttribute('r',0);
       setLine(el.p1,0,0,0,0); setLine(el.p2,0,0,0,0);
       rank=det!==0?2:(a||c||b||d)?1:0;
+      /* the state the Try it steps read: sol is one, none or many, gap the distance from b to the nearest Ac */
+      cur={a11:a, a21:c, a12:b, a22:d, b1:B[0], b2:B[1], det:det, rank:rank};
       if(rank===2){
         lines(el.lat,V[0],V[1],F.rw); lines(el.lat,V[1],V[0],F.rw);
         c1=(d*B[0]-b*B[1])/det; c2=(a*B[1]-c*B[0])/det;
         setLine(el.p1,o[0],o[1],F.px(c1*a),F.py(c1*c));
         setLine(el.p2,F.px(c1*a),F.py(c1*c),F.px(B[0]),F.py(B[1]));
+        cur.sol='one'; cur.gap=0; cur.c1=c1; cur.c2=c2;
         msg='det A = '+fmt(det,2)+', rank 2: c = A⁻¹b = '+pair(c1,c2,2)+', the only solution';
       } else if(rank===1){
         dir=(a||c)?V[0]:V[1]; nd=Math.hypot(dir[0],dir[1]); ux=dir[0]/nd; uy=dir[1]/nd;
         setLine(el.band,F.px(-F.rw*ux),F.py(-F.rw*uy),F.px(F.rw*ux),F.py(F.rw*uy));
         on=Math.abs(dir[0]*B[1]-dir[1]*B[0])<1e-9;
         s=(dir[0]*B[0]+dir[1]*B[1])/(nd*nd);
+        cur.sol=on?'many':'none'; cur.gap=on?0:Math.hypot(B[0]-s*dir[0],B[1]-s*dir[1]);
         if(on){
           setLine(dir===V[0]?el.p1:el.p2,o[0],o[1],F.px(B[0]),F.py(B[1]));
           if(dir===V[0]){ k=(a*b+c*d)/(nd*nd); msg='det A = 0, rank 1: b lies on the line, so c = ('+fmt(s,2)+', 0) + t('+fmt(k,2)+', '+MINUS+'1) solves Ac = b for every t'; }
@@ -345,6 +371,7 @@
       } else {
         msg='A = 0, rank 0: Ac = 0 for every c, so only b = 0 can be reached';
         w=!(B[0]===0 && B[1]===0);
+        cur.sol=w?'none':'many'; cur.gap=Math.hypot(B[0],B[1]);
       }
       el.m[0][0].textContent=tl(a); el.m[0][1].textContent=tl(b); el.m[1][0].textContent=tl(c); el.m[1][1].textContent=tl(d);
       if(!out) return;
@@ -353,15 +380,25 @@
     }
     dragger(svg,function(){ return [W,H]; },function(){ return V.map(function(v){ return [F.px(v[0]),F.py(v[1])]; }); },
       function(i,x,y){ put(i,(x-F.ox)/F.u,(F.oy-y)/F.u); update(); },focusOf(function(){ return hs; }));
+    /* the Try it steps read A, b, the rank and the solution set, and can place the columns and b */
+    api=NF.api({
+      get:function(){ var o={}, k; for(k in cur) o[k]=cur[k]; return o; },
+      set:function(st){
+        var K=[['a11','a21'],['a12','a22'],['b1','b2']], i;
+        for(i=0;i<3;i++) if(K[i][0] in st || K[i][1] in st) put(i,K[i][0] in st?+st[K[i][0]]:V[i][0],K[i][1] in st?+st[K[i][1]]:V[i][1]);
+        update();
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 3. Volume of the box spanned by three vectors ---------- */
   NF.register('l3-vol',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var t=0.6, AZ0=-0.55, EL0=0.58, ELO=0.08, EHI=1.05, az=AZ0, elv=EL0, H=320, W=520, u=60, ox=260, oy=160, g=null, drag=null, c=Math.SQRT1_2;
+    var t=0.6, AZ0=-0.55, EL0=0.58, ELO=0.08, EHI=1.05, az=AZ0, elv=EL0, H=320, W=520, u=60, ox=260, oy=160, g=null, drag=null, c=Math.SQRT1_2, api;
     var rt=range(fig,'t',2,function(v){ t=v; update(); });
     if(rt) t=rt.v();
     onClick(fig,'.l3-flat',function(){ if(rt){ rt.el.value='0'; rt.el.dispatchEvent(new Event('input')); } else { t=0; update(); } });
@@ -389,7 +426,8 @@
       lab=vlab(gg,name,sub,lc+' nf-halo');
       moveTo(lab,Q[0]+(Q[0]-P[0])/d*16,Q[1]+(Q[1]-P[1])/d*16+4);
     }
-    function update(){
+    function update(){ paint(); if(api) api.changed(); }
+    function paint(){
       var V1=[1,1,1+t], V2=[1,0,0], V3=[0,1,1], det=det3(V1,V2,V3), h=t*c, i, f, P, Q, s,
           F1=flat(V1), F2=flat(V2), F3=flat(V3), O=[0,0,0], F12=add(F1,F2), F13=add(F1,F3), F23=add(F2,F3), F123=add(F12,F3), faces, eg, fl;
       while(g.firstChild) g.removeChild(g.firstChild);
@@ -442,15 +480,24 @@
       else return;
       e.preventDefault(); update();
     });
+    /* the Try it steps read t, the determinant, the height and the volume, and can set t */
+    api=NF.api({
+      get:function(){
+        var det=det3([1,1,1+t],[1,0,0],[0,1,1]);
+        return {t:t, det:det, h:t*c, vol:Math.abs(det), rank:Math.abs(det)<1e-9?2:3, neg:det<-1e-9};
+      },
+      set:function(st){ if('t' in st){ if(rt) rt.set(+st.t); else { t=+st.t; update(); } } }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 4. Quadratic forms and definiteness ---------- */
   NF.register('l3-quad',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var EX={pd:[2,0.8,1], psd:[1,1,1], ind:[1,2.5,4], nd:[-2,0.5,-1]}, A=[2,0.8,1], Pr=[1.2,-0.6], W=520, H=360, Q, el={}, hs=[], hold=false;
+    var EX={pd:[2,0.8,1], psd:[1,1,1], ind:[1,2.5,4], nd:[-2,0.5,-1]}, A=[2,0.8,1], Pr=[1.2,-0.6], W=520, H=360, Q, el={}, hs=[], hold=false, cur={}, api;
     var rs={a:range(fig,'a',1,function(v){ A[0]=v; changed(); }), b:range(fig,'b',1,function(v){ A[1]=v; changed(); }), c:range(fig,'c',1,function(v){ A[2]=v; changed(); })};
     if(rs.a) A=[rs.a.v(),rs.b.v(),rs.c.v()];
     var opts=fig.querySelectorAll('.nfig-opt[data-ex]'), i;
@@ -480,7 +527,8 @@
       update();
     }
     function movePr(x,y){ Pr=[clamp(Math.round(x*100)/100,-2,2),clamp(Math.round(y*100)/100,-2,2)]; update(); }
-    function update(){
+    function update(){ paint(); if(api) api.changed(); }
+    function paint(){
       var n=ints(), d100=n[0]*n[2]-n[1]*n[1], e=eig2(A[0],A[1],A[2]), l1=e.l1, l2=e.l2, sx=Q.sx, sy=Q.sy, cells=Math.round(Q.side/5),
           cw=Q.side/cells, j, k, m, x1, x2, v, cls, run, r0, xa, ya, lv=[], zl, pk, g1, g2, gn, P, ca, sa, dirs, tip, s, test, kind;
       if(d100===0){ if(Math.abs(l1)<Math.abs(l2)) l1=0; else l2=0; }
@@ -521,21 +569,36 @@
       else if(n[0]===0 && n[2]===0) test='A = 0: x′Ax = 0 for every x';
       else if(n[0]>=0 && n[2]>=0) test='det A = 0, a = '+fmt(A[0],1)+' ≥ 0, c = '+fmt(A[2],1)+' ≥ 0: positive semidefinite, singular';
       else test='det A = 0, a = '+fmt(A[0],1)+' ≤ 0, c = '+fmt(A[2],1)+' ≤ 0: negative semidefinite, singular';
+      /* the state the Try it steps read; kind follows the same 2 by 2 test as the readout */
+      cur={a:A[0], b:A[1], c:A[2], det:d100/100, l1:l1, l2:l2, x1:Pr[0], x2:Pr[1], q:pk, g1:g1, g2:g2,
+        kind:d100>0?(n[0]>0?'pd':'nd'):d100<0?'ind':(n[0]===0 && n[2]===0)?'zero':(n[0]>=0 && n[2]>=0)?'psd':'nsd', ex:'none'};
+      for(j=0;j<opts.length;j++) if(opts[j].getAttribute('aria-pressed')==='true') cur.ex=opts[j].getAttribute('data-ex');
       if(!out) return;
       s='λ = '+fmt(l1,2)+' and '+fmt(l2,2)+'   '+test+'\nat x = '+pair(Pr[0],Pr[1],2)+': x′Ax = '+fmt(pk,2)+'   2Ax = '+pair(g1,g2,2);
       out.textContent=s;
     }
     dragger(svg,function(){ return [W,H]; },function(){ return [[Q.sx(Pr[0]),Q.sy(Pr[1])]]; },
       function(i,x,y){ movePr(Q.sx.inv(x),Q.sy.inv(y)); },focusOf(function(){ return hs; }));
+    /* the Try it steps read the matrix, its test, the probe and the gradient; set takes an example (ex), a, b, c and the probe */
+    api=NF.api({
+      get:function(){ var o={}, k; for(k in cur) o[k]=cur[k]; return o; },
+      set:function(st){
+        var k=['a','b','c'], j;
+        if('ex' in st) NF.press(fig,'data-ex',String(st.ex));
+        for(j=0;j<3;j++) if(k[j] in st && rs[k[j]]) rs[k[j]].set(+st[k[j]]);
+        if('x1' in st || 'x2' in st) movePr('x1' in st?+st.x1:Pr[0],'x2' in st?+st.x2:Pr[1]);
+      }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 5. The least squares objective over two slopes ---------- */
   NF.register('l3-ols',function(fig){
     var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
     if(!svg) return;
-    var N=50, seed=20261101, Z1=[], Z2=[], U=[], rho=0.6, Pb=[2.2,0.2], W=520, H=360, Q, el={}, hs=[], st={};
+    var N=50, SEED=20261101, seed=SEED, Z1=[], Z2=[], U=[], rho=0.6, Pb=[2.2,0.2], W=520, H=360, Q, el={}, hs=[], st={}, gr=[0,0,false], api;
     var rr=range(fig,'rho',2,function(v){ rho=v; stats(); update(); });
     if(rr) rho=rr.v();
     onClick(fig,'.nfig-new',function(){ seed++; gen(); stats(); update(); });
@@ -579,7 +642,8 @@
       }
       Pb=[x,y]; update();
     }
-    function update(){
+    function update(){ paint(); if(api) api.changed(); }
+    function paint(){
       var sx=Q.sx, sy=Q.sy, b=st.b, lv=[], m, r, P, g1, g2, gn, s, cx, cy, L, zero;
       r=3+Math.hypot(b[0]-1,b[1]-1);
       for(m=1;m<=16;m++) lv=lv.concat(conic(st.e.l1,st.e.l2,st.e.al,0.04*N*m*m,b,r));
@@ -600,6 +664,7 @@
       g1=2*(st.s11*Pb[0]+st.s12*Pb[1]-st.r1); g2=2*(st.s12*Pb[0]+st.s22*Pb[1]-st.r2); gn=Math.hypot(g1,g2);
       zero=gn<1e-6;
       if(zero){ g1=0; g2=0; hideVec(el.grad); } else setVec(el.grad,P[0],P[1],P[0]+g1/gn*40,P[1]-g2/gn*40,0);
+      gr=[g1,g2,zero];
       place(hs[0],P[0],P[1],Pb[0],'b = '+pair(Pb[0],Pb[1],2));
       if(!out) return;
       s='ρ = '+fmt(rho,2)+'   X′X = ['+fmt(st.s11,1)+'  '+fmt(st.s12,1)+'; '+fmt(st.s12,1)+'  '+fmt(st.s22,1)+']   det X′X = ';
@@ -611,8 +676,29 @@
     }
     dragger(svg,function(){ return [W,H]; },function(){ return [[Q.sx(Pb[0]),Q.sy(Pb[1])]]; },
       function(i,x,y){ movePb(Q.sx.inv(x),Q.sy.inv(y),9); },focusOf(function(){ return hs; }));
+    /* the Try it steps read X'X, the minimiser and the gradient at the probe. set takes sample (presses of New sample,
+       0 for the first data), rho, the probe pb1 pb2, and probe=min, which drops the probe onto the minimiser or the line of them */
+    api=NF.api({
+      get:function(){
+        var o={rho:rho, det:st.det, rank:st.rank, s11:st.s11, s12:st.s12, s22:st.s22, pb1:Pb[0], pb2:Pb[1], g1:gr[0], g2:gr[1], zero:gr[2], sample:seed-SEED};
+        /* b1 + b2 is the same for every minimiser, so bsum exists at rank 1 too */
+        if(st.rank===2){ o.b1=st.b[0]; o.b2=st.b[1]; o.bsum=st.b[0]+st.b[1]; } else { o.sum=st.sum; o.bsum=st.sum; }
+        return o;
+      },
+      set:function(st2){
+        var t;
+        if('sample' in st2 && seed!==SEED+(+st2.sample)){ seed=SEED+(+st2.sample); gen(); stats(); update(); }
+        if('rho' in st2 && rr) rr.set(+st2.rho);
+        if('pb1' in st2 || 'pb2' in st2) movePb('pb1' in st2?+st2.pb1:Pb[0],'pb2' in st2?+st2.pb2:Pb[1],0);
+        if(st2.probe==='min'){
+          if(st.rank===2) movePb(st.b[0],st.b[1],0);
+          else { t=(Pb[0]+Pb[1]-st.sum)/2; movePb(Pb[0]-t,Pb[1]-t,0); }
+        }
+      }
+    });
     gen(); stats(); draw();
     watch(svg,draw);
+    return api;
   });
 
   /* figures already on the page when this file loads (a standalone widget page) start now */

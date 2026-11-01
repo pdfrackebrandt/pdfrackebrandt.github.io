@@ -332,9 +332,16 @@
       if(!out) return;
       out.textContent='r = '+fmt(r,2)+'   slope variance × 1/(1 − r²) = × '+inf.toFixed(2)+'   sd '+sd.toFixed(3)+'   corr of the two estimates '+fmt(-r,2);
       if(Math.abs(r)>=0.9) warn(out,r>0?'\nnear collinear: the data pin down little more than β₂ + β₃':'\nnear collinear: the data pin down little more than β₂ − β₃');
+      api.changed();
     }
+    /* the Try it steps read the state and can set r */
+    var api=NF.api({
+      get:function(){ var inf=1/(1-r*r); return {r:r, vif:inf, sd:Math.sqrt(inf/N), corr:-r}; },
+      set:function(st){ if('r' in st && rr) rr.set(st.r); }
+    });
     draw();
     watch(svg,draw);
+    return api;
   });
 
   /* ---------- 3. Sampling distribution of the OLS slope, X held fixed ---------- */

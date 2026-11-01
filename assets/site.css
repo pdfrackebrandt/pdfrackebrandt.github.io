@@ -1,4 +1,9 @@
 /* rackebrandt.pe. Fonts are self hosted (SIL Open Font License, see assets/fonts). */
+/* Notes Sans: Carlito (Calibri's free metric twin, OFL) cut to the notes' characters and renamed as its licence asks */
+@font-face{font-family:"Notes Sans";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/notes-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Notes Sans";font-style:italic;font-weight:400;font-display:swap;src:url(/assets/fonts/notes-sans-latin-400-italic.woff2) format("woff2")}
+@font-face{font-family:"Notes Sans";font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/notes-sans-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Notes Sans";font-style:italic;font-weight:700;font-display:swap;src:url(/assets/fonts/notes-sans-latin-700-italic.woff2) format("woff2")}
 @font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/inter-latin-400-normal.woff2) format("woff2")}
 @font-face{font-family:"Inter";font-style:italic;font-weight:400;font-display:swap;src:url(/assets/fonts/inter-latin-400-italic.woff2) format("woff2")}
 @font-face{font-family:"Inter";font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/inter-latin-500-normal.woff2) format("woff2")}
@@ -254,12 +259,18 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .toc-list a:hover{color:var(--ink)}
 .toc-list a[aria-current]{color:var(--ink);border-left-color:var(--fig-blue)}
 .toc-list + .toc-label{margin-top:26px}
+.toc-group + .toc-group{margin-top:22px}
+.toc-group > summary{list-style:none;display:flex;align-items:center;gap:9px;min-height:30px;cursor:pointer;transition:color .15s}
+.toc-group > summary::-webkit-details-marker{display:none}
+.toc-group > summary::after,.toc-narrow summary::after{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+.toc-group:not([open]) > summary::after,.toc-narrow:not([open]) summary::after{transform:rotate(-45deg)}
+.toc-group > summary:hover{color:var(--ink-soft)}
+.toc-group > .toc-list{margin-top:6px}
 .toc-wide{display:none}
 .toc-narrow{border:1px solid var(--rule);border-radius:4px;padding:2px 14px}
 .toc-narrow summary{min-height:42px;display:flex;align-items:center;cursor:pointer;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
 .toc-narrow summary::-webkit-details-marker{display:none}
-.toc-narrow summary::after{content:"+";margin-left:auto;font-size:1rem;letter-spacing:0;color:var(--faint)}
-.toc-narrow[open] summary::after{content:"\2212"}
+.toc-narrow summary::after{margin-left:auto;margin-right:4px;color:var(--faint)}
 .toc-narrow .toc-list{margin:0 0 12px}
 @media (min-width:960px){
   .note-page{grid-template-columns:minmax(0,1fr) 240px;column-gap:64px}
@@ -335,7 +346,10 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .is-opening .unsealed{visibility:hidden}
 
 /* notes are set in Calibri (Carlito is its free metric twin), on the pages and in the home panel */
-.notes-body,#notes .unsealed{--f-display:Calibri,Carlito,"Segoe UI","Helvetica Neue",Arial,sans-serif;--f-body:Calibri,Carlito,"Segoe UI","Helvetica Neue",Arial,sans-serif;--f-mono:Calibri,Carlito,"Segoe UI","Helvetica Neue",Arial,sans-serif;font-family:var(--f-body)}
+.notes-body,#notes .unsealed{--f-display:Calibri,"Notes Sans",Carlito,"Segoe UI","Helvetica Neue",Arial,sans-serif;--f-body:Calibri,"Notes Sans",Carlito,"Segoe UI","Helvetica Neue",Arial,sans-serif;--f-mono:Calibri,"Notes Sans",Carlito,"Segoe UI","Helvetica Neue",Arial,sans-serif;font-family:var(--f-body)}
+/* math in the notes is set at the size of the text around it, inline and displayed alike (KaTeX alone sets it 21% larger) */
+.notes-body .katex,.notes-body .eq .katex,#notes .unsealed .katex,#notes .unsealed .eq .katex{font-size:1em}
+.notes-body .explainer .eq{font-size:1.0625rem}
 .notes-body .lockbox{--f-display:"Instrument Serif",Georgia,"Times New Roman",serif;--f-body:Inter,system-ui,Helvetica,Arial,sans-serif}
 .notes-body .explainer p,.notes-body .explainer li{font-size:1.0625rem;line-height:1.65}
 .notes-body .paper-page h1,.notes-body .notes-index h1{font-weight:700;font-size:clamp(1.7rem,4.5vw,2.2rem);line-height:1.15}

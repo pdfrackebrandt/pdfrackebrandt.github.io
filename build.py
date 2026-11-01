@@ -184,16 +184,128 @@ BOX_LABELS = {'short': 'In short', 'intuition': 'Intuition', 'note': 'Note!', 't
 FIG_SLOT = '\x04FIGURE\x04'
 
 
+# ::: name  (a box), or  ::: try <figure>  (a guided exercise on that figure); a line ::: closes it
+BOX_RE = re.compile(r'^:::[ \t]*(\w+)(?:[ \t]+([\w-]+))?[ \t]*\n(.*?)\n:::[ \t]*$', re.M | re.S)
+
+# A guided exercise ("Try it") turns a figure into steps. Inside  ::: try <figure>  each line starts with a field:
+#   eq:      live equation shown above the steps (TeX; \nv{key}{0.00} is a number the figure keeps current)
+#   step:    starts a step, with its title
+#   ask:     the question to answer before touching the figure (green, Pedro's question colour)
+#   answer:  its answer, behind a Show answer button
+#   do:      what to do in the figure
+#   set:     key=value pairs a Set it up button gives the figure (n=10 pop=exp)
+#   goal:    when the step counts as done, from the figure's state (misses>=4 and pop=exp)
+#   notice:  what to see, shown once the goal is met or on request
+#   eq:      inside a step, a live equation for that step
+# A line with no field continues the field above it. The figure supplies get/set/on through NF.api (assets/notes.js).
+TRY_FIELDS = ('eq', 'step', 'ask', 'answer', 'do', 'set', 'goal', 'notice')
+TRY_COND = re.compile(r'^\s*([a-z][a-z0-9]*)\s*(==|!=|<=|>=|<|>|=)\s*([\w.+-]+)\s*$')
+
+
+def parse_try(name, inner):
+    top, steps, cur, last = {'eq': []}, [], None, None
+    for line in inner.split('\n'):
+        if not line.strip():
+            continue
+        m = re.match(r'^\s*(%s):\s?(.*)$' % '|'.join(TRY_FIELDS), line)
+        if not m:
+            if last is None:
+                raise SystemExit('::: try %s: a line before any field: %r' % (name, line))
+            last[0][last[1]] = (last[0][last[1]] + ' ' + line.strip()) if last[1] != 'eq' else last[0][last[1]]
+            if last[1] == 'eq':
+                last[0]['eq'][-1] += ' ' + line.strip()
+            continue
+        key, val = m.group(1), m.group(2).strip()
+        if key == 'step':
+            cur = {'title': val, 'eq': []}
+            steps.append(cur)
+            last = (cur, 'title')
+            continue
+        target = cur if cur is not None else top
+        if cur is None and key != 'eq':
+            raise SystemExit('::: try %s: %s: comes before the first step:' % (name, key))
+        if key == 'eq':
+            target['eq'].append(val)
+            last = (target, 'eq')
+        else:
+            if key in target:
+                raise SystemExit('::: try %s: step %r has two %s: lines' % (name, cur['title'], key))
+            target[key] = val
+            last = (target, key)
+    if not steps:
+        raise SystemExit('::: try %s: no step:' % name)
+    for st in steps:
+        for part in re.split(r'\s+and\s+', st.get('goal', '')) if st.get('goal') else []:
+            if not TRY_COND.match(part):
+                raise SystemExit('::: try %s: goal %r: write key op value, joined by and (ops == != < <= > >=)' % (name, st['goal']))
+        for part in st.get('set', '').split():
+            if not re.fullmatch(r'[a-z][a-z0-9]*=[\w.+-]+', part):
+                raise SystemExit('::: try %s: set %r: write key=value pairs separated by spaces' % (name, st['set']))
+        if 'ask' in st and 'answer' not in st:
+            raise SystemExit('::: try %s: step %r asks without an answer:' % (name, st['title']))
+    return top, steps
+
+
+def try_html(name, inner):
+    top, steps = parse_try(name, inner)
+    m = re.search(r'data-nfig="([^"]+)"', figure(name))
+    if not m:
+        raise SystemExit('::: try %s: no figure with that name in src/figures' % name)
+    eqs = lambda lst: ''.join('<div class="eq nf-live">%s</div>' % math_token(t, True) for t in lst)
+    out = ['<div class="nf-try" data-for="%s">' % m.group(1),
+           '<div class="nf-try-head"><p class="nf-try-title">Try it</p><p class="nf-try-count">%d steps</p></div>' % len(steps),
+           eqs(top['eq']), '<ol class="nf-steps">']
+    for i, st in enumerate(steps):
+        attrs = ''.join(' data-%s="%s"' % (k, escape(st[k])) for k in ('set', 'goal') if st.get(k))
+        li = ['<li class="nf-step"%s>' % attrs, '<p class="nf-step-title"><span class="nf-step-n">Step %d.</span> %s</p>' % (i + 1, md_inline(st['title']))]
+        if st.get('ask'):
+            li.append('<p class="nf-ask">%s</p>' % md_inline(st['ask']))
+            li.append('<button class="nf-reveal" type="button" aria-expanded="false">Show answer</button><div class="nf-answer" hidden>%s</div>' % md_html(st['answer']))
+        if st.get('do'):
+            li.append('<p class="nf-do">%s</p>' % md_inline(st['do']))
+        if st.get('set') or st.get('goal'):
+            li.append('<p class="nf-act">%s<span class="nf-status" aria-live="polite"></span></p>'
+                      % ('<button class="nf-setup" type="button">Set it up</button>' if st.get('set') else ''))
+        li.append(eqs(st['eq']))
+        if st.get('notice'):
+            li.append('<button class="nf-reveal nf-reveal-notice" type="button" aria-expanded="false">What to notice</button><div class="nf-notice" hidden>%s</div>' % md_html(st['notice']))
+        li.append('</li>')
+        out.append(''.join(li))
+    out.append('</ol></div>')
+    return ''.join(out)
+
+
+def try_tex(name, inner):
+    top, steps = parse_try(name, inner)
+    body = [('\\[\n%s\n\\]' % t) for t in top['eq']]
+    for i, st in enumerate(steps):
+        part = ['\\trystep{Step %d. %s}' % (i + 1, tex_inline(st['title']))]
+        if st.get('ask'):
+            part.append('\\askq{%s}' % tex_inline(st['ask']))
+        if st.get('do'):
+            part.append('\\textit{Do:} %s' % tex_inline(st['do']))
+        part += ['\\[\n%s\n\\]' % t for t in st['eq']]
+        if st.get('answer'):
+            part.append('\\textit{Answer:} %s' % tex_inline(st['answer']))
+        if st.get('notice'):
+            part.append('\\textit{What you see:} %s' % tex_inline(st['notice']))
+        body.append('\n\n'.join(part))
+    return '\\begin{trybox}\n%s\n\\end{trybox}' % '\n\n'.join(body)
+
+
 def md_html(src):
     raw = []
 
     def fence(m):
-        kind, inner = m.group(1), m.group(2)
+        kind, name, inner = m.group(1), m.group(2), m.group(3)
+        if kind == 'try':
+            raw.append(try_html(name, inner))
+            return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
         label = BOX_LABELS.get(kind, '')
         raw.append('<div class="box %s">%s%s</div>' % (kind, '<p class="box-label">%s</p>' % label if label else '', md_html(inner)))
         return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
 
-    src = re.sub(r'^:::[ \t]*(\w+)[ \t]*\n(.*?)\n:::[ \t]*$', fence, src.replace('\r', ''), flags=re.M | re.S)
+    src = re.sub(BOX_RE, fence, src.replace('\r', ''))
     src = re.sub(r'\$\$(!?)(.+?)\$\$', lambda m: '\n\n$$%s%s$$\n\n' % (m.group(1), m.group(2)), src, flags=re.S)
     out = []
     for block in re.split(r'\n\s*\n', src.strip()):
@@ -726,7 +838,7 @@ def build_note(n):
     course = [m for m in NOTES if m['course'] == n['course']]
     others = ''
     if len(course) > 1:
-        others = '\n      <p class="toc-label">%s</p>\n      <ol class="toc-list">%s</ol>' % (escape(n['course']), ''.join(
+        others = '\n      <details class="toc-group">\n        <summary class="toc-label">%s</summary>\n        <ol class="toc-list">%s</ol>\n      </details>' % (escape(n['course']), ''.join(
             '<li><a href="%s"%s>%s %s</a></li>' % (note_url(m), ' aria-current="page"' if m is n else '', escape(m['label']), escape(m['title']))
             for m in course))
     article = """<article class="paper-page note-page">
@@ -737,8 +849,10 @@ def build_note(n):
       <p class="page-actions"><a href="/notes/">All notes</a><span aria-hidden="true">&middot;</span><button class="linkbtn rikuy-dl" type="button" data-rikuy="{dl}">Download for Rikuy</button></p>
     </header>
     <nav class="toc toc-wide" aria-label="On this page">
-      <p class="toc-label">On this page</p>
-      <ol class="toc-list">{toc}</ol>{others}
+      <details class="toc-group" open>
+        <summary class="toc-label">On this page</summary>
+        <ol class="toc-list">{toc}</ol>
+      </details>{others}
     </nav>
     <details class="toc toc-narrow">
       <summary>On this page</summary>
@@ -884,6 +998,7 @@ def tex_inline(s):
     s = re.sub(r'\[([^\]]+)\]\(([^)\s]+)\)', lambda m: stash('\\href{%s}{%s}' % (
         (BASE + m.group(2) if m.group(2).startswith('/') else m.group(2)).replace('%', '\\%').replace('#', '\\#'), tex_inline(m.group(1)))), s)
     s = tex_text(s)
+    s = re.sub(r'"([^"\n]+)"', r"``\1''", s)   # straight quotes as TeX's opening and closing quotes
     s = re.sub(r'\[([^\[\]]+)\]\\\{\.(key|label|ask)\\\}', lambda m: '\\%s{%s}' % (
         {'key': 'keyterm', 'label': 'sublabel', 'ask': 'askq'}[m.group(2)], m.group(1)), s)
     s = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', s)
@@ -923,10 +1038,13 @@ def md_tex(src, figs):
     box_env = {'short': 'shortbox', 'intuition': 'intuitionbox', 'note': 'notebox', 'takeaway': 'takeawaybox'}
 
     def fence(m):
-        raw.append('\\begin{%s}\n%s\n\\end{%s}' % (box_env.get(m.group(1), 'shortbox'), md_tex(m.group(2), figs), box_env.get(m.group(1), 'shortbox')))
+        if m.group(1) == 'try':
+            raw.append(try_tex(m.group(2), m.group(3)))
+        else:
+            raw.append('\\begin{%s}\n%s\n\\end{%s}' % (box_env.get(m.group(1), 'shortbox'), md_tex(m.group(3), figs), box_env.get(m.group(1), 'shortbox')))
         return '\n\n\x03%d\x03\n\n' % (len(raw) - 1)
 
-    src = re.sub(r'^:::[ \t]*(\w+)[ \t]*\n(.*?)\n:::[ \t]*$', fence, src.replace('\r', ''), flags=re.M | re.S)
+    src = re.sub(BOX_RE, fence, src.replace('\r', ''))
     src = re.sub(r'\$\$(!?)(.+?)\$\$', lambda m: '\n\n$$%s%s$$\n\n' % (m.group(1), m.group(2)), src, flags=re.S)
     out = []
     for block in re.split(r'\n\s*\n', src.strip()):
@@ -1007,6 +1125,9 @@ TEX_PREAMBLE = r"""\documentclass[11pt,a4paper]{article}
 \newtcolorbox{intuitionbox}{enhanced,frame hidden,colback=white,borderline west={1.5pt}{0pt}{keyblue},sharp corners,title={\textbf{Intuition}},coltitle=keyblue,colbacktitle=white,attach title to upper={\par}}
 \newtcolorbox{notebox}{colback=black!4,colframe=black!4,arc=2pt,title={\textbf{Note!}},coltitle=flagorange,colbacktitle=black!4,attach title to upper={\ }}
 \newtcolorbox{takeawaybox}{enhanced,frame hidden,colback=white,borderline west={1.5pt}{0pt}{flagorange},sharp corners,title={\textbf{Takeaway!}},coltitle=flagorange,colbacktitle=white,attach title to upper={\ }}
+\newtcolorbox{trybox}{enhanced,frame hidden,colback=white,borderline west={1.5pt}{0pt}{askgreen},sharp corners,title={\textbf{Try it} \normalfont\small (live in Rikuy and on the website)},coltitle=askgreen,colbacktitle=white,attach title to upper={\par}}
+\newcommand{\trystep}[1]{\par\smallskip\textcolor{labelpurple}{\textbf{#1}}\par}
+\newcommand{\nv}[2]{#2}
 \newtcolorbox{resultbox}{colback=white,colframe=black!25,arc=2pt,boxrule=0.5pt}
 \title{\vspace{-1.5em}\textbf{@LABEL@: @TITLE@}}
 \author{@COURSE@ \quad\textperiodcentered\quad Pedro F. Rackebrandt}

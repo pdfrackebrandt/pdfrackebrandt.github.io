@@ -122,3 +122,35 @@
 :root[data-theme="dark"] .nf-band{fill-opacity:.16}
 :root[data-theme="dark"] .nf-hist{fill-opacity:.24}
 :root[data-theme="dark"] .nf-par{fill-opacity:.22}
+
+/* Try it: the guided steps under a figure (build.py ::: try, notes.js wireTry) */
+.nf-try{border:1px solid var(--rule);border-left:3px solid var(--c-ask);border-radius:4px;padding:12px 16px 14px;display:flex;flex-direction:column;gap:10px;background:var(--paper)}
+.nf-try-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px}
+.explainer p.nf-try-title{margin:0;font-weight:700;font-size:1.05rem;color:var(--c-ask)}
+.explainer p.nf-try-count{margin:0;font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+.nf-dots{display:flex;flex-wrap:wrap;gap:6px}
+.nf-dot{width:30px;height:30px;border-radius:50%;border:1px solid var(--rule);background:none;color:var(--muted);font-family:var(--f-mono);font-size:.75rem;cursor:pointer;transition:border-color .15s,color .15s,background .15s}
+.nf-dot:hover{border-color:var(--c-ask);color:var(--ink)}
+.nf-dot.is-current{border-color:var(--c-ask);color:var(--ink);font-weight:700}
+.nf-dot.is-done{background:var(--c-ask);border-color:var(--c-ask);color:var(--paper)}
+.nf-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.nf-step{display:flex;flex-direction:column;gap:8px}
+.nf-try.is-stepped .nf-step:not(.is-current){display:none}
+.explainer p.nf-step-title{margin:0;font-weight:700;color:var(--c-label)}
+.explainer p.nf-ask{margin:0;font-weight:700;color:var(--c-ask)}
+.explainer p.nf-do{margin:0;color:var(--ink)}
+.nf-answer,.nf-notice{border-left:2px solid var(--rule);padding:2px 0 2px 12px;display:flex;flex-direction:column;gap:8px}
+.nf-notice{border-left-color:var(--c-flag)}
+.nf-reveal,.nf-setup,.nf-back,.nf-next{align-self:flex-start;font-family:var(--f-mono);font-size:.75rem;color:var(--ink-soft);background:none;border:1px solid var(--rule);border-radius:3px;padding:6px 12px;min-height:34px;cursor:pointer;transition:border-color .15s,color .15s}
+.nf-reveal:hover,.nf-setup:hover,.nf-back:hover:not(:disabled),.nf-next:hover:not(:disabled){border-color:var(--c-ask);color:var(--ink)}
+.nf-setup{border-color:var(--c-ask);color:var(--c-ask);font-weight:700}
+.nf-back:disabled,.nf-next:disabled{opacity:.4;cursor:default}
+.explainer p.nf-act{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.nf-status{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+.nf-status.is-done{color:var(--c-ask);font-weight:700}
+.nf-status.is-done::before{content:"\2713\00a0"}
+.nf-try.no-api .nf-setup,.nf-try.no-api .nf-status{display:none}
+.nf-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--rule-soft);padding-top:10px}
+.nf-where{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+.nf-live .katex .nv{transition:color .2s}
+@media (prefers-reduced-motion: reduce){.nf-dot,.nf-reveal,.nf-setup{transition:none}}

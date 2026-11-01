@@ -1,14 +1,15 @@
 /* L3 figures, drawn by /assets/figs/l3.js. Colours come from the site tokens, so dark mode follows. */
 .nfig .l3-it{font-style:italic}
 .nfig .l3-small{font-size:10px}
-.nfig .l3-rlab{fill:var(--signal)}
+.nfig .l3-rlab{fill:var(--c-key)}
 .nfig .l3-cb{fill:var(--ink)}
 .nfig .l3-cbh{fill:var(--fig-blue)}
 /* projection */
 .l3-span{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:5 4;fill:none}
 .l3-pvec{stroke:var(--fig-blue);stroke-opacity:.3;stroke-width:6;stroke-linecap:round}
-.l3-res{stroke:var(--signal);stroke-width:2;stroke-linecap:round}
-.l3-rt{fill:none;stroke:var(--signal);stroke-width:1}
+/* the residual My is red, the colour of My in its Try it equation */
+.l3-res{stroke:var(--c-key);stroke-width:2;stroke-linecap:round}
+.l3-rt{fill:none;stroke:var(--c-key);stroke-width:1}
 .l3-pdot{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
 /* rank */
 .l3-lat{stroke:var(--fig-blue);stroke-opacity:.16;stroke-width:1;fill:none}
@@ -16,16 +17,18 @@
 .l3-colsp{stroke:var(--green);stroke-opacity:.22;stroke-width:12;stroke-linecap:round}
 .l3-path1{stroke:var(--fig-blue);stroke-width:1.75;stroke-dasharray:5 3;fill:none}
 .l3-path2{stroke:var(--green);stroke-width:1.75;stroke-dasharray:5 3;fill:none}
-.l3-miss{stroke:var(--signal);stroke-width:1.25;stroke-dasharray:2 3}
-.l3-mdot{fill:var(--paper);stroke:var(--signal);stroke-width:1.5}
+/* the gap from b to the nearest Ac, red like b − Ac in its Try it equation */
+.l3-miss{stroke:var(--c-key);stroke-width:1.5;stroke-dasharray:2 3}
+.l3-mdot{fill:var(--paper);stroke:var(--c-key);stroke-width:1.5}
 .nf-knob.l3-kb{stroke:var(--ink)}
 /* volume */
 .l3-rot{touch-action:pan-y;cursor:grab}
 .l3-rot.is-drag{cursor:grabbing}
 .l3-rot:focus{outline:none}
 .l3-rot:focus-visible{outline:1.5px solid var(--accent);outline-offset:4px}
-.l3-drop{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:2 3}
-.l3-foot{fill:var(--ink-soft)}
+/* the height of V1 above the plane, purple like h in its Try it equation */
+.l3-drop{stroke:var(--c-label);stroke-width:1.5;stroke-dasharray:2 3}
+.l3-foot{fill:var(--c-label)}
 .l3-plane{fill:var(--green);fill-opacity:.1;stroke:var(--green);stroke-opacity:.35;stroke-width:1}
 .l3-face{fill:var(--fig-blue);fill-opacity:.1;stroke:none}
 .l3-edge{stroke:var(--fig-blue);stroke-opacity:.55;stroke-width:1.1}
