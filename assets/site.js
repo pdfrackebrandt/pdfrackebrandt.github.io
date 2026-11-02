@@ -476,15 +476,17 @@
       lock.querySelector('.sealed').remove();
       if(window.initNoteFigures) window.initNoteFigures(out);
       initCourses(out);
-      Array.prototype.forEach.call(out.querySelectorAll('.rikuy-dl'), download);
+      Array.prototype.forEach.call(out.querySelectorAll('.rikuy-dl'), function(btn){ download(btn); });
+      Array.prototype.forEach.call(out.querySelectorAll('.rikuy-edit'), editInRikuy);
       initToc();
       tabCount(lock);
       if(location.hash && location.hash.length>1){ var tgt=document.getElementById(decodeURIComponent(location.hash.slice(1))); if(tgt && out.contains(tgt)){ openTo(tgt); tgt.scrollIntoView(); } }
     }
     // Download for Rikuy: the note's LaTeX project, sealed like the note, opened here and saved as a zip
-    function download(btn){
+    function download(btn, before, after){
       btn.addEventListener('click', function(){
         var pass=recall(), label=btn.textContent; if(!pass || btn.disabled) return;
+        if(before) before();
         btn.disabled=true; btn.textContent='Preparing…';
         fetch(btn.getAttribute('data-rikuy'), {cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); }).then(function(box){
           return keyFor(pass, box.salt, box.iter).then(function(k){ return crypto.subtle.decrypt({name:'AES-GCM', iv:bytes(box.iv)}, k, bytes(box.ct)); }).then(function(buf){
@@ -492,11 +494,18 @@
             var a=document.createElement('a'); a.href=url; a.download=box.name || 'notes.zip'; document.body.appendChild(a); a.click(); a.remove();
             setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
             btn.textContent='Downloaded';
+            if(after) after();
           });
         }).catch(function(){ btn.textContent='Download failed, try again'; }).then(function(){
           setTimeout(function(){ btn.disabled=false; btn.textContent=label; }, 2200);
         });
       });
+    }
+    // Edit in Rikuy: Rikuy opens in a new tab (inside the click, so no popup blocker stops it), the zip downloads,
+    // and a line says to drop it there. Rikuy runs in a frame on claude.ai that cannot be handed a file, so the drop is his.
+    function editInRikuy(btn){
+      var help=btn.closest('header') && btn.closest('header').querySelector('.rikuy-help');
+      download(btn, function(){ window.open(btn.getAttribute('data-open'), '_blank', 'noopener'); }, function(){ if(help) help.hidden=false; });
     }
     function wire(lock){
       var form=lock.querySelector('.lock-form'), input=form.querySelector('input'), msg=lock.querySelector('.lock-msg'), busy=false;

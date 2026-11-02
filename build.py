@@ -26,6 +26,10 @@ NOTES_PATH = os.path.join(ROOT, 'data', 'notes.json')
 NOTES = []        # loaded in main(): data/notes.json (local only, git ignores it) or its sealed copy data/notes.json.sealed
 PASSWORD = None   # set in main() from NOTES_PASSWORD or .notes-password
 BASE = SITE['url'].rstrip('/')
+# Rikuy, Pedro's LaTeX editor, as published on claude.ai (it opens only for him). Notes listed in RIKUY_EDIT get
+# an Edit in Rikuy button: it opens Rikuy in a new tab and downloads the note's project to drop on it.
+RIKUY_APP = 'https://claude.ai/artifact/W7htGmmfauM4Z3KpjV9vzK'
+RIKUY_EDIT = {'microeconomics-l3'}
 VIEW = 'visual' if SITE.get('default_view') == 'visual' else 'list'   # how Research opens: 'list' or 'visual'
 YEAR = date.today().year
 
@@ -930,6 +934,16 @@ def fold_sections(body):
     return ''.join(out)
 
 
+def rikuy_edit(n):
+    if n['slug'] not in RIKUY_EDIT:
+        return {'edit': '', 'edit_help': ''}
+    return {'edit': '<span aria-hidden="true">&middot;</span><button class="linkbtn rikuy-edit" type="button" data-rikuy="%s" data-open="%s">Edit in Rikuy</button>'
+                    % (note_url(n) + 'rikuy.sealed', RIKUY_APP),
+            'edit_help': '\n      <p class="rikuy-help" hidden>Rikuy is open in a new tab and this note has downloaded as a zip. Drop the zip '
+                         'on Rikuy\'s page (or press Open there), then type on the page as you read. Rikuy keeps your copy in this '
+                         'browser; Save .zip and PDF download it.</p>'}
+
+
 def build_note(n):
     canonical = BASE + note_url(n)
     body = fold_sections(md_html(note_source(n)))
@@ -945,7 +959,7 @@ def build_note(n):
       <p class="eyebrow">{tag}</p>
       <h1>{title}</h1>
       <p class="lede">{lede}</p>
-      <p class="page-actions"><a href="/#notes/{course}">All lectures</a><span aria-hidden="true">&middot;</span><button class="linkbtn rikuy-dl" type="button" data-rikuy="{dl}">Download for Rikuy</button></p>
+      <p class="page-actions"><a href="/#notes/{course}">All lectures</a><span aria-hidden="true">&middot;</span><button class="linkbtn rikuy-dl" type="button" data-rikuy="{dl}">Download for Rikuy</button>{edit}</p>{edit_help}
     </header>
     <nav class="toc toc-wide" aria-label="On this page">
       <details class="toc-group" open>
@@ -961,7 +975,7 @@ def build_note(n):
 {body}
     </div>
   </article>""".format(tag=note_tag(n), title=escape(n['title']), lede=escape(n['summary']), toc=toc, others=others, body=indent(body, 6), course=course_slug(n['course']),
-           dl=note_url(n) + 'rikuy.sealed')
+           dl=note_url(n) + 'rikuy.sealed', **rikuy_edit(n))
     return note_head('Notes · %s' % SITE['name'], 'Private notes.', canonical, body) + """
 <body class="notes-body">
 <a class="skip" href="#main">Skip to content</a>

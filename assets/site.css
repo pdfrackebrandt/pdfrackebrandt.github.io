@@ -199,6 +199,7 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .page-actions{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:var(--step--1)}
 .page-actions a{display:inline-flex;align-items:center;min-height:36px}
 .page-actions span{color:var(--faint)}
+.rikuy-help{max-width:38rem;margin:6px 0 0;font-size:var(--step--1);color:var(--muted)}
 .linkbtn{display:inline-flex;align-items:center;min-height:36px;padding:0;border:0;background:none;font:inherit;color:var(--link);cursor:pointer;transition:color .15s}
 .linkbtn:hover{color:var(--accent)}
 .linkbtn:disabled{color:var(--muted);cursor:default}
