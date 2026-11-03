@@ -1,0 +1,21 @@
+/* L5 figures (assets/figs/l5.js). Colours only through the site tokens, so dark mode follows. */
+
+/* Frisch Waugh Lovell: the panel's fitted line in the red of \kr, the full regression's slope in the blue of \kb */
+.l5-pt{fill:var(--ink-soft);fill-opacity:.4}
+.l5-fit{stroke:var(--c-key);stroke-width:2.25;stroke-linecap:round}
+.l5-ref{stroke:var(--c-eq);stroke-width:1.75;stroke-dasharray:6 5}
+.l5-mean{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+[data-nfig="l5-fwl"] .nfig-read{min-height:3em}
+@container (max-width:520px){[data-nfig="l5-fwl"] .nfig-read{min-height:4.5em}}
+/* r̂ with a subscript y, in the buttons and the readout */
+[data-nfig="l5-fwl"] sub{font-size:.75em;line-height:0;vertical-align:-.3em}
+/* β̂ and θ̂: the site font sets a combining circumflex beside a Greek letter, so the hat is drawn here instead.
+   In the caption the combining mark stays in the text (the LaTeX caption reads it) but is not painted. */
+[data-nfig="l5-fwl"] .l5-hat{position:relative;display:inline-block}
+[data-nfig="l5-fwl"] .l5-hat::after{content:"\02C6";position:absolute;left:0;right:0;top:0;text-align:center;line-height:1;pointer-events:none}
+[data-nfig="l5-fwl"] .l5-mark{font-size:0}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l5-pt{fill-opacity:.5}
+}
+:root[data-theme="dark"] .l5-pt{fill-opacity:.5}
