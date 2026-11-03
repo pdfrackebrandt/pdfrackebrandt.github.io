@@ -54,11 +54,24 @@
 .l3-minline{stroke:var(--fig-blue);stroke-opacity:.6;stroke-width:4;stroke-linecap:round}
 .l3-bhat{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
 .l3-beta{fill:none;stroke:var(--signal);stroke-width:2;stroke-linecap:round}
+/* eigenvalues: the image of the unit circle and the level set x'Ax = 1; λ₁ red and λ₂ purple, as in their Try it equations */
+.l3-img{fill:var(--fig-blue);fill-opacity:.13;stroke:var(--fig-blue);stroke-width:1.75;stroke-linejoin:round}
+.l3-lvl{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.l3-lvl.l3-in{fill:var(--fig-blue);fill-opacity:.13}
+.l3-asym{fill:none;stroke:var(--green);stroke-width:1.5;stroke-dasharray:6 4}
+.l3-k1{stroke:var(--c-key);stroke-width:2.25;stroke-linecap:round}
+.l3-k2{stroke:var(--c-label);stroke-width:2.25;stroke-linecap:round}
+.l3-k1h,.l3-d1{fill:var(--c-key);stroke:none}
+.l3-k2h,.l3-d2{fill:var(--c-label);stroke:none}
+.nfig text.l3-t1{fill:var(--c-key)}
+.nfig text.l3-t2{fill:var(--c-label)}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]) .l3-face{fill-opacity:.16}
   :root:not([data-theme="light"]) .l3-plane{fill-opacity:.14}
   :root:not([data-theme="light"]) .l3-lat{stroke-opacity:.24}
+  :root:not([data-theme="light"]) .l3-img,:root:not([data-theme="light"]) .l3-lvl.l3-in{fill-opacity:.2}
 }
 :root[data-theme="dark"] .l3-face{fill-opacity:.16}
 :root[data-theme="dark"] .l3-plane{fill-opacity:.14}
 :root[data-theme="dark"] .l3-lat{stroke-opacity:.24}
+:root[data-theme="dark"] .l3-img,:root[data-theme="dark"] .l3-lvl.l3-in{fill-opacity:.2}

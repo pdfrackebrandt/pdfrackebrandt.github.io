@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="l1-dep">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="How Y is made">
+      <button type="button" class="nfig-opt" data-mode="normal" aria-pressed="true">Joint normal</button>
+      <button type="button" class="nfig-opt" data-mode="sign" aria-pressed="false">Y = SX</button>
+    </div>
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">correlation </span>ρ</span><input type="range" min="-0.95" max="0.95" step="0.05" value="0" data-k="rho"><span class="nfig-val" aria-hidden="true">0.00</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 360" role="img" aria-label="Scatter of 300 draws of X and Y with the green line E(Y | X). In the joint normal view the cloud tilts with the correlation ρ and is round at ρ = 0. In the Y = SX view, with S a random sign independent of X, the points fall on the two diagonals y = x and y = −x and the green line is flat."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">sample Corr(X, Y) = 0.04   sample Corr(X², Y²) = 0.01
+ρ = 0 and (X, Y) is jointly normal: X and Y are independent</p>
+  <figcaption>Each dot is one draw of (X, Y). In Joint normal, ρ tilts the cloud and the green line E(Y | X) = ρX tilts with it; at ρ = 0 the pair is independent. In Y = SX, S is a fair random sign independent of X, so every dot sits on y = x or y = −x. X and Y are both N(0, 1) and Corr(X, Y) = 0, yet |Y| = |X|, and Corr(X², Y²) = 1 gives it away. The pair is not jointly normal, so zero correlation does not mean independence.</figcaption>
+</figure>

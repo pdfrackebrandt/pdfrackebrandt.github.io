@@ -1,0 +1,12 @@
+<figure class="nfig" data-nfig="l3-eigen">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">a</span><input type="range" min="-2.5" max="2.5" step="0.1" value="2" data-k="a"><span class="nfig-val" aria-hidden="true">2.0</span></label>
+    <label class="nfig-range"><span class="nfig-name">b</span><input type="range" min="-2" max="2" step="0.1" value="0.8" data-k="b"><span class="nfig-val" aria-hidden="true">0.8</span></label>
+    <label class="nfig-range"><span class="nfig-name">c</span><input type="range" min="-2.5" max="2.5" step="0.1" value="1" data-k="c"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 300" role="img" aria-label="Two panels on the same axes for the symmetric matrix A with rows (a, b) and (b, c). The first shows the dashed unit circle and its image under A, an ellipse whose semiaxes are the absolute eigenvalues along the eigenvectors, drawn as a red arrow for lambda 1 and a purple arrow for lambda 2. The second shows the set where x′Ax = 1: an ellipse with semiaxes one over the root of each eigenvalue when A is positive definite, a hyperbola when A is indefinite, and empty when A has no positive eigenvalue."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">λ₁ = 2.44   λ₂ = 0.56   det A = λ₁λ₂ = 1.36: positive definite
+the circle goes onto an ellipse with semiaxes |λ₁| = 2.44, |λ₂| = 0.56: area × |det A| = 1.36
+x′Ax = 1 is an ellipse with semiaxes 1/√λ₁ = 0.64 along q₁ and 1/√λ₂ = 1.34 along q₂</p>
+  <figcaption>Move a, b and c of the symmetric A. In the first panel A maps the dashed unit circle onto the blue ellipse: its semiaxes are |λ₁| and |λ₂| along the eigenvectors q₁ (red) and q₂ (purple), and its area is |det A| times the circle's. A negative λ turns its arrow against q. The second panel shows x′Ax = 1 on the same axes. For a positive definite A it is an ellipse with semiaxes 1/√λ₁ and 1/√λ₂, so the long axis of one ellipse is the short axis of the other. Push b until det A &lt; 0 and it opens into a hyperbola with the green lines x′Ax = 0 as asymptotes; with no positive eigenvalue it is empty.</figcaption>
+</figure>

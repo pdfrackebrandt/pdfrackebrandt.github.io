@@ -13,3 +13,5 @@
 .nfig .l1-qg{stroke:var(--c-label)}
 .nfig .l1-qd{fill:var(--c-label)}
 .nfig text.l1-qt{fill:var(--c-label)}
+/* zero correlation against independence */
+.l1-frame{fill:none;stroke:var(--rule);stroke-width:1}

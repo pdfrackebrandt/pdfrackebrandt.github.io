@@ -1,4 +1,5 @@
-/* Lecture 1 figures: joint table mosaic, zero covariance with dependence, chi squared t F from normals, quantiles and the PIT.
+/* Lecture 1 figures: joint table mosaic, zero covariance with dependence, chi squared t F from normals, quantiles and the PIT,
+   zero correlation against independence for continuous variables.
    Drawn with the helpers that notes.js exposes as window.NF; colours come from the site tokens through classes. */
 (function(){
   'use strict';
@@ -217,7 +218,7 @@
       for(k=0;k<2;k++) if(p[0]>=cs[k][0] && p[0]<=cs[k][1] && Math.abs(p[1]-ys(c[k]))<16){ e.preventDefault(); return; }
     },{passive:false});
     /* Try it: w = P(X₂ = 1), the levels c₀ and c₁, and what the readout derives from them.
-       set takes reset (the Slide 68 table button), w, c0, c1 (dragged values, to 0.01) and indep (Make independent), in that order. */
+       set takes reset (the Wage table button), w, c0, c1 (dragged values, to 0.01) and indep (Make independent), in that order. */
     api=NF.api({
       get:function(){
         var p1=(1-w)*c[0]+w*c[1], f11=w*c[1], prod=p1*w, cov=w*(1-w)*(c[1]-c[0]), v1=p1*(1-p1);
@@ -578,6 +579,119 @@
     });
     draw();
     watch(svg,draw);
+    return api;
+  });
+
+  /* ---------- 5. Zero correlation is not independence: the joint normal against Y = SX ---------- */
+  NF.register('l1-dep',function(fig){
+    var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
+    if(!svg) return;
+    /* one set of draws feeds both views: X = Z1, Y = ρZ1 + √(1 − ρ²)Z2 for the joint normal, Y = S Z1 with a fair sign S */
+    var N=300, SEED=20261104, seed=SEED, Z1=new Float64Array(N), Z2=new Float64Array(N), SG=new Float64Array(N), rho=0, cur=null, raf=0, ST={}, api=null;
+    var LIM=3.5, W=520, H=360, top=40, side=300, x0=120, sx, sy, el={};
+    var rr=range(fig,'rho',2,function(v){ rho=v; place(false); });
+    if(rr) rho=rr.v();
+    var mode=seg(fig,'data-mode',function(v){ if(v===mode || (v!=='normal' && v!=='sign')) return; mode=v; lock(); place(true); });
+    if(mode!=='normal' && mode!=='sign') mode='normal';
+    var nb=fig.querySelector('.nfig-new');
+    if(nb) nb.addEventListener('click',function(){ seed++; gen(); place(true); });
+    function lock(){
+      if(!rr) return;
+      var off=mode!=='normal';
+      rr.el.disabled=off;
+      rr.wrap.setAttribute('class',off?'nfig-range is-off':'nfig-range');
+    }
+    function gen(){
+      var rnd=mulberry32(seed), i, u, t, rad;
+      for(i=0;i<N;i++){
+        u=1-rnd(); t=2*Math.PI*rnd(); rad=Math.sqrt(-2*Math.log(u));
+        Z1[i]=rad*Math.cos(t); Z2[i]=rad*Math.sin(t); SG[i]=rnd()<0.5?-1:1;
+      }
+    }
+    function data(){
+      var P=[], i, c=Math.sqrt(1-rho*rho);
+      for(i=0;i<N;i++) P.push(mode==='normal'?[Z1[i],rho*Z1[i]+c*Z2[i]]:[Z1[i],SG[i]*Z1[i]]);
+      return P;
+    }
+    /* sample correlation of (X, Y), or of (X², Y²) when sq */
+    function corr(P,sq){
+      var n=P.length, mx=0, my=0, sxx=0, syy=0, sxy=0, i, a, b;
+      for(i=0;i<n;i++){ a=sq?P[i][0]*P[i][0]:P[i][0]; b=sq?P[i][1]*P[i][1]:P[i][1]; mx+=a; my+=b; }
+      mx/=n; my/=n;
+      for(i=0;i<n;i++){ a=(sq?P[i][0]*P[i][0]:P[i][0])-mx; b=(sq?P[i][1]*P[i][1]:P[i][1])-my; sxx+=a*a; syy+=b*b; sxy+=a*b; }
+      return sxy/Math.sqrt(sxx*syy);
+    }
+    function draw(animate){
+      var g, rows, v, i, rad;
+      W=measure(svg); frame(svg,W,H);
+      side=Math.min(W-70,300); x0=Math.round((W-side)/2)+10;
+      rows=key(S('g',null,svg),[['rect','nf-pt','300 draws of (X, Y)'],['line','l1-cm','E(Y | X)']],x0,13,W-6);
+      top=rows*16+24; H=top+side+24;
+      svg.setAttribute('viewBox','0 0 '+W+' '+H);
+      sx=lin(-LIM,LIM,x0,x0+side); sy=lin(-LIM,LIM,top+side,top);
+      g=S('g',null,svg);
+      for(v=-3;v<=3;v++){
+        line(g,C(sx(v)),top,C(sx(v)),top+side,v===0?'nf-ax':'nf-grid');
+        line(g,x0,C(sy(v)),x0+side,C(sy(v)),v===0?'nf-ax':'nf-grid');
+        text(g,sx(v),top+side+15,tl(v),null,'middle');
+        text(g,x0-6,sy(v)+4,tl(v),null,'end');
+      }
+      S('rect',{x:x0,y:top,width:side,height:side,'class':'l1-frame'},g);
+      text(g,x0+side+10,top+side+15,'x','nf-title');
+      text(g,x0-6,top-9,'y','nf-title','end');
+      el.g=clip(svg,x0,top,side,side);
+      rad=W>=420?2.6:2.2; el.pts=[];
+      for(i=0;i<N;i++) el.pts.push(S('circle',{r:rad,'class':'nf-pt'},el.g));
+      el.cm=line(el.g,0,0,0,0,'l1-cm');
+      place(animate);
+    }
+    function apply(Q){ for(var i=0;i<N;i++) at(el.pts[i],Q[i][0],Q[i][1]); cur=Q; }
+    function place(animate){
+      var P=data(), Q=[], i, b=mode==='normal'?rho:0, from, t0=0;
+      for(i=0;i<N;i++) Q.push([sx(P[i][0]),sy(P[i][1])]);
+      setLine(el.cm,sx(-LIM),sy(-b*LIM),sx(LIM),sy(b*LIM));
+      report(corr(P,false),corr(P,true));
+      cancelAnimationFrame(raf);
+      if(!animate || NF.reduce || !cur || cur.length!==N){ apply(Q); return; }
+      from=cur;
+      function anim(ts){
+        if(!t0) t0=ts;
+        var k=Math.min(1,(ts-t0)/340), e=k<0.5?2*k*k:1-Math.pow(-2*k+2,2)/2, M=[], j;
+        for(j=0;j<N;j++) M.push([from[j][0]+(Q[j][0]-from[j][0])*e, from[j][1]+(Q[j][1]-from[j][1])*e]);
+        apply(M);
+        if(k<1) raf=requestAnimationFrame(anim);
+      }
+      raf=requestAnimationFrame(anim);
+    }
+    function report(r,rsq){
+      var indep=mode==='normal' && Math.abs(rho)<1e-9;
+      ST={mode:mode, rho:rho, truth:mode==='normal'?rho:0, tsq:mode==='normal'?rho*rho:1, r:r, rsq:rsq, indep:indep, sample:seed-SEED};
+      if(api) api.changed();
+      if(!out) return;
+      out.textContent='sample Corr(X, Y) = '+fmt(r,2)+'   sample Corr(X², Y²) = '+fmt(rsq,2)+'\n';
+      if(mode==='normal'){
+        out.appendChild(document.createTextNode(indep?'ρ = 0 and (X, Y) is jointly normal: X and Y are independent':
+          'ρ = '+fmt(rho,2)+': dependent, with E(Y | X) = '+fmt(rho,2)+'X and Corr(X², Y²) = ρ² = '+(rho*rho).toFixed(2)));
+      } else {
+        out.appendChild(document.createTextNode('true Corr(X, Y) = 0 and E(Y | X) = 0, '));
+        warn(out,'yet |Y| = |X|: X and Y are dependent');
+        out.appendChild(document.createTextNode('\nX and Y are each N(0, 1), but the pair is not jointly normal'));
+      }
+    }
+    /* Try it: the view, ρ, the population Corr(X, Y) (truth) and Corr(X², Y²) (tsq), the sample values r and rsq,
+       whether X and Y are independent, and sample (presses of New sample, 0 for the first draws).
+       set takes sample, mode (normal or sign) and rho. */
+    api=NF.api({
+      get:function(){ var o={}, q; for(q in ST) o[q]=ST[q]; return o; },
+      set:function(st){
+        var s2;
+        if('sample' in st){ s2=SEED+Math.max(0,Math.round(+st.sample)||0); if(s2!==seed){ seed=s2; gen(); place(false); } }
+        if('mode' in st) NF.press(fig,'data-mode',String(st.mode));
+        if('rho' in st && rr) rr.set(+st.rho);
+      }
+    });
+    gen(); lock(); draw(false);
+    watch(svg,function(){ cur=null; draw(false); });
     return api;
   });
 

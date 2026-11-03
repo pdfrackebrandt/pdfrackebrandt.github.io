@@ -1,5 +1,5 @@
 /* L3 figures: projection onto a line, rank and the reach of Ac = b, volume in three dimensions,
-   quadratic forms and definiteness, the least squares bowl.
+   quadratic forms and definiteness, the least squares bowl, eigenvalues as stretches and as the axes of x'Ax = 1.
    Drawn with the helpers of /assets/notes.js (window.NF); colours come from CSS variables in /assets/figs/l3.css. */
 (function(){
   'use strict';
@@ -697,6 +697,145 @@
       }
     });
     gen(); stats(); draw();
+    watch(svg,draw);
+    return api;
+  });
+
+  /* ---------- 6. Eigenvalues: the image of the unit circle and the level set x'Ax = 1 ---------- */
+  NF.register('l3-eigen',function(fig){
+    var svg=fig.querySelector('svg'), out=fig.querySelector('.nfig-read');
+    if(!svg) return;
+    var A=[2,0.8,1], LO=-3.3, HI=3.3, W=520, H=300, P1, P2, el={}, cur={}, api;
+    var NAME={pd:'positive definite', psd:'positive semidefinite, singular', ind:'indefinite', nd:'negative definite',
+      nsd:'negative semidefinite, singular', zero:'A = 0'};
+    var rs={a:range(fig,'a',1,function(v){ A[0]=v; update(); }), b:range(fig,'b',1,function(v){ A[1]=v; update(); }), c:range(fig,'c',1,function(v){ A[2]=v; update(); })};
+    if(rs.a && rs.b && rs.c) A=[rs.a.v(),rs.b.v(),rs.c.v()];
+    function panel(x0,y0,side){
+      var u=side/(HI-LO);
+      return {x0:x0, y0:y0, side:side, u:u, sx:function(v){ return x0+(v-LO)*u; }, sy:function(v){ return y0+(HI-v)*u; }};
+    }
+    function axes(g,P,title,every){
+      var v;
+      for(v=Math.ceil(LO);v<=HI;v++){
+        line(g,C(P.sx(v)),P.y0,C(P.sx(v)),P.y0+P.side,v===0?'nf-ax':'nf-grid');
+        line(g,P.x0,C(P.sy(v)),P.x0+P.side,C(P.sy(v)),v===0?'nf-ax':'nf-grid');
+        if(every || v%2===0){ text(g,P.sx(v),P.y0+P.side+14,tl(v),null,'middle'); text(g,P.x0-6,P.sy(v)+4,tl(v),null,'end'); }
+      }
+      S('rect',{x:P.x0,y:P.y0,width:P.side,height:P.side,'class':'l3-frame'},g);
+      text(g,P.x0,P.y0-8,title,'nf-title');
+    }
+    function draw(){
+      var g, side, mL=26, top=24, bot=22, gap=26, wide, k, i;
+      W=measure(svg); wide=W>=480;
+      if(wide){ side=Math.min(250,Math.floor((W-2*mL-gap)/2)); H=top+side+bot; }
+      else { side=Math.min(250,W-mL-12); H=2*(top+side+bot)+6; }
+      frame(svg,W,H);
+      if(wide){ k=(W-(2*side+2*mL+gap))/2; P1=panel(k+mL,top,side); P2=panel(k+2*mL+side+gap,top,side); }
+      else { k=(W-(side+mL))/2; P1=panel(k+mL,top,side); P2=panel(k+mL,2*top+side+bot+6,side); }
+      g=S('g',null,svg);
+      axes(g,P1,'Ax for x on the unit circle',side>=230);
+      axes(g,P2,'the level set x′Ax = 1',side>=230);
+      P1.gc=clip(svg,P1.x0,P1.y0,side,side);
+      P2.gc=clip(svg,P2.x0,P2.y0,side,side);
+      el.dir=[];
+      /* the eigenvector lines through the origin, dashed, in both panels */
+      for(i=0;i<2;i++) el.dir.push([line(P1.gc,0,0,0,0,'l3-span'),line(P1.gc,0,0,0,0,'l3-span'),line(P2.gc,0,0,0,0,'l3-span'),line(P2.gc,0,0,0,0,'l3-span')]);
+      S('circle',{cx:R(P1.sx(0)),cy:R(P1.sy(0)),r:R(P1.u),'class':'nf-unit'},P1.gc);
+      el.img=S('path',{'class':'l3-img'},P1.gc);
+      el.lam=[vec(P1.gc,'l3-k1','l3-k1h'),vec(P1.gc,'l3-k2','l3-k2h')];
+      el.lt=[tag(svg,'l3-t1'),tag(svg,'l3-t2')];
+      S('circle',{cx:R(P2.sx(0)),cy:R(P2.sy(0)),r:R(P2.u),'class':'nf-unit'},P2.gc);
+      el.zero=S('path',{'class':'l3-asym'},P2.gc);
+      el.lvl=S('path',{'class':'l3-lvl'},P2.gc);
+      el.ax=[line(P2.gc,0,0,0,0,'l3-k1'),line(P2.gc,0,0,0,0,'l3-k2')];
+      el.ad=[S('circle',{r:0,'class':'l3-d1'},P2.gc),S('circle',{r:0,'class':'l3-d2'},P2.gc)];
+      el.at=[tag(svg,'l3-t1'),tag(svg,'l3-t2')];
+      el.empty=[tag(svg,'nf-lab'),tag(svg,'nf-lab')];
+      update();
+    }
+    function ints(){ return [Math.round(A[0]*10),Math.round(A[1]*10),Math.round(A[2]*10)]; }
+    /* a label on a paper box, so the lines under it never cut through the text */
+    function tag(g,cls){ return {bg:S('rect',{rx:2,height:15,width:0,'class':'nf-abg'},g), t:text(g,0,0,'',cls,'middle')}; }
+    /* put the label s beside the point p (svg px), its near edge gap px away along the unit direction u, inside panel P;
+       far clears the whole box off the line through p across u, for a label with no arrow under it */
+    function label(o,P,p,u,gap,s,far){
+      var w, h=7.5, d, x, y;
+      o.t.textContent=s;
+      if(!s){ o.bg.setAttribute('width',0); return; }
+      w=NF.tw(o.t,s)+8;
+      d=Math.abs(u[0])>1e-6?w/2/Math.abs(u[0]):1e9; x=Math.abs(u[1])>1e-6?h/Math.abs(u[1]):1e9;
+      d=gap+(far?Math.max(d<1e9?d:0,x<1e9?x:0):Math.min(d,x));
+      x=clamp(p[0]+u[0]*d,P.x0+w/2+2,P.x0+P.side-w/2-2); y=clamp(p[1]+u[1]*d,P.y0+h+2,P.y0+P.side-h-2);
+      moveTo(o.t,x,y+4);
+      o.bg.setAttribute('x',R(x-w/2)); o.bg.setAttribute('y',R(y-h)); o.bg.setAttribute('width',R(w));
+    }
+    function update(){ paint(); if(api) api.changed(); }
+    function paint(){
+      var n=ints(), d100=n[0]*n[2]-n[1]*n[1], det=d100/100, e=eig2(A[0],A[1],A[2]), L=[e.l1,e.l2], ca=Math.cos(e.al), sa=Math.sin(e.al),
+          Q=[[ca,sa],[-sa,ca]], kind, iso, i, t, p=[], o1, o2, T, u, len, ax=[0,0], lines, s, s2, s3, sp, empty, r=(HI-LO);
+      if(d100===0){ if(Math.abs(L[0])<Math.abs(L[1])) L[0]=0; else L[1]=0; }
+      kind=d100>0?(n[0]>0?'pd':'nd'):d100<0?'ind':(n[0]===0 && n[2]===0)?'zero':(n[0]>=0 && n[2]>=0)?'psd':'nsd';
+      iso=n[0]===n[2] && n[1]===0;
+      empty=kind==='nd' || kind==='nsd' || kind==='zero';
+      o1=[P1.sx(0),P1.sy(0)]; o2=[P2.sx(0),P2.sy(0)];
+      for(i=0;i<2;i++){
+        setLine(el.dir[i][0],o1[0],o1[1],P1.sx(r*Q[i][0]),P1.sy(r*Q[i][1])); setLine(el.dir[i][1],o1[0],o1[1],P1.sx(-r*Q[i][0]),P1.sy(-r*Q[i][1]));
+        setLine(el.dir[i][2],o2[0],o2[1],P2.sx(r*Q[i][0]),P2.sy(r*Q[i][1])); setLine(el.dir[i][3],o2[0],o2[1],P2.sx(-r*Q[i][0]),P2.sy(-r*Q[i][1]));
+      }
+      /* the image of the unit circle: Ax for x = (cos t, sin t) */
+      for(i=0;i<=180;i++){ t=i/180*2*Math.PI; p.push([P1.sx(A[0]*Math.cos(t)+A[1]*Math.sin(t)),P1.sy(A[1]*Math.cos(t)+A[2]*Math.sin(t))]); }
+      el.img.setAttribute('d',poly(p)+'Z');
+      /* A q = λ q: the arrow λ q points along q when λ > 0 and against it when λ < 0 */
+      for(i=0;i<2;i++){
+        T=[P1.sx(L[i]*Q[i][0]),P1.sy(L[i]*Q[i][1])];
+        len=Math.hypot(T[0]-o1[0],T[1]-o1[1]);
+        u=L[i]<0?[-Q[i][0],Q[i][1]]:[Q[i][0],-Q[i][1]];
+        if(setVec(el.lam[i],o1[0],o1[1],T[0],T[1],0)) label(el.lt[i],P1,T,u,5,'λ'+(i?'₂':'₁')+' = '+fmt(L[i],2));
+        else label(el.lt[i],P1,o1,[Q[i][0],-Q[i][1]],4+len,'λ'+(i?'₂':'₁')+' = '+fmt(L[i],2),true);
+      }
+      /* x'Ax = 1 along the eigenvectors: λ1 z1² + λ2 z2² = 1, so a positive λ gives the semiaxis 1/√λ */
+      lines=empty?[]:conic(L[0],L[1],e.al,1,[0,0],r*1.6);
+      el.lvl.setAttribute('d',pathOf(lines,P2.sx,P2.sy)+(kind==='pd'?'Z':''));
+      el.lvl.setAttribute('class',kind==='pd'?'l3-lvl l3-in':'l3-lvl');
+      el.zero.setAttribute('d',(kind==='ind' || kind==='psd' || kind==='nsd')?pathOf(conic(L[0],L[1],e.al,0,[0,0],r*1.6),P2.sx,P2.sy):'');
+      for(i=0;i<2;i++){
+        if(L[i]>0 && !empty){
+          ax[i]=1/Math.sqrt(L[i]);
+          T=[P2.sx(ax[i]*Q[i][0]),P2.sy(ax[i]*Q[i][1])];
+          setLine(el.ax[i],o2[0],o2[1],T[0],T[1]); el.ad[i].setAttribute('r',3.5); at(el.ad[i],T[0],T[1]);
+          label(el.at[i],P2,T,[Q[i][0],-Q[i][1]],6,'1/√λ'+(i?'₂':'₁')+' = '+ax[i].toFixed(2));
+        } else {
+          setLine(el.ax[i],0,0,0,0); el.ad[i].setAttribute('r',0); label(el.at[i],P2,o2,[0,0],0,'');
+        }
+        /* with nothing to show on the right, its eigenvector lines go too */
+        el.dir[i][2].setAttribute('class',empty?'l3-span nf-hide':'l3-span'); el.dir[i][3].setAttribute('class',empty?'l3-span nf-hide':'l3-span');
+      }
+      label(el.empty[0],P2,[o2[0],o2[1]-9],[0,0],0,empty?'empty: no x has x′Ax = 1':'');
+      label(el.empty[1],P2,[o2[0],o2[1]+9],[0,0],0,empty?'since x′Ax ≤ 0 for every x':'');
+      cur={a:A[0], b:A[1], c:A[2], l1:L[0], l2:L[1], det:det, tr:A[0]+A[2], area:Math.abs(det), kind:kind, iso:iso,
+        ax1:ax[0], ax2:ax[1], angle:e.al*180/Math.PI, empty:empty};
+      if(!out) return;
+      s='λ₁ = '+fmt(L[0],2)+'   λ₂ = '+fmt(L[1],2)+'   det A = λ₁λ₂ = '+fmt(det,2)+': '+NAME[kind]+(iso && kind!=='zero'?', and every vector is an eigenvector':'');
+      if(kind==='zero') s2='\nA sends every x to 0';
+      else if(d100===0) s2='\nthe circle goes onto a segment of half length |λ'+(L[0]?'₁':'₂')+'| = '+Math.abs(L[0]||L[1]).toFixed(2)+': area × 0';
+      else s2='\nthe circle goes onto an ellipse with semiaxes |λ₁| = '+Math.abs(L[0]).toFixed(2)+', |λ₂| = '+Math.abs(L[1]).toFixed(2)+': area × |det A| = '+Math.abs(det).toFixed(2);
+      if(kind==='pd') s3='\nx′Ax = 1 is an ellipse with semiaxes 1/√λ₁ = '+ax[0].toFixed(2)+' along q₁ and 1/√λ₂ = '+ax[1].toFixed(2)+' along q₂';
+      else if(kind==='psd') s3='\nx′Ax = 1 is two parallel lines, 1/√λ₁ = '+ax[0].toFixed(2)+' from the origin along q₁, and x′Ax = 0 along q₂';
+      else if(kind==='ind') s3='\nx′Ax = 1 is a hyperbola through ±q₁/√λ₁, with 1/√λ₁ = '+ax[0].toFixed(2)+'; the green lines x′Ax = 0 are its asymptotes';
+      else s3=null;
+      out.textContent=s+s2+(s3||'\n');
+      if(!s3) warn(out,'x′Ax ≤ 0 for every x, so x′Ax = 1 has no solution: the level set is empty');
+    }
+    /* the Try it steps read A, its eigenvalues (l1 ≥ l2), det, trace, the kind (pd psd ind nd nsd zero), the semiaxes
+       1/√λ of x′Ax = 1 (ax1, ax2; 0 when that λ is not positive), the angle of q1 in degrees, and empty; set takes a, b, c */
+    api=NF.api({
+      get:function(){ var o={}, k; for(k in cur) o[k]=cur[k]; return o; },
+      set:function(st){
+        var k=['a','b','c'], j;
+        for(j=0;j<3;j++) if(k[j] in st && rs[k[j]]) rs[k[j]].set(+st[k[j]]);
+      }
+    });
+    draw();
     watch(svg,draw);
     return api;
   });
