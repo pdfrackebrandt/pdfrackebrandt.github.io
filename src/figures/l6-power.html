@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="l6-power">
+  <div class="nfig-seg" role="group" aria-label="Alternative hypothesis">
+    <button type="button" class="nfig-opt" data-side="gt" aria-pressed="true">H₁: θ &gt; r</button>
+    <button type="button" class="nfig-opt" data-side="lt" aria-pressed="false">H₁: θ &lt; r</button>
+    <button type="button" class="nfig-opt" data-side="ne" aria-pressed="false">H₁: θ ≠ r</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">size α</span><input type="range" min="0.01" max="0.2" step="0.01" value="0.05" data-k="alpha"><span class="nfig-val" aria-hidden="true">0.05</span></label>
+    <label class="nfig-range"><span class="nfig-name">truth δ</span><input type="range" min="-4" max="4" step="0.1" value="2" data-k="delta"><span class="nfig-val" aria-hidden="true">2.0</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag" viewBox="0 0 520 290" role="img" aria-label="Two normal densities of the test statistic z: N(0, 1), its distribution when the null theta equals r holds, and N(delta, 1), its distribution under the truth, where delta is theta minus r over the standard deviation of theta hat. Dashed lines mark the critical values. Beyond them, the area under the null density is hatched in red: the size alpha. The area under the true density beyond them is blue: the power. The rest of the true density is purple: the probability of a Type II error. Dragging across the plot moves delta."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">c = 1.645   size = 0.050   power = 0.639   P(Type II) = 0.361
+power = P(Z &gt; c − δ) = P(Z &gt; −0.355) = 0.639</p>
+  <figcaption>z is N(0, 1) if θ = r and N(δ, 1) in truth, with δ the gap θ − r in standard deviations of the estimator; move α and δ, or drag across the plot. Hatched red is the size, blue the power, purple the chance of a Type II error.</figcaption>
+</figure>

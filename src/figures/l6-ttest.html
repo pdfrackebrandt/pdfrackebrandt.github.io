@@ -1,0 +1,23 @@
+<figure class="nfig" data-nfig="l6-ttest">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Alternative hypothesis">
+      <button type="button" class="nfig-opt" data-side="ne" aria-pressed="true">Two sided</button>
+      <button type="button" class="nfig-opt" data-side="gt" aria-pressed="false">Right tail</button>
+      <button type="button" class="nfig-opt" data-side="lt" aria-pressed="false">Left tail</button>
+    </div>
+    <div class="nfig-seg" role="group" aria-label="Level of significance">
+      <button type="button" class="nfig-opt" data-alpha="0.1" aria-pressed="false">α = 10%</button>
+      <button type="button" class="nfig-opt" data-alpha="0.05" aria-pressed="true">5%</button>
+      <button type="button" class="nfig-opt" data-alpha="0.01" aria-pressed="false">1%</button>
+    </div>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">N − K</span><input type="range" min="0" max="39" step="1" value="29" data-k="df"><span class="nfig-val" aria-hidden="true">30</span></label>
+    <label class="nfig-range"><span class="nfig-name">observed t</span><input type="range" min="-5" max="5" step="0.01" value="2.1" data-k="t"><span class="nfig-val" aria-hidden="true">2.10</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag" viewBox="0 0 520 300" role="img" aria-label="The density of the t distribution with N minus K degrees of freedom, solid, against the standard normal density, dashed. A purple line marks the observed statistic t; the red area beyond it is the p value under t. Blue dashed lines mark the critical values of t with N minus K degrees of freedom and grey dashed lines those of N(0, 1). Dragging across the plot moves t."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">t = 2.10   p = 0.044 under t₃₀, 0.036 under N(0, 1)
+critical value ±2.042 under t₃₀, ±1.960 under N(0, 1)
+two sided at α = 0.05: reject H₀</p>
+  <figcaption>Move t, or drag across the plot, and change N − K: the red area is the p value under the t distribution with N − K degrees of freedom. Dashed lines mark its critical values (blue) and those of N(0, 1) (grey); the buttons pick the alternative H₁ and α.</figcaption>
+</figure>

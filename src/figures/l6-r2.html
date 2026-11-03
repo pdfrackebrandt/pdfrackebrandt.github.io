@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="l6-r2">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">sample size N</span><input type="range" min="15" max="100" step="1" value="30" data-k="n"><span class="nfig-val" aria-hidden="true">30</span></label>
+    <label class="nfig-range"><span class="nfig-name">noise regressors k</span><input type="range" min="0" max="27" step="1" value="3" data-k="k"><span class="nfig-val" aria-hidden="true">3</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 290" role="img" aria-label="R squared in blue and adjusted R squared in purple against the number of regressors K, for one simulated sample of N observations of y = 1 + 0.6x + u. K = 2 is the intercept and x; every further regressor is pure noise. A dashed line holds the R squared of the intercept and x model, and a red segment at the current K marks the gain in R squared from the noise regressors, the gain the F test weighs. R squared rises with every regressor; adjusted R squared does not."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">N = 30   K = 5 (intercept, x and 3 noise)   R² = 0.487   adjusted R² = 0.405
+F test of the 3 noise coefficients: v = 0.67 ~ F(3, 25), p = 0.579
+global significance: v = 5.93 ~ F(4, 25), p = 0.002</p>
+  <figcaption>One sample of y = 1 + 0.6x + u, fitted on an intercept and x and then on k extra regressors of pure noise, so K = k + 2. Move k and watch R² climb while adjusted R² does not; the readout tests the k noise coefficients with the F statistic from R², and New sample draws again.</figcaption>
+</figure>
