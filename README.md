@@ -27,9 +27,11 @@ Then run `cd tools && npm install` once (Node 18 or later) and build again.
 
 ## Lecture notes (private)
 
-Notes live at `/notes/<slug>/`, behind the Notes tab at the right end of the home page tab row. They are private:
-the build encrypts every page and panel that shows them (AES-256-GCM, key from the password by PBKDF2-SHA256, 310,000 rounds),
-and `assets/site.js` decrypts them in the browser once the visitor types the password. The repo holds only sealed copies.
+Notes live at `/notes/<slug>/`, behind the Notes tab at the right end of the home page tab row. A password gate keeps casual
+visitors and crawlers out; it is not strong protection (see Security notes). The build encrypts every page and panel that shows a note
+(AES-256-GCM, key from the password by PBKDF2-SHA256, 310,000 rounds), and `assets/site.js` decrypts them in the browser once the
+visitor types the password. The repo holds sealed copies of the note texts and the note list; the figures (`src/figures/`, `assets/figs/`,
+`data/figshots/`) are plain.
 
 1. Put the password in `.notes-password` at the repo root (git ignores it) or set `NOTES_PASSWORD`. Ask Pedro for it.
 2. Plain sources stay local and are ignored by git: `data/notes.json` (the list: `slug`, `course`, `label`, `title`, `summary`, `updated`)
@@ -46,8 +48,7 @@ Each note also has a "Download for Rikuy" button: a LaTeX project (main.tex from
 widget in `widgets/` and as a picture in `figures/`), sealed like the note in `notes/<slug>/rikuy.sealed`. Rikuy runs the widgets live; any other TeX prints the pictures.
 The pictures come from `tools/figshots.py` (Python Playwright) and are cached in `data/figshots/` by the widget's hash.
 
-Without the password the build still runs: it leaves `notes/` alone and reuses the sealed home panel.
-A short password keeps visitors out; it does not stop someone determined to guess it offline. Old commits still hold earlier plain versions.
+Without the password the build still runs: it leaves `notes/` alone, reuses the sealed home panel and keeps the math classes the notes need in `assets/math.css`.
 
 Never hand edit or replace a generated page (`index.html`, `notes/**/index.html`, `papers/**/index.html`): the next build overwrites it,
 and the strict CSP blocks inline styles, inline scripts and CDN libraries, so pasted HTML breaks.
@@ -65,8 +66,10 @@ and the strict CSP blocks inline styles, inline scripts and CDN libraries, so pa
 
 ## Security notes
 
-- Every page carries a Content Security Policy: scripts only from this site and GoatCounter, no inline scripts.
+- Every page carries a Content Security Policy: scripts only from this site and one GoatCounter file, no inline scripts.
+  That file is a fixed version (`count.v5.js`) loaded with its SRI hash, so the browser refuses any changed copy. To move to a newer
+  version, change `GOATCOUNTER_JS` and `GOATCOUNTER_SRI` in `build.py` together; GoatCounter lists both on its count.js versions help page.
+- The notes password keeps casual visitors and crawlers out. It is not strong protection: every sealed file is public, anyone can test
+  password guesses against it offline as fast as their hardware allows, and one password opens every note. The figures are not sealed at all.
 - The email address never appears in the HTML, the data files or the agent files. `assets/site.js` stores it shifted by one character code and decodes it only inside the click handler, so even the rendered page never carries it until someone clicks.
 - Only publish PDFs you are happy to see copied. Without a `pdf` link, a paper page offers "Draft on request".
-
-`body.html` is the old Artifact copy of the page and is no longer used.

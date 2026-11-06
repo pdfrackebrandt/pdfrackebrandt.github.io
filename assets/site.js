@@ -415,19 +415,21 @@
   }
   window.addEventListener('hashchange', routeCourses);
 
+  // the element a #fragment names; a malformed escape (#%E0) names nothing instead of throwing
+  function byHash(h){ try{ return document.getElementById(decodeURIComponent(h.slice(1))); }catch(e){ return null; } }
   // a link to a place inside a folded section opens that section first
   function openTo(el){ for(var d=el && el.closest('details.nsec'); d; d=d.parentElement && d.parentElement.closest('details.nsec')) d.open=true; }
   function initFold(){
     document.addEventListener('click', function(e){
       var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
-      var t=document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); if(t) openTo(t);
+      var t=byHash(a.getAttribute('href')); if(t) openTo(t);
     });
-    window.addEventListener('hashchange', function(){ if(location.hash.length>1) openTo(document.getElementById(decodeURIComponent(location.hash.slice(1)))); });
+    window.addEventListener('hashchange', function(){ if(location.hash.length>1) openTo(byHash(location.hash)); });
   }
   function initToc(){
     var nav=document.querySelector('.toc-wide'); if(!nav) return;
     var links=Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
-    var heads=links.map(function(a){ return document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); });
+    var heads=links.map(function(a){ return byHash(a.getAttribute('href')); });
     var queued=false;
     function update(){
       queued=false;
@@ -470,7 +472,9 @@
     }
     function reveal(lock, html, animate){
       var out=lock.querySelector('.unsealed');
-      out.appendChild(document.createRange().createContextualFragment(html));
+      // parsed in a template, so a script element in the note stays inert; the figures' scripts load with the page
+      var tpl=document.createElement('template'); tpl.innerHTML=html;
+      out.appendChild(tpl.content);
       lock.classList.add(animate && !reduce ? 'is-opening' : 'is-open');
       if(animate && !reduce) setTimeout(function(){ lock.classList.remove('is-opening'); lock.classList.add('is-open'); }, 900);
       lock.querySelector('.sealed').remove();
@@ -480,7 +484,7 @@
       Array.prototype.forEach.call(out.querySelectorAll('.rikuy-edit'), editInRikuy);
       initToc();
       tabCount(lock);
-      if(location.hash && location.hash.length>1){ var tgt=document.getElementById(decodeURIComponent(location.hash.slice(1))); if(tgt && out.contains(tgt)){ openTo(tgt); tgt.scrollIntoView(); } }
+      if(location.hash && location.hash.length>1){ var tgt=byHash(location.hash); if(tgt && out.contains(tgt)){ openTo(tgt); tgt.scrollIntoView(); } }
     }
     // Download for Rikuy: the note's LaTeX project, sealed like the note, opened here and saved as a zip
     function download(btn, before, after){
