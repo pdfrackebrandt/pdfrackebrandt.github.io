@@ -112,6 +112,28 @@ def tags_html(p):
     return ''.join(out)
 
 
+def full_text(p, mark=False):
+    """A paper's summary paragraphs, the folded "more" ones included; a {"list": [...]} entry gives its items (lettered with mark)."""
+    out = list(p['text'])
+    for x in p.get('more', []):
+        out += ['%s) %s' % (chr(65 + i), s) if mark else s for i, s in enumerate(x['list'])] if isinstance(x, dict) else [x]
+    return out
+
+
+def more_html(p):
+    """The rest of a featured paper's summary, folded under Read more so the card stays short."""
+    if not p.get('more'):
+        return ''
+    body = []
+    for x in p['more']:
+        if isinstance(x, dict):
+            body.append('    <ol type="A">\n%s\n    </ol>' % '\n'.join('      <li>%s</li>' % escape(s) for s in x['list']))
+        else:
+            body.append('    <p>%s</p>' % escape(x))
+    return ('<details class="read-more">\n  <summary><span class="rm-show">Read more</span><span class="rm-hide">Read less</span></summary>\n'
+            '  <div class="read-more-body">\n%s\n  </div>\n</details>' % '\n'.join(body))
+
+
 def help_html(p):
     if not p.get('figure_help'):
         return ''
@@ -513,6 +535,8 @@ def featured_card(p):
         parts += ['  <div class="paper-fig">', indent(figure(p['figure']), 4), '  </div>']
     parts.append('  <div class="paper-body">')
     parts += ['    <p>%s</p>' % escape(x) for x in p['text']]
+    if more_html(p):
+        parts.append(indent(more_html(p), 4))
     if help_html(p):
         parts.append(indent(help_html(p), 4))
     parts.append('    <div class="paper-tags">%s<a class="go" href="%s">Paper page &rarr;</a></div>' % (tags_html(p), url_of(p)))
@@ -730,7 +754,7 @@ def build_paper(p):
     article = {"@context": "https://schema.org", "@type": "ScholarlyArticle", "headline": p['title'], "name": p['title'],
                "author": [{"@type": "Person", "name": a} for a in authors], "datePublished": str(p['year']),
                "creativeWorkStatus": p['status'], "about": [p['topic']] + list(p.get('tags', [])),
-               "abstract": plain(' '.join(p['text'])), "description": p['summary'], "url": canonical,
+               "abstract": plain(' '.join(full_text(p))), "description": p['summary'], "url": canonical,
                "isAccessibleForFree": True}
     if links.get('pdf'):
         article["encoding"] = {"@type": "MediaObject", "contentUrl": links['pdf'], "encodingFormat": "application/pdf"}
@@ -747,7 +771,7 @@ def build_paper(p):
     fig = ''
     if p.get('figure'):
         fig = '<figure class="page-fig">\n%s\n%s</figure>' % (figure(p['figure']), help_html(p))
-    body = md_html(explainer(p)) or '\n'.join('<p>%s</p>' % escape(x) for x in p['text'])
+    body = md_html(explainer(p)) or '\n'.join('<p>%s</p>' % escape(x) for x in full_text(p, True))
     # on wide screens the figure sits in a sticky right column; on phones it follows the "In short" box
     pre, post = body.split(FIG_SLOT, 1) if FIG_SLOT in body else ('', body)
     lead = '<div class="explainer explainer-lead">\n%s\n</div>\n' % pre.strip() if pre.strip() else ''
@@ -1388,7 +1412,7 @@ def build_llms_full():
         authors = ', '.join(author_list(p))
         out += ['## %s' % p['title'], '', '%s, %s. %s. Topic: %s. Tags: %s. Page: %s%s' % (
             authors, p['year'], p['status'], p['topic'], ', '.join(p.get('tags', [])) or 'none', BASE, url_of(p)), '']
-        out += [plain(x) + '\n' for x in p['text']]
+        out += [plain(x) + '\n' for x in full_text(p, True)]
         if p.get('figure_help'):
             out += ['How to read the figure:', ''] + [plain(x) + '\n' for x in p['figure_help']]
         if explainer(p):
