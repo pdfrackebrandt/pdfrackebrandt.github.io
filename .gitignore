@@ -2,5 +2,7 @@
 /.notes-password
 /data/notes.json
 /content/notes/*.md
+# paper page texts are private too: only content/<slug>.md.sealed goes into the repo
+/content/*.md
 __pycache__/
 /data/math-cache-private.json.gz

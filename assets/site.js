@@ -258,8 +258,8 @@
   // email: the address is decoded only inside the click handler, so neither the HTML,
   // the rendered page nor a link preview ever carries it (stored shifted by one character code)
   var MAIL='qfesp/gfsoboef{sbdlfcsboeuAnfsupo/py/bd/vl';
-  function initEmail(){
-    Array.prototype.forEach.call(document.querySelectorAll('.js-email'), function(a){
+  function initEmail(root){
+    Array.prototype.forEach.call((root||document).querySelectorAll('.js-email'), function(a){
       a.addEventListener('click', function(e){
         e.preventDefault();
         var addr=MAIL.replace(/./g, function(c){ return String.fromCharCode(c.charCodeAt(0)-1); });
@@ -371,8 +371,8 @@
   }
 
   // copy a citation
-  function initCopy(){
-    Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function(b){
+  function initCopy(root){
+    Array.prototype.forEach.call((root||document).querySelectorAll('[data-copy]'), function(b){
       b.addEventListener('click',function(){
         var src=document.getElementById(b.getAttribute('data-copy')); if(!src || !navigator.clipboard) return;
         navigator.clipboard.writeText(src.textContent).then(function(){ var t=b.textContent; b.textContent='Copied'; setTimeout(function(){ b.textContent=t; },1400); });
@@ -479,6 +479,8 @@
       if(animate && !reduce) setTimeout(function(){ lock.classList.remove('is-opening'); lock.classList.add('is-open'); }, 900);
       lock.querySelector('.sealed').remove();
       if(window.initNoteFigures) window.initNoteFigures(out);
+      // a paper page opens here too: its links, Cite box and figure start once they exist
+      if(out.querySelector('.paper-page:not(.note-page)')){ initEmail(out); initCopy(out); initCite(); initHurdle(); initRegime(); }
       initCourses(out);
       Array.prototype.forEach.call(out.querySelectorAll('.rikuy-dl'), function(btn){ download(btn); });
       Array.prototype.forEach.call(out.querySelectorAll('.rikuy-edit'), editInRikuy);

@@ -416,8 +416,21 @@ def md_html(src):
 
 
 def explainer(p):
+    """A paper page's text. It is private like the notes: content/<slug>.md stays local (git ignores it) and the repo
+    keeps content/<slug>.md.sealed, which the build opens with the password."""
     f = os.path.join(ROOT, 'content', p['slug'] + '.md')
-    return open(f, encoding='utf-8').read() if os.path.exists(f) else ''
+    sealed = f + '.sealed'
+    if os.path.exists(f):
+        text = open(f, encoding='utf-8').read()
+        if PASSWORD:
+            box = {k: v for k, v in seal('seal', [{'id': 'src/papers/' + p['slug'], 'text': text}])[0].items() if k != 'id'}
+            old = json.load(open(sealed, encoding='utf-8')) if os.path.exists(sealed) else None
+            if box != old:
+                json.dump(box, open(sealed, 'w', encoding='utf-8'), indent=0)
+        return text
+    if os.path.exists(sealed) and PASSWORD:
+        return seal('open', [dict(json.load(open(sealed, encoding='utf-8')), id='src/papers/' + p['slug'])])[0]['text']
+    return ''
 
 
 def resolve_math(pages):
@@ -743,22 +756,11 @@ def build_index():
 
 
 def build_paper(p):
-    authors = author_list(p)
+    """A paper's own page sits behind the notes password: the page ships only the back link and the lock, and
+    assets/site.js opens the sealed article. The home page card stays public."""
     canonical = BASE + url_of(p)
-    meta = ['<meta name="citation_title" content="%s">' % escape(p['title'])]
-    meta += ['<meta name="citation_author" content="%s">' % escape(last_first(a)) for a in authors]
-    meta.append('<meta name="citation_publication_date" content="%s">' % p['year'])
     links = p.get('links', {})
-    if links.get('pdf'):
-        meta.append('<meta name="citation_pdf_url" content="%s">' % escape(links['pdf']))
-    article = {"@context": "https://schema.org", "@type": "ScholarlyArticle", "headline": p['title'], "name": p['title'],
-               "author": [{"@type": "Person", "name": a} for a in authors], "datePublished": str(p['year']),
-               "creativeWorkStatus": p['status'], "about": [p['topic']] + list(p.get('tags', [])),
-               "abstract": plain(' '.join(full_text(p))), "description": p['summary'], "url": canonical,
-               "isAccessibleForFree": True}
-    if links.get('pdf'):
-        article["encoding"] = {"@type": "MediaObject", "contentUrl": links['pdf'], "encodingFormat": "application/pdf"}
-    meta.append('<script type="application/ld+json">%s</script>' % json.dumps(article, ensure_ascii=False).replace('<', '\\u003c'))
+    meta = ['<meta name="robots" content="noindex, nofollow">']
     actions = []
     if links.get('pdf'):
         actions.append('<a href="%s">PDF</a>' % escape(links['pdf']))
@@ -782,13 +784,7 @@ def build_paper(p):
         extra += math_links()
     who = escape(SITE['name']) + ((', ' + byline(p)) if byline(p) else '')
     bib_id = 'bib-' + p['slug']
-    html = head('%s · %s' % (p['title'], SITE['name']), p['summary'], canonical, extra) + """
-<body>
-<a class="skip" href="#main">Skip to content</a>
-<div class="wrap">
-  <header class="page-top"><a class="back" href="/#research">&larr; {name}</a></header>
-  <main id="main">
-  <article class="paper-page">
+    article = """<article class="paper-page">
     <header class="paper-header">
       <p class="eyebrow">{status} &middot; {year}</p>
       <h1>{title}</h1>
@@ -807,15 +803,21 @@ def build_paper(p):
         <button class="btn" type="button" data-copy="{bib_id}">Copy BibTeX</button>
       </details>
     </footer>
-  </article>
+  </article>""".format(status=escape(p['status']), year=p['year'], title=escape(p['title']), who=who,
+           lede=escape(p['summary']), actions='<span aria-hidden="true">&middot;</span>'.join(actions),
+           lead=indent(lead, 4), fig=indent(fig, 4), body=indent(post.strip(), 6), tags=tags_html(p), bib_id=bib_id, bib=escape(bibtex(p)))
+    return head('%s · %s' % (p['title'], SITE['name']), p['summary'], canonical, extra) + """
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="page-top"><a class="back" href="/#research">&larr; {name}</a></header>
+  <main id="main">
+{article}
   </main>
 </div>
 </body>
 </html>
-""".format(name=escape(SITE['name']), status=escape(p['status']), year=p['year'], title=escape(p['title']), who=who,
-           lede=escape(p['summary']), actions='<span aria-hidden="true">&middot;</span>'.join(actions),
-           lead=indent(lead, 4), fig=indent(fig, 4), body=indent(post.strip(), 6), tags=tags_html(p), bib_id=bib_id, bib=escape(bibtex(p)))
-    return html
+""".format(name=escape(SITE['name']), article=sealed_block(url_of(p).strip('/'), article, 2))
 
 
 # ---------------------------------------------------------------------------
@@ -894,6 +896,8 @@ def note_source(n):
 
 def sealed_block(sid, html, indent_by=4):
     """Mark html for sealing; seal_pages swaps the marked span for the lock and the ciphertext after math is rendered."""
+    # SEAL_RE only finds ids made of these characters; any other id would leave the span unsealed, so stop here
+    assert re.fullmatch(r'[\w/.-]+', sid), 'seal id %r: use letters, digits, _ / . - only' % sid
     return indent('\x05S%s\x05%s\x05E\x05' % (sid, html), indent_by)
 
 
@@ -902,7 +906,7 @@ LOCK_HTML = """<div class="locked" data-lock>
     <svg class="lock-icon" viewBox="0 0 32 40" aria-hidden="true"><path class="lock-shackle" d="M9 18v-6a7 7 0 0 1 14 0v6"/><rect class="lock-body" x="4" y="18" width="24" height="19" rx="3.5"/><path class="lock-hole" d="M16 25.5v4"/></svg>
     <form class="lock-form" novalidate>
       <label class="lock-field"><span class="vh">Password</span><input type="password" name="password" autocomplete="current-password" placeholder="Password" spellcheck="false"></label>
-      <button class="lock-go" type="submit" aria-label="Open the notes"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5"/></svg></button>
+      <button class="lock-go" type="submit" aria-label="Open"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5"/></svg></button>
     </form>
     <p class="lock-msg" role="status" aria-live="polite"></p>
   </div>
@@ -933,7 +937,10 @@ def seal_pages(pages):
         box = boxes.get(m.group(1))
         line_start = m.string.rfind('\n', 0, m.start()) + 1
         return lock_html(box, m.string[line_start:m.start()]) if box else ''
-    return {path: SEAL_RE.sub(swap, html) for path, html in pages.items()}
+    out = {path: SEAL_RE.sub(swap, html) for path, html in pages.items()}
+    for path, html in out.items():
+        assert '\x05' not in html, '%s: a sealed region was not sealed' % path
+    return out
 
 
 def note_head(title, desc, canonical, body):
@@ -1415,8 +1422,6 @@ def build_llms_full():
         out += [plain(x) + '\n' for x in full_text(p, True)]
         if p.get('figure_help'):
             out += ['How to read the figure:', ''] + [plain(x) + '\n' for x in p['figure_help']]
-        if explainer(p):
-            out += [re.sub(r'^(#+) ', lambda m: '#' + m.group(1) + ' ', explainer(p).strip(), flags=re.M), '']
     return '\n'.join(out)
 
 
@@ -1431,8 +1436,11 @@ def main():
     setup_lock()
     NOTES = load_notes()
     pages = {os.path.join(ROOT, 'index.html'): build_index()}
-    for p in PAPERS:
-        pages[os.path.join(ROOT, 'papers', p['slug'], 'index.html')] = build_paper(p)
+    if PASSWORD:
+        for p in PAPERS:
+            pages[os.path.join(ROOT, 'papers', p['slug'], 'index.html')] = build_paper(p)
+    else:
+        print('No notes password: papers/ left as it is (paper pages are sealed with it).')
     slugs = [n['slug'] for n in NOTES]
     assert len(slugs) == len(set(slugs)), 'duplicate note slug'
     if NOTES and PASSWORD:
@@ -1452,13 +1460,13 @@ def main():
     if PASSWORD:
         json.dump(LOCK, open(LOCK_PATH, 'w', encoding='utf-8'), indent=1, sort_keys=True)
         write_rikuy_downloads()
-    urls = [BASE + '/'] + [BASE + url_of(p) for p in PAPERS]
+    urls = [BASE + '/']
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % (
         '\n'.join('  <url><loc>%s</loc></url>' % u for u in urls))
     open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write(sm)
     open(os.path.join(ROOT, 'llms.txt'), 'w', encoding='utf-8').write(build_llms())
     open(os.path.join(ROOT, 'llms-full.txt'), 'w', encoding='utf-8').write(build_llms_full())
-    print('built index.html, %d paper pages, %d note pages, sitemap.xml, llms.txt, llms-full.txt' % (len(PAPERS), len(NOTES)))
+    print('built index.html, %d paper pages, %d note pages, sitemap.xml, llms.txt, llms-full.txt' % (len(PAPERS) if PASSWORD else 0, len(NOTES)))
 
 
 if __name__ == '__main__':
