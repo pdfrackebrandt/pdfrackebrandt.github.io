@@ -682,7 +682,7 @@ def build_index():
                          "description": SITE['description'], "knowsAbout": topics,
                          "subjectOf": [{"@type": "ScholarlyArticle", "name": p['title'], "url": BASE + url_of(p)} for p in PAPERS],
                          "affiliation": {"@type": "CollegeOrUniversity", "name": "Merton College, University of Oxford"},
-                         "sameAs": [s['url'] for s in SITE['socials']]})
+                         "sameAs": [s['url'] for s in SITE['socials']]}).replace('<', '\\u003c')
     html = head(SITE['name'], SITE['description'], BASE + '/',
                 '<script type="application/ld+json">%s</script>\n' % person) + '''
 <body>
@@ -758,7 +758,7 @@ def build_paper(p):
                "isAccessibleForFree": True}
     if links.get('pdf'):
         article["encoding"] = {"@type": "MediaObject", "contentUrl": links['pdf'], "encodingFormat": "application/pdf"}
-    meta.append('<script type="application/ld+json">%s</script>' % json.dumps(article, ensure_ascii=False).replace('</', '<\\/'))
+    meta.append('<script type="application/ld+json">%s</script>' % json.dumps(article, ensure_ascii=False).replace('<', '\\u003c'))
     actions = []
     if links.get('pdf'):
         actions.append('<a href="%s">PDF</a>' % escape(links['pdf']))
