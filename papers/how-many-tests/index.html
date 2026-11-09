@@ -106,14 +106,7 @@
       <button class="btn" type="button" data-jump="2825">Nominal</button>
       <span class="fig-note" id="hurdle-read"></span>
     </div>
-    <details class="more">
-      <summary>How to read the figure</summary>
-      <div class="more-body">
-        <p>The curve is the expected maximum Sharpe ratio if every rule is noise. It grows like the square root of log N, so only the order of magnitude of N matters. The buttons read the hurdle at the cluster, effective, and nominal counts.</p>
-        <p>Software that clusters similar moving averages reports N = 2. That point sits far below the measured hurdle. The measured effective count is about 1,400. Using the raw grid of 2,825 overstates the hurdle by 6 percent.</p>
-        <p>On the DAX the best rule clears the mean of the noise maximum and still fails the 95 percent band.</p>
-      </div>
-    </details></figure>
+    </figure>
     <div class="explainer">
       <h2 id="the-problem">The problem</h2>
       <p>Give 2,825 traders a coin each and let them trade the DAX by its flips. One of them will post a superb record. Testing a grid of moving average rules plays the same game: the best rule's record is partly luck, and the more rules you try, the more luck the best one carries.</p>
