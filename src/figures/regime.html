@@ -1,5 +1,5 @@
 <div class="scene-nav">
-  <p class="scene-name"><span id="sc-num">1 / 4</span><b id="sc-name">A shock fades</b></p>
+  <p class="scene-name"><span id="sc-num">1 / 3</span><b id="sc-name">A shock fades</b></p>
   <div class="scene-arrows">
     <button class="btn" id="sc-prev" type="button" aria-label="Previous story">&#8249;</button>
     <button class="btn" id="sc-next" type="button" aria-label="Next story">&#8250;</button>
@@ -8,10 +8,9 @@
 <div class="lattice-frame" id="frame">
   <canvas id="field" aria-label="Rotatable 3D figure: a country swings between open and closed rule. Below the dashed threshold the swings fade; above it they keep going."></canvas>
   <span class="viewhint">drag to rotate</span>
+  <div class="fig-over">
+    <button class="icon-btn" id="pause" type="button" aria-pressed="false" aria-label="Pause" title="Pause"><svg class="ic ic-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3.4" y="2.6" width="3.1" height="10.8" rx=".7"/><rect x="9.5" y="2.6" width="3.1" height="10.8" rx=".7"/></svg><svg class="ic ic-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.6 2.5v11L13.4 8z"/></svg></button>
+    <button class="icon-btn" id="replay" type="button" aria-label="Replay" title="Replay"><svg class="ic" viewBox="0 0 16 16" aria-hidden="true"><path class="st" d="M12.9 8.2a4.9 4.9 0 1 1-1.5-3.7"/><path d="M13.3 1.7v3.9H9.4z"/></svg></button>
+  </div>
 </div>
 <p class="scene-cap" id="sc-cap" aria-live="polite"></p>
-<div class="fig-controls">
-  <button class="btn" id="pause" type="button" aria-pressed="false">Pause</button>
-  <button class="btn" id="replay" type="button">Replay</button>
-  <span class="sc-free" id="sc-free"><button class="btn" id="shock" type="button">Shock it</button><button class="btn" id="fallbehind" type="button">Fall behind</button><button class="btn" id="crisis" type="button">Crisis</button></span>
-</div>

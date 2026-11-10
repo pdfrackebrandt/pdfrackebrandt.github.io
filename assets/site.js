@@ -52,11 +52,11 @@
     var cv=document.getElementById('field'); if(!cv || !cv.getContext) return;
     var ctx=cv.getContext('2d'), frame=document.getElementById('frame');
     function el(id){ return document.getElementById(id); }
-    var numEl=el('sc-num'), nameEl=el('sc-name'), capEl=el('sc-cap'), freeEl=el('sc-free'), pb=el('pause');
+    var numEl=el('sc-num'), nameEl=el('sc-name'), capEl=el('sc-cap'), pb=el('pause');
     var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     var W=0, H=0, C={}, paused=false, onScreen=true, raf=0;
     var AZ=-0.70, EL=0.42, XR=1.5, TH0=-0.6, TH1=1.2, ZS=(2*XR)/(TH1-TH0), OM=3.0, BASE=-0.35;
-    var x=0, y=0, th=BASE, target=BASE, rate=0, tt=0, label='', labelT=-99, evi=0, hold=0, lastEv=0, nextEv=9, cur=0;
+    var x=0, y=0, th=BASE, target=BASE, rate=0, tt=0, label='', labelT=-99, evi=0, hold=0, cur=0;
     // trail: fixed ring buffer, so drawing cost stays flat however long the figure runs
     var MAXP=1200, PX=new Float64Array(MAXP), PY=new Float64Array(MAXP), PZ=new Float64Array(MAXP), p0=0, pn=0;
     function push(a,b,c){ var i; if(pn<MAXP){ i=(p0+pn)%MAXP; pn++; } else { i=p0; p0=(p0+1)%MAXP; } PX[i]=a; PY[i]=b; PZ[i]=c; }
@@ -72,10 +72,7 @@
       { name:'A crisis hits a democracy', end:13,
         cap:'A crisis erodes institutions. The young democracy is knocked toward closed rule and drops below the threshold, so the loop shuts.',
         init:function(){ x=0.92; y=0; th=0.85; target=0.85; rate=0; },
-        ev:[[4.19, function(){ target=-0.45; rate=2.2; x-=1.3; flag('crisis ↓'); }]] },
-      { name:'Your turn', end:Infinity, free:true,
-        cap:'Shock it, let it fall behind, or hit it with a crisis. Left alone, its economy catches up and it sinks back below the threshold.',
-        init:function(){ x=1.0; y=0; th=BASE; target=BASE; rate=0.08; lastEv=0; nextEv=9; }, ev:[] }
+        ev:[[4.19, function(){ target=-0.45; rate=2.2; x-=1.3; flag('crisis ↓'); }]] }
     ];
     function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
     function tokens(){
@@ -181,19 +178,13 @@
       ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(bg,0,0);
       ctx.setTransform(dpr,0,0,dpr,0,0); trail();
     }
-    function kick(){ var a=Math.random()*6.2832; x+=0.6*Math.cos(a); y+=0.6*Math.sin(a); lastEv=tt; flag('shock'); }
     function step(){
       var dt=0.006, s=SC[cur];
       for(var i=0;i<4;i++){
         var r2=x*x+y*y, dx=th*x-OM*y-r2*x, dy=OM*x+th*y-r2*y;
         x+=dt*dx; y+=dt*dy;
-        if(s.free){ x+=(Math.random()-0.5)*0.004; y+=(Math.random()-0.5)*0.004; }
         th+=dt*rate*(target-th); th=Math.max(TH0+0.02,Math.min(TH1-0.02,th)); tt+=dt;
         while(evi<s.ev.length && tt>=s.ev[evi][0]){ s.ev[evi][1](); evi++; }
-      }
-      if(s.free && tt>nextEv){
-        if(tt-lastEv>8){ if(Math.random()<0.6){ th=Math.min(TH1-0.05,th+0.6); lastEv=tt; flag('falls behind ↑'); } else kick(); }
-        nextEv=tt+10+Math.random()*8;
       }
       push(x,y,th);
     }
@@ -203,8 +194,7 @@
       tt=0; evi=0; hold=0; p0=0; pn=0; label=''; labelT=-99;
       s.init(); push(x,y,th);
       numEl.textContent=(cur+1)+' / '+SC.length; nameEl.textContent=s.name; capEl.textContent=s.cap;
-      freeEl.style.display=s.free?'flex':'none';
-      if(reduce){ var lim=s.free?300:Math.ceil(s.end/0.024); for(var i=0;i<lim;i++) step(); }
+      if(reduce){ var lim=Math.ceil(s.end/0.024); for(var i=0;i<lim;i++) step(); }
       draw(); wake();
     }
     // fixed 60 steps per second whatever the screen's refresh rate; one loop only
@@ -225,15 +215,11 @@
     }
     function wake(){ if(!raf && !paused && onScreen && !reduce){ lastT=0; acc=0; raf=requestAnimationFrame(tick); } }
     function go(k){ cv.style.opacity='0'; setTimeout(function(){ start(k); cv.style.opacity='1'; },170); }
-    function after(){ if(reduce){ for(var i=0;i<300;i++) step(); draw(); } }
     el('sc-prev').addEventListener('click',function(){ go(cur-1); });
     el('sc-next').addEventListener('click',function(){ go(cur+1); });
     el('replay').addEventListener('click',function(){ start(cur); });
-    el('shock').addEventListener('click',function(){ kick(); after(); });
-    el('fallbehind').addEventListener('click',function(){ th=Math.min(TH1-0.05,th+0.6); lastEv=tt; flag('falls behind ↑'); after(); });
-    el('crisis').addEventListener('click',function(){ th=Math.max(TH0+0.05,th-0.5); x-=0.5; lastEv=tt; flag('crisis ↓'); after(); });
     pb.addEventListener('click',function(){
-      paused=!paused; pb.textContent=paused?'Play':'Pause'; pb.setAttribute('aria-pressed',String(paused)); wake();
+      paused=!paused; var l=paused?'Play':'Pause'; pb.setAttribute('aria-label',l); pb.title=l; pb.setAttribute('aria-pressed',String(paused)); wake();
     });
     if(reduce){ pb.style.display='none'; }
     var drag=false, lx=0, ly=0;

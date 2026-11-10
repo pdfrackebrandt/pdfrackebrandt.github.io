@@ -118,6 +118,14 @@ main{padding-block:clamp(14px,2.5vw,24px) clamp(48px,7vw,80px)}
 #field.dragging{cursor:grabbing}
 .viewhint{position:absolute;right:6px;top:4px;pointer-events:none;font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);opacity:.75;transition:opacity .3s}
 .lattice-frame.touched .viewhint{opacity:0}
+.fig-over{position:absolute;right:3px;bottom:3px;display:flex;gap:1px}
+.icon-btn{width:30px;height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center;background:none;border:0;color:var(--faint);cursor:pointer;transition:color .15s}
+.icon-btn:hover{color:var(--accent)}
+.icon-btn:focus-visible{outline-offset:-3px}
+.icon-btn .ic{width:15px;height:15px;fill:currentColor}
+.icon-btn .st{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.icon-btn .ic-play,.icon-btn[aria-pressed="true"] .ic-pause{display:none}
+.icon-btn[aria-pressed="true"] .ic-play{display:block}
 .btn{font-family:var(--f-mono);font-size:var(--step--1);color:var(--muted);background:none;border:1px solid var(--rule);padding:4px 11px;cursor:pointer;transition:color .15s,border-color .15s}
 .btn:hover{color:var(--accent);border-color:var(--accent)}
 .fig-note{font-family:var(--f-mono);font-size:.75rem;color:var(--faint);font-variant-numeric:tabular-nums}
@@ -130,7 +138,6 @@ p.scene-name{font-family:var(--f-mono);font-size:var(--step--1);color:var(--ink-
 .scene-arrows{display:flex;gap:6px;flex:none}
 .scene-arrows .btn{width:40px;height:36px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:18px;line-height:1}
 p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(--muted)}
-.sc-free{display:flex;flex-wrap:wrap;gap:8px 10px;width:100%}
 .hurdle-fig,.rev-fig{width:100%;height:auto;display:block}
 .hurdle-fig text,.rev-fig text{font-family:var(--f-mono);fill:var(--faint)}
 
