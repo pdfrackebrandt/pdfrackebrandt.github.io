@@ -18,10 +18,10 @@ Open to AI and superintelligence consultancy: use the email link on https://rack
 - [How many tests was it really?](https://rackebrandt.pe/papers/how-many-tests/): Working paper, 2026. Topic: Finance. With Sebastian Winzker. How high the bar for a backtested trading rule should be once you count every rule you tried.
 - [Reversed by our own replication](https://rackebrandt.pe/papers/reversed-by-replication/): Working paper, 2026. Topic: AI. A registered replication in which two of three signals for catching LLM extraction errors reversed.
 
-## Tools (coming soon)
+## Tools
 
-- Frontier: A research agent that works overnight and shows, as a map, how ideas in frontier research connect.
-- Rikuy (Open source): A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install.
+- Frontier (Coming soon): A research agent that works overnight and shows, as a map, how ideas in frontier research connect.
+- [Rikuy](https://rikuy-3dl.pages.dev/) (Live, Open source): A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install and no account. It works offline and opens and saves Word files.
 
 ## Elsewhere
 

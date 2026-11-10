@@ -557,6 +557,25 @@ def featured_card(p):
     return '\n'.join(parts)
 
 
+def tool_card(t):
+    """A tool: its name, what it is, whether it is out yet. One with a `url` is linked (it opens in a new tab)."""
+    name = escape(t['name'])
+    url = escape(t['url'], quote=True) if t.get('url') else ''
+    if url:
+        name = '<a href="%s" target="_blank" rel="noopener">%s</a>' % (url, name)
+    tags = []
+    if t.get('status'):
+        tags.append('<span class="tag%s">%s</span>' % (' live' if url else '', escape(t['status'])))
+    tags += ['<span class="tag">%s</span>' % escape(x) for x in t.get('tags', [])]
+    if url:
+        tags.append('<a class="go" href="%s" target="_blank" rel="noopener">Open %s &rarr;</a>' % (url, escape(t['name'])))
+    row = ('\n          <div class="paper-tags">%s</div>' % ''.join(tags)) if tags else ''
+    return '''        <div class="tool">
+          <h3>%s</h3>
+          <p>%s</p>%s
+        </div>''' % (name, escape(t['text']), row)
+
+
 def index_list(papers):
     topics = []
     for p in papers:
@@ -673,12 +692,7 @@ def build_index():
     bio = '\n'.join('        <p>%s</p>' % b for b in SITE['bio'])
     featured = [p for p in PAPERS if p.get('featured')]
     cards = '\n'.join(indent(featured_card(p), 8) for p in featured)
-    tools = '\n'.join('''        <div class="tool">
-          <h3>{name}</h3>
-          <p>{text}</p>{tags}
-        </div>'''.format(name=escape(t['name']), text=escape(t['text']),
-                         tags=('\n          <div class="paper-tags">%s</div>' % ''.join('<span class="tag">%s</span>' % escape(x) for x in t['tags'])) if t.get('tags') else '')
-                      for t in SITE['tools'])
+    tools = '\n'.join(tool_card(t) for t in SITE['tools'])
     notes_tab = notes_panel = owns = ''
     if NOTES or LOCK.get('home'):
         # the Notes tab sits at the right end of the tab row, after the List or Visual switch; aria-owns keeps it in the tablist
@@ -738,8 +752,7 @@ def build_index():
 
     <section class="panel" id="tools" role="tabpanel" aria-labelledby="tab-tools">
       <h2 class="vh">Tools</h2>
-      <div class="panel-head"><span></span><p class="kicker">{tk}</p></div>
-      <div class="tools">
+{tk}      <div class="tools">
 {tools}
       </div>
     </section>{notes_panel}
@@ -750,7 +763,7 @@ def build_index():
 </html>
 '''.format(name=escape(SITE['name']), bio=bio, socials=''.join(socials), np=len(PAPERS), nt=len(SITE['tools']),
            view=VIEW, list_on='true' if VIEW == 'list' else 'false', visual_on='true' if VIEW == 'visual' else 'false',
-           tk=escape(SITE.get('tools_kicker', '')),
+           tk=('      <div class="panel-head"><span></span><p class="kicker">%s</p></div>\n' % escape(SITE['tools_kicker'])) if SITE.get('tools_kicker') else '',
            cards=cards, index=indent(index_list(PAPERS), 4), tools=tools, notes_tab=notes_tab, notes_panel=notes_panel, owns=owns)
     return html
 
@@ -1403,10 +1416,12 @@ def build_llms():
         who = (' With %s.' % ', '.join(c['name'] for c in p['coauthors'])) if p.get('coauthors') else ''
         extra = ''.join(' %s: %s.' % (k.upper() if k == 'pdf' else k.capitalize(), v) for k, v in p.get('links', {}).items() if v)
         lines.append('- [%s](%s%s): %s, %s. Topic: %s.%s %s%s' % (p['title'], BASE, url_of(p), p['status'], p['year'], p['topic'], who, p['summary'], extra))
-    lines += ['', '## Tools (coming soon)', '']
+    lines += ['', '## Tools', '']
     for t in SITE['tools']:
-        tags = (' (%s)' % ', '.join(t['tags'])) if t.get('tags') else ''
-        lines.append('- %s%s: %s' % (t['name'], tags, plain(t['text'])))
+        tags = [t['status']] if t.get('status') else []
+        tags = (' (%s)' % ', '.join(tags + t.get('tags', []))) if tags or t.get('tags') else ''
+        name = '[%s](%s)' % (t['name'], t['url']) if t.get('url') else t['name']
+        lines.append('- %s%s: %s' % (name, tags, plain(t['text'])))
     lines += ['', '## Elsewhere', '']
     lines += ['- [%s](%s)' % (s['label'], s['url']) for s in SITE['socials']]
     lines += ['', '## Optional', '', '- [Full text of every paper summary](%s/llms-full.txt)' % BASE, '']
