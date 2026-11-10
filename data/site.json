@@ -18,7 +18,7 @@
   "notes_kicker": "Oxford MPhil Economics",
   "tools": [
     {"name": "Frontier", "text": "A research agent that works overnight and shows, as a map, how ideas in frontier research connect.", "tags": [], "status": "Coming soon"},
-    {"name": "Rikuy", "text": "A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install and no account. It works offline and opens and saves Word files.", "tags": ["Open source"], "status": "Live", "url": "https://rikuy-3dl.pages.dev/"}
+    {"name": "Rikuy", "text": "A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install and no account. It works offline and opens and saves Word files.", "tags": ["Open source"], "status": "Live", "url": "https://rikuy-3dl.pages.dev/", "path": "rikuy"}
   ],
   "list_collapsed": 10
 }

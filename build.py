@@ -2,7 +2,7 @@
 """Build rackebrandt.pe from data/*.json.
 
 Edit data/papers.json, data/notes.json or data/site.json, run `python3 build.py`, commit everything.
-Writes index.html, papers/<slug>/index.html, notes/index.html, notes/<slug>/index.html, sitemap.xml,
+Writes index.html, papers/<slug>/index.html, notes/index.html, notes/<slug>/index.html, <tool path>/index.html, sitemap.xml,
 llms.txt, llms-full.txt and assets/math.css. Never edit those generated files by hand.
 Paper explainers live in content/<slug>.md and lecture notes in content/notes/<slug>.md
 (Markdown with LaTeX math; see the notes above md_html).
@@ -1407,6 +1407,28 @@ def rikuy_name(n):
 
 
 
+def build_forward(t):
+    """rackebrandt.pe/<path>/ for a tool that lives elsewhere: a page that only sends the visitor on. No script
+    (the policy allows none), so it is a refresh in the head and a link for a browser that ignores it."""
+    url = escape(t['url'], quote=True)
+    return '''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=%s">
+<link rel="canonical" href="%s">
+<title>%s</title>
+</head>
+<body>
+<p><a href="%s">Open %s</a></p>
+</body>
+</html>
+''' % (url, url, escape(t['name']), url, escape(t['name']))
+
+
 def build_llms():
     lines = ['# %s' % SITE['name'], '', '> %s' % SITE['description'], '']
     for b in SITE['bio']:
@@ -1479,6 +1501,10 @@ def main():
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % (
         '\n'.join('  <url><loc>%s</loc></url>' % u for u in urls))
     open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write(sm)
+    for t in SITE['tools']:
+        if t.get('url') and re.fullmatch(r'[a-z0-9-]+', t.get('path', '')):
+            os.makedirs(os.path.join(ROOT, t['path']), exist_ok=True)
+            open(os.path.join(ROOT, t['path'], 'index.html'), 'w', encoding='utf-8').write(build_forward(t))
     open(os.path.join(ROOT, 'llms.txt'), 'w', encoding='utf-8').write(build_llms())
     open(os.path.join(ROOT, 'llms-full.txt'), 'w', encoding='utf-8').write(build_llms_full())
     print('built index.html, %d paper pages, %d note pages, sitemap.xml, llms.txt, llms-full.txt' % (len(PAPERS) if PASSWORD else 0, len(NOTES)))
