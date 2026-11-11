@@ -557,23 +557,45 @@ def featured_card(p):
     return '\n'.join(parts)
 
 
+def tool_url(t):
+    """A tool's address, only if it is a plain https one: it goes into an href and a refresh, where another scheme
+    (javascript:, data:) would run or load what the page's policy is there to keep out."""
+    u = t.get('url') or ''
+    return u if re.fullmatch(r'https://[A-Za-z0-9.-]+(/[^\s"<>\\]*)?', u) else ''
+
+
+# folders of the site itself: a tool's forwarding page may not take one of their names
+RESERVED = {'assets', 'content', 'data', 'notes', 'papers', 'src', 'tools'}
+
+
 def tool_card(t):
-    """A tool: its name, what it is, whether it is out yet. One with a `url` is linked (it opens in a new tab)."""
+    """A tool, laid out as a paper is: its mark on the left where a paper has its figure, then its name, what it
+    is and whether it is out yet. One with a `url` is linked from the mark, the name and an Open link (a new tab);
+    one with no `icon` shows its initial in the mark's place."""
     name = escape(t['name'])
-    url = escape(t['url'], quote=True) if t.get('url') else ''
-    if url:
-        name = '<a href="%s" target="_blank" rel="noopener">%s</a>' % (url, name)
+    url = escape(tool_url(t), quote=True)
+    link = ' href="%s" target="_blank" rel="noopener"' % url
+    if t.get('icon') and re.fullmatch(r'/assets/[A-Za-z0-9_./-]+\.(png|svg|jpg|webp)', t['icon']) and '..' not in t['icon']:
+        mark = '<img src="%s" alt="" width="132" height="132" loading="lazy" decoding="async">' % escape(t['icon'], quote=True)
+    else:
+        mark = '<span class="tool-initial">%s</span>' % escape(t['name'][:1])
+    # the mark repeats the name's link, so it stays out of the tab order and of a screen reader's list
+    fig = ('<a class="tool-fig"%s tabindex="-1" aria-hidden="true">%s</a>' % (link, mark)) if url else '<div class="tool-fig" aria-hidden="true">%s</div>' % mark
+    title = ('<a%s>%s</a>' % (link, name)) if url else name
     tags = []
     if t.get('status'):
         tags.append('<span class="tag%s">%s</span>' % (' live' if url else '', escape(t['status'])))
     tags += ['<span class="tag">%s</span>' % escape(x) for x in t.get('tags', [])]
     if url:
-        tags.append('<a class="go" href="%s" target="_blank" rel="noopener">Open %s &rarr;</a>' % (url, escape(t['name'])))
-    row = ('\n          <div class="paper-tags">%s</div>' % ''.join(tags)) if tags else ''
-    return '''        <div class="tool">
-          <h3>%s</h3>
-          <p>%s</p>%s
-        </div>''' % (name, escape(t['text']), row)
+        tags.append('<a class="go"%s>Open %s &rarr;</a>' % (link, name))
+    row = ('\n            <div class="paper-tags">%s</div>' % ''.join(tags)) if tags else ''
+    return '''        <article class="tool">
+          <div class="tool-head"><h3>%s</h3></div>
+          %s
+          <div class="tool-body">
+            <p>%s</p>%s
+          </div>
+        </article>''' % (title, fig, escape(t['text']), row)
 
 
 def index_list(papers):
@@ -1410,7 +1432,7 @@ def rikuy_name(n):
 def build_forward(t):
     """rackebrandt.pe/<path>/ for a tool that lives elsewhere: a page that only sends the visitor on. No script
     (the policy allows none), so it is a refresh in the head and a link for a browser that ignores it."""
-    url = escape(t['url'], quote=True)
+    url = escape(tool_url(t), quote=True)
     return '''<!doctype html>
 <html lang="en">
 <head>
@@ -1442,7 +1464,7 @@ def build_llms():
     for t in SITE['tools']:
         tags = [t['status']] if t.get('status') else []
         tags = (' (%s)' % ', '.join(tags + t.get('tags', []))) if tags or t.get('tags') else ''
-        name = '[%s](%s)' % (t['name'], t['url']) if t.get('url') else t['name']
+        name = '[%s](%s)' % (t['name'], tool_url(t)) if tool_url(t) else t['name']
         lines.append('- %s%s: %s' % (name, tags, plain(t['text'])))
     lines += ['', '## Elsewhere', '']
     lines += ['- [%s](%s)' % (s['label'], s['url']) for s in SITE['socials']]
@@ -1502,7 +1524,7 @@ def main():
         '\n'.join('  <url><loc>%s</loc></url>' % u for u in urls))
     open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write(sm)
     for t in SITE['tools']:
-        if t.get('url') and re.fullmatch(r'[a-z0-9-]+', t.get('path', '')):
+        if tool_url(t) and re.fullmatch(r'[a-z0-9-]+', t.get('path', '')) and t['path'] not in RESERVED:
             os.makedirs(os.path.join(ROOT, t['path']), exist_ok=True)
             open(os.path.join(ROOT, t['path'], 'index.html'), 'w', encoding='utf-8').write(build_forward(t))
     open(os.path.join(ROOT, 'llms.txt'), 'w', encoding='utf-8').write(build_llms())
