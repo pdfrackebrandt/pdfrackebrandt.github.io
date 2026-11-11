@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="l8-delta">
+  <div class="nfig-seg" role="group" aria-label="The function g">
+    <button type="button" class="nfig-opt" data-g="sq" aria-pressed="true">g(θ) = θ²</button>
+    <button type="button" class="nfig-opt" data-g="exp" aria-pressed="false">g(θ) = exp(θ)</button>
+    <button type="button" class="nfig-opt" data-g="inv" aria-pressed="false">g(θ) = 1/θ</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">θ</span><input type="range" min="0" max="2" step="0.05" value="1" data-k="theta"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name">N</span><input type="range" min="0" max="7" step="1" value="2" data-k="n"><span class="nfig-val" aria-hidden="true">25</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 416" role="img" aria-label="Top: the curve g in blue with its dashed red tangent at theta, the density of the estimator theta hat on the horizontal axis and a shaded band holding its middle 95 percent; bars in the right margin show where that band lands under g, in blue, and under the tangent, in red. Bottom: the exact density of root N times g of theta hat minus g of theta, shaded blue, against the delta method limit, the normal density with mean 0 and variance g prime of theta squared times sigma squared, in red."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">g′(θ) = 2.00   limit sd |g′(θ)|σ = 2.000   exact sd = 2.020
+largest gap between the exact and the limit CDF = 0.035
+g still bends inside the shaded band where θ̂ lands, so the exact density is skewed.</p>
+  <figcaption>Here θ̂ ~ N(θ, σ²/N) with σ = 1. Top: g, its tangent at θ and the band θ ± 1.96σ/√N where θ̂ lands 95% of the time; the bars in the right margin show where that band goes under g (blue) and under the tangent (red). Bottom: the exact density of √N(g(θ̂) − g(θ)) against the delta method limit. Raise N and the blue shape settles on the red curve; then take θ² to θ = 0, or 1/θ towards 0, and watch it fail.</figcaption>
+</figure>

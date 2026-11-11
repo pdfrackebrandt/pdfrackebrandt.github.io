@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="l8-gls">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Estimators shown">
+      <button type="button" class="nfig-opt" data-fg="0" aria-pressed="true">OLS and GLS</button>
+      <button type="button" class="nfig-opt" data-fg="1" aria-pressed="false">Add weights 1/xᵢ²</button>
+    </div>
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">strength δ</span><input type="range" min="0" max="2" step="0.1" value="1" data-k="het"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 330" role="img" aria-label="Scatter of 40 observations from y = 1 + 0.5 x + u, where the standard deviation of u grows with x. Larger dots carry a larger GLS weight, one over the error variance. The dashed grey line is the true line, the red line is OLS and the blue line is GLS; a shaded fan marks the true line plus and minus 1.96 error standard deviations."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">this sample: β̂₂ OLS = 0.585   GLS = 0.502   true β₂ = 0.5
+sd(β̂₂ | X): OLS = 0.070   GLS = 0.042   ratio = 1.67
+the homoskedastic formula s²(X′X)⁻¹ reports about 0.055 for OLS, too small</p>
+  <figcaption>y = 1 + 0.5x + u with N = 40 and Var(uᵢ | X) = σᵢ² proportional to xᵢ^(2δ), scaled so the average variance is 1; δ = 0 is homoskedastic. Dot size shows the GLS weight 1/σᵢ². The x values stay fixed, New sample redraws the errors, and the standard deviations are exact given X: the sandwich (X′X)⁻¹X′ΩX(X′X)⁻¹ for OLS and (X′Ω⁻¹X)⁻¹ for GLS, where Ω = Var(u | X). The second button adds weighted least squares under the model Var(uᵢ | X) = σ²xᵢ², which is GLS only at δ = 1.</figcaption>
+</figure>

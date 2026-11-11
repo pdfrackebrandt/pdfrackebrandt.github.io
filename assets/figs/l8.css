@@ -1,0 +1,64 @@
+/* L8 figures (assets/figs/l8.js). Colours only through the site tokens, so dark mode follows.
+   Blue is exact (the curve g, the exact density, GLS), the red of \kr is the linear approximation and OLS, the purple of \kp the misspecified weights. */
+
+/* the delta method */
+.l8-tan{stroke:var(--c-key);stroke-width:1.75;stroke-dasharray:6 4;fill:none}
+.l8-band{fill:var(--ink-soft);fill-opacity:.07;stroke:none}
+.l8-dth{fill:var(--ink-soft);fill-opacity:.2;stroke:none}
+.l8-dthl{fill:none;stroke:var(--ink-soft);stroke-width:1.25;stroke-linejoin:round}
+.l8-dth.l8-sw{stroke:var(--ink-soft);stroke-width:1}
+.l8-barg{stroke:var(--fig-blue);stroke-width:4;stroke-linecap:butt}
+.l8-bart{stroke:var(--c-key);stroke-width:4;stroke-linecap:butt}
+.l8-ex{fill:var(--fig-blue);fill-opacity:.16;stroke:none}
+.l8-ex.l8-sw2{stroke:var(--fig-blue);stroke-width:1}
+.l8-exl{fill:none;stroke:var(--fig-blue);stroke-width:1.5;stroke-linejoin:round}
+.l8-lim{fill:none;stroke:var(--c-key);stroke-width:1.75;stroke-linejoin:round;stroke-linecap:round}
+.l8-spike{stroke-width:2.5;stroke-linecap:butt}
+[data-nfig="l8-delta"] .nfig-read{min-height:6em}
+@container (max-width:520px){[data-nfig="l8-delta"] .nfig-read{min-height:7.5em}}
+
+/* OLS against GLS */
+.l8-true{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:4 3;fill:none}
+.l8-ols{stroke:var(--c-key);stroke-width:2;stroke-linecap:round;fill:none}
+.l8-gls{stroke:var(--fig-blue);stroke-width:2;stroke-linecap:round;fill:none}
+.l8-fg{stroke:var(--c-label);stroke-width:2;stroke-dasharray:7 4;fill:none}
+.l8-fan{fill:var(--ink-soft);fill-opacity:.07;stroke:none}
+.l8-fan.l8-sw3{stroke:var(--faint);stroke-width:1}
+.l8-pt{fill:var(--fig-blue);fill-opacity:.5;stroke:var(--fig-blue);stroke-width:.75}
+[data-nfig="l8-gls"] .nfig-read{min-height:4.5em}
+@container (max-width:520px){[data-nfig="l8-gls"] .nfig-read{min-height:7.5em}}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l8-band,:root:not([data-theme="light"]) .l8-fan{fill-opacity:.1}
+  :root:not([data-theme="light"]) .l8-dth{fill-opacity:.28}
+  :root:not([data-theme="light"]) .l8-ex{fill-opacity:.24}
+  :root:not([data-theme="light"]) .l8-pt{fill-opacity:.6}
+}
+:root[data-theme="dark"] .l8-band,:root[data-theme="dark"] .l8-fan{fill-opacity:.1}
+:root[data-theme="dark"] .l8-dth{fill-opacity:.28}
+:root[data-theme="dark"] .l8-ex{fill-opacity:.24}
+:root[data-theme="dark"] .l8-pt{fill-opacity:.6}
+
+/* L8 cluster robust inference (assets/figs/l8.js). Colours only through the site tokens, so dark mode follows. */
+.notes-body .nfig[data-nfig="l8-cluster"] p.nfig-read,.nfig[data-nfig="l8-cluster"] p.nfig-read{font-size:.75rem;line-height:1.5;min-height:4.5em}
+@container (max-width:520px){.nfig[data-nfig="l8-cluster"] p.nfig-read{min-height:9em}}
+[data-nfig="l8-cluster"]{--nfig-name:9.6em}
+/* four marked clusters: hue and shape together; the rest stay grey */
+.l8-o{fill:var(--faint);fill-opacity:.5}
+.l8-c{fill-opacity:.85;stroke:var(--paper);stroke-width:.6}
+.l8-c0{fill:var(--fig-blue)}
+.l8-c1{fill:var(--c-key)}
+.l8-c2{fill:var(--c-ask)}
+.l8-c3{fill:var(--c-label)}
+.l8-mean{stroke:var(--ink);stroke-width:1.5;fill-opacity:1}
+.l8-fit{stroke:var(--ink-soft);stroke-width:1.5}
+.nfig text.l8-tb{fill:var(--ink-soft)}
+/* bars: the truth in ink, the estimators in blue, rejections beyond the nominal 5% in red */
+.l8-b0{fill:var(--ink-soft)}
+.l8-b1{fill:var(--fig-blue);fill-opacity:.75}
+.l8-bx{fill:var(--c-key)}
+.l8-guide{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:4 3}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l8-o{fill-opacity:.65}
+}
+:root[data-theme="dark"] .l8-o{fill-opacity:.65}

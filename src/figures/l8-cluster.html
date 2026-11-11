@@ -1,0 +1,20 @@
+<figure class="nfig" data-nfig="l8-cluster">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Number of clusters G">
+      <button type="button" class="nfig-opt" data-g="5" aria-pressed="false">G = 5</button>
+      <button type="button" class="nfig-opt" data-g="10" aria-pressed="false">G = 10</button>
+      <button type="button" class="nfig-opt" data-g="20" aria-pressed="true">G = 20</button>
+      <button type="button" class="nfig-opt" data-g="50" aria-pressed="false">G = 50</button>
+    </div>
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">error correlation ρ</span><input type="range" min="0" max="0.9" step="0.05" value="0.5" data-k="rho"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name">cluster share of x</span><input type="range" min="0" max="1" step="0.1" value="0.5" data-k="xshare"><span class="nfig-val" aria-hidden="true">0.5</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 290" role="img" aria-label="Left: one simulated sample of y against x in G clusters of 20 observations, with the OLS line. Four clusters are marked by colour and shape (circles, squares, triangles, diamonds) with a larger mark at each cluster mean; the other clusters are grey dots. As the error correlation inside a cluster rises, each marked cluster sits together above or below the line. Right: four bars compare the exact standard deviation of the OLS slope with the average conventional, White and cluster robust standard errors over 2000 samples, and three bars give how often the 5% t test of the true null rejects with each standard error, against a dashed line at 5%."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">G = 20 clusters of 20, N = 400   ρ = 0.50   exact sd(β̂₂ | X) = 0.131
+average se over 2000 samples: conventional 0.052, White 0.051, cluster robust 0.118
+5% t test of the true H₀: β₂ = 0.5 rejects in 42.5%, 44.0% and 9.7% of them</p>
+  <figcaption>Students i in classrooms g: y = 1 + 0.5x + u with u = c + e, a classroom shock c shared by all 20 students plus a student shock e, so Var(u) = 1 and two errors in one classroom have correlation ρ. The second slider sets how much of the variance of x lies between classrooms. X stays fixed and the errors are drawn 2000 times. Raise ρ and watch the conventional and White bars fall short of the true sd while their tests reject far more than 5%; then cut G to 5 and see the cluster robust test over reject too.</figcaption>
+</figure>
