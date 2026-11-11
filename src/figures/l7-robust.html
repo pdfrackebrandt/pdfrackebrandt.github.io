@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="l7-robust">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-sliders">
+      <label class="nfig-range"><span class="nfig-name">strength λ</span><input type="range" min="0" max="1" step="0.05" value="0.5" data-k="het"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+      <label class="nfig-range"><span class="nfig-name">sample size N</span><input type="range" min="0" max="6" step="1" value="3" data-k="n"><span class="nfig-val" aria-hidden="true">200</span></label>
+    </div>
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 250" role="img" aria-label="Left: scatter of one sample from y = β1 + β2 x + u whose error spread grows with x, with the population line, the OLS fit and a shaded fan of plus and minus 1.96 conditional standard deviations. Right: bars for root N times the true sampling standard deviation of the OLS slope, the mean conventional standard error and the mean robust standard error over 4000 samples, and bars for how often the 5% asymptotic t test of the true null rejects with each standard error, against a dashed line at 5%."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">N = 200   λ = 0.50   sd of β̂₂ 0.1369
+mean se: conventional 0.0704, robust 0.1217
+5% t test of the true H₀ rejects: conventional 30.6%, robust 8.3%
+limits of √N × se: conventional 1.000, robust √(1 + 6λ) = 2.000
+this sample: β̂₂ = 0.500, se 0.072 conventional, 0.147 robust</p>
+  <figcaption>Here x is Exponential(1) and Var(u | x) = σ²h(x) with σ² = 1 and h(x) = 1 − λ + λx²/2, so E[u²] = 1 at every λ and λ = 0 is homoskedastic. Raise λ: the fan opens, the true sd of β̂₂ grows, the conventional se from σ̂²(X′X)⁻¹ stays put and its t test rejects a true H₀ far too often. The robust se from N⁻¹Σ̂x⁻¹Ω̂Σ̂x⁻¹ tracks the true sd, closely once N is large. The bars come from 4000 samples.</figcaption>
+</figure>

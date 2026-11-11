@@ -1,0 +1,24 @@
+<figure class="nfig" data-nfig="l7-limit">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Distribution of the errors">
+      <button type="button" class="nfig-opt" data-err="skew" aria-pressed="true">Skewed u</button>
+      <button type="button" class="nfig-opt" data-err="heavy" aria-pressed="false">Heavy tailed u</button>
+      <button type="button" class="nfig-opt" data-err="normal" aria-pressed="false">Normal u</button>
+    </div>
+    <button type="button" class="btn nfig-new">New draws</button>
+  </div>
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="What is plotted">
+      <button type="button" class="nfig-opt" data-view="raw" aria-pressed="false">β̂₂</button>
+      <button type="button" class="nfig-opt" data-view="scaled" aria-pressed="true">√N(β̂₂ − β₂)</button>
+    </div>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">sample size N</span><input type="range" min="0" max="8" step="1" value="2" data-k="n"><span class="nfig-val" aria-hidden="true">20</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 278" role="img" aria-label="Histogram of 4000 simulated OLS slopes from the regression y = β1 + β2 x + u with non normal errors, scaled as a density. In the view of the slope itself the histogram tightens around the true slope 0.5 as N grows, with the normal density N(β2, avar) drawn on top. In the view of root N times the estimation error the histogram settles onto the fixed limit density N(0, 1)."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">N = 20   mean of β̂₂ 0.504   sd of β̂₂ 0.272
+sd of √N(β̂₂ − β₂) 1.216   limit sd 1.000
+sup distance to the limit cdf 0.038</p>
+  <figcaption>Each of 4000 samples draws x from Exponential(1) and u with mean 0 and variance 1 (a centred exponential, t₃ over √3, or N(0, 1)), then fits yᵢ = β₁ + β₂xᵢ + uᵢ with β₂ = 0.5. Here [Σx⁻¹ΩΣx⁻¹]₂₂ = 1. Raise N in the β̂₂ view and the histogram collapses on β₂; in the √N view it stops moving and sits on N(0, 1), whatever the errors. A sup distance below about 0.02 is the noise of 4000 draws.</figcaption>
+</figure>
