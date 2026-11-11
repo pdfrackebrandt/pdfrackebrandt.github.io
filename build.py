@@ -1465,7 +1465,10 @@ def build_llms():
         tags = [t['status']] if t.get('status') else []
         tags = (' (%s)' % ', '.join(tags + t.get('tags', []))) if tags or t.get('tags') else ''
         name = '[%s](%s)' % (t['name'], tool_url(t)) if tool_url(t) else t['name']
-        lines.append('- %s%s: %s' % (name, tags, plain(t['text'])))
+        # a tool that says how agents can use it has a file of its own for that: name it here
+        agents = t.get('agents', '')
+        agents = (' How an agent can use it: %s' % agents) if agents.startswith('https://') else ''
+        lines.append('- %s%s: %s%s' % (name, tags, plain(t['text']), agents))
     lines += ['', '## Elsewhere', '']
     lines += ['- [%s](%s)' % (s['label'], s['url']) for s in SITE['socials']]
     lines += ['', '## Optional', '', '- [Full text of every paper summary](%s/llms-full.txt)' % BASE, '']
