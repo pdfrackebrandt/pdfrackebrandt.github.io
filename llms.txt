@@ -18,7 +18,7 @@ Aristotle and Polybius traced how constitutions decay and settled on the mixed r
 
 ## Tools
 
-- [Rikuy](https://rikuy-3dl.pages.dev/) (Live, Open source): A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install and no account. It works offline and opens and saves Word files. How an agent can use it: https://rikuy-3dl.pages.dev/llms.txt
+- [Rikuy](https://rikuy.rackebrandt.pe/) (Live, Open source): A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install and no account. It works offline and opens and saves Word files. How an agent can use it: https://rikuy.rackebrandt.pe/llms.txt
 - Frontier (Coming soon): A research agent that works overnight and shows, as a map, how ideas in frontier research connect.
 
 ## Elsewhere
