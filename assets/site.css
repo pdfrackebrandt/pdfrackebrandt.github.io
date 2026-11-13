@@ -36,6 +36,9 @@
     --c-key:#FF7A7A;--c-label:#DA8AD6;--c-ask:#8FD173;--c-flag:#F2A066;--c-eq:#5CC6F2;--c-head:#8FD173;
 }
 
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+
 *{box-sizing:border-box}
 html,body{margin:0}
 html{-webkit-text-size-adjust:100%}
@@ -50,7 +53,16 @@ p{margin:0}
 .vh{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .skip{position:absolute;left:-9999px;top:0;z-index:30}
 .skip:focus{left:12px;top:12px;background:var(--surface);color:var(--ink);padding:8px 14px;border:1px solid var(--rule)}
-.wrap{max-width:62rem;margin:0 auto;padding-inline:clamp(16px,5vw,40px)}
+.wrap{max-width:62rem;margin:0 auto;padding-inline:clamp(16px,5vw,40px);position:relative}
+/* light and dark: a moon or a sun in the page's top corner, level with the back link on inner pages (site.js initTheme) */
+.theme-btn{position:absolute;z-index:30;top:calc(clamp(14px,3vw,28px) + 2px);right:calc(clamp(16px,5vw,40px) - 10px);width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center;background:none;border:0;border-radius:50%;color:var(--muted);cursor:pointer;transition:color .15s,background-color .15s}
+.theme-btn:hover{color:var(--accent);background:var(--surface)}
+.theme-btn svg{width:18px;height:18px;display:block;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s ease}
+.theme-btn .i-sun,.theme-btn.is-dark .i-moon{display:none}
+.theme-btn.is-dark .i-sun{display:block}
+.theme-btn:active svg{transform:rotate(-25deg) scale(.9)}
+/* while the theme changes, colours ease across instead of snapping */
+.theme-fade,.theme-fade *{transition:background-color .3s ease,color .3s ease,border-color .3s ease,fill .3s ease,stroke .3s ease !important}
 
 /* intro */
 .intro{display:grid;grid-template-columns:1fr;gap:30px;align-items:start;padding-block:clamp(40px,6vw,68px) 0}
@@ -203,8 +215,12 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .tool-fig img{display:block;width:132px;height:132px;transition:transform .15s}
 a.tool-fig:hover img{transform:scale(1.04)}
 .tool-fig{position:relative}
-.tool-hint{position:absolute;right:8px;top:6px;pointer-events:none;font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);opacity:.75;transition:color .15s,opacity .15s}
-a.tool-fig:hover .tool-hint{color:var(--accent);opacity:1}
+/* the mark's "click to open": a small message that comes out of its corner once, holds, and goes (site.js initToolHint) */
+.tool-hint{position:absolute;left:calc(50% + 42px);top:12px;pointer-events:none;font-family:var(--f-mono);font-size:.75rem;line-height:1;white-space:nowrap;color:var(--paper);background:var(--ink);padding:6px 10px 7px;border-radius:10px 10px 10px 2px;box-shadow:0 2px 8px rgba(0,0,0,.12);opacity:0;transform-origin:0 100%}
+.tool-hint.show{animation:hint-once 3.6s ease forwards}
+@keyframes hint-once{0%{opacity:0;transform:translateY(5px) scale(.94)}10%,82%{opacity:1;transform:none}100%{opacity:0;transform:none}}
+@keyframes hint-once-still{0%{opacity:0}10%,82%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.tool-hint.show{animation-name:hint-once-still}}
 .tool-hint .h-tap{display:none}
 @media (hover:none){.tool-hint .h-click{display:none}.tool-hint .h-tap{display:inline}}
 .tag-src{display:inline-flex;align-items:center;gap:6px;transition:color .15s,border-color .15s}

@@ -233,6 +233,7 @@
     cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end);
     var mq=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
     if(mq && mq.addEventListener) mq.addEventListener('change',function(){ tokens(); draw(); });
+    document.addEventListener('themechange',function(){ tokens(); draw(); });
     tokens();
     if(window.ResizeObserver) new ResizeObserver(resize).observe(cv); else window.addEventListener('resize',resize);
     if(window.IntersectionObserver) new IntersectionObserver(function(es){ onScreen=es[0].isIntersecting; wake(); }).observe(cv);
@@ -524,6 +525,46 @@
     });
   }
 
-  function boot(){ initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initCite(); initFold(); initToc(); initLocks(); initHurdle(); initRegime(); }
+  // light and dark: one button flips the theme the reader sees. A choice equal to the system's is forgotten, so the
+  // page follows the system again; theme.js applies a kept choice in the head before the first paint.
+  var MOON='<svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 14.6A8.4 8.4 0 0 1 9.4 3.8a8.4 8.4 0 1 0 10.8 10.8z"/></svg>';
+  var SUN='<svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M5.4 18.6 7 17M17 7l1.6-1.6"/></svg>';
+  function initTheme(){
+    var wrap=document.querySelector('.wrap'); if(!wrap) return;
+    var root=document.documentElement, mq=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)'), ft=0;
+    var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    function sys(){ return mq && mq.matches ? 'dark' : 'light'; }
+    function cur(){ var t=root.getAttribute('data-theme'); return t==='light'||t==='dark' ? t : sys(); }
+    var b=document.createElement('button');
+    b.type='button'; b.className='theme-btn'; b.innerHTML=MOON+SUN;
+    function show(){
+      var dark=cur()==='dark', l=dark?'Switch to light':'Switch to dark';
+      b.classList.toggle('is-dark',dark); b.setAttribute('aria-label',l); b.title=l;
+    }
+    b.addEventListener('click',function(){
+      var next=cur()==='dark'?'light':'dark';
+      if(!reduce){ root.classList.add('theme-fade'); clearTimeout(ft); ft=setTimeout(function(){ root.classList.remove('theme-fade'); },450); }
+      if(next===sys()){ root.removeAttribute('data-theme'); try{ localStorage.removeItem('theme'); }catch(e){} }
+      else{ root.setAttribute('data-theme',next); try{ localStorage.setItem('theme',next); }catch(e){} }
+      show(); document.dispatchEvent(new Event('themechange'));
+    });
+    if(mq && mq.addEventListener) mq.addEventListener('change',show);
+    show(); wrap.insertBefore(b, wrap.firstChild);
+  }
+
+  // the tool mark's "Click to open" shows once, as a short message the first time it comes into view, then never again
+  function initToolHint(){
+    var h=document.querySelector('.tool-hint');
+    if(!h || !window.IntersectionObserver) return;
+    try{ if(localStorage.getItem('tool-hint-seen')) return; }catch(e){}
+    var io=new IntersectionObserver(function(es){
+      if(!es[0].isIntersecting) return;
+      io.disconnect();
+      setTimeout(function(){ h.classList.add('show'); try{ localStorage.setItem('tool-hint-seen','1'); }catch(e){} }, 500);
+    },{threshold:0.6});
+    io.observe(h.parentNode);
+  }
+
+  function boot(){ initTheme(); initToolHint(); initEmail(); initTabs(); initViews(); initIndex(); initCopy(); initCite(); initFold(); initToc(); initLocks(); initHurdle(); initRegime(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

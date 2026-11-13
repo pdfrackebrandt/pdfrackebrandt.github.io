@@ -523,11 +523,12 @@ def head(title, desc, canonical, extra=''):
 {extra}<link rel="alternate" type="text/markdown" href="/llms.txt" title="Plain text summary for AI agents">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/assets/theme.js?v={vth}"></script>
 <link rel="stylesheet" href="/assets/site.css?v={vcss}">
 <script src="/assets/site.js?v={vjs}" defer></script>
 <script data-goatcounter="https://pedrofrackebrandt.goatcounter.com/count" async src="{gc}" crossorigin="anonymous" integrity="{gc_sri}"></script>
 </head>'''.format(csp=CSP, title=escape(title), desc=escape(desc), canonical=canonical, base=BASE, extra=extra,
-           vcss=version('assets/site.css'), vjs=version('assets/site.js'), gc=GOATCOUNTER_JS, gc_sri=GOATCOUNTER_SRI)
+           vcss=version('assets/site.css'), vjs=version('assets/site.js'), vth=version('assets/theme.js'), gc=GOATCOUNTER_JS, gc_sri=GOATCOUNTER_SRI)
 
 
 def math_links():
@@ -586,8 +587,8 @@ def tool_card(t):
     else:
         mark = '<span class="tool-initial">%s</span>' % escape(t['name'][:1])
     # the mark repeats the name's link, so it stays out of the tab order and of a screen reader's list
-    # a quiet hint in the panel's corner, as the figures say "drag to rotate", so people know the mark opens the tool
-    hint = '<span class="tool-hint"><span class="h-click">click to open</span><span class="h-tap">tap to open</span></span>'
+    # a short message from the mark, shown once (site.js initToolHint), so people know the mark opens the tool
+    hint = '<span class="tool-hint"><span class="h-click">Click to open</span><span class="h-tap">Tap to open</span></span>'
     fig = ('<a class="tool-fig"%s tabindex="-1" aria-hidden="true">%s%s</a>' % (link, mark, hint)) if url else '<div class="tool-fig" aria-hidden="true">%s</div>' % mark
     title = ('<a%s>%s</a>' % (link, name)) if url else name
     tags = []
