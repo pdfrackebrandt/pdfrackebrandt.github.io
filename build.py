@@ -564,6 +564,12 @@ def tool_url(t):
     return u if re.fullmatch(r'https://[A-Za-z0-9.-]+(/[^\s"<>\\]*)?', u) else ''
 
 
+def tool_source(t):
+    """A tool's source code address, only if it is a repository on GitHub."""
+    u = t.get('source') or ''
+    return u if re.fullmatch(r'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/?', u) else ''
+
+
 # folders of the site itself: a tool's forwarding page may not take one of their names
 RESERVED = {'assets', 'content', 'data', 'notes', 'papers', 'src', 'tools'}
 
@@ -580,12 +586,21 @@ def tool_card(t):
     else:
         mark = '<span class="tool-initial">%s</span>' % escape(t['name'][:1])
     # the mark repeats the name's link, so it stays out of the tab order and of a screen reader's list
-    fig = ('<a class="tool-fig"%s tabindex="-1" aria-hidden="true">%s</a>' % (link, mark)) if url else '<div class="tool-fig" aria-hidden="true">%s</div>' % mark
+    # a quiet hint in the panel's corner, as the figures say "drag to rotate", so people know the mark opens the tool
+    hint = '<span class="tool-hint"><span class="h-click">click to open</span><span class="h-tap">tap to open</span></span>'
+    fig = ('<a class="tool-fig"%s tabindex="-1" aria-hidden="true">%s%s</a>' % (link, mark, hint)) if url else '<div class="tool-fig" aria-hidden="true">%s</div>' % mark
     title = ('<a%s>%s</a>' % (link, name)) if url else name
     tags = []
     if t.get('status'):
         tags.append('<span class="tag%s">%s</span>' % (' live' if url else '', escape(t['status'])))
-    tags += ['<span class="tag">%s</span>' % escape(x) for x in t.get('tags', [])]
+    src = escape(tool_source(t), quote=True)
+    for x in t.get('tags', []):
+        if src and x == 'Open source':
+            # the tag itself leads to the code, with GitHub's mark so it reads as a link
+            tags.append('<a class="tag tag-src" href="%s" target="_blank" rel="noopener" title="Source on GitHub">%s%s</a>'
+                        % (src, ICONS['github'], escape(x)))
+        else:
+            tags.append('<span class="tag">%s</span>' % escape(x))
     if url:
         tags.append('<a class="go"%s>Open %s &rarr;</a>' % (link, name))
     row = ('\n            <div class="paper-tags">%s</div>' % ''.join(tags)) if tags else ''

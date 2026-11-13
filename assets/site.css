@@ -202,6 +202,14 @@ p.scene-cap{min-height:6.5em;font-size:var(--step--1);line-height:1.6;color:var(
 .tool-fig{grid-area:fig;display:flex;align-items:center;justify-content:center;min-height:188px;background:var(--surface);transition:background .15s}
 .tool-fig img{display:block;width:132px;height:132px;transition:transform .15s}
 a.tool-fig:hover img{transform:scale(1.04)}
+.tool-fig{position:relative}
+.tool-hint{position:absolute;right:8px;top:6px;pointer-events:none;font-family:var(--f-mono);font-size:var(--step--1);color:var(--faint);opacity:.75;transition:color .15s,opacity .15s}
+a.tool-fig:hover .tool-hint{color:var(--accent);opacity:1}
+.tool-hint .h-tap{display:none}
+@media (hover:none){.tool-hint .h-click{display:none}.tool-hint .h-tap{display:inline}}
+.tag-src{display:inline-flex;align-items:center;gap:6px;transition:color .15s,border-color .15s}
+.tag-src svg{width:13px;height:13px;display:block}
+.tag-src:hover{color:var(--accent);border-color:var(--accent)}
 .tool-initial{font-family:var(--f-display);font-size:5.5rem;line-height:1;color:var(--faint)}
 .tool-body{grid-area:body;display:flex;flex-direction:column;gap:8px;min-width:0}
 .tool h3{font-size:var(--step-1);line-height:1.35;font-weight:700}
