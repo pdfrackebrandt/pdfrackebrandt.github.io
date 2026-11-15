@@ -1,0 +1,18 @@
+<figure class="nfig" data-nfig="mi8-trade">
+  <div class="nfig-seg" role="group" aria-label="View">
+    <button type="button" class="nfig-opt" data-view="factor" aria-pressed="true">Factor space</button>
+    <button type="button" class="nfig-opt" data-view="output" aria-pressed="false">Outputs</button>
+    <button type="button" class="nfig-opt" data-view="trade" aria-pressed="false">Trade</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">labour endowment </span>L̄</span><input type="range" min="2" max="16" step="0.1" value="10" data-k="L"><span class="nfig-val" aria-hidden="true">10.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">capital endowment </span>K̄</span><input type="range" min="2" max="16" step="0.1" value="8" data-k="K"><span class="nfig-val" aria-hidden="true">8.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">taste for good 1, </span>α</span><input type="range" min="0.1" max="0.9" step="0.01" value="0.5" data-k="alpha"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 420" role="group" aria-label="The small open economy with unit inputs a1 = (3, 1) and a2 = (1, 3) at world prices (4, 4). Factor space: the diversification cone between the two rays, a draggable endowment, and its decomposition along a1 and a2, or the idle factor when it lies outside the cone. Outputs: the labour and capital clearing lines in output space and the output point where they cross. Trade: the kinked production frontier, the world price line through production, consumption with its indifference curve, and the trade triangle."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">L̄ = 10.0, K̄ = 8.0: inside the cone, so both goods are made and w = r = 1, as abroad
+q = (2.75, 1.75), m = 18.00, x = (2.25, 2.25)
+exports 0.50 of good 1, imports 0.50 of good 2: 4(−0.50) + 4(0.50) = 0.00
+against L̄ = 8 at the same K̄: L̂ = +25.0%, q̂₁ = +37.5%, q̂₂ = −12.5%</p>
+  <figcaption>Factor space: the endowment splits along a₁ and a₂ into the factors each industry uses; only endowments inside the cone support diversified production at the world factor prices w = r = 1, and outside it one factor lies idle and becomes free. Outputs: the factor clearing lines; raising L̄ from 8 to 10 moves q from (2, 2) to (2.75, 1.75), Rybczynski with magnification. Trade: production q at the kink of the frontier, consumption x where the world price line touches an indifference curve, and the trade triangle of ½ each way. Drag the endowment or use the sliders.</figcaption>
+</figure>

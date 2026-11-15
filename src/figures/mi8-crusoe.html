@@ -1,0 +1,21 @@
+<figure class="nfig" data-nfig="mi8-crusoe">
+  <div class="nfig-seg" role="group" aria-label="Technology">
+    <button type="button" class="nfig-opt" data-mode="crs" aria-pressed="false">CRS, f = βt</button>
+    <button type="button" class="nfig-opt" data-mode="drs" aria-pressed="true">DRS, f = 2√t</button>
+    <button type="button" class="nfig-opt" data-mode="alpha" aria-pressed="false">DRS against α</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">taste for the good, </span>α</span><input type="range" min="0.05" max="0.95" step="0.01" value="0.5" data-k="alpha"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">productivity, </span>β</span><input type="range" min="0.5" max="3" step="0.1" value="2" data-k="beta"><span class="nfig-val" aria-hidden="true">2.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">real wage </span>w/p</span><input type="range" min="0.8" max="5" step="0.01" value="1.73" data-k="rho"><span class="nfig-val" aria-hidden="true">1.73</span></label>
+  </div>
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn mi8-clear">Clear the market</button>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 320" role="group" aria-label="Robinson Crusoe with leisure on the horizontal axis from 0 to 1 and the good on the vertical axis. The shaded production set under the green frontier, an orange price line whose height at leisure 1 is profit income, the firm's plan where the price line touches the frontier, Crusoe's choice on the same line with his indifference curve, and a red gap on the axis when labour demand and supply differ. A third view plots the decreasing returns equilibrium against alpha; press or drag along it to set alpha."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">DRS, α = 0.50, w/p = 1.732 (clears the markets)
+firm: tᶠ = 0.333, xᶠ = 1.155, π/p = 0.577
+Crusoe: tᶜ = 0.667, xᶜ = 1.155, labour supply 0.333
+labour demand = supply, so the goods market clears too: MRS = MRT = w/p</p>
+  <figcaption>Robinson Crusoe. CRS: the frontier is the budget line, π* = 0, and E = (1 − α, αβ). DRS: the price line has the real wage as its slope and meets leisure 1 at profit income. The firm picks the point where it touches the frontier, Crusoe the point where it touches his indifference curve; move the real wage and the two points split, with the red gap on the axis the excess demand for labour. Clear the market and one line supports both sets at E; at α = ½ that is (0.667, 1.155) with real wage √3. The third view plots equilibrium labour, leisure and output against α.</figcaption>
+</figure>

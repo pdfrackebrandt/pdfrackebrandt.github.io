@@ -1,0 +1,13 @@
+<figure class="nfig" data-nfig="mi3-piglog">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">wealth </span>w</span><input type="range" min="1" max="14" step="0.1" value="4" data-k="w"><span class="nfig-val" aria-hidden="true">4.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">slope of the share of good 1, </span>β₁</span><input type="range" min="-0.06" max="0.2" step="0.01" value="0.12" data-k="beta1"><span class="nfig-val" aria-hidden="true">0.12</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">slope of the share of good 3, </span>β₃</span><input type="range" min="-0.16" max="0.1" step="0.01" value="-0.1" data-k="beta3"><span class="nfig-val" aria-hidden="true">−0.10</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 560" role="img" aria-label="Three panels against wealth w from 1 to 14, for three goods with PIGLOG budget shares. Top: the Engel curves x of w. Middle: the budget shares b of w. Bottom: the wealth elasticities, with reference lines at 1 and 0 marking luxuries, necessities and inferior goods. A dashed guide marks the chosen w in all three panels."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">β = (0.12, −0.02, −0.10), β₂ = −β₁ − β₃
+w = 4.0: b = (0.37, 0.47, 0.16), x = (1.47, 1.89, 0.65)
+ε₁w = 1.33 luxury   ε₂w = 0.96 necessity   ε₃w = 0.38 necessity
+b₁ε₁w + b₂ε₂w + b₃ε₃w = 1.00 (Engel aggregation); good 3 turns inferior at w = 7.39</p>
+  <figcaption>PIGLOG shares bℓ = αℓ + βℓ ln w at p = 1 with α = (0.2, 0.5, 0.3) and β₂ = −β₁ − β₃, so the shares add to 1. Move w along all three panels, and move β₁ and β₃ to change which good is a luxury. With β₃ = −0.10, good 3 is a necessity that turns inferior once b₃ &lt; −β₃ = 0.10, at w = e², exactly where its Engel curve peaks.</figcaption>
+</figure>

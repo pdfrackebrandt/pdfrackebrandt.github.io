@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="mi1-pump">
+  <div class="nfig-seg" role="group" aria-label="Preference between x and z">
+    <button type="button" class="nfig-opt" data-pref="cyc" aria-pressed="true">z ≻ x, a cycle</button>
+    <button type="button" class="nfig-opt" data-pref="tr" aria-pressed="false">x ≻ z, transitive</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">payment for y over z, </span>t</span><input type="range" min="0.1" max="2" step="0.1" value="1" data-k="t0"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">payment for x over y, </span>t′</span><input type="range" min="0.1" max="2" step="0.1" value="0.8" data-k="t1"><span class="nfig-val" aria-hidden="true">0.80</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">payment for z over x, </span>t″</span><input type="range" min="0.1" max="2" step="0.1" value="0.6" data-k="t2"><span class="nfig-val" aria-hidden="true">0.60</span></label>
+    <label class="nfig-range"><span class="nfig-name">rounds</span><input type="range" min="1" max="4" step="1" value="1" data-k="n"><span class="nfig-val" aria-hidden="true">1</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 272" role="img" aria-label="A staircase of the agent's money, starting at 10 holding z, falling by t, t prime and t double prime as she trades up to y, then x, then z again, round after round. A red arrow marks the total loss. With transitive preferences she refuses the last trade and keeps x."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">she pays t = 1.00 for y ≻ z, t′ = 0.80 for x ≻ y, t″ = 0.60 for z ≻ x
+after 1 round she holds z again with 7.60 instead of 10.00: lost t + t′ + t″ = 2.40
+every trade is one she strictly wants; only the cycle makes the sequence a loss</p>
+  <figcaption>Money pump starting from z with money 10. Each step is a trade the agent strictly wants: she pays t to swap z for y, t′ to swap y for x and, with the cycle, t′′ to swap x for z, which leaves her holding z again with t + t′ + t′′ less. More rounds repeat the loss. Switch to transitive preferences and she refuses the third trade: x is her best element and the pump stops.</figcaption>
+</figure>

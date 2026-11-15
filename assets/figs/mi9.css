@@ -1,0 +1,82 @@
+/* Core Micro L9 figures, drawn by /assets/figs/mi9.js. Colours come from the site tokens, so dark mode follows.
+   Agent a is teal and agent b orange, as in the Word notes; prices are the light blue of key equations. */
+.nfig[data-nfig^="mi9-"]{--mi9-a:#127A72;--mi9-b:#D2601A}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .nfig[data-nfig^="mi9-"]{--mi9-a:#5EC4B8;--mi9-b:#F2A066}
+}
+:root[data-theme="dark"] .nfig[data-nfig^="mi9-"]{--mi9-a:#5EC4B8;--mi9-b:#F2A066}
+.nfig .mi9-it{font-style:italic}
+.nfig text.mi9-sgn{font-size:14px;font-weight:700}
+/* handles */
+.nf-knob.mi9-kw{stroke:var(--mi9-b)}
+.nf-knob.mi9-kf{stroke:var(--c-key)}
+.nf-knob.mi9-kx{stroke:var(--ink)}
+.nf-knob.mi9-kp{stroke:var(--fig-blue)}
+/* lines */
+.mi9-ppf{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.mi9-pl{fill:none;stroke:var(--c-eq);stroke-width:1.75}
+.mi9-dash{stroke-dasharray:6 4}
+.mi9-ic{fill:none;stroke:var(--c-ask);stroke-width:1.75}
+.mi9-hb{fill:none;stroke:var(--mi9-b);stroke-width:1.25;stroke-dasharray:2 3}
+.mi9-c1{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+.mi9-c2{fill:none;stroke:var(--c-ask);stroke-width:2;stroke-linejoin:round}
+.mi9-dot1{fill:none;stroke:var(--ink-soft);stroke-width:1.5;stroke-dasharray:2 3}
+.mi9-dot2{fill:none;stroke:var(--faint);stroke-width:1.5;stroke-dasharray:2 3}
+.mi9-ua{fill:none;stroke:var(--mi9-a);stroke-width:1.75}
+.mi9-ub{fill:none;stroke:var(--mi9-b);stroke-width:1.75}
+.mi9-thin{stroke-width:1;stroke-dasharray:4 3;opacity:.75}
+.mi9-cc{fill:none;stroke:var(--c-label);stroke-width:1.75;stroke-dasharray:8 3 2 3}
+.mi9-boxl{fill:none;stroke:var(--ink-soft);stroke-width:1.25}
+.mi9-zero{stroke:var(--muted);stroke-width:1}
+.mi9-diag{stroke:var(--faint);stroke-width:1.25;stroke-dasharray:5 4}
+.mi9-g{fill:none;stroke:var(--c-label);stroke-width:2;stroke-linejoin:round}
+.mi9-ray{stroke:var(--c-ask);stroke-width:2}
+.mi9-arr{stroke:var(--c-eq);stroke-width:2}
+.mi9-arrh{fill:var(--c-eq);stroke:none}
+.mi9-garr{stroke:var(--c-label);stroke-width:1.75}
+.mi9-garrh{fill:var(--c-label);stroke:none}
+.mi9-ok{stroke:var(--c-ask);stroke-width:2}
+.mi9-okh{fill:var(--c-ask);stroke:none}
+.mi9-bad{stroke:var(--c-key);stroke-width:2;stroke-dasharray:5 3}
+.mi9-badh{fill:var(--c-key);stroke:none}
+/* areas */
+.mi9-tri{fill:var(--c-flag);fill-opacity:.22;stroke:none}
+.mi9-band{fill:var(--faint);fill-opacity:.14;stroke:none}
+.mi9-fa{fill:var(--mi9-a);fill-opacity:.15;stroke:none}
+.mi9-fb{fill:var(--mi9-b);fill-opacity:.16;stroke:none}
+.mi9-fs{fill:var(--faint);fill-opacity:.22;stroke:none}
+.mi9-both{fill:var(--c-key);fill-opacity:.4;stroke:none}
+.mi9-prod{fill:var(--faint);fill-opacity:.16;stroke:none}
+.mi9-neg{fill:var(--c-key);fill-opacity:.18;stroke:none}
+.mi9-rect{fill:var(--fig-blue);fill-opacity:.08;stroke:var(--fig-blue);stroke-opacity:.45;stroke-width:1;stroke-dasharray:3 3}
+/* points */
+.mi9-dk{fill:var(--ink);stroke:var(--paper);stroke-width:1.5}
+.mi9-dr{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.mi9-db{fill:var(--mi9-b);stroke:var(--paper);stroke-width:1.5}
+.mi9-dg{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.mi9-dgr{fill:var(--c-ask);stroke:var(--paper);stroke-width:1.5}
+.mi9-d1{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.mi9-d2{fill:var(--c-ask);stroke:var(--paper);stroke-width:1.5}
+.mi9-sq{fill:var(--c-key);stroke:var(--paper);stroke-width:1}
+.mi9-sqo{fill:var(--paper);stroke:var(--c-key);stroke-width:1.5}
+/* labels */
+.nfig text.mi9-tk{fill:var(--ink)}
+.nfig text.mi9-tr{fill:var(--c-key)}
+.nfig text.mi9-tg{fill:var(--c-ask)}
+.nfig text.mi9-ta{fill:var(--mi9-a)}
+.nfig text.mi9-tb{fill:var(--mi9-b)}
+.nfig text.mi9-tl{fill:var(--c-flag)}
+.nfig text.mi9-tm{fill:var(--muted)}
+.nfig text.mi9-t1{fill:var(--fig-blue);font-size:12px}
+.nfig text.mi9-t2{fill:var(--c-ask);font-size:12px}
+.nfig-read .mi9-okt{color:var(--c-ask)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .mi9-fa{fill-opacity:.2}
+  :root:not([data-theme="light"]) .mi9-fb{fill-opacity:.2}
+  :root:not([data-theme="light"]) .mi9-band{fill-opacity:.2}
+  :root:not([data-theme="light"]) .mi9-tri{fill-opacity:.28}
+}
+:root[data-theme="dark"] .mi9-fa{fill-opacity:.2}
+:root[data-theme="dark"] .mi9-fb{fill-opacity:.2}
+:root[data-theme="dark"] .mi9-band{fill-opacity:.2}
+:root[data-theme="dark"] .mi9-tri{fill-opacity:.28}

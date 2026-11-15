@@ -1,0 +1,20 @@
+<figure class="nfig" data-nfig="mi5-cont">
+  <div class="nfig-seg nfig-seg4" role="group" aria-label="Preference and lotteries">
+    <button type="button" class="nfig-opt" data-case="ss" aria-pressed="true">Small supports</button>
+    <button type="button" class="nfig-opt" data-case="wc" aria-pressed="false">Worst case</button>
+    <button type="button" class="nfig-opt" data-case="eu" aria-pressed="false">Death, EU</button>
+    <button type="button" class="nfig-opt" data-case="sf" aria-pressed="false">Death, survival first</button>
+  </div>
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">mixing weight on L, </span>α</span><input type="range" min="0" max="1" step="0.001" value="0.5" data-k="a"><span class="nfig-val" aria-hidden="true">0.500</span></label>
+    <label class="nfig-range"><span class="nfig-name">u(death)</span><input type="range" min="-200" max="-2" step="1" value="-100" data-k="d"><span class="nfig-val" aria-hidden="true">−100</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 300" role="img" aria-label="The utility of the mixture alpha L plus (1 minus alpha) L double prime against alpha, with the utility of L prime as a dashed line. Below, on the alpha axis, the set of alpha whose mixture is at least as good as L prime and the set whose mixture is at most as good, closed ends filled and open ends hollow. Small supports and worst case give sets that are not closed; expected utility with a death prize gives closed sets meeting at alpha star; survival first gives sets that are not closed."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">U = −|supp|;   L = L₁,  L″ = L₂,  L′ = (½, ½, 0)
+α = 0.500:   mix = (0.50, 0.50, 0.00),   U = −2,   so mix ∼ L′
+a set is not closed: continuity fails</p>
+  <figcaption>Continuity along a mixture: the curve is the utility of the mixture of L and L′′ with weight α, and the bars are the weak upper and lower sets of α against L′. Small supports gives an open lower set, (0, 1); worst case a half open one, [0, 1). An EU agent with u(death) = −100, u(£0) = 0 and u(£10) = 1 has closed sets that meet at α* = 100 over 101: it trades a death risk of 1 over 101 for £10. Survival first never does. Move α along the mixture, switch the case, and in the EU case move u(death).</figcaption>
+</figure>

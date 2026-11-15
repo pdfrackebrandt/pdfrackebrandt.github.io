@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="mi9-swt">
+  <div class="nfig-seg" role="group" aria-label="Failure">
+    <button type="button" class="nfig-opt" data-mode="ncv" aria-pressed="true">Nonconvex preferences</button>
+    <button type="button" class="nfig-opt" data-mode="irs" aria-pressed="false">Increasing returns</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price ratio </span>p₁/p₂</span><input type="range" min="0.5" max="2" step="0.01" value="1" data-k="pr"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">real wage </span>w/p</span><input type="range" min="0.3" max="2.5" step="0.01" value="1.33" data-k="wp"><span class="nfig-val" aria-hidden="true">1.33</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 380" role="group" aria-label="Nonconvex preferences: the 6 by 6 box with a's indifference circle and b's indifference curve through a draggable target on the diagonal, the budget line through the target at the chosen price ratio, a's demand at a corner of that line, b's demand, and in red any part of the box better for both. Increasing returns: technology x equals L squared over labour from 0 to 1, the household indifference curve through the efficient plan, a draggable plan with its isoprofit line at the chosen real wage, the profits at L equal to 0 and 1, the household budget given the firm's choice, and the household's choice on it."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">target (4.00, 4.00): efficient, no box point is better for both
+p₁/p₂ = 1.00, m_a = 8.00: a demands (8.00, 0.00) or (0.00, 8.00), uᵃ = 64.0 &gt; 32.0
+b demands (2.00, 2.00) in its own coordinates: a never chooses the target</p>
+  <figcaption>Nonconvex preferences in a 6 by 6 box: a has u = x₁² + x₂², b has u = x₁x₂. At the target (4, 4) the two indifference curves are tangent and the target is efficient, but along any budget line through it a's utility is convex, so a jumps to a corner; move the price ratio to see that no price works, and drag the target down the diagonal to see efficiency itself fail below about 3.5. Increasing returns, x = L²: the isoprofit line through the efficient plan, L = 2 over 3 and x = 4 over 9, at the real wage 4 over 3 lies below the technology; inactivity earns 0 and L = 1 earns minus one third, both more than minus four ninths. Move the real wage: the firm always picks an end, and the household never supplies that amount of labour.</figcaption>
+</figure>

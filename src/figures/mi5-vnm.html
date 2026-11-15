@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="mi5-vnm">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">mixing weight </span>α</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="a"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name">U(z₂)</span><input type="range" min="0" max="1" step="0.01" value="0.6" data-k="u"><span class="nfig-val" aria-hidden="true">0.60</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 320" role="group" aria-label="The probability triangle with the worst lottery, z1 for sure, bottom left and the best lottery, z3 for sure, on top. The left side, in bold, holds the gambles p times best plus (1 minus p) times worst. Two draggable lotteries L and L prime follow their indifference lines to that side, where the height is U(L) and U(L prime). The red mixture alpha L plus (1 minus alpha) L prime lands at the average of the two. A strip below or beside shows, on [0, 1], the set A of p whose gamble is at least as good as L and the set B of p whose gamble is at most as good, meeting at p star equal to U(L)."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">U(L̲) = 0,  U(z₂) = 0.60,  U(L̄) = 1
+L ∼ 0.460 L̄ + 0.540 L̲   and   L′ ∼ 0.680 L̄ + 0.320 L̲
+α = 0.50:   αL + (1 − α)L′ ∼ 0.570 L̄ + 0.430 L̲,   and 0.50 × 0.460 + 0.50 × 0.680 = 0.570</p>
+  <figcaption>The construction. Step 1: A and B are closed (continuity) and cover [0, 1] (completeness), and [0, 1] is connected, so they meet at p* = U(L). Step 3: U(L) is where the indifference line through L meets the side from L̲ to L̄, and the mixture αL + (1 − α)L′ lands at αU(L) + (1 − α)U(L′). Drag L and L′, move α, and change U(z₂), which turns every line.</figcaption>
+</figure>

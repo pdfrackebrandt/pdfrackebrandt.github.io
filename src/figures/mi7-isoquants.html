@@ -1,0 +1,18 @@
+<figure class="nfig" data-nfig="mi7-isoquants">
+  <div class="nfig-seg" role="group" aria-label="Technology">
+    <button type="button" class="nfig-opt" data-tech="leo" aria-pressed="false">Leontief, σ = 0</button>
+    <button type="button" class="nfig-opt" data-tech="ces" aria-pressed="false">CES, σ = ½</button>
+    <button type="button" class="nfig-opt" data-tech="cd" aria-pressed="true">Cobb Douglas, σ = 1</button>
+    <button type="button" class="nfig-opt" data-tech="ces2" aria-pressed="false">CES, σ = 2</button>
+    <button type="button" class="nfig-opt" data-tech="lin" aria-pressed="false">linear, σ = ∞</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of input 1, with p₂ = 2, </span>p₁</span><input type="range" min="0.5" max="4" step="0.05" value="1" data-k="p1"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">output </span>q</span><input type="range" min="0.5" max="2" step="0.05" value="2" data-k="q"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 320" role="img" aria-label="Input space with z1 across and z2 up. The green isoquant f(z) = q, with dotted isoquants at half and one and a half times q, and the dark isocost line p·z = c(p, q) at the least cost. The red point is the conditional factor demand z(p, q), and a faint dashed ray from the origin through it is the expansion path."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">z(p, q) = (2.83, 1.41)   c(p, q) = 5.66   MC = AC = c(p, 1) = 2.83
+MRTS₁₂ = f₁/f₂ = 0.50 = p₁/p₂ = 0.50: the isocost line is tangent to the isoquant
+σ = 1: z₁/z₂ = (p₁/p₂)^(−σ) = 2.00</p>
+  <figcaption>Constant returns technologies with equal weights and p₂ = 2: Cobb Douglas √(z₁z₂), CES (z₁^ρ + z₂^ρ)^(1/ρ) with σ = 1/(1 − ρ), Leontief min{z₁, z₂} and the linear z₁ + z₂. The isocost line p·z = c is tangent to the isoquant f(z) = q at z(p, q). Lower σ means more curved isoquants and less substitution as p₁ moves; Leontief picks the kink z = (q, q) at every price, and the linear technology jumps between corners.</figcaption>
+</figure>

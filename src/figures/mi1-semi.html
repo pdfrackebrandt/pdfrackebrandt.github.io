@@ -1,0 +1,13 @@
+<figure class="nfig" data-nfig="mi1-semi">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">just noticeable difference, </span>δ</span><input type="range" min="0" max="2" step="0.05" value="1" data-k="delta"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+  </div>
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 236" role="group" aria-label="Three draggable points a, b and c on a utility line from 0 to 4. Above the line, one row for each pair: a green link when the gap is at most delta, so the pair is indifferent, and a red arrow from the higher to the lower point when the gap exceeds delta. A shaded band of width two delta surrounds the point moved last."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">δ = 1.00   u(a) = 1.00, u(b) = 1.60, u(c) = 2.20
+a ∼ b, b ∼ c, c ≻ a
+∼ is not transitive: a ∼ b and b ∼ c, yet c ≻ a</p>
+  <figcaption>A semiorder with threshold δ: two alternatives are indifferent when their utilities differ by at most δ (green link), and the higher is strictly preferred otherwise (red arrow). The band covers everything indifferent to the point moved last. Gaps of 0.6 sit under δ = 1 but add up to 1.2 above it, so indifference is not transitive; strict preference always is. Drag the points or move δ.</figcaption>
+</figure>

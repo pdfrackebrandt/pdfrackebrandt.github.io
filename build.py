@@ -1118,12 +1118,15 @@ TEX_UNICODE = {'\u2212': '\\ensuremath{-}', '\u00d7': '\\ensuremath{\\times}', '
                '\u03b5': '\\ensuremath{\\varepsilon}', '\u2009': '\\,', '\u00a0': '~', '\u2223': '\\ensuremath{\\mid}',
                '\u22a5': '\\ensuremath{\\perp}', '\u2208': '\\ensuremath{\\in}', '\u2211': '\\ensuremath{\\sum}', '\u2245': '\\ensuremath{\\cong}',
                '\u2286': '\\ensuremath{\\subseteq}', '\u2229': '\\ensuremath{\\cap}', '\u222a': '\\ensuremath{\\cup}', '\u2205': '\\ensuremath{\\emptyset}',
-               '\u21a6': '\\ensuremath{\\mapsto}', '\u2202': '\\ensuremath{\\partial}', '\u2207': '\\ensuremath{\\nabla}', '\u2261': '\\ensuremath{\\equiv}'}
+               '\u21a6': '\\ensuremath{\\mapsto}', '\u2202': '\\ensuremath{\\partial}', '\u2207': '\\ensuremath{\\nabla}', '\u2261': '\\ensuremath{\\equiv}',
+               '\u2113': '\\ensuremath{\\ell}', '\u2209': '\\ensuremath{\\notin}', '\u227b': '\\ensuremath{\\succ}', '\u223c': '\\ensuremath{\\sim}',
+               '\u230a': '\\ensuremath{\\lfloor}', '\u230b': '\\ensuremath{\\rfloor}'}
 TEX_SPECIAL = {'\\': '\\textbackslash{}', '&': '\\&', '%': '\\%', '#': '\\#', '_': '\\_', '{': '\\{', '}': '\\}', '~': '\\textasciitilde{}', '^': '\\textasciicircum{}'}
 # figure captions write symbols as plain Unicode (they are also the web caption); pdflatex knows only Latin 1 and a few
 # more, so superscripts, subscripts, Greek letters and accented symbols become math here
 TEX_SUP = dict(zip('\u2070\u00b9\u00b2\u00b3\u2074\u2075\u2076\u2077\u2078\u2079\u207b\u207a\u207f\u1d40', '0123456789-+nT'))
 TEX_SUB = dict(zip('\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089\u1d62\u2c7c\u2099\u2096\u209c', '0123456789ijnkt'))
+TEX_SUB['\u2097'] = '\\ell '
 TEX_ACCENT = {'\u0302': 'hat', '\u0304': 'bar', '\u0305': 'bar', '\u0303': 'tilde', '\u0307': 'dot', '\u0308': 'ddot', '\u030c': 'check',
               '\u0301': 'acute', '\u0300': 'grave'}
 TEX_GREEK_CAPS = ('gamma', 'delta', 'theta', 'lambda', 'xi', 'pi', 'sigma', 'upsilon', 'phi', 'psi', 'omega')
@@ -1228,7 +1231,7 @@ def figure_caption(name):
 def md_tex(src, figs):
     """The note's Markdown as a LaTeX body; figs collects the figure names in order."""
     raw = []
-    box_env = {'short': 'shortbox', 'intuition': 'intuitionbox', 'note': 'notebox', 'takeaway': 'takeawaybox'}
+    box_env = {'short': 'shortbox', 'intuition': 'intuitionbox', 'note': 'notebox', 'takeaway': 'takeawaybox', 'result': 'resultbox'}
 
     def fence(m):
         kind, name, inner = m.group(1), m.group(2), m.group(3)

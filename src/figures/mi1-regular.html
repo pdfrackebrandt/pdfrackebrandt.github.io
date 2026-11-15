@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="mi1-regular">
+  <div class="nfig-seg" role="group" aria-label="Data or model">
+    <button type="button" class="nfig-opt" data-mode="ts" aria-pressed="true">Tversky and Shafir</button>
+    <button type="button" class="nfig-opt" data-mode="pop" aria-pressed="false">Rational population</button>
+    <button type="button" class="nfig-opt" data-mode="jam" aria-pressed="false">Iyengar and Lepper</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">share ranking wait above SONY, </span>q</span><input type="range" min="0" max="1" step="0.01" value="0.34" data-k="q"><span class="nfig-val" aria-hidden="true">0.34</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">share of them ranking AIWA above wait, </span>α</span><input type="range" min="0" max="1" step="0.01" value="0" data-k="al"><span class="nfig-val" aria-hidden="true">0.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">share ranking SONY above wait who put AIWA first, </span>β</span><input type="range" min="0" max="1" step="0.01" value="0.59" data-k="be"><span class="nfig-val" aria-hidden="true">0.59</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 256" role="img" aria-label="Bar chart of choice shares for AIWA, SONY and waiting, on the menu of SONY and waiting and on the menu of all three. A dashed cap on each bar for the larger menu marks the share the same option had on the smaller menu; a bar above its cap is red. A second view draws a population of rational agents whose shares the sliders set, and a third the jam study's purchase rates."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">{S, W}: S 66%, W 34%   {A, S, W}: A 27%, S 27%, W 46%
+adding A raises W from 34% to 46%: regularity fails</p>
+  <figcaption>Choice shares on the menu {S, W} (faint bars) and on {A, S, W} (solid bars). The dashed cap on a solid bar is that option's share on the smaller menu; regularity keeps every solid bar under its cap. The data break it for waiting. In Rational population, q is the share ranking waiting above SONY, α the share of them who rank AIWA above waiting, β the share of the rest who put AIWA first: adding A only draws choosers away, so no setting gets a bar over its cap. Iyengar and Lepper: purchase rates by display size.</figcaption>
+</figure>

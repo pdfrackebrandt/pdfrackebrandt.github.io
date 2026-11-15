@@ -4,11 +4,11 @@
     <button type="button" class="nfig-opt" data-model="fan" aria-pressed="false">Fanning out (weighted utility)</button>
   </div>
   <div class="nfig-sliders">
-    <label class="nfig-range"><span class="nfig-name">u(1M)</span><input type="range" min="0.5" max="0.99" step="0.01" value="0.8" data-k="v"><span class="nfig-val" aria-hidden="true">0.80</span></label>
-    <label class="nfig-range"><span class="nfig-name">weight on 0</span><input type="range" min="1" max="4" step="0.1" value="3" data-k="w"><span class="nfig-val" aria-hidden="true">3.0</span></label>
+    <label class="nfig-range"><span class="nfig-name">u(1M)</span><input type="range" min="0.5" max="0.99" step="0.01" value="0.5" data-k="v"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name">weight on $0</span><input type="range" min="1" max="30" step="0.5" value="20" data-k="w"><span class="nfig-val" aria-hidden="true">20.0</span></label>
   </div>
-  <svg class="nfig-plot" viewBox="0 0 520 340" role="img" aria-label="The probability triangle for the prizes 0, 1 million and 5 million dollars: the probability of 0 runs along the bottom and the probability of 5 million up the side, so the bottom left corner is 1 million for sure. The four Allais lotteries A, B, C and D are marked, with the segments from A to B and from C to D in red; they are parallel and equally long. Blue lines are indifference lines; filled dots mark the lottery chosen in each pair."></svg>
-  <p class="fig-note nfig-read" aria-live="polite">expected utility: every indifference line has slope 4.00; the red segments have slope 10
-V(A) = 0.800, V(B) = 0.812: B ≻ A   V(C) = 0.088, V(D) = 0.100: D ≻ C</p>
-  <figcaption>The Allais lotteries in the probability triangle, with u(0) = 0 and u(5M) = 1. Under expected utility the indifference lines are parallel, so they cut the two parallel red segments the same way. The weighted utility option keeps the lines straight but lets them fan out.</figcaption>
+  <svg class="nfig-plot" viewBox="0 0 520 340" role="img" aria-label="The probability triangle for the prizes 0, 1 million and 5 million dollars, with the probability of 0 along the bottom and the probability of 5 million up the side, so the bottom left corner is 1 million for sure. The Allais lotteries A, B, C and D are marked; the segment from A to B is red and the one from C to D blue, both with slope 10. Green lines are indifference lines; filled dots mark the lottery chosen in each pair. Two zoomed panels show the indifference line through A against the segment AB, and the line through C against CD, each with its slope."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">expected utility: every indifference line has slope s = 1.00; AB and CD have slope 10
+V(A) = 0.500, V(B) = 0.545: B ≻ A   V(C) = 0.055, V(D) = 0.100: D ≻ C</p>
+  <figcaption>The Allais lotteries in the probability triangle, with u(0) = 0, u(5M) = 1 and u(1M) on the slider. Under expected utility the indifference lines are parallel, so one slope ranks AB and CD the same way. Fanning out keeps the lines straight but runs them through one point southwest of the triangle: at weight 20 and u(1M) = 0.5 the slope is 20 at A and 1.1 at C, so A beats B and D beats C.</figcaption>
 </figure>

@@ -1,14 +1,17 @@
 <figure class="nfig" data-nfig="mi4-gorman">
   <div class="nfig-seg" role="group" aria-label="Pair of consumers">
-    <button type="button" class="nfig-opt" data-pre="gor" aria-pressed="true">Same slope</button>
-    <button type="button" class="nfig-opt" data-pre="cd" aria-pressed="false">Different slopes</button>
-    <button type="button" class="nfig-opt" data-pre="ql" aria-pressed="false">Identical, kinked</button>
+    <button type="button" class="nfig-opt" data-pre="same" aria-pressed="true">Same slope</button>
+    <button type="button" class="nfig-opt" data-pre="diff" aria-pressed="false">Different slopes</button>
+    <button type="button" class="nfig-opt" data-pre="corner" aria-pressed="false">Corner</button>
   </div>
   <div class="nfig-sliders">
-    <label class="nfig-range"><span class="nfig-name"><span class="vh">wealth of consumer 1 </span>w₁</span><input type="range" min="4" max="16" step="0.5" value="10" data-k="w1"><span class="nfig-val" aria-hidden="true">10.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">wealth of consumer i before the transfer, </span>wᵢ</span><input type="range" min="0" max="10" step="0.5" value="6" data-k="wi"><span class="nfig-val" aria-hidden="true">6.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">wealth of consumer j before the transfer, </span>wⱼ</span><input type="range" min="0" max="10" step="0.5" value="4" data-k="wj"><span class="nfig-val" aria-hidden="true">4.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">transfer from i to j, </span>τ</span><input type="range" min="0" max="4" step="0.5" value="2" data-k="tau"><span class="nfig-val" aria-hidden="true">2.0</span></label>
   </div>
-  <svg class="nfig-plot" viewBox="0 0 520 380" role="img" aria-label="Top: the Engel curves for good 1 of two consumers, demand against wealth, with a dot at each one's wealth. Bottom: aggregate demand for good 1 against consumer 1's wealth when total wealth is fixed at 20."></svg>
-  <p class="fig-note nfig-read" aria-live="polite">w₁ = 10.0, w₂ = 10.0:   X₁ = 3.50 + 1.50 = 5.00
-Engel slopes 0.25 and 0.25: one unit of wealth moved from consumer 2 to consumer 1 changes X₁ by 0.00</p>
-  <figcaption>Prices are (2, 1) and total wealth is 20, split w₁ and w₂ = 20 − w₁. Top: each consumer's Engel curve for good 1, with a dot at their wealth. Bottom: aggregate demand X₁ for every split. Move w₁ and watch whether X₁ changes.</figcaption>
+  <svg class="nfig-plot" viewBox="0 0 520 380" role="img" aria-label="Two panels. Left: the Engel curves of consumers i and j for one good, with arrows from each consumer's demand before the transfer to after it. Right: aggregate demand against the wealth of i with total wealth fixed, with an arrow for the same transfer."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">transfer 2.0 from i (6.0 → 4.0) to j (4.0 → 6.0), total 10.0 fixed
+Δx = Δxᵢ + Δxⱼ = −1.00 + 1.00 = 0.00: aggregate unchanged
+wealth effects on the moved range: i 0.50, j 0.50, equal</p>
+  <figcaption>A transfer τ from i to j, prices fixed. Same slope: parallel linear Engel curves, so the aggregate is flat in the split and does not move. Different slopes: two Cobb Douglas consumers, the aggregate falls. Corner: Gorman lines where i stops at zero consumption, so aggregation fails below the kink at wᵢ = 4. Hollow dots mark demand before the transfer, filled dots after.</figcaption>
 </figure>

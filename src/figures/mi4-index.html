@@ -1,19 +1,12 @@
 <figure class="nfig" data-nfig="mi4-index">
-  <div class="nfig-seg" role="group" aria-label="Preferences">
-    <button type="button" class="nfig-opt" data-pre="hom" aria-pressed="true">Homothetic</button>
-    <button type="button" class="nfig-opt" data-pre="sub" aria-pressed="false">Subsistence need</button>
-  </div>
-  <div class="nfig-seg" role="group" aria-label="Index">
-    <button type="button" class="nfig-opt" data-view="las" aria-pressed="true">Laspeyres</button>
-    <button type="button" class="nfig-opt" data-view="pas" aria-pressed="false">Paasche</button>
-  </div>
   <div class="nfig-sliders">
-    <label class="nfig-range"><span class="nfig-name"><span class="vh">elasticity of substitution </span>σ</span><input type="range" min="0" max="3" step="0.05" value="1" data-k="sigma"><span class="nfig-val" aria-hidden="true">1.00</span></label>
-    <label class="nfig-range"><span class="nfig-name"><span class="vh">new price of good 1 </span>new p₁</span><input type="range" min="1" max="3" step="0.05" value="2.5" data-k="p"><span class="nfig-val" aria-hidden="true">2.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">budget share of good 1 </span>a</span><input type="range" min="0.05" max="0.95" step="0.05" value="0.5" data-k="a"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price relative of good 1 </span>t</span><input type="range" min="0.2" max="4" step="0.05" value="0.5" data-k="t"><span class="nfig-val" aria-hidden="true">0.50</span></label>
   </div>
-  <svg class="nfig-plot" viewBox="0 0 520 340" role="img" aria-label="The goods plane with CES preferences. In the Laspeyres view, the old budget, the old choice x0 and its indifference curve, the line at the new prices through x0 and the parallel line at the new prices that just reaches the old indifference curve. In the Paasche view the same with the roles of old and new swapped."></svg>
-  <p class="fig-note nfig-read" aria-live="polite">Laspeyres index p¹·x⁰ / p⁰·x⁰ = 12.50 / 10 = 1.250
-  ≥ P_L = e(p¹, u⁰) / e(p⁰, u⁰) = 12.25 / 10 = 1.225
-homothetic: P_L = P_P = 1.225 for every utility level</p>
-  <figcaption>Wealth is 10 and prices move from (2, 1) to (new p₁, 1). The red line prices the old bundle at the new prices; the purple dashed line is the cheapest way to keep the same utility at those prices. The blue dot is the chosen bundle and the purple dot the cheapest bundle on the same indifference curve at the other prices. Both lines meet the x₂ axis at their cost, so the red bar between them is the substitution bias in money. σ is the elasticity of substitution.</figcaption>
+  <svg class="nfig-plot mi4-grab" viewBox="0 0 520 380" role="img" aria-label="Two panels for Cobb Douglas with budget share a when p1 is scaled by t and p2 is fixed. Left: the Laspeyres, true and Paasche indices against t, touching at t = 1. Right: the relative bias of Laspeyres above and Paasche below the true index against t. The guides at the current t can be dragged."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">a = 0.50, t = 0.50:   Paasche 0.667 ≤ true 0.707 ≤ Laspeyres 0.750
+harmonic ≤ geometric ≤ arithmetic mean of the price relatives (t, 1), weights (a, 1 − a)
+Laspeyres overstates by 6.1%, Paasche understates by 5.7%
+quantity index Q = u¹ over u⁰ = t⁻ᵃ = 1.414 from either base</p>
+  <figcaption>Cobb Douglas with share a, p₁ scaled by t, p₂ fixed. Left: Laspeyres (arithmetic mean), the true index (geometric mean) and Paasche (harmonic mean), all tangent at t = 1. Right: the relative bias of each fixed basket index against the true index, Laspeyres solid and Paasche dashed, growing with the size of the price change.</figcaption>
 </figure>

@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="mi7-properties">
+  <div class="nfig-seg nfig-seg4" role="group" aria-label="Technology">
+    <button type="button" class="nfig-opt" data-tech="sqrt" aria-pressed="true">q ≤ √z</button>
+    <button type="button" class="nfig-opt" data-tech="setup" aria-pressed="false">setup cost, q ≤ z − 1</button>
+    <button type="button" class="nfig-opt" data-tech="cone" aria-pressed="false">cone, q ≤ 0.6z</button>
+    <button type="button" class="nfig-opt" data-tech="floor" aria-pressed="false">whole units, q ≤ ⌊z⌋</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">scale factor </span>α</span><input type="range" min="0" max="3" step="0.05" value="2" data-k="a"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 330" role="group" aria-label="Netput space for one input z = minus y1 and one output q = y2. The production set Y of the chosen technology is shaded green below its frontier, with free disposal. Two draggable plans y and y prime in Y. The ray of scaled plans alpha y is solid blue where it lies in Y and dashed red where it leaves Y, with the plan alpha y marked as a dot inside Y or a red cross outside. The segment from y to y prime is solid purple inside Y and dashed red outside it. The sum y + y prime is a dot or a red cross, and minus y is an orange cross, never in Y. Drag a plan, or focus it and use the arrow keys."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">y = (−1.00, 1.00), y′ = (−2.50, 1.58), both in Y; −y = (1.00, −1.00) ∉ Y
+α = 2.00: αy = (−2.00, 2.00) ∉ Y   for α ≤ 3, αy ∈ Y when α ∈ [0, 1]
+y + y′ = (−3.50, 2.58) ∉ Y   the segment from y to y′ stays in Y
+Y: q ≤ √z; convex and DRS; not IRS, so not CRS; not additive</p>
+  <figcaption>Four technologies with one input z and one output q, each closed, with 0 ∈ Y, free disposal and irreversibility (−y is never in Y). Drag the plans y and y′ inside Y and move α: the ray αy tests the returns to scale, y + y′ tests additivity and the segment from y to y′ tests convexity. A setup cost on a linear technology (q ≤ z − 1) gives IRS without convexity, since ½y falls outside Y; whole units, q at most the integer part of z, are additive but neither convex nor DRS.</figcaption>
+</figure>

@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="mi2-optimum">
+  <div class="nfig-seg" role="group" aria-label="Utility function">
+    <button type="button" class="nfig-opt" data-fam="cd" aria-pressed="true">√(x₁x₂)</button>
+    <button type="button" class="nfig-opt" data-fam="lin" aria-pressed="false">x₁ + x₂</button>
+    <button type="button" class="nfig-opt" data-fam="sq" aria-pressed="false">x₁² + x₂²</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of good 1 </span>p₁</span><input type="range" min="0.5" max="3" step="0.1" value="1" data-k="p1"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of good 2 </span>p₂</span><input type="range" min="0.5" max="3" step="0.1" value="1" data-k="p2"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">wealth </span>w</span><input type="range" min="1" max="12" step="0.5" value="8" data-k="w"><span class="nfig-val" aria-hidden="true">8.0</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 380" role="img" aria-label="The budget set at prices p1, p2 and wealth w, with the indifference curve through the best affordable bundle x star, marked purple. For x1 + x2 at equal prices a purple band covers the whole budget line. For x1 squared plus x2 squared a red ring marks the tangency and a dashed curve its indifference curve; at equal prices both corners are optimal and their orange midpoint is worse."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">√(x₁x₂), strictly convex at p = (1.00, 1.00), w = 8.0
+x* = (4.00, 4.00), u = 4.00
+unique tangency: MRS = x₂/x₁ = 1.00 = p₁/p₂; p·x* = w</p>
+  <figcaption>Strictly convex: a unique tangency. Convex but linear: at p₁ = p₂ the whole budget line is optimal. Not convex: at p₁ = p₂ the two corners are optimal and their midpoint is worse; the tangency (red ring) is the worst point on the line. Pick a utility and move prices and wealth.</figcaption>
+</figure>

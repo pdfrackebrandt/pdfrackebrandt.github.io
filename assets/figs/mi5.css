@@ -2,10 +2,18 @@
 .nfig .mi5-small{font-size:10px;fill:var(--muted)}
 .mi5-tri{fill:var(--fig-blue);fill-opacity:.035;stroke:var(--ink-soft);stroke-width:1.25;stroke-linejoin:round}
 .nf-knob.mi5-k0{stroke:var(--ink)}
+.nf-knob.mi5-kb{stroke:var(--c-key)}
 .nfig text.mi5-ink{fill:var(--ink-soft)}
 .mi5-tog[aria-pressed="true"]{color:var(--ink);border-color:var(--fig-blue);box-shadow:inset 0 -2px 0 var(--fig-blue)}
-[data-nfig^="mi5-"] .nfig-read{min-height:3em}
-/* simplex: the drop to each side has its probability's colour; p3, the height, is red as in its Try it equation */
+[data-nfig^="mi5-"] .nfig-read{min-height:4.5em}
+.mi5-lev{stroke:var(--ink-soft);stroke-opacity:.38;stroke-width:1;fill:none}
+.mi5-arr{stroke:var(--muted);stroke-width:1.25}
+.mi5-arrh{fill:var(--muted);stroke:none}
+.mi5-red{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.nfig text.mi5-redt{fill:var(--c-key)}
+.nfig text.mi5-flagt{fill:var(--c-flag)}
+.mi5-probe{stroke:var(--c-key);stroke-width:1;stroke-dasharray:3 3}
+/* simplex: the drop to each side has its probability's colour */
 .mi5-drop{stroke-width:2;stroke-linecap:round}
 .mi5-rt{fill:none;stroke-width:1}
 .mi5-s1{stroke:var(--fig-blue)}
@@ -19,39 +27,112 @@
 .mi5-c1{fill:var(--fig-blue)}
 .mi5-c2{fill:var(--green)}
 .mi5-c3{fill:var(--c-key)}
-/* compound lotteries: the reduced point is red, like the reduced lottery in its Try it equation */
+/* compound lotteries: the reduced point is red */
 .mi5-seg{stroke:var(--ink-soft);stroke-width:1.25}
-.mi5-red{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
-.nfig text.mi5-redt{fill:var(--c-key)}
 .mi5-ghost{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:5 4}
 .mi5-gdot{fill:var(--paper);stroke:var(--muted);stroke-width:1.5}
 .mi5-br{stroke:var(--ink-soft);stroke-width:1.25;fill:none;stroke-linejoin:round}
 .mi5-node{fill:var(--ink-soft)}
 .nfig text.mi5-tt{font-size:11px}
-/* independence: the mixtures M and M' are purple, like U(M) - U(M') in its Try it equation */
+/* four preferences: regions, faces and vertices with their utilities; the indifference sets of L and L' in their colours */
+.mi5-reg{fill:var(--faint);fill-opacity:.16;stroke:none}
+.mi5-redge{stroke:var(--c-flag);stroke-width:5;stroke-linecap:round}
+.mi5-rvert{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.nfig text.mi5-redt2{fill:var(--c-flag)}
+.nfig text.mi5-bluet{fill:var(--fig-blue)}
+.mi5-lexl{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 3;stroke-opacity:.7}
+.mi5-lexon{stroke:var(--fig-blue);stroke-width:1.25;stroke-opacity:.6}
+.mi5-ar1{stroke:var(--c-flag);stroke-width:2}
+.mi5-ar1h{fill:var(--c-flag);stroke:none}
+.mi5-ar2{stroke:var(--fig-blue);stroke-width:2}
+.mi5-ar2h{fill:var(--fig-blue);stroke:none}
+.mi5-set1{fill:none;stroke:var(--fig-blue);stroke-width:3;stroke-linecap:round;stroke-opacity:.55}
+.mi5-set2{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;stroke-opacity:.55;stroke-dasharray:6 4}
+.mi5-setd1{fill:var(--fig-blue);fill-opacity:.6}
+.mi5-setd2{fill:var(--green);fill-opacity:.6}
+/* continuity: the curve with its jumps, L' dashed, and the two sets on the alpha axis */
+.mi5-curve{stroke:var(--ink-soft);stroke-width:2.25;stroke-linecap:round}
+.mi5-copen{fill:var(--paper);stroke:var(--ink-soft);stroke-width:1.75}
+.mi5-cdot{fill:var(--ink-soft)}
+.mi5-lp{stroke:var(--c-flag);stroke-width:1.5;stroke-dasharray:6 4}
+.nfig text.mi5-lpt{fill:var(--c-flag)}
+.mi5-star{stroke:var(--fig-blue);stroke-width:1;stroke-dasharray:2 3}
+.nfig text.mi5-start{fill:var(--fig-blue)}
+.mi5-pdot{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.mi5-up{stroke:var(--fig-blue);stroke-width:5}
+.mi5-dn{stroke:var(--c-flag);stroke-width:5}
+.mi5-bdot.mi5-upd{fill:var(--fig-blue)}
+.mi5-bdot.mi5-dnd{fill:var(--c-flag)}
+.mi5-bopen{fill:var(--paper);stroke-width:2}
+.mi5-bopen.mi5-upo{stroke:var(--fig-blue)}
+.mi5-bopen.mi5-dno{stroke:var(--c-flag)}
+.nfig text.mi5-upt{fill:var(--fig-blue)}
+.nfig text.mi5-dnt{fill:var(--c-flag)}
+.nfig text.mi5-bad{fill:var(--signal)}
+/* the slope of expected utility lines; dashed lines of equal expected prize */
+.mi5-gl{stroke:var(--c-ask);stroke-width:1.25;stroke-opacity:.8;fill:none}
+.mi5-ev{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;stroke-opacity:.8}
+.mi5-plev{stroke:var(--ink);stroke-width:1.75;stroke-linecap:round}
+/* independence: the mixtures M and M' are purple */
 .mi5-ray{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 3}
 .mi5-chord{stroke:var(--ink-soft);stroke-width:1;stroke-opacity:.6}
 .mi5-chordm{stroke:var(--c-label);stroke-width:1.5}
 .mi5-mdot{fill:var(--paper);stroke:var(--c-label);stroke-width:2}
 .nfig text.mi5-mt{fill:var(--c-label);font-size:12px;font-style:italic}
-.mi5-lev{stroke:var(--ink-soft);stroke-opacity:.38;stroke-width:1;fill:none}
-.mi5-arr{stroke:var(--muted);stroke-width:1.25}
-.mi5-arrh{fill:var(--muted);stroke:none}
 .mi5-wc{fill:var(--signal);fill-opacity:.08;stroke:none}
 .mi5-sw{stroke:var(--signal);stroke-opacity:.5;stroke-width:1}
 .mi5-wcedge{stroke:var(--fig-blue);stroke-width:4;stroke-linecap:round;stroke-opacity:.75}
 .mi5-wctop{fill:var(--fig-blue)}
-/* expected utility: the probe's line and its matching gamble on the best and worst side (red, as in the equation) */
-.mi5-plev{stroke:var(--ink);stroke-width:1.75;stroke-linecap:round}
-.mi5-lev2{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 3}
+/* monotonicity: mixtures from L' (light) to L (dark), the current one red */
+.mi5-mseg{stroke:var(--fig-blue);stroke-width:1.5;stroke-opacity:.7}
+.mi5-q{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1}
+.mi5-q0{fill-opacity:.2}
+.mi5-q1{fill-opacity:.35}
+.mi5-q2{fill-opacity:.5}
+.mi5-q3{fill-opacity:.65}
+.mi5-q4{fill-opacity:.8}
+.mi5-q5{fill-opacity:1}
+.mi5-cline{stroke:var(--fig-blue);stroke-width:2;stroke-linecap:round}
+/* the vNM construction: the side of best and worst gambles, each lottery's equivalent on it, and A and B on [0, 1] */
+.mi5-edge{stroke:var(--fig-blue);stroke-width:4;stroke-linecap:round;stroke-opacity:.8}
+.mi5-eqv{stroke-width:1.5;stroke-dasharray:5 4}
+.mi5-eqv0{stroke:var(--fig-blue)}
+.mi5-eqv1{stroke:var(--green)}
+.mi5-eqv2{stroke:var(--c-key)}
+.mi5-sq{stroke:var(--paper);stroke-width:1}
+.mi5-sq0{fill:var(--fig-blue)}
+.mi5-sq1{fill:var(--green)}
+.mi5-sq2{fill:var(--c-key)}
+.nfig text.mi5-sqt0{fill:var(--fig-blue)}
+.nfig text.mi5-sqt1{fill:var(--green)}
+.nfig text.mi5-sqt2{fill:var(--c-key)}
+.mi5-abar{stroke:var(--fig-blue);stroke-width:7}
+.mi5-bbar{stroke:var(--c-flag);stroke-width:7}
+.nfig text.mi5-at{fill:var(--fig-blue)}
+.nfig text.mi5-bt{fill:var(--c-flag)}
+.mi5-pstar{stroke:var(--c-key);stroke-width:1.5;stroke-dasharray:5 3}
+/* the Jehle and Reny example: the line through £4 for sure is blue, L1 purple, L2 green, L's equivalent red */
+.mi5-u4{stroke:var(--fig-blue);stroke-width:2.5;stroke-linecap:round}
+.nfig text.mi5-u4t{fill:var(--fig-blue)}
+.mi5-la{stroke:var(--c-label);stroke-width:1.5}
+.mi5-lb{stroke:var(--green);stroke-width:1.5;stroke-dasharray:5 3}
+.mi5-pa{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.mi5-pb{fill:var(--green);stroke:var(--paper);stroke-width:1.5}
+.nfig text.mi5-lat{fill:var(--c-label)}
+.nfig text.mi5-lbt{fill:var(--green)}
 .mi5-cal{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
 .nfig text.mi5-calt{fill:var(--c-key)}
-.mi5-pt{fill:var(--ink-soft);stroke:var(--paper);stroke-width:1.5}
-/* matching pennies: A's payoffs and lines; q* is red, as in its Try it equation */
+/* cardinal utility: A's line blue, B's line red, the line of u dotted when another v is shown */
+.mi5-ughost{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:2 3}
+.mi5-alin{stroke:var(--fig-blue);stroke-width:2.25;stroke-linecap:round}
+.mi5-blin{stroke:var(--c-key);stroke-width:1.5;stroke-dasharray:5 3}
+.mi5-adot{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.nfig text.mi5-aat{fill:var(--fig-blue)}
+/* matching pennies: A's payoffs and lines; q* is red */
 .mi5-cell{fill:none;stroke:var(--rule);stroke-width:1}
 .mi5-cell.mi5-hot{fill:var(--fig-blue);fill-opacity:.07;stroke:var(--fig-blue);stroke-opacity:.45}
-.nfig .mi5-pa{fill:var(--fig-blue)}
-.nfig .mi5-pb{fill:var(--muted)}
+.nfig .mi5-ppa{fill:var(--fig-blue)}
+.nfig .mi5-ppb{fill:var(--muted)}
 .mi5-lh{stroke:var(--fig-blue);stroke-width:2;stroke-linecap:round}
 .mi5-lt{stroke:var(--green);stroke-width:2;stroke-linecap:round}
 .nfig text.mi5-fh{fill:var(--fig-blue)}
@@ -64,8 +145,10 @@
   :root:not([data-theme="light"]) .mi5-area{fill-opacity:.2}
   :root:not([data-theme="light"]) .mi5-wc{fill-opacity:.14}
   :root:not([data-theme="light"]) .mi5-lev{stroke-opacity:.45}
+  :root:not([data-theme="light"]) .mi5-reg{fill-opacity:.22}
 }
 :root[data-theme="dark"] .mi5-tri{fill-opacity:.06}
 :root[data-theme="dark"] .mi5-area{fill-opacity:.2}
 :root[data-theme="dark"] .mi5-wc{fill-opacity:.14}
 :root[data-theme="dark"] .mi5-lev{stroke-opacity:.45}
+:root[data-theme="dark"] .mi5-reg{fill-opacity:.22}

@@ -1,16 +1,18 @@
 <figure class="nfig" data-nfig="mi3-slutsky">
   <div class="nfig-seg" role="group" aria-label="Preferences">
-    <button type="button" class="nfig-opt" data-pref="cd" aria-pressed="true">Cobb Douglas</button>
-    <button type="button" class="nfig-opt" data-pref="ql" aria-pressed="false">Quasilinear, slide 46</button>
+    <button type="button" class="nfig-opt" data-pref="cd" aria-pressed="true">normal √(x₁x₂)</button>
+    <button type="button" class="nfig-opt" data-pref="inf" aria-pressed="false">inferior ln x₁ + ½x₂²</button>
+    <button type="button" class="nfig-opt" data-pref="ql" aria-pressed="false">quasilinear ln x₁ + x₂</button>
   </div>
   <div class="nfig-sliders">
-    <label class="nfig-range"><span class="nfig-name"><span class="vh">new price of good 1 </span>p₁′</span><input type="range" min="0.5" max="3" step="0.01" value="1.5" data-k="p1"><span class="nfig-val" aria-hidden="true">1.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">new price of good 1 </span>p₁′</span><input type="range" min="0.5" max="3" step="0.01" value="2" data-k="p1"><span class="nfig-val" aria-hidden="true">2.00</span></label>
     <label class="nfig-range"><span class="nfig-name"><span class="vh">wealth </span>w</span><input type="range" min="0.5" max="12" step="0.1" value="10" data-k="w"><span class="nfig-val" aria-hidden="true">10.0</span></label>
+    <label class="nfig-range mi3-hide"><span class="nfig-name"><span class="vh">wealth </span>w</span><input type="range" min="2" max="4" step="0.01" value="2.5" data-k="wi"><span class="nfig-val" aria-hidden="true">2.50</span></label>
   </div>
-  <svg class="nfig-plot" viewBox="0 0 520 340" role="img" aria-label="The old budget line at p1 = 1 (dashed), the new budget line at the new price p1 prime, and the purple compensated budget line at the new price that just reaches the old indifference curve. A is the old bundle, B the Hicksian bundle at the new price and old utility, C the new Marshallian bundle. The purple arrow from A to B is the substitution effect and the red arrow from B to C the income effect."></svg>
+  <svg class="nfig-plot" viewBox="0 0 520 380" role="img" aria-label="The old budget line at p1 = 1 (dashed), the new budget line at the new price p1 prime, and the purple compensated budget line at the new price that just reaches the old indifference curve. A is the old bundle, B the Hicksian bundle at the new price and old utility, C the new Marshallian bundle. The purple arrow from A to B is the substitution effect and the red arrow from B to C the wealth effect; a strip under the x1 axis repeats the two arrows as changes in x1."></svg>
   <p class="fig-note nfig-read" aria-live="polite">A = x(p, w) = h(p, ū) = (5.00, 5.00)   ū = 5.00
-B = h(p′, ū) = (4.08, 6.12); the purple budget through B costs e(p′, ū) = 12.25
-C = x(p′, w) = (3.33, 5.00)
-good 1: Δx₁ = −1.67 = SE −0.92 + IE −0.75   good 2: SE 1.12, IE −1.12</p>
-  <figcaption>Utility u = √(x₁x₂) or u = ln x₁ + x₂, with p₂ = 1 and the old price p₁ = 1. Move the new price p₁′: the purple arrow keeps utility at ū and only rotates the budget line, the red arrow then takes away the extra wealth e(p′, ū) − w.</figcaption>
+B = h(p′, ū) = (3.54, 7.07); the compensated budget through B costs e(p′, ū) = 14.14
+C = x(p′, w) = (2.50, 5.00)
+Δx₁ = −2.50 = SE −1.46 + WE −1.04: both effects push x₁ the same way, a normal good</p>
+  <figcaption>Old prices p = (1, 1); move the new price p₁′. A to B moves along the old indifference curve at the new prices (SE, purple); B to C is the parallel budget shift back to w (WE, red). The strip under the axis splits Δx₁. The WE has opposite signs for the normal good √(x₁x₂) and the inferior good ln x₁ + ½x₂², whose preferences are convex only where x₂ &gt; 1, and vanishes for ln x₁ + x₂ away from its corner.</figcaption>
 </figure>

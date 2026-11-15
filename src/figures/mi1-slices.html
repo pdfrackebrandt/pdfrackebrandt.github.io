@@ -1,0 +1,10 @@
+<figure class="nfig" data-nfig="mi1-slices">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">number of </span>slices</span><input type="range" min="2" max="30" step="1" value="3" data-k="k"><span class="nfig-val" aria-hidden="true">3</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">weight on good 2, </span>ε</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="eps"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 266" role="img" aria-label="Top: vertical slices of the plane at evenly spaced values of x1 from 0.5 to 3.5, each running from x2 = 0 to x2 = 1. Bottom: a utility line on which the candidate u = x1 + epsilon x2 sends each slice onto an interval from a to a plus epsilon, drawn as a coloured bar; overlapping intervals are marked red, and when all are disjoint each carries the simplest rational inside it."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">3 slices, gap 1.50, u = x₁ + εx₂ with ε = 0.50 sends slice a onto [a, a + ε]
+disjoint, each holds a rational (1, 5/2, 4): u represents the order on these 3 slices</p>
+  <figcaption>The proof in pictures. A utility for the lexicographic order must send each slice {a} × [0, 1] onto an interval of positive length, and slices further right onto higher intervals, so the intervals are disjoint and each holds its own rational. The candidate u = x₁ + εx₂ manages this for a few slices, but with more slices, or a larger ε, neighbouring intervals overlap (red) and u ranks some (a, 1) above (b, 0) with b greater than a. With ε = 0 every interval shrinks to a point.</figcaption>
+</figure>

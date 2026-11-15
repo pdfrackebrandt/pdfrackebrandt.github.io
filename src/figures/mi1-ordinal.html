@@ -2,13 +2,16 @@
   <div class="nfig-seg" role="group" aria-label="Transformation f">
     <button type="button" class="nfig-opt" data-f="id" aria-pressed="true">u</button>
     <button type="button" class="nfig-opt" data-f="ln" aria-pressed="false">ln u</button>
-    <button type="button" class="nfig-opt" data-f="inv" aria-pressed="false">−1/u</button>
+    <button type="button" class="nfig-opt" data-f="cube" aria-pressed="false">u³</button>
     <button type="button" class="nfig-opt" data-f="floor" aria-pressed="false">⌊u⌋, steps</button>
     <button type="button" class="nfig-opt" data-f="neg" aria-pressed="false">−u</button>
   </div>
-  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 360" role="group" aria-label="Indifference curves of u = x1 times x2 on the square from 0 to 4, labelled at the right edge with the value of v = f(u) for the chosen transformation f, which an inset draws. Two draggable bundles a and b, the segment between them and its midpoint m. An arrow marks the direction in which v rises."></svg>
-  <p class="fig-note nfig-read" aria-live="polite">u(a) = 4.00, u(b) = 3.00   v(a) = 4.00, v(b) = 3.00: a ≻ b under both
-MRS at a = a₂/a₁ = 4.00 under u and under v
-midpoint m: v(m) = 5.00 against the average 3.50, at least the average</p>
-  <figcaption>The indifference curves of u = x₁x₂, labelled at the right edge with v = f(u) for the f you pick; the inset draws f. Drag the bundles a and b, or focus one and use the arrow keys. A strictly increasing f relabels the curves without moving them; a flat or decreasing f changes the preference.</figcaption>
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 470" role="group" aria-label="Left: indifference curves of u = x1 times x2 on the square from 0 to 4, labelled at the right edge with v = f(u) for the chosen f, two draggable bundles a and b, the segment between them and its midpoint m. Right: v along the segment from a to b, with the chord between its end values and the midpoint test of concavity."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">f(u) = u   u(a) = 0.25, u(b) = 12.25   v(a) = 0.25, v(b) = 12.25: b ≻ a under both
+MRS at a = a₂ over a₁ = 1.00 under u and under v
+midpoint m: v(m) = 4.00 against the chord 6.25, below: v is not concave along this segment</p>
+  <figcaption>The indifference curves of u = x₁x₂, labelled at the right edge with v = f(u) for the f you pick, and v along the segment from a to b. Picking ln u gives v = ln x₁ + ln x₂: the curves do not move, but along the diagonal v turns from convex (below its chord) to concave (above it), so concavity is not ordinal. A strictly increasing f keeps the map and the MRS; steps or a decreasing f change the preference. Drag a and b, or focus one and use the arrow keys.</figcaption>
 </figure>

@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="mi7-supply">
+  <div class="nfig-seg" role="group" aria-label="Fixed cost">
+    <button type="button" class="nfig-opt" data-fc="avoid" aria-pressed="true">fixed cost avoidable</button>
+    <button type="button" class="nfig-opt" data-fc="sunk" aria-pressed="false">fixed cost sunk</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">output </span>price P</span><input type="range" min="0.5" max="4" step="0.05" value="2.5" data-k="P"><span class="nfig-val" aria-hidden="true">2.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">fixed cost </span>F</span><input type="range" min="0" max="3" step="0.1" value="1" data-k="F"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 470" role="img" aria-label="First panel: marginal cost in red, average cost in blue and average variable cost dashed grey against q, with the price P as a dashed line. The green point is where P = MC on the rising branch, with the profit rectangle between P and AC shaded green for a gain or red for a loss; a hollow point marks the other root, a profit minimum. Second panel: the supply curve, zero below the shutdown price, then a jump to the minimum of average cost, or of average variable cost when the fixed cost is sunk, and then the rising branch of MC; the branch below is dotted and unused."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">P = 2.50: P = MC on the rising branch at q = 2.22, where AC = 1.87 and AVC = 1.43
+profit there (P − AC)q = 1.39 ≥ 0: produce
+fixed cost avoidable: shut down below min AC = 1.83 at q = 1.91 (min AVC = 1.25)</p>
+  <figcaption>C(q) = F + 2q − q² + q³/3 for q &gt; 0 and C(0) = 0, F = 1 to start. Left: MC crosses AC and AVC at their minima. Right: supply follows MC above min AC and jumps from 0 at P = 1.83; the MC branch below is never used. Move P to see the choice and its profit, change F, and make the fixed cost sunk to move the threshold to min AVC.</figcaption>
+</figure>

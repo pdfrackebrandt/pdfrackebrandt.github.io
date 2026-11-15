@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="mi2-debreu">
+  <div class="nfig-seg" role="group" aria-label="Preference">
+    <button type="button" class="nfig-opt" data-fam="cd" aria-pressed="true">x₁⁰·³x₂⁰·⁷</button>
+    <button type="button" class="nfig-opt" data-fam="sub" aria-pressed="false">x₁ + 2x₂</button>
+    <button type="button" class="nfig-opt" data-fam="min" aria-pressed="false">min{x₁, 2x₂}</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">point on the diagonal, </span>t</span><input type="range" min="0" max="5" step="0.05" value="2" data-k="t"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 380" role="group" aria-label="The diagonal te with e = (1, 1) on the square from 0 to 5, with the indifference curves through the red bundle x and the purple bundle y. On the diagonal, the set A of t with te at least as good as x is blue, from t(x) to M = max of x1 and x2, and the set B of t with x at least as good as te is orange, from 0 to t(x). Squares mark t(x)e and t(y)e. A ringed dot is the test point te from the slider. Drag x and y, or focus one and use the arrow keys."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">Cobb Douglas x₁⁰·³x₂⁰·⁷: x = (4.00, 1.00) ∼ t(x)e with t(x) = 1.52, M = 4.00
+y = (0.90, 1.70): t(y) = 1.40, so x ≻ y
+A = [1.52, 4.00] and B = [0, 1.52] are closed and meet only at t(x)
+te at t = 2.00: te ≻ x, in A only</p>
+  <figcaption>Debreu's construction: each bundle is labelled by where its indifference curve meets the diagonal. A (blue) and B (orange) are closed, cover [0, M] and meet only at t(x), so u(x) = t(x) represents the preference. Drag x and y, move the test point t, and try other continuous, monotone preferences.</figcaption>
+</figure>

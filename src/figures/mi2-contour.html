@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="mi2-contour">
+  <div class="nfig-seg" role="group" aria-label="Preference">
+    <button type="button" class="nfig-opt" data-mode="cont" aria-pressed="false">continuous, √(x₁x₂)</button>
+    <button type="button" class="nfig-opt" data-mode="lex" aria-pressed="true">lexicographic</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">number of terms of the sequence, </span>n up to</span><input type="range" min="1" max="30" step="1" value="8" data-k="n"><span class="nfig-val" aria-hidden="true">8</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 380" role="group" aria-label="Bundles on the square from 0 to 4. The upper contour set U(x) of the purple bundle x is shaded blue and the lower contour set L(x) orange. A sequence y n = (b1 + 1/n, b2) approaches the orange point b from the right; its dots are filled when they lie in U(x) and hollow when not. A ring marks the limit b, red and dashed when b is not in U(x). For lexicographic preferences the vertical line through x belongs to U(x) above x and to L(x) below it. Drag x and b, or focus one and use the arrow keys."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">lexicographic: x = (1.00, 0.50), b = (1.00, 0.00)
+yⁿ = (b₁ + 1/n, b₂) for n = 1 to 8: all in U(x)
+the limit b is not in U(x): x ≻ b, so U(x) is not closed and (C2) fails</p>
+  <figcaption>Continuous preferences have closed U(x) and L(x): a sequence inside U(x) keeps its limit there. Lexicographic preferences do not: with x = (1, ½), every (1 + 1/n, 0) is in U(x), but the limit (1, 0) is not. Drag x and the limit b, and raise n.</figcaption>
+</figure>

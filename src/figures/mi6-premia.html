@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="mi6-premia">
+  <div class="nfig-seg" role="group" aria-label="View">
+    <button type="button" class="nfig-opt" data-view="p" aria-pressed="true">Risk premium P</button>
+    <button type="button" class="nfig-opt" data-view="pi" aria-pressed="false">Probability premium π</button>
+    <button type="button" class="nfig-opt" data-view="w" aria-pressed="false">Across wealth</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">relative risk aversion </span>CRRA r</span><input type="range" min="0" max="4" step="0.1" value="1" data-k="r"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+    <label class="nfig-range"><span class="nfig-name">risk ± h</span><input type="range" min="1" max="20" step="1" value="10" data-k="h"><span class="nfig-val" aria-hidden="true">10</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 300" role="group" aria-label="Three views. Risk premium: the exact premium of a CRRA agent with wealth 100 facing plus or minus h with equal chance, against the Arrow Pratt approximation one half r_A h squared. Probability premium: the exact extra win probability pi that makes a plus or minus epsilon gamble acceptable, against one quarter r_A epsilon. Across wealth: the premium for plus or minus h at wealth from 25 to 180 for log, CARA and quadratic utility, which all have r_A equal to 0.01 at wealth 100. Drag the marker on the horizontal axis, or focus it and use the arrow keys."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">CRRA r = 1.0 (u = ln x) at x₀ = 100: r_A(x₀) = 0.0100
+risk ± 40: exact P = 8.348   ½ r_A h² = 8.000   ratio 1.044</p>
+  <figcaption>Risk premium: exact P against Arrow Pratt for CRRA utility at x₀ = 100 (log at r = 1); the two agree to second order. Probability premium: exact π against ¼ r_A ε; the two agree to first order, so π is first order in the risk while P is second order. Across wealth: the premium for ± h for three utilities with r_A = 0.01 at x₀ = 100 falls under DARA, stays flat under CARA and rises under IARA.</figcaption>
+</figure>

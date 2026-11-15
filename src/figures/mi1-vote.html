@@ -1,12 +1,17 @@
 <figure class="nfig" data-nfig="mi1-vote">
   <div class="fig-controls nfig-bar">
-    <button type="button" class="btn nfig-reset">Reset</button>
-    <button type="button" class="btn mi1-condorcet">Condorcet, slide 18</button>
-    <button type="button" class="btn mi1-may">May, slide 17</button>
+    <button type="button" class="btn mi1-condorcet">Condorcet profile</button>
+    <button type="button" class="btn mi1-may">May's attributes</button>
+    <button type="button" class="btn mi1-sp">Single peaked</button>
   </div>
-  <svg class="nfig-plot" viewBox="0 0 520 250" role="group" aria-label="Three voters, each with a ranking of x, y and z from first to third. Pressing an alternative moves it to the top of that voter's ranking. A triangle shows the majority verdict on each pair as an arrow from the winner to the loser with the vote count. A Condorcet cycle is drawn red and a Condorcet winner is filled blue."></svg>
-  <p class="fig-note nfig-read" aria-live="polite">x vs y 2:1   y vs z 2:1   z vs x 0:3
-Condorcet winner x: majority ranks x ≻ y ≻ z
-never ranked last: x</p>
-  <figcaption>Three voters each rank x, y and z; press an alternative to move it to the top of that voter's list. The triangle gives the majority verdict on each pair with the vote count. Red arrows mark a Condorcet cycle, blue the Condorcet winner. May's preset relabels the voters as the three attributes of slide 17.</figcaption>
+  <div class="nfig-seg" role="group" aria-label="Order of the alternatives on the line">
+    <button type="button" class="nfig-opt" data-axis="xyz" aria-pressed="true">line x y z</button>
+    <button type="button" class="nfig-opt" data-axis="yxz" aria-pressed="false">line y x z</button>
+    <button type="button" class="nfig-opt" data-axis="xzy" aria-pressed="false">line x z y</button>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 394" role="group" aria-label="Three voters, each with a ranking of x, y and z from first to third. Pressing an alternative moves it to the top of that voter's ranking. A triangle shows the majority verdict on each pair as an arrow from the winner to the loser with the vote count; a Condorcet cycle is red and a Condorcet winner is filled blue. Below, each ranking is drawn over the alternatives in the chosen order on a line; a ranking that puts the middle alternative last is dashed and its dip is circled."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">x vs y 2:1   y vs z 2:1   z vs x 2:1
+a Condorcet cycle: x ≻ y, y ≻ z, z ≻ x, so no alternative beats both others
+line x, y, z: Charlie ranks the middle y last: double peaked</p>
+  <figcaption>Three voters each rank x, y and z; press an alternative to move it to the top of that voter's list. The triangle gives the majority verdict on each pair with the vote count: red arrows mark a Condorcet cycle, blue the Condorcet winner. May's attributes relabel the voters as intelligence, looks and wealth. Below, each ranking over the alternatives in the order chosen on the line: with three alternatives a ranking is single peaked unless it puts the middle one last. When every ranking is single peaked, the median peak is the Condorcet winner.</figcaption>
 </figure>

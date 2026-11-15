@@ -1,0 +1,13 @@
+<figure class="nfig" data-nfig="mi5-mono">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">weight on L, </span>p</span><input type="range" min="0" max="1" step="0.01" value="0.6" data-k="p"><span class="nfig-val" aria-hidden="true">0.60</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 300" role="group" aria-label="The probability triangle with z1 (u = 0), z2 (u = 0.6) and z3 (u = 1) and faint expected utility lines. Draggable lotteries L and L prime, the segment from L prime to L with the mixtures p L plus (1 minus p) L prime at p = 0, 0.2, up to 1, and the mixture at the slider value in red. Beside it, the utility of the mixture against p, a straight line from U(L prime) to U(L)."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">U(L) = 0.740   U(L′) = 0.120   so L ≻ L′
+p = 0.60:   U(pL + (1 − p)L′) = 0.60 × 0.740 + 0.40 × 0.120 = 0.492
+rising in p: a larger chance of the better lottery is better</p>
+  <figcaption>Monotonicity in probabilities along the segment from L′ to L: when L is strictly better than L′, pL + (1 − p)L′ beats qL + (1 − q)L′ exactly when p &gt; q. Each step towards L crosses onto a higher indifference line, and the utility of the mixture rises in a straight line from U(L′) to U(L). Move p and drag L and L′; with L and L′ indifferent the line goes flat.</figcaption>
+</figure>

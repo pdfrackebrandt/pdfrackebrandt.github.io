@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="mi9-soe">
+  <div class="nfig-seg" role="group" aria-label="View">
+    <button type="button" class="nfig-opt" data-view="trade" aria-pressed="true">Production and trade</button>
+    <button type="button" class="nfig-opt" data-view="prices" aria-pressed="false">Input prices</button>
+    <button type="button" class="nfig-opt" data-view="outputs" aria-pressed="false">Outputs</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">world price of good 1, </span>p₁</span><input type="range" min="0.6" max="1.6" step="0.01" value="1" data-k="p1"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">endowment of input 1, </span>D₁</span><input type="range" min="0.5" max="6" step="0.1" value="3" data-k="d1"><span class="nfig-val" aria-hidden="true">3.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">endowment of input 2, </span>D₂</span><input type="range" min="1" max="4" step="0.1" value="2" data-k="d2"><span class="nfig-val" aria-hidden="true">2.0</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 330" role="group" aria-label="A small open economy with Cobb Douglas technology, beta equal to two thirds for good 1 and one third for good 2, and world prices p1 and p2 equal to 1. Production and trade: the production frontier, the world price line tangent to it at production q, consumption x on that line where an indifference curve is tangent, and the trade triangle between them. Input prices: d1 and d2 against p1 on log scales, shaded where only one good is produced. Outputs: q1 and q2 against the endowment D1, linear inside the diversification cone. In the last two views drag along the axis to move p1 or D1."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">p = (1.00, 1)   d = (1.00, 1.00)   both goods produced
+q = (4.00, 1.00)   x = (2.50, 2.50)   m = d·D = 5.00
+exports 1.50 of good 1, imports 1.50 of good 2; p·(x − q) = 0</p>
+  <figcaption>Cobb Douglas technology, β equal to two thirds for good 1 and one third for good 2, α = ½ and p₂ = 1. Production and trade: production q is where the world price line touches the smooth frontier, consumption x sits on that line, and the orange triangle is trade. Input prices: inside the cone d₁ = p₁² and d₂ = p₁⁻¹, so the magnification d̂₁ > p̂₁ > 0 > d̂₂ holds globally there; outside it (shaded) one good is not produced and both input prices move one for one with p₁. Outputs: q₁ and q₂ are linear in D₁ inside the cone, 1 < D₁ < 4 at D₂ = 2 and p₁ = 1; outside it one good is not produced.</figcaption>
+</figure>

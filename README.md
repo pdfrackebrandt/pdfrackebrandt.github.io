@@ -35,7 +35,7 @@ visitor types the password. The repo holds sealed copies of the note texts and t
 
 1. Put the password in `.notes-password` at the repo root (git ignores it) or set `NOTES_PASSWORD`. Ask Pedro for it.
 2. Plain sources stay local and are ignored by git: `data/notes.json` (the list: `slug`, `course`, `label`, `title`, `summary`, `updated`)
-   and `content/notes/<slug>.md` (the same Markdown as the explainers; boxes `::: short`, `::: intuition`, `::: note`, `::: takeaway`, each closed by `:::`;
+   and `content/notes/<slug>.md` (the same Markdown as the explainers; boxes `::: short`, `::: intuition`, `::: note`, `::: takeaway`, and `::: result` for a result box that holds display math (a `> ` box splits around `$$`), each closed by `:::`;
    `[[fig name]]` inlines `src/figures/name.html`, driven by `assets/notes.js` and styled by `assets/notes.css`).
    If you only have the repo, the build opens the sealed copies (`data/notes.json.sealed`, `content/notes/<slug>.md.sealed`) with the password.
 3. Run `python3 build.py` (sealing needs Node; no packages). It writes the sealed copies and `data/notes-lock.json` (salt, a password check, the sealed home panel). Commit those, never the plain files.

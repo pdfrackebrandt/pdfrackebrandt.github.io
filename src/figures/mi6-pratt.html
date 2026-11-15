@@ -1,0 +1,11 @@
+<figure class="nfig" data-nfig="mi6-pratt">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">agent 1 relative risk aversion </span>r₁</span><input type="range" min="-1" max="3" step="0.05" value="1" data-k="r1"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">agent 2 relative risk aversion </span>r₂</span><input type="range" min="-1" max="3" step="0.05" value="0.5" data-k="r2"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 300" role="group" aria-label="Left: two CRRA utilities, agent 1 in purple and agent 2 in green, rescaled to equal 0 at x1 and 1 at x2, with the chord between. At height one half, the lottery's expected utility, they give the certainty equivalents C1 and C2, and the chord gives the mean x bar. Right: f, agent 1's utility as a function of agent 2's, against the identity. The dots at one half show Jensen's inequality. Drag x1 and x2 along the left axis, or focus one and use the arrow keys."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">agent 1: r = 1.00 (u = ln x)   agent 2: r = 0.50 (ranks like √x)
+at x̄: r_A¹ = 0.200, r_A² = 0.100   C₁ = 3.000   C₂ = 4.000   x̄ = 5.00
+r_A¹ &gt; r_A² everywhere: f concave, C₁ &lt; C₂, agent 1 is more risk averse</p>
+  <figcaption>Lottery x₁ or x₂ with probability one half each; agent r is CRRA, so r_A = r over x. Left: rescaled to agree at x₁ and x₂, the more concave utility gives the lower certainty equivalent (ln x against √x: C₁ = 3 &lt; C₂ = 4 &lt; 5). Right: f = u₁ after the inverse of u₂ is concave exactly when r₁ ≥ r₂. Move r₁ past r₂ to flip both.</figcaption>
+</figure>

@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="mi5-slopes">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+    <button type="button" class="btn mi5-tog mi5-evb" aria-pressed="true">Expected value lines</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">Bernoulli utility of the middle prize, </span>u₂</span><input type="range" min="0.05" max="0.95" step="0.01" value="0.8" data-k="u"><span class="nfig-val" aria-hidden="true">0.80</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 320" role="group" aria-label="The probability triangle in the plane of p1, the chance of the worst prize, and p3, the chance of the best prize, with the middle prize for sure at the origin. Green lines are the expected utility indifference lines for u = (0, u2, 1), parallel with slope (u2 minus u1) over (u3 minus u2). Dashed lines join lotteries with the same expected prize for money prizes 0, 5 and 10. A draggable lottery L shows its own indifference line in bold."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">u = (0, 0.80, 1):   slope (u₂ − u₁) ÷ (u₃ − u₂) = 0.80 ÷ 0.20 = 4.00
+money (0, 5, 10): u₂ &gt; 0.5, risk averse, lines steeper than the dashed expected value lines (slope 1)
+L = (0.30, 0.40, 0.30):   U(L) = 0.620,   expected prize £5.00</p>
+  <figcaption>Indifference lines in the (p₁, p₃) triangle for u = (0, u₂, 1): straight, parallel, with slope (u₂ − u₁) over (u₃ − u₂). With money prizes (0, 5, 10), u₂ = 0.5 is risk neutral and the lines match the dashed lines of equal expected prize; u₂ above 0.5 is risk averse and the lines are steeper, so more p₃ is needed to make up for a unit of p₁. Move u₂ and drag L.</figcaption>
+</figure>

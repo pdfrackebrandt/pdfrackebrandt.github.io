@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="mi6-families">
+  <div class="nfig-seg" role="group" aria-label="Family">
+    <button type="button" class="nfig-opt" data-fam="cara" aria-pressed="false">CARA</button>
+    <button type="button" class="nfig-opt" data-fam="crra" aria-pressed="true">CRRA</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">absolute risk aversion </span>CARA r</span><input type="range" min="0" max="3" step="0.05" value="1" data-k="ra"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">relative risk aversion </span>CRRA r</span><input type="range" min="0" max="18" step="0.1" value="1" data-k="rc"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 300" role="group" aria-label="Left: the CARA or CRRA utility family in grey, with the chosen r in blue and a draggable money level x where r_A and r_R are read. Right: the certainty equivalent rate t bar of the proportionate gamble that multiplies wealth by 0.95 or 2 with equal chance. For CRRA it is drawn against r and is the same at every wealth; it falls below 1 at r equal to 14.51. For CARA it is drawn against wealth for the chosen r, and falls below 1 once wealth is large. Drag the markers, or focus one and use the arrow keys."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">CRRA r = 1.0 at x = 2.00: u = 0.693, r_A = 0.500, r_R = 1.000
+t̄ = 1.378 at every wealth, taken; taken iff r &lt; 14.51</p>
+  <figcaption>Left: the CARA family (1 − e^(−rx)) over r, and the CRRA family (x^(1−r) − 1) over (1 − r), with r = 1 the log. Right: the certainty equivalent rate of the gamble ×0.95 or ×2. Under CRRA it does not depend on wealth, so the gamble is taken at every wealth iff r &lt; 14.51 (the log gives √1.9 ≈ 1.38). Under CARA, r_R = rx rises, so the same gamble is refused once wealth passes 13.86 over r.</figcaption>
+</figure>

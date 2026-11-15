@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="mi2-ordinal">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Representation">
+      <button type="button" class="nfig-opt" data-rep="u" aria-pressed="true">u = √(x₁x₂)</button>
+      <button type="button" class="nfig-opt" data-rep="v" aria-pressed="false">v = u⁴ = (x₁x₂)²</button>
+    </div>
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">weight on y, </span>λ</span><input type="range" min="0" max="1" step="0.05" value="0.5" data-k="lam"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 620" role="group" aria-label="Left or top: the indifference map of u = square root of x1 x2 on the square from 0 to 4, labelled with the values of u and of v = u to the fourth. Two draggable bundles y and z, the dashed chord between them and the orange mixture m = lambda y + (1 − lambda) z. The shading is the set of bundles at least as good as the worse of y and z. Right or below: the chosen representation along the chord, from z at lambda = 0 to y at lambda = 1, with the straight chord between its end values dashed and the lower end value dotted. Red marks where the representation falls below its chord."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">u(y) = 1.00   u(z) = 3.00   m = (2.00, 2.00), u(m) = 2.00 at λ = 0.50
+quasiconcave: u(m) ≥ min{u(y), u(z)} = 1.00, passes
+concave: u(m) ≥ λu(y) + (1 − λ)u(z) = 2.00, passes</p>
+  <figcaption>One indifference map, two representations: u = √(x₁x₂) is concave, v = u⁴ is not; both are quasiconcave. Drag y and z and move λ. The second panel draws the chosen representation along the chord: switch to v and the same ranking bends below its chord (red), so concavity fails while m stays in the shaded upper contour set.</figcaption>
+</figure>

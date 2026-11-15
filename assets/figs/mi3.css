@@ -1,41 +1,103 @@
 /* Core Micro L3 figures, drawn by /assets/figs/mi3.js. Colours come from the site tokens, so dark mode follows. */
 .nfig .mi3-it{font-style:italic}
-.nfig .mi3-tb{fill:var(--fig-blue)}
-.nfig .mi3-tr{fill:var(--c-key)}
-.nfig .mi3-tp{fill:var(--c-label)}
+.nfig text.mi3-tb{fill:var(--fig-blue)}
+.nfig text.mi3-tr{fill:var(--c-key)}
+.nfig text.mi3-tp{fill:var(--c-label)}
+.nfig text.mi3-to{fill:var(--c-flag)}
+.mi3-hide{display:none}
+/* three goods: good 1 orange, good 2 blue, good 3 red */
+.mi3-g1,.mi3-g2,.mi3-g3{fill:none;stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round}
+.mi3-g1{stroke:var(--c-flag)}
+.mi3-g2{stroke:var(--fig-blue)}
+.mi3-g3{stroke:var(--c-key)}
+.mi3-d1{fill:var(--c-flag);stroke:var(--paper);stroke-width:1.5}
+.mi3-d2{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.mi3-d3{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.mi3-open{fill:var(--paper);stroke-width:2}
+.mi3-ref{stroke:var(--faint);stroke-width:1;stroke-dasharray:4 3}
+.mi3-vdot{stroke:var(--faint);stroke-width:1;stroke-dasharray:1.5 3}
+.mi3-void{fill:var(--surface);fill-opacity:.85;stroke:none}
 /* budget lines: the current one solid, the old one dashed and faint, the compensated one purple like SE */
 .mi3-bud{stroke:var(--ink-soft);stroke-width:1.75;stroke-linecap:round}
 .mi3-bud0{stroke:var(--faint);stroke-width:1.25;stroke-dasharray:5 4}
 .mi3-comp{stroke:var(--c-label);stroke-width:1.5;stroke-dasharray:6 4;stroke-opacity:.85}
+.mi3-iso{stroke:var(--faint);stroke-width:1;stroke-dasharray:1.5 3}
+.nfig text.mi3-isot{fill:var(--faint);font-size:10px}
 /* indifference curves */
 .mi3-ic{fill:none;stroke:var(--green);stroke-width:1.75;stroke-linejoin:round}
-.mi3-ic2{fill:none;stroke:var(--green);stroke-width:1.25;stroke-opacity:.55;stroke-dasharray:4 3}
+.mi3-ic2{fill:none;stroke:var(--green);stroke-width:1.25;stroke-opacity:.6;stroke-dasharray:4 3}
 /* demand paths, value functions and points */
 .mi3-path{fill:none;stroke:var(--fig-blue);stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round}
+.mi3-marsh{fill:none;stroke:var(--ink-soft);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
 .mi3-e{fill:none;stroke:var(--fig-blue);stroke-width:2.25;stroke-linejoin:round}
 .mi3-dot{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
 .mi3-rdot{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
 .mi3-pdot{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
-.mi3-ring{fill:var(--paper);stroke:var(--c-key);stroke-width:2}
+.mi3-kdot{fill:var(--ink-soft);stroke:var(--paper);stroke-width:1.5}
+.mi3-odot{fill:var(--c-flag);stroke:var(--paper);stroke-width:1.5}
+.mi3-gdot{fill:var(--green);stroke:var(--paper);stroke-width:1.5}
 .mi3-pring{fill:var(--paper);stroke:var(--c-label);stroke-width:2}
-/* budget shares: b1 is red, as in its Try it equation */
-.mi3-b1{fill:none;stroke:var(--c-key);stroke-width:2;stroke-linejoin:round}
-.mi3-b2{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
-/* the slope of the indifference curve at the bundle, purple like the MRS in its Try it equation */
+/* the slope of the indifference curve at the bundle, purple like the MRS */
 .mi3-tanp{stroke:var(--c-label);stroke-width:2.25;stroke-linecap:round}
-/* the tangent to v, red like dv/dp1 in Roy's identity */
-.mi3-tanr{stroke:var(--c-key);stroke-width:2;stroke-linecap:round}
-/* the cost of the old bundle, purple like p.h(p0) in its Try it equation */
+/* the cost of the old bundle, purple like p.h(p0) */
 .mi3-old{fill:none;stroke:var(--c-label);stroke-width:1.75;stroke-dasharray:6 4;stroke-linecap:round}
 .mi3-gap{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:2 3}
-/* substitution effect purple, income effect red, as in the Slutsky Try it equation */
+/* substitution effect purple, wealth effect red */
 .mi3-se{stroke:var(--c-label);stroke-width:2.25;stroke-linecap:round}
 .mi3-seh{fill:var(--c-label);stroke:none}
 .mi3-ie{stroke:var(--c-key);stroke-width:2.25;stroke-linecap:round}
 .mi3-ieh{fill:var(--c-key);stroke:none}
-.nf-knob.mi3-knob{stroke:var(--c-label)}
-[data-nfig="mi3-ump"] .nfig-plot{touch-action:pan-y}
+/* knobs: the bundle purple, p blue, q purple ringed */
+.nf-knob.mi3-kp{stroke:var(--c-label)}
+.nf-knob.mi3-kb{stroke:var(--fig-blue)}
+.nf-knob.mi3-kq{stroke:var(--c-key)}
+/* price space: level sets of v, the lower set through p, the chord from p to q */
+.mi3-lev{fill:none;stroke:var(--fig-blue);stroke-width:1.1;stroke-dasharray:1.5 3;stroke-opacity:.8}
+.mi3-levk{fill:none;stroke:var(--fig-blue);stroke-width:2.25;stroke-linejoin:round}
+.mi3-low{fill:var(--fig-blue);fill-opacity:.12;stroke:none}
+.nfig text.mi3-levt{fill:var(--fig-blue);font-size:10px}
+.nfig text.mi3-lowt{fill:var(--fig-blue);font-size:11px}
+.mi3-chord{stroke:var(--c-key);stroke-width:1.75;stroke-dasharray:6 4;stroke-linecap:round}
+.mi3-chord.is-out{stroke:var(--muted)}
+/* the duality map: UMP column blue, EMP column green; the chosen link in purple */
+.mi3-bx{fill:var(--paper);stroke-width:1.5;transition:stroke-width .15s}
+.mi3-bxu{stroke:var(--fig-blue)}
+.mi3-bxe{stroke:var(--green)}
+.mi3-bx.is-on{stroke-width:3}
+.nfig text.mi3-hu{fill:var(--fig-blue);font-weight:700;font-size:12px}
+.nfig text.mi3-he{fill:var(--green);font-weight:700;font-size:12px}
+.nfig text.mi3-bt{font-size:12.5px;font-style:italic}
+.nfig text.mi3-btu{fill:var(--fig-blue)}
+.nfig text.mi3-bte{fill:var(--green)}
+.nfig text.mi3-bv{fill:var(--ink);font-size:12px}
+.nfig text.mi3-fx{fill:var(--ink-soft);font-size:11px}
+.nfig text.mi3-fn{font-size:10px}
+.mi3-fbar{stroke:var(--ink-soft);stroke-width:.9}
+.mi3-link{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
+.mi3-hitl{stroke:transparent;stroke-width:22}
+.mi3-arr{stroke:var(--faint);stroke-width:1.5;stroke-linecap:round}
+.mi3-arrh{fill:var(--faint);stroke:none}
+.nfig text.mi3-al{fill:var(--muted);font-size:11px}
+.mi3-link:hover .mi3-arr{stroke:var(--ink-soft)}
+.mi3-link:hover .mi3-arrh{fill:var(--ink-soft)}
+.mi3-link.is-on .mi3-arr{stroke:var(--c-label);stroke-width:2.5}
+.mi3-link.is-on .mi3-arrh{fill:var(--c-label)}
+.nfig .mi3-link.is-on text.mi3-al{fill:var(--c-label);font-weight:700}
+.mi3-link:focus-visible .mi3-arr{stroke:var(--accent);stroke-width:2.5}
+/* labour supply: dL/ds dark, substitution blue, endowment income orange */
+.mi3-tot{fill:none;stroke:var(--ink);stroke-width:2.25;stroke-linejoin:round}
+.mi3-sub{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round}
+.mi3-inc{fill:none;stroke:var(--c-flag);stroke-width:2;stroke-linejoin:round}
+/* expansion paths and Engel curves */
+.mi3-cd,.mi3-sg,.mi3-ql{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.mi3-cd{stroke:var(--fig-blue)}
+.mi3-sg{stroke:var(--c-flag)}
+.mi3-ql{stroke:var(--green)}
+.mi3-open.mi3-sg{fill:var(--paper)}
 [data-nfig="mi3-ump"] .nfig-plot.is-drag,[data-nfig="mi3-ump"] .nfig-plot.is-drag .nf-handle{cursor:grabbing}
-/* the box of a KaTeX subscript in the do: line reaches up over the Show answer button above it; lift this lecture's
-   Try it buttons so a click on them lands on them */
-.nf-try[data-for^="mi3-"] button{position:relative;z-index:1}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .mi3-low{fill-opacity:.2}
+  :root:not([data-theme="light"]) .mi3-void{fill-opacity:.9}
+}
+:root[data-theme="dark"] .mi3-low{fill-opacity:.2}
+:root[data-theme="dark"] .mi3-void{fill-opacity:.9}

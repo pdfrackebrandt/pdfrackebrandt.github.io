@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="mi5-examples">
+  <div class="nfig-seg nfig-seg4" role="group" aria-label="Preference over lotteries">
+    <button type="button" class="nfig-opt" data-pref="ml" aria-pressed="true">Most likely</button>
+    <button type="button" class="nfig-opt" data-pref="ss" aria-pressed="false">Small supports</button>
+    <button type="button" class="nfig-opt" data-pref="wc" aria-pressed="false">Worst case</button>
+    <button type="button" class="nfig-opt" data-pref="lex" aria-pressed="false">Lexicographic</button>
+  </div>
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 320" role="group" aria-label="The probability triangle for prizes z1, z2 and z3 with the indifference sets of one of four rational preferences: most likely, whose level sets of the largest probability are kinked; small supports, which values the interior, the edges and the vertices at minus 3, minus 2 and minus 1; worst case with u1 above u2 above u3, which values any chance of z3 at u3, the bottom edge at u2 and z1 for sure at u1; and lexicographic, whose indifference sets are single points. Two draggable lotteries L and L prime and their midpoint M are compared."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">U(L) = 1.00   U(L′) = 1.00   so L ∼ L′
+M = ½L + ½L′ = (0.50, 0.50, 0.00):   U(M) = 0.50,   L ≻ M ≻ L′
+independence needs M ∼ L: the indifference set is not a straight line, so no EU</p>
+  <figcaption>Four rational preferences in the triangle. Most likely: level sets of maxₙ pₙ are kinked, so L₁ and L₂ are indifferent while their midpoint is worse. Small supports and worst case: utility jumps between faces. Lexicographic: every indifference set is a single point. Pick a preference, drag L and L′, and check whether the midpoint M sits where independence puts it: indifferent to L when L and L′ are indifferent, strictly between them otherwise.</figcaption>
+</figure>
