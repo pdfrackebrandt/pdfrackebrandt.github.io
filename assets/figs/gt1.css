@@ -1,0 +1,91 @@
+/* Core Micro GT1 figures (games and their representations), drawn by /assets/figs/gt1.js.
+   Colours come from the site tokens, so dark mode follows. Colour tracks objects as in the Word notes:
+   red and purple for Bob's information sets I1 and I2 (or Ana's I_A^2 and I_A^3, or p and q), orange for the
+   merged information set of forgetful Ana and for the mixed strategies on a fibre. */
+
+/* tree branches: undecided, chosen (thick), not chosen (faint), Nature (always live) */
+.gt1-e{stroke:var(--ink-soft);stroke-width:1.4;stroke-linecap:round;fill:none}
+.gt1-e.gt1-off{stroke:var(--faint);stroke-opacity:.55}
+.gt1-e.gt1-on{stroke:var(--ink);stroke-width:2.8}
+.gt1-e.gt1-on.gt1-r{stroke:var(--c-key)}
+.gt1-e.gt1-on.gt1-p{stroke:var(--c-label)}
+.gt1-e.gt1-on.gt1-o{stroke:var(--c-flag)}
+.gt1-e.gt1-nat{stroke:var(--ink-soft);stroke-width:1.6;stroke-dasharray:1 0}
+/* the path actually played */
+.gt1-halo{stroke:var(--ink);stroke-opacity:.12;stroke-width:10;stroke-linecap:round;fill:none}
+/* click targets on branches */
+.gt1-hit{stroke:transparent;stroke-width:18;stroke-linecap:round;fill:none}
+.gt1-btn{cursor:pointer;outline:none}
+.gt1-btn:hover .gt1-hit{stroke:var(--ink);stroke-opacity:.06}
+.gt1-btn:focus-visible .gt1-hit{stroke:var(--accent);stroke-opacity:.3}
+/* nodes and information sets */
+.gt1-node{fill:var(--ink);stroke:var(--paper);stroke-width:1.25}
+.gt1-node.gt1-r{fill:var(--c-key)}
+.gt1-node.gt1-p{fill:var(--c-label)}
+.gt1-node.gt1-o{fill:var(--c-flag)}
+.gt1-root{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+.gt1-leaf{fill:var(--ink-soft)}
+.gt1-set{stroke:var(--ink-soft);stroke-width:1.5;stroke-dasharray:4 3;fill:none}
+.gt1-set.gt1-r{stroke:var(--c-key)}
+.gt1-set.gt1-p{stroke:var(--c-label)}
+.gt1-set.gt1-o{stroke:var(--c-flag)}
+/* tree text */
+.nfig text.gt1-who{fill:var(--ink);font-style:italic;font-size:14px}
+.nfig text.gt1-act{fill:var(--ink-soft);font-size:13px}
+.nfig text.gt1-act.gt1-dimt{fill:var(--faint);opacity:.75}
+.nfig text.gt1-pay{fill:var(--ink-soft);font-size:12.5px}
+.nfig text.gt1-pay.gt1-got{fill:var(--ink);font-weight:700}
+.nfig text.gt1-pay.gt1-dim{fill:var(--faint);opacity:.8}
+.nfig text.gt1-prob{fill:var(--muted);font-size:11px}
+.nfig text.gt1-note{fill:var(--muted);font-size:11.5px}
+.nfig .gt1-tr,.nfig text.gt1-tr{fill:var(--c-key)}
+.nfig .gt1-tp,.nfig text.gt1-tp{fill:var(--c-label)}
+.nfig .gt1-to,.nfig text.gt1-to{fill:var(--c-flag)}
+.nfig .gt1-tk,.nfig text.gt1-tk{fill:var(--ink)}
+.nfig .gt1-tm,.nfig text.gt1-tm{fill:var(--muted)}
+.nfig .gt1-bold,.nfig text.gt1-bold{font-weight:700}
+/* slider names in the tracking colours */
+.nfig .nfig-name.gt1-nr{color:var(--c-key)}
+.nfig .nfig-name.gt1-np{color:var(--c-label)}
+.nfig .nfig-name.gt1-no{color:var(--c-flag)}
+.nfig .gt1-sup{font-size:10px}
+.nfig text.gt1-who .nf-sub{font-size:10px}
+.gt1-frac{stroke:var(--ink-soft);stroke-width:1}
+/* payoff matrix */
+.gt1-cell{fill:var(--paper);stroke:var(--rule);stroke-width:1}
+.gt1-cell.gt1-col{fill:var(--rule-soft)}
+.gt1-cell.gt1-row{fill:var(--rule-soft)}
+.gt1-cell.gt1-pick{stroke:var(--ink);stroke-width:2}
+.nfig text.gt1-ct{fill:var(--ink-soft);font-size:13px}
+.nfig text.gt1-ct.gt1-got{fill:var(--ink);font-weight:700}
+.gt1-cbtn{cursor:pointer;outline:none}
+.gt1-cbtn:focus-visible .gt1-cell{stroke:var(--accent);stroke-width:2}
+/* mixed strategies: the payoff surface of matching pennies */
+.gt1-pos{fill:var(--faint);fill-opacity:.2;stroke:none}
+.gt1-ctr{fill:none;stroke:var(--faint);stroke-width:1}
+.gt1-lp{stroke:var(--c-key);stroke-width:2.2;fill:none}
+.gt1-lq{stroke:var(--c-label);stroke-width:2.2;fill:none}
+.gt1-lqd{stroke:var(--c-label);stroke-width:1.4;stroke-dasharray:2 3;fill:none}
+.gt1-lh{stroke:var(--ink);stroke-width:1.8;fill:none}
+.gt1-lt{stroke:var(--muted);stroke-width:1.8;stroke-dasharray:6 4;fill:none}
+.gt1-dk{fill:var(--ink);stroke:var(--paper);stroke-width:1.5}
+.gt1-dm{fill:var(--muted);stroke:var(--paper);stroke-width:1.5}
+.gt1-dr{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.gt1-do{fill:var(--c-flag);stroke:var(--paper);stroke-width:1.5}
+.nf-knob.gt1-kk{stroke:var(--ink)}
+.nf-knob.gt1-ko{stroke:var(--c-flag)}
+/* Kuhn: the simplex, the surface of independent mixtures, the fibre */
+.gt1-tet{stroke:var(--ink);stroke-width:1.2;fill:none}
+.gt1-tet.gt1-hid{stroke-dasharray:4 3;stroke:var(--muted)}
+.gt1-surf{stroke:var(--faint);stroke-width:.8;stroke-opacity:.8;fill:none}
+.gt1-fib{stroke:var(--c-flag);stroke-width:3.2;stroke-linecap:round;fill:none}
+.gt1-edge{stroke:var(--c-flag);stroke-width:1.6;stroke-dasharray:3 3;fill:none}
+.gt1-sq{fill:none;stroke:var(--ink);stroke-width:1.2}
+.gt1-bm{fill:var(--c-flag);fill-opacity:.85;stroke:var(--c-flag);stroke-width:1}
+.gt1-bb{fill:var(--ink);stroke:var(--ink);stroke-width:1}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .gt1-pos{fill-opacity:.28}
+  :root:not([data-theme="light"]) .gt1-halo{stroke-opacity:.16}
+}
+:root[data-theme="dark"] .gt1-pos{fill-opacity:.28}
+:root[data-theme="dark"] .gt1-halo{stroke-opacity:.16}

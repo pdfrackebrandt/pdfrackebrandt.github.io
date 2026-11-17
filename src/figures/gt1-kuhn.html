@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="gt1-kuhn">
+  <div class="nfig-seg" role="group" aria-label="Game">
+    <button type="button" class="nfig-opt" data-mode="bob" aria-pressed="true">Bob, perfect recall</button>
+    <button type="button" class="nfig-opt" data-mode="forget" aria-pressed="false">Forgetful Ana</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name gt1-nr">βB(I₁, h)</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="b1"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name gt1-np">βB(I₂, h)</span><input type="range" min="0" max="1" step="0.01" value="0.33" data-k="b2"><span class="nfig-val" aria-hidden="true">0.33</span></label>
+    <label class="nfig-range"><span class="nfig-name gt1-no">along the segment</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="t"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name">σA(H)</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="sa"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 480" role="group" aria-label="Left: the tetrahedron of Bob's mixed strategies over hh, th, ht and tt, with the grey surface of independent mixtures. A red line on the surface fixes the probability of h at I1, a purple line the probability of h at I2, and an orange segment through the tetrahedron holds every mixed strategy with those two probabilities, with a black point on it. Right: the square of behaviour strategies with a draggable point. Below: bars of the outcome distribution from the mixed strategy in orange and from the behaviour strategy in black. In the forgetful Ana view the vertices are Lc, Rc, Ld and Rd, the target mixed strategy is the midpoint of the edge from Lc to Rd, and the behaviour strategy is a point on the surface."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">σB = (0.17, 0.17, 0.34, 0.33) over (hh, th, ht, tt)
+βB(I₁, h) = σB(hh) + σB(ht) = 0.50,   βB(I₂, h) = σB(hh) + σB(th) = 0.33
+Against σA(H) = 0.50 both give the same outcomes.</p>
+  <figcaption>Bob in cheating hide and seek. Left: the tetrahedron of his mixed strategies over hh, th, ht and tt; the grey surface holds the independent mixtures, his behaviour strategies seen as mixed strategies. The red line fixes the probability of h at I₁, the purple line the probability of h at I₂, and the orange segment holds every mixed strategy with those two probabilities; the slider moves the marked mixed strategy along it, and the ring marks the independent mixture on it. Right: the square of behaviour strategies; drag its point. Below: the outcome distribution of the mixed strategy (orange bars) and of the behaviour strategy coincide wherever the mixed strategy sits on the segment and whatever Ana does. Forgetful Ana: her target mixes Lc and Rd half and half, the midpoint of an edge that leaves the surface; any behaviour strategy draws her two moves independently and misses it.</figcaption>
+</figure>

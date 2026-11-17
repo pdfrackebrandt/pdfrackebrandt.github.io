@@ -1,0 +1,12 @@
+<figure class="nfig" data-nfig="gt1-mixed">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name gt1-nr">p = σA(H)</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="p"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name gt1-np">q = σB(h)</span><input type="range" min="0" max="1" step="0.01" value="0.33" data-k="q"><span class="nfig-val" aria-hidden="true">0.33</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 296" role="group" aria-label="Matching pennies with mixed strategies. Left: the unit square of p, the probability that Ana plays H, and q, the probability that Bob plays h, shaded grey where Ana's expected payoff minus (2p minus 1)(2q minus 1) is positive, with contour lines; a draggable point marks (p, q) with a red line at p and a purple line at q. Right: Ana's payoff against q from H, the line 1 minus 2q, from T, the line 2q minus 1, and from the mix p in red, with dots at the current q."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">p = 0.50, q = 0.33
+uA(H, q) = 1 − 2q = 0.34,   uA(T, q) = 2q − 1 = −0.34
+uA(p, q) = p (0.34) + (1 − p)(−0.34) = −(2p − 1)(2q − 1) = 0.00
+p = 0.50: Ana earns 0 whatever Bob does</p>
+  <figcaption>Matching pennies with p the probability that Ana plays H and q the probability that Bob plays h. Left: Ana’s expected payoff over the unit square, a saddle, grey where it is positive, with contours at plus and minus 0.25, 0.5 and 0.75; drag the point or use the sliders. Right: against q, H earns 1 − 2q and T earns 2q − 1; the red line is the mix p, their average, which pivots about q = 0.5 and is flat at 0 when p = 0.5.</figcaption>
+</figure>

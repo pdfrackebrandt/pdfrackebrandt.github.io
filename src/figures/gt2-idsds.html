@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="gt2-idsds">
+  <div class="nfig-seg nfig-seg4" role="group" aria-label="Game">
+    <button type="button" class="nfig-opt" data-game="g1" aria-pressed="true">Game 1</button>
+    <button type="button" class="nfig-opt" data-game="g2" aria-pressed="false">Game 2</button>
+    <button type="button" class="nfig-opt" data-game="g3" aria-pressed="false">Game 3</button>
+    <button type="button" class="nfig-opt" data-game="w" aria-pressed="false">MWG 8.B.3, weak</button>
+  </div>
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn gt2-round">Delete one round</button>
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 200" role="group" aria-label="A payoff matrix, player 1's strategies as rows and player 2's as columns, each cell showing the two payoffs. Each strategy label is a button: pressing it deletes the strategy if it is dominated given the strategies still alive, strictly in games 1 to 3 and weakly in MWG 8.B.3. Deleted rows and columns are tinted in the colour of their step, red, purple, orange, then teal, with the step number in a circle. When nothing more can be deleted, the surviving cells are outlined in blue."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">click a dominated strategy, or delete one full round</p>
+  <figcaption>Iterated deletion on the payoff matrix. Click a strategy label to delete it; it goes only if it is dominated given what is left, and the readout names the dominator. Game 1 ends at (M, R) whatever order you click; game 2 needs a mixture of T and M to remove B first; game 3 has nothing to delete. In MWG 8.B.3 deletion is weak: start with T and you end at (B, R), start with M and you end at (B, L), and deleting a full round removes T and M together and leaves B with both columns.</figcaption>
+</figure>

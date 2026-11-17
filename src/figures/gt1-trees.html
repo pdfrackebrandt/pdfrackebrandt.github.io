@@ -1,0 +1,11 @@
+<figure class="nfig" data-nfig="gt1-trees">
+  <div class="nfig-seg" role="group" aria-label="Game">
+    <button type="button" class="nfig-opt" data-game="hide" aria-pressed="true">Hide and seek</button>
+    <button type="button" class="nfig-opt" data-game="pennies" aria-pressed="false">Matching pennies, Bob first</button>
+    <button type="button" class="nfig-opt" data-game="charlie" aria-pressed="false">Charlie</button>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 262" role="group" aria-label="A game tree you can play. Hide and seek: Ana chooses H or T at the initial node, Bob chooses h or t at two nodes joined by a dashed line, his information set, and the terminal nodes carry Ana's and Bob's payoffs. Matching pennies: the same game drawn with Bob first and Ana's two nodes in one information set. Charlie: after H, Nature ends the game at zero payoffs with probability one quarter and otherwise lets Bob choose, at a node in one information set with his node after T. Each branch is a button that chooses that action at its whole information set; the path played is shaded."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">Ana hides at H. Bob seeks at h, the same at both nodes of his information set: he cannot tell them apart.
+Outcome (−1, 1).</p>
+  <figcaption>Click a branch to choose that action; the path played is shaded and payoffs list Ana above Bob. Hide and seek: Bob’s two nodes form one information set (dashed), so a choice at one node is the choice at both. Matching pennies: the same payoffs and the same information drawn with Bob first, so the same game. Charlie: Nature moves after H, giving Ana away with probability one quarter and ending the game at (0, 0); the expected payoffs weight the two terminal nodes reached.</figcaption>
+</figure>

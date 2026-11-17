@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="gt3-bertrand">
+  <div class="nfig-seg" role="group" aria-label="View">
+    <button type="button" class="nfig-opt" data-mode="profit" aria-pressed="true">Firm 1's profit</button>
+    <button type="button" class="nfig-opt" data-mode="map" aria-pressed="false">Deviations in the price plane</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">unit cost </span>c</span><input type="range" min="0" max="0.5" step="0.01" value="0.2" data-k="c"><span class="nfig-val" aria-hidden="true">0.20</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">rival price </span>p₂</span><input type="range" min="0" max="0.95" step="0.01" value="0.45" data-k="p2"><span class="nfig-val" aria-hidden="true">0.45</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 310" role="group" aria-label="Bertrand duopoly with demand 1 minus p. Firm 1's profit: its profit against its own price for the rival price on the slider, rising towards an open circle just below the rival's price, half of it at a tie and zero above. Deviations: the price plane with firm 1's best response in red and firm 2's in purple, a draggable price pair and arrows for each firm's profitable deviation."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">rival price p₂ = 0.45, c = 0.20, monopoly price 0.60
+π₁ = (p₁ − c)(1 − p₁) below p₂, half of it at p₁ = p₂ (0.0688), 0 above
+B₁(p₂): empty: undercut as little as possible, the supremum 0.1375 at p₁ → 0.45 is not attained</p>
+  <figcaption>Demand is 1 minus p. Firm 1's profit: move the rival price. Below the rival price firm 1 serves the whole market, at a tie half, above it nothing, so between cost and the monopoly price the profit climbs to an open circle that is never reached and the best response is empty; above the monopoly price it is the monopoly price; at or below cost any price that sells nothing is optimal. Deviations: drag the price pair. Arrows show a profitable move for each firm (red for firm 1, purple for firm 2): raise a price below cost, raise a price at cost when the rival is above, undercut a rival above cost. Only (c, c), where the two best response sets meet, has no arrow.</figcaption>
+</figure>

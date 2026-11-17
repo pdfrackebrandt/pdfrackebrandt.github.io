@@ -1,0 +1,12 @@
+<figure class="nfig" data-nfig="gt1-perfect">
+  <div class="nfig-seg" role="group" aria-label="Play">
+    <button type="button" class="nfig-opt" data-mode="honest" aria-pressed="true">Honest</button>
+    <button type="button" class="nfig-opt" data-mode="peek" aria-pressed="false">The seeker peeks</button>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 258" role="group" aria-label="Random it. Nature moves first with probability one half each way. Left subtree: Bob is it, Ana hides with H or T and Bob seeks with h or t. Right subtree: Ana is it, Bob hides with h or t and Ana seeks with H or T, winning on a match. Honest play joins each seeker's two nodes in one information set; when the seeker peeks every information set is a singleton. Each branch is a button."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">Honest: each seeker has one information set with two nodes, imperfect information.
+Ana has 2 information sets, so 4 strategies; Bob too.
+Hider moves: Ana H, Bob h. Seekers: Bob h, Ana H.
+Expected payoffs 0.5 × (−1, 1) + 0.5 × (1, −1) = (0, 0).</p>
+  <figcaption>A fair coin picks who is it. On the left Bob is it and Ana hides first; on the right Ana is it, Bob hides first and a match makes Ana win. Honest play joins each seeker’s two nodes in one information set: imperfect information. When the seeker peeks, every information set is a singleton and the game has perfect information although Nature moves; each player then has three information sets and eight strategies.</figcaption>
+</figure>

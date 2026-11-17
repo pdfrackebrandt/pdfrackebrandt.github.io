@@ -1,0 +1,20 @@
+<figure class="nfig" data-nfig="gt3-br">
+  <div class="nfig-seg gt3-seg6" role="group" aria-label="Game">
+    <button type="button" class="nfig-opt" data-game="mp" aria-pressed="false">Pennies</button>
+    <button type="button" class="nfig-opt" data-game="bos" aria-pressed="true">Sexes</button>
+    <button type="button" class="nfig-opt" data-game="stag" aria-pressed="false">Stag Hunt</button>
+    <button type="button" class="nfig-opt" data-game="chicken" aria-pressed="false">Chicken</button>
+    <button type="button" class="nfig-opt" data-game="ag" aria-pressed="false">Alphonse</button>
+    <button type="button" class="nfig-opt" data-game="ex8" aria-pressed="false">Example 8</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">player 1's payoff in the top left cell, </span>a</span><input type="range" min="-3" max="6" step="0.1" value="2" data-k="a"><span class="nfig-val" aria-hidden="true">2.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">player 2's payoff in the top left cell, </span>b</span><input type="range" min="-3" max="6" step="0.1" value="1" data-k="b"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 380" role="group" aria-label="Best response correspondences of a 2 by 2 game in the unit square: p, the probability of player 1's first strategy, across, and q, the probability of player 2's first strategy, up. Player 1's best response is red, player 2's purple and dashed, every crossing is a Nash equilibrium in blue. Choose the game, move the two payoffs of the top left cell, and drag the profile to see each player's best reply."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">(C,C) 2.0, 1.0   (C,P) 0, 0   (P,C) 0, 0   (P,P) 1, 2
+p = 0.40, q = 0.70:  u₁(C) − u₁(P) = 1.10 &gt; 0,  u₂(C) − u₂(P) = −0.80 &lt; 0
+player 1 indifferent at q = 0.333, player 2 at p = 0.667
+Nash equilibria (p, q): (0, 0), (1, 1), (0.67, 0.33)</p>
+  <figcaption>Choose a game and drag the mixed profile: the red arrow points to player 1's best reply and the purple arrow to player 2's. Each correspondence jumps where its player is indifferent, and every crossing is a Nash equilibrium: three in the coordination games, the two off diagonal corners plus a mixed one in Chicken and Alphonse and Gaston, only the middle in Matching Pennies, and only the corners (U, L) and (D, R) in Example 8. Slider a moves player 1's payoff in the top left cell: it shifts player 1's indifference line, so it moves player 2's equilibrium mix, never player 1's own; slider b does the same for player 2.</figcaption>
+</figure>

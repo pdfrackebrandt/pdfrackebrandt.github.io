@@ -1,0 +1,11 @@
+<figure class="nfig" data-nfig="gt2-spa">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">valuation of bidder i, </span>vᵢ</span><input type="range" min="0" max="10" step="0.1" value="6" data-k="v"><span class="nfig-val" aria-hidden="true">6.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">alternative bid of bidder i, </span>bᵢ′</span><input type="range" min="0" max="12" step="0.1" value="9" data-k="b"><span class="nfig-val" aria-hidden="true">9.0</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 300" role="group" aria-label="Payoff of bidder i in a second price auction against the highest other bid r, from 0 to 12. The solid black line is the payoff from bidding the valuation v: v minus r while r is below v, then 0. The dashed line is the payoff from another bid b prime: v minus r while r is below b prime, then 0. The two differ only between v and b prime, shaded red for an overbid, where b prime wins at a price above v, and purple for an underbid, where b prime loses an auction worth winning. Drag along the axis to move r."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">overbid: vᵢ = 6.0, bᵢ′ = 9.0
+at rᵢ = 7.5: bidding vᵢ earns 0.00, bidding bᵢ′ earns −1.50: bᵢ′ wins and pays rᵢ > vᵢ: a loss of 1.50
+bᵢ′ is never better and is strictly worse for 6.0 &lt; rᵢ &lt; 9.0</p>
+  <figcaption>Second price auction, payoff against the highest other bid rᵢ. Bidding the valuation vᵢ (black) and any other bid bᵢ′ (dashed) give the same payoff unless rᵢ falls between them: an overbid then wins at a price above value (red loss), an underbid loses an auction worth vᵢ − rᵢ (purple loss). Move vᵢ and bᵢ′ with the sliders and drag rᵢ along the axis: the dashed line is never above the black one.</figcaption>
+</figure>

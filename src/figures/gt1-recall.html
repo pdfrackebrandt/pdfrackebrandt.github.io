@@ -1,0 +1,11 @@
+<figure class="nfig" data-nfig="gt1-recall">
+  <div class="nfig-seg" role="group" aria-label="Ana's memory">
+    <button type="button" class="nfig-opt" data-mode="remember" aria-pressed="true">Ana remembers</button>
+    <button type="button" class="nfig-opt" data-mode="forget" aria-pressed="false">Forgetful Ana</button>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 272" role="group" aria-label="Ana chooses L or R, Bob sees it and chooses l or r, then Ana chooses c or d. When Ana remembers, her second nodes after L form one information set and her second nodes after R another. When she forgets, all four second nodes form a single information set. Each branch is a button that chooses that action at its whole information set."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">Ana remembers: one information set after L (red), another after R (purple). Plan: L, then d after L and c after R.
+She has 3 information sets, so 8 strategies; she still does not see Bob’s move.
+Bob plays l after L and r after R. Outcome (1, −1): Ana wins.</p>
+  <figcaption>Ana chooses L or R, Bob sees it and chooses l or r, Ana chooses c or d. After L she wins with (l, d) or (r, c); after R with (l, c) or (r, d), so her second move should depend on her first. Ana remembers: her information set after L (red) and after R (purple) keep her history apart, though she never sees Bob’s move. Forgetful Ana: all four second nodes form one information set (orange), so one click sets her second move after both L and R.</figcaption>
+</figure>

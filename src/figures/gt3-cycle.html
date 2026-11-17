@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="gt3-cycle">
+  <div class="nfig-seg" role="group" aria-label="View">
+    <button type="button" class="nfig-opt" data-mode="dyn" aria-pressed="true">Best reply dynamics</button>
+    <button type="button" class="nfig-opt" data-mode="bel" aria-pressed="false">Player 1's beliefs</button>
+  </div>
+  <div class="gt3-acts">
+    <button type="button" class="gt3-act" data-act="step">Best reply step</button>
+    <button type="button" class="gt3-act" data-act="reset">Back to the start</button>
+  </div>
+  <svg class="nfig-plot nfig-drag2 gt3-click" viewBox="0 0 520 300" role="group" aria-label="Best reply dynamics: the 3 by 3 payoff matrix with rows T, M, B and columns L, C, R. Player 1's best responses are red, player 2's purple, and the equilibrium cell (M, C) is shaded. Click a cell or use the arrow keys to choose a profile; dashed arrows show each player's best reply from it, and Best reply step lets the next player switch, tracing the cycle through (T, L), (B, L), (B, R) and (T, R). Player 1's beliefs: the simplex of beliefs over L, C and R split into the regions where T, M or B is player 1's best response; drag the belief point."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">(T, L): player 1's best reply to L is B (7), so player 1 moves; player 2's best reply to T is L (7), kept
+path: (T, L)
+press Best reply step to let the next player switch</p>
+  <figcaption>Best reply dynamics: click a profile and press Best reply step; player 1 moves first. From a cell in the middle column one move reaches (M, C), where both payoffs are marked, the only pair of mutual best responses. From every other cell alternating best replies run around the cycle (T, L), (B, L), (B, R), (T, R): every strategy on it is a best response to another strategy on it, so all four are rationalizable, but no cell is a fixed point. Player 1's beliefs: drag the belief over L, C and R. T, M and B each win for some belief, and M wins on a wide band in the middle; only the correct belief, C, makes the choice consistent with player 2's play.</figcaption>
+</figure>

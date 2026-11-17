@@ -26,7 +26,7 @@ STOP = {
 }
 SPACING = {',', ';', ':', '!', ' ', '>'}
 ONE_ARG = {'hat', 'bar', 'tilde', 'dot', 'ddot', 'vec', 'widehat', 'widetilde', 'overline', 'underline', 'mathbb',
-           'mathcal', 'boldsymbol', 'mathbf', 'bm', 'sqrt', 'check', 'breve', 'acute', 'grave', 'kr', 'kp', 'kg', 'kb',
+           'mathcal', 'boldsymbol', 'mathbf', 'bm', 'sqrt', 'check', 'breve', 'acute', 'grave', 'kr', 'kp', 'kg', 'kb', 'ko', 'kt', 'kn',
            'operatorname', 'text', 'mathrm', 'textbf', 'textit', 'mathit', 'underbrace', 'overbrace', 'phantom',
            'textrm', 'mbox', 'mathring'}
 TWO_ARG = {'frac', 'dfrac', 'tfrac', 'binom', 'nv', 'htmlClass', 'cfrac'}

@@ -1,0 +1,88 @@
+/* Core Micro GT3 figures, drawn by /assets/figs/gt3.js. Colours come from the site tokens, so dark mode follows.
+   Player 1 (firm 1) red, player 2 (firm 2) purple, the safe strategy and markups orange, equilibria blue, as in the Word notes. */
+.nfig .gt3-it{font-style:italic}
+.nfig text.gt3-big{font-size:13px}
+.nfig text.gt3-bold{font-weight:700}
+.nfig text.gt3-pay{font-size:13.5px}
+/* handles */
+.nf-knob.gt3-kk{stroke:var(--ink)}
+.nf-knob.gt3-kb{stroke:var(--c-eq)}
+/* lines */
+.gt3-r,.gt3-p,.gt3-o,.gt3-t,.gt3-b,.gt3-k,.gt3-g{fill:none;stroke-width:1.75;stroke-linejoin:round;stroke-linecap:round}
+.gt3-r{stroke:var(--c-key)}
+.gt3-p{stroke:var(--c-label)}
+.gt3-o{stroke:var(--c-flag)}
+.gt3-t{stroke:var(--c-teal)}
+.gt3-b{stroke:var(--c-eq)}
+.gt3-k{stroke:var(--ink)}
+.gt3-g{stroke:var(--muted)}
+.gt3-w{stroke-width:2.25}
+.gt3-thick{stroke-width:3.5;stroke-linecap:butt}
+.gt3-thin{stroke-width:1.5}
+.gt3-dash{stroke-dasharray:6 4;stroke-linecap:butt}
+.gt3-dot{stroke-dasharray:2 3;stroke-width:1.25}
+.gt3-diag{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 4;fill:none}
+.gt3-edge{stroke:var(--ink-soft);stroke-width:1;fill:none}
+.gt3-tri{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round}
+/* arrowheads */
+.gt3-hr{fill:var(--c-key);stroke:none}
+.gt3-hp{fill:var(--c-label);stroke:none}
+/* areas */
+.gt3-fr{fill:var(--c-key);fill-opacity:.12;stroke:none}
+.gt3-fp{fill:var(--c-label);fill-opacity:.12;stroke:none}
+.gt3-fo{fill:var(--c-flag);fill-opacity:.2;stroke:none}
+.gt3-ft{fill:var(--c-teal);fill-opacity:.2;stroke:none}
+.gt3-fb{fill:var(--c-eq);fill-opacity:.16;stroke:none}
+.gt3-fg{fill:var(--muted);fill-opacity:.5;stroke:none}
+.gt3-fo.gt3-hot,.gt3-ft.gt3-hot{fill-opacity:.38}
+.gt3-fb.gt3-hot{fill-opacity:.32}
+.gt3-fr.gt3-solid,.gt3-fp.gt3-solid,.gt3-fo.gt3-solid,.gt3-fg.gt3-solid{fill-opacity:.85}
+/* payoff matrix cells */
+.gt3-cell{fill:var(--paper);stroke:var(--rule);stroke-width:1}
+.gt3-cell.gt3-ne{fill:var(--c-eq);fill-opacity:.12}
+.gt3-cell.gt3-sel{stroke:var(--ink);stroke-width:2}
+/* points */
+.gt3-dr{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.gt3-dp{fill:var(--c-label);stroke:var(--paper);stroke-width:1.5}
+.gt3-do{fill:var(--c-flag);stroke:var(--paper);stroke-width:1.5}
+.gt3-dx{fill:var(--muted);stroke:var(--paper);stroke-width:1.5}
+.gt3-db{fill:var(--c-eq);stroke:var(--paper);stroke-width:1.5}
+.gt3-dk{fill:var(--ink);stroke:var(--paper);stroke-width:1.5}
+.gt3-dg{fill:var(--muted);stroke:var(--paper);stroke-width:1.5}
+.gt3-faint{opacity:.55}
+.gt3-open{fill:var(--paper);stroke-width:1.75}
+.gt3-open.gt3-or{stroke:var(--c-key)}
+.gt3-open.gt3-op{stroke:var(--c-label)}
+/* labels */
+.nfig text.gt3-tk{fill:var(--ink)}
+.nfig text.gt3-tm{fill:var(--muted)}
+.nfig text.gt3-tr{fill:var(--c-key)}
+.nfig text.gt3-tp{fill:var(--c-label)}
+.nfig text.gt3-to{fill:var(--c-flag)}
+.nfig text.gt3-tt{fill:var(--c-teal)}
+.nfig text.gt3-tb{fill:var(--c-eq)}
+/* the step buttons of the best reply figure and the six game choice */
+.nfig .gt3-acts{display:flex;flex-wrap:wrap;gap:8px}
+.nfig .gt3-act{flex:0 0 auto;min-height:34px;padding:4px 12px;font-family:var(--f-mono);font-size:.75rem;color:var(--ink-soft);background:transparent;border:1px solid var(--rule);border-radius:3px;cursor:pointer}
+.nfig .gt3-act:hover{color:var(--ink);border-color:var(--c-eq)}
+.nfig .gt3-act:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.nfig .gt3-act[hidden]{display:none}
+@container (max-width:440px){.gt3-seg6 .nfig-opt{flex-basis:33%}}
+.nfig-plot.gt3-click{cursor:pointer}
+.nfig-plot.gt3-click:focus-visible{outline:1.5px solid var(--accent);outline-offset:4px}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .gt3-fr,:root:not([data-theme="light"]) .gt3-fp{fill-opacity:.2}
+  :root:not([data-theme="light"]) .gt3-fo,:root:not([data-theme="light"]) .gt3-ft{fill-opacity:.26}
+  :root:not([data-theme="light"]) .gt3-fb{fill-opacity:.24}
+  :root:not([data-theme="light"]) .gt3-cell.gt3-ne{fill-opacity:.22}
+  :root:not([data-theme="light"]) .gt3-solid{fill-opacity:.85}
+  :root:not([data-theme="light"]) .gt3-fo.gt3-hot,:root:not([data-theme="light"]) .gt3-ft.gt3-hot{fill-opacity:.45}
+  :root:not([data-theme="light"]) .gt3-fb.gt3-hot{fill-opacity:.4}
+}
+:root[data-theme="dark"] .gt3-fr,:root[data-theme="dark"] .gt3-fp{fill-opacity:.2}
+:root[data-theme="dark"] .gt3-fo,:root[data-theme="dark"] .gt3-ft{fill-opacity:.26}
+:root[data-theme="dark"] .gt3-fb{fill-opacity:.24}
+:root[data-theme="dark"] .gt3-cell.gt3-ne{fill-opacity:.22}
+:root[data-theme="dark"] .gt3-solid{fill-opacity:.85}
+:root[data-theme="dark"] .gt3-fo.gt3-hot,:root[data-theme="dark"] .gt3-ft.gt3-hot{fill-opacity:.45}
+:root[data-theme="dark"] .gt3-fb.gt3-hot{fill-opacity:.4}

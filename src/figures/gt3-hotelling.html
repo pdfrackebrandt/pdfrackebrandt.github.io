@@ -1,0 +1,17 @@
+<figure class="nfig" data-nfig="gt3-hotelling">
+  <div class="nfig-seg" role="group" aria-label="View">
+    <button type="button" class="nfig-opt" data-mode="city" aria-pressed="true">The linear city</button>
+    <button type="button" class="nfig-opt" data-mode="br" aria-pressed="false">Best responses</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">transport cost </span>t</span><input type="range" min="0.2" max="2" step="0.05" value="1" data-k="t"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">unit cost </span>c</span><input type="range" min="0" max="2" step="0.05" value="1" data-k="c"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of firm 1, </span>p₁</span><input type="range" min="0" max="6" step="0.05" value="2.3" data-k="p1"><span class="nfig-val" aria-hidden="true">2.30</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">price of firm 2, </span>p₂</span><input type="range" min="0" max="6" step="0.05" value="2" data-k="p2"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 300" role="group" aria-label="Hotelling linear city with firms at 0 and 1. The linear city: the total cost of buying from firm 1, p1 plus t z, in red and from firm 2, p2 plus t times 1 minus z, in purple against location z, crossing at the indifferent consumer, with the market shares in a strip below. Best responses: firm 1's best response in red and firm 2's in purple in the price plane, kinked where the rival price passes 3t plus c, the equilibrium c plus t in blue, and a draggable price pair with arrows to each firm's best reply."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">p₁ = 2.30, p₂ = 2.00, t = 1.00, c = 1.00:  ẑ = 0.350
+shares x₁ = 0.350, x₂ = 0.650;  profits π₁ = 0.455, π₂ = 0.650
+best replies: B₁(p₂) = 2.00, B₂(p₁) = 2.15;  equilibrium p* = c + t = 2.00</p>
+  <figcaption>The linear city: move the prices and the transport cost. The consumer where the two cost lines cross is indifferent; everyone to the left buys from firm 1, so the shares are the indifferent location and one minus it. Best responses: drag the price pair or use the sliders; the arrows point to each firm's best reply, (t + c + p) over 2 between the kinks. Best responses slope up, so prices are strategic complements, and they cross once, at p* = c + t: the markup equals the transport cost, and it vanishes as t goes to 0, as in Bertrand.</figcaption>
+</figure>

@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="gt2-mixdom">
+  <div class="nfig-seg" role="group" aria-label="View">
+    <button type="button" class="nfig-opt" data-view="vec" aria-pressed="true">Payoff vectors</button>
+    <button type="button" class="nfig-opt" data-view="bel" aria-pressed="false">Beliefs</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">weight on T in the mixture, </span>p</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="p"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">payoff of B against either column, </span>b</span><input type="range" min="0" max="3" step="0.05" value="1" data-k="b"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 330" role="group" aria-label="Game 2, player 1. Payoff vectors view: each strategy as the point of its payoffs against L and against R, T at (3, 0), M at (0, 3) and B at (b, b). Mixtures of T and M fill the segment between them; the draggable point sigma is the mixture with weight p on T. The region better than B against both columns is shaded, bounded by a red vertical line where 3p equals b and a purple horizontal line where 3 times 1 minus p equals b; the part of the segment inside it is blue. Beliefs view: the expected payoffs of T, M and B against the belief mu that player 2 plays L, with a draggable mu."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">σ = (0.50, 0.50, 0): against L 3p = 1.50 &gt; 1.00, against R 3(1 − p) = 1.50 &gt; 1.00: σ strictly dominates B
+B is dominated by (p, 1 − p, 0) exactly for 0.33 &lt; p &lt; 0.67</p>
+  <figcaption>Game 2, player 1. Payoff vectors: B is strictly dominated by every mixture of T and M that lands northeast of B, right of the red line 3p = b and above the purple line 3(1 − p) = b; with b = 1 that is p between one third and two thirds (blue). Beliefs: against any belief μ the better of T and M earns at least 1.5, so B is never a best response. Raise b past 1.5 and both facts fail together: the blue part of the segment vanishes, and B becomes a best response to beliefs near μ = 0.5 (orange). Never a best response and strictly dominated are the same thing.</figcaption>
+</figure>

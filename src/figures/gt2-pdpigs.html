@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="gt2-pdpigs">
+  <div class="nfig-seg" role="group" aria-label="Game">
+    <button type="button" class="nfig-opt" data-game="pd" aria-pressed="true">Prisoner's dilemma</button>
+    <button type="button" class="nfig-opt" data-game="pigs" aria-pressed="false">Pigs in a box</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">years in prison for a lone confessor, </span>lone confessor</span><input type="range" min="0" max="4" step="0.1" value="1" data-k="y"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">grains piglet eats after pushing alone, </span>piglet's grains</span><input type="range" min="0" max="8" step="0.1" value="1" data-k="k"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 340" role="group" aria-label="The four outcomes of a two by two game as points in payoff space, the row player's payoff across and the column player's payoff up. An arrow joins two outcomes when one player gains by switching strategy: red for player 1 in the prisoner's dilemma and for piglet in pigs in a box, purple for player 2 and for Big Pig. Outcomes that iterated deletion removes are grey; a unique survivor is blue. In the prisoner's dilemma the slider sets the sentence of a lone confessor; in pigs in a box it sets the grains piglet eats after pushing alone."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">a lone confessor serves 1.0 years: (d, c) pays (−1.0, −10)
+round 1: player 1's d beats c (−1 &gt; −2, −5 &gt; −10); player 2's d beats c (−1 &gt; −2, −5 &gt; −10)
+IDSDS outcome (d, d) with payoffs (−5, −5)</p>
+  <figcaption>Payoff space; arrows show profitable switches. Prisoner's dilemma: every arrow leads to (d, d), southwest of (c, c). Raise the lone confessor's sentence above 2 years and c becomes the best reply to c, so nothing is dominated. Pigs in a box: piglet's Wait beats Push, then Big Pig must push, and piglet ends with 5 against 3. Let piglet eat more than 2 grains after pushing alone and Push is no longer dominated for piglet; between 2 and 5 grains nothing is dominated at all, and (Wait, Push), where Big Pig gets 10 minus piglet's grains, survives.</figcaption>
+</figure>

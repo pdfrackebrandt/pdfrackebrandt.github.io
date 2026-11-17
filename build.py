@@ -1317,6 +1317,10 @@ TEX_PREAMBLE = r"""\documentclass[11pt,a4paper]{article}
 \newcommand{\kp}[1]{\textcolor{labelpurple}{#1}}
 \newcommand{\kg}[1]{\textcolor{askgreen}{#1}}
 \newcommand{\kb}[1]{\textcolor{keyblue}{#1}}
+\definecolor{noteteal}{HTML}{16867A}
+\newcommand{\ko}[1]{\textcolor{flagorange}{#1}}
+\newcommand{\kt}[1]{\textcolor{noteteal}{#1}}
+\newcommand{\kn}[1]{\textcolor{black!50}{#1}}
 \providecommand{\R}{\mathbb{R}}
 \providecommand{\N}{\mathbb{N}}
 \titleformat{\section}{\color{headgreen}\Large\bfseries}{}{0pt}{}

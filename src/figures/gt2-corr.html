@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="gt2-corr">
+  <div class="nfig-seg" role="group" aria-label="Beliefs">
+    <button type="button" class="nfig-opt" data-mode="cor" aria-pressed="true">Correlated belief</button>
+    <button type="button" class="nfig-opt" data-mode="ind" aria-pressed="false">Independent beliefs</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">probability that player 1 plays U, </span>p</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="p"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">probability that player 2 plays L, </span>q</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="q"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 340" role="group" aria-label="Player 3 in Osborne and Rubinstein 58.1. A triangle of beliefs, a the probability of (U, L) across and d the probability of (D, R) up, with a plus d at most 1. M1 is the best response in the red region, a at least d and at least three eighths; M3 in the purple region, the mirror image; M4 in the orange square where both are below three eighths; M2 only on the teal segment a equal to d between three eighths and one half. The beliefs reachable with independent mixing lie under the dashed curve root a plus root d equal to 1, shaded grey. Bars show the four payoffs of player 3 against the current belief. In the correlated view the belief point is dragged; in the independent view it follows the sliders p and q."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">correlated: a = 0.50, d = 0.50, off the diagonal 0.00
+best response M₁, M₂, M₃: M₂ is a best response (it needs a = d ≥ 0.375)</p>
+  <figcaption>Player 3's best response depends only on a, the weight on (U, L), and d, the weight on (D, R). M₂ is best only on the teal segment a = d ≥ 0.375, for instance the correlated belief that puts one half on (U, L) and one half on (D, R). Switch to independent beliefs and move p and q: the point stays under the dashed curve, which meets the diagonal at a = d = 0.25, so M₂ always falls short, by at least 0.90, although no mixture dominates it.</figcaption>
+</figure>

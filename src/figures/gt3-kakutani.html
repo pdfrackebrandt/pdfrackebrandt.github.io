@@ -1,0 +1,11 @@
+<figure class="nfig" data-nfig="gt3-kakutani">
+  <div class="nfig-seg" role="group" aria-label="Correspondence">
+    <button type="button" class="nfig-opt" data-mode="nc" aria-pressed="true">Not convex</button>
+    <button type="button" class="nfig-opt" data-mode="open" aria-pressed="false">Graph not closed</button>
+    <button type="button" class="nfig-opt" data-mode="ok" aria-pressed="false">Kakutani holds</button>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 380" role="group" aria-label="Three correspondences on the unit interval that agree except at one half, where the left branch ends at 0.85 above the diagonal and the right branch starts at 0.15 below it. Drag x along the axis to see the value set f of x and whether it meets the diagonal."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">x = 0.30:  f(x) = {0.73},  x ∉ f(x): f(x) lies above the diagonal
+closed graph, but f(½) = {0.15, 0.85} is not convex: no fixed point anywhere</p>
+  <figcaption>Drag x. Left of one half the correspondence lies above the diagonal, right of it below, so a fixed point can only sit at one half. Not convex: the value there is the two points 0.15 and 0.85, the graph is closed but the set skips the diagonal. Graph not closed: the value is 0.15 only, so points of the graph converge to (one half, 0.85), which is missing. Kakutani holds: the value is the whole interval from 0.15 to 0.85, convex with a closed graph, and it crosses the diagonal at the fixed point x* = one half.</figcaption>
+</figure>

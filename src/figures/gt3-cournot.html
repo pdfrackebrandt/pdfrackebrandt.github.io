@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="gt3-cournot">
+  <div class="nfig-seg" role="group" aria-label="View">
+    <button type="button" class="nfig-opt" data-mode="br" aria-pressed="true">Best responses, two firms</button>
+    <button type="button" class="nfig-opt" data-mode="n" aria-pressed="false">Price against N</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">unit cost of firm 1, </span>c₁</span><input type="range" min="0" max="8" step="0.1" value="2" data-k="c1"><span class="nfig-val" aria-hidden="true">2.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">unit cost of firm 2, </span>c₂</span><input type="range" min="0" max="8" step="0.1" value="4" data-k="c2"><span class="nfig-val" aria-hidden="true">4.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">number of firms </span>N</span><input type="range" min="1" max="20" step="1" value="2" data-k="n"><span class="nfig-val" aria-hidden="true">2</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 320" role="group" aria-label="Cournot competition with inverse demand 10 minus Q. Best responses: firm 1's best response in red and firm 2's in purple in the quantity plane, the equilibrium in blue, and a dashed path of alternating best replies from a draggable starting point. Price against N: the symmetric equilibrium price against the number of firms for linear and concave demand with common cost 2, and the markup at the chosen N in orange."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">c₁ = 2.0, c₂ = 4.0:  q* = (3.33, 1.33),  Q* = 4.67,  p* = 5.33
+active firms 2: p* − Q*/2 = 3.00 equals their average cost 3.00
+best replies from (0.00, 0.00) reach (3.33, 1.33) after 24 moves</p>
+  <figcaption>Best responses: inverse demand 10 minus Q; move the two unit costs and drag the start of the best reply path. Each best response has slope minus one half, so alternating best replies converge to the crossing. At the equilibrium the price minus Q over N equals the average cost of the active firms; a firm whose cost is too high drops out and the other produces its monopoly quantity. Price against N: common cost 2, linear demand (lower curve) and concave demand 10 minus Q squared over 10 (upper curve). The price starts at the monopoly price for N = 1, stays above cost, and falls towards it as N grows; the orange segment is the markup.</figcaption>
+</figure>
