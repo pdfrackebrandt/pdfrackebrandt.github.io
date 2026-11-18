@@ -1,0 +1,20 @@
+<figure class="nfig" data-nfig="l10-stages">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg nfig-seg4" role="group" aria-label="Regression shown">
+      <button type="button" class="nfig-opt" data-mode="yx" aria-pressed="true">OLS: y on x</button>
+      <button type="button" class="nfig-opt" data-mode="fs" aria-pressed="false">First stage: x on z</button>
+      <button type="button" class="nfig-opt" data-mode="rf" aria-pressed="false">Reduced form: y on z</button>
+      <button type="button" class="nfig-opt" data-mode="ss" aria-pressed="false">Second stage: y on x̂</button>
+    </div>
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">endogeneity ρ = Corr(u, r)</span><input type="range" min="0" max="0.9" step="0.05" value="0.6" data-k="rho"><span class="nfig-val" aria-hidden="true">0.60</span></label>
+    <label class="nfig-range"><span class="nfig-name">first stage θ</span><input type="range" min="0" max="1.2" step="0.05" value="0.8" data-k="pi"><span class="nfig-val" aria-hidden="true">0.80</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 300" role="img" aria-label="Scatter of one sample of 80 observations from y = x beta + u with beta = 1 and x = z theta + r, where the errors u and r have correlation rho and the instrument z is independent of both. The buttons choose the regression on show, each through the origin, and the points slide between the panels. In y on x the solid red least squares line is steeper than the dashed blue population line y = x beta: least squares is inconsistent. In the first stage, x on z, the red line is the fitted value x hat = z theta hat and thin vertical segments mark the residuals r hat. In the reduced form, y on z, the red line has slope gamma hat. In the second stage, y on x hat, every point has moved horizontally from x to x hat and the red line has slope gamma hat divided by theta hat, the two stage least squares estimate, close to the dashed population line."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">OLS y on x  <span class="l10-shat">β</span> = 1.388   first stage <span class="l10-shat">θ</span> = 0.880   reduced form <span class="l10-shat">γ</span> = 0.867
+<span class="l10-shat">γ</span>/<span class="l10-shat">θ</span> = 0.985   second stage <span class="l10-shat">β</span><sub>2SLS</sub> = 0.985, gap 0   true β = 1
+<span class="l10-shat">σ</span>² = 0.98 from y − x<span class="l10-shat">β</span><sub>2SLS</sub> (se 0.131)   not 3.60 from y − x̂<span class="l10-shat">β</span><sub>2SLS</sub> (se 0.252)   true σ² = 1</p>
+  <figcaption>One sample of N = 80 from y = xβ + u with β = 1 and x = zθ + r, where Var(u) = Var(r) = 1, Corr(u, r) = ρ and z ~ N(0, 1) is independent of both, so E[zu] = 0 and E[xu] = ρ. Step through the four regressions, each through the origin: the red line is the fit and the dashed blue line is the population line. Only y on x misses it. The second stage slope is exactly <span class="l10-snb"><span class="l10-shat">γ</span><span class="l10-smark">̂</span>/<span class="l10-shat">θ</span><span class="l10-smark">̂</span></span>, and its own residuals <span class="l10-snb">y − x̂<span class="l10-shat">β</span><span class="l10-smark">̂</span><sub>2SLS</sub></span> overstate σ². Drag θ towards 0 to see a weak instrument.</figcaption>
+</figure>

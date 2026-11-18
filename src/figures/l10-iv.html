@@ -1,0 +1,18 @@
+<figure class="nfig" data-nfig="l10-iv">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-sliders">
+      <label class="nfig-range"><span class="nfig-name">endogeneity ρ</span><input type="range" min="0" max="0.9" step="0.05" value="0.6" data-k="rho"><span class="nfig-val" aria-hidden="true">0.60</span></label>
+      <label class="nfig-range"><span class="nfig-name">first stage θ</span><input type="range" min="0" max="1" step="0.02" value="0.5" data-k="pi"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+      <label class="nfig-range"><span class="nfig-name">sample size N</span><input type="range" min="0" max="6" step="1" value="3" data-k="n"><span class="nfig-val" aria-hidden="true">200</span></label>
+    </div>
+    <button type="button" class="btn nfig-new">New draws</button>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 330" role="img" aria-label="Two histograms on one horizontal axis for the slope estimate, each from 4000 simulated samples of y = β1 + β2 x + u with x = δ + θ z + r and correlation ρ between u and r. Top: the OLS slope, a narrow histogram centred on its probability limit β2 + Cov(x, u) ÷ Var(x), to the right of the true slope 0.5 whenever ρ is positive. Bottom: the 2SLS slope with z as the instrument, centred on the true slope but wider, with the normal density of its asymptotic distribution drawn on top. When θ is near zero the 2SLS histogram spreads out, grows heavy tails and moves towards the OLS limit."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">ρ = 0.60   θ = 0.50   N = 200
+first stage R² 0.200   Nθ² 50.0   median F 50.2
+OLS    plim 0.980   median 0.979   sd 0.054
+2SLS   median 0.503   IQR 0.192   sd 0.150
+2SLS   asymptotic sd 0.141   IQR ÷ 1.349 0.142
+95% interval covers β₂ in 95.5%   off the axis 0.0%</p>
+  <figcaption>Each of 4000 samples draws z, u and r as standard normals with Corr(u, r) = ρ and z independent of both, sets xᵢ = θzᵢ + rᵢ and yᵢ = 1 + 0.5xᵢ + uᵢ, then fits the slope by OLS and by 2SLS with instrument z. Raise N: OLS tightens around the wrong value, 2SLS around β₂ = 0.5 with sd near σ ÷ (θ sd(z) √N) = 1 ÷ (θ√N). Drag θ towards 0 and 2SLS turns erratic and drifts towards the OLS limit. At ρ = 0 both are centred on β₂ and OLS is the tighter one.</figcaption>
+</figure>

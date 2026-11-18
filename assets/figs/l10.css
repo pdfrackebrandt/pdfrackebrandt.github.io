@@ -1,0 +1,47 @@
+/* L10 figures (assets/figs/l10.js). Colours come from the site tokens only, so the light and dark switch is followed. */
+/* the readout keeps the small mono size of notes.css; the note page rule for paragraphs would otherwise enlarge it */
+.notes-body .nfig[data-nfig^="l10-"] p.nfig-read,.nfig[data-nfig^="l10-"] p.nfig-read{font-size:.75rem;line-height:1.5;min-height:9em}
+@container (max-width:520px){.nfig[data-nfig="l10-iv"] p.nfig-read{min-height:12em}}
+
+/* OLS in the red of \kr: its histogram, its median tick and its probability limit */
+.l10-ols{fill:var(--c-key);fill-opacity:.16;stroke:none}
+.l10-ols.nf-sw{stroke:var(--c-key);stroke-width:1}
+.l10-olsline{fill:none;stroke:var(--c-key);stroke-width:1.25;stroke-linejoin:miter}
+.l10-plim{stroke:var(--c-key);stroke-width:1.25;stroke-dasharray:2 3;fill:none}
+.l10-medols{stroke:var(--c-key);stroke-width:3;stroke-linecap:round}
+/* 2SLS in the figure blue (nf-hist, nf-histline of notes.css) */
+.l10-mediv{stroke:var(--fig-blue);stroke-width:3;stroke-linecap:round}
+/* the true slope */
+.l10-true{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:5 3;fill:none}
+
+/* translucent fills read weaker on the dark page */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l10-ols{fill-opacity:.24}
+}
+:root[data-theme="dark"] .l10-ols{fill-opacity:.24}
+
+/* L10 figure l10-stages (two stage least squares on one sample). Colours only through the site tokens, so dark mode follows. */
+
+/* the panel's fitted line in the red of \kr, the population line in the blue of \kb */
+.l10-spt{fill:var(--ink-soft);fill-opacity:.4}
+.l10-sfit{stroke:var(--c-key);stroke-width:2.25;stroke-linecap:round}
+.l10-sref{stroke:var(--c-eq);stroke-width:1.75;stroke-dasharray:6 5}
+/* first stage residuals: on only for the first stage panel */
+.l10-sres{opacity:0}
+.l10-sres.l10-son{opacity:1;transition:opacity .25s}
+.l10-sseg{stroke:var(--c-flag);stroke-width:1;stroke-opacity:.7}
+[data-nfig="l10-stages"] .nfig-read{min-height:4.5em}
+@container (max-width:520px){[data-nfig="l10-stages"] .nfig-read{min-height:6em}}
+[data-nfig="l10-stages"] .l10-snb{white-space:nowrap}
+[data-nfig="l10-stages"] sub{font-size:.75em;line-height:0;vertical-align:-.3em}
+/* β̂, θ̂, γ̂, σ̂: the site font sets a combining circumflex beside a Greek letter, so the hat is drawn here instead.
+   In the caption the combining mark stays in the text (the LaTeX caption reads it) but is not painted. */
+[data-nfig="l10-stages"] .l10-shat{position:relative;display:inline-block}
+[data-nfig="l10-stages"] .l10-shat::after{content:"\02C6";position:absolute;left:0;right:0;top:0;text-align:center;line-height:1;pointer-events:none}
+[data-nfig="l10-stages"] .l10-smark{font-size:0}
+@media (prefers-reduced-motion:reduce){.l10-sres.l10-son{transition:none}}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l10-spt{fill-opacity:.5}
+}
+:root[data-theme="dark"] .l10-spt{fill-opacity:.5}
