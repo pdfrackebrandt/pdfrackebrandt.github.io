@@ -1,0 +1,76 @@
+/* L9 figures (assets/figs/l9.js). Colours only through the site tokens, so dark mode follows.
+   Grey dashes are the truth, the red of \kr is what OLS delivers under endogeneity, purple its probability limit, blue the consistent estimator. */
+.notes-body .nfig[data-nfig^="l9-"] p.nfig-read,.nfig[data-nfig^="l9-"] p.nfig-read{font-size:.75rem;line-height:1.5;min-height:6em}
+@container (max-width:520px){.nfig[data-nfig="l9-atten"] p.nfig-read{min-height:7.5em}.nfig[data-nfig="l9-ovb"] p.nfig-read{min-height:10.5em}}
+[data-nfig="l9-atten"]{--nfig-name:9.4em}
+[data-nfig="l9-ovb"]{--nfig-name:8.2em}
+
+.l9-true{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:4 3;fill:none}
+
+/* attenuation: every point is a zero length stroke with a round cap, so 2000 points are one path */
+.l9-pts{fill:none;stroke:var(--fig-blue);stroke-opacity:.45;stroke-width:3.4;stroke-linecap:round}
+.l9-ghost{fill:none;stroke:var(--muted);stroke-opacity:.38;stroke-width:3.4;stroke-linecap:round}
+.l9-big{stroke-width:4.2}
+.l9-small{stroke-width:2.6}
+.l9-gsw{fill:var(--muted);fill-opacity:.5}
+.l9-plim{stroke:var(--c-label);stroke-width:3.5;stroke-linecap:round;fill:none}
+.l9-ols{stroke:var(--c-key);stroke-width:1.5;stroke-linecap:round;fill:none}
+
+/* omitted variable bias: the short regression in red, the long one in blue */
+.l9-short{fill:var(--c-key);fill-opacity:.2;stroke:none}
+.l9-shortl{fill:none;stroke:var(--c-key);stroke-width:1.25;stroke-linejoin:miter}
+.l9-long{fill:var(--fig-blue);fill-opacity:.18;stroke:none}
+.l9-longl{fill:none;stroke:var(--fig-blue);stroke-width:1.25;stroke-linejoin:miter}
+.l9-short.l9-sws{stroke:var(--c-key);stroke-width:1}
+.l9-long.l9-swl{stroke:var(--fig-blue);stroke-width:1}
+.l9-bias{fill:var(--c-key);fill-opacity:.08;stroke:none}
+.l9-lim{stroke:var(--c-key);stroke-width:1.25;fill:none}
+.l9-arrow{stroke:var(--c-key);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nfig text.l9-tk{fill:var(--c-key)}
+.l9-cell{fill:none;stroke:var(--rule)}
+.l9-cell.l9-on{fill:var(--c-key);fill-opacity:.14;stroke:var(--c-key)}
+.nfig text.l9-ctext{fill:var(--faint)}
+.nfig text.l9-con{fill:var(--ink);font-weight:700}
+
+/* translucent marks read weaker on the dark page */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l9-pts{stroke-opacity:.55}
+  :root:not([data-theme="light"]) .l9-ghost{stroke-opacity:.45}
+  :root:not([data-theme="light"]) .l9-short{fill-opacity:.28}
+  :root:not([data-theme="light"]) .l9-long{fill-opacity:.26}
+  :root:not([data-theme="light"]) .l9-bias{fill-opacity:.13}
+  :root:not([data-theme="light"]) .l9-cell.l9-on{fill-opacity:.22}
+}
+:root[data-theme="dark"] .l9-pts{stroke-opacity:.55}
+:root[data-theme="dark"] .l9-ghost{stroke-opacity:.45}
+:root[data-theme="dark"] .l9-short{fill-opacity:.28}
+:root[data-theme="dark"] .l9-long{fill-opacity:.26}
+:root[data-theme="dark"] .l9-bias{fill-opacity:.13}
+:root[data-theme="dark"] .l9-cell.l9-on{fill-opacity:.22}
+
+/* L9 figure l9-simul (assets/figs/l9b.js). Colours come from the site tokens only, so dark mode follows.
+   Red of \kr is the consumption function, green the income identity, grey the OLS line. */
+.notes-body .nfig[data-nfig="l9-simul"] p.nfig-read,.nfig[data-nfig="l9-simul"] p.nfig-read{font-size:.75rem;line-height:1.5;min-height:7.5em}
+@container (max-width:520px){.nfig[data-nfig="l9-simul"] p.nfig-read{min-height:12em}}
+[data-nfig="l9-simul"]{--nfig-name:9.6em}
+
+/* every equilibrium is a zero length stroke with a round cap, so the cloud is one path */
+.l9s-pts{fill:none;stroke:var(--fig-blue);stroke-opacity:.5;stroke-width:5.5;stroke-linecap:round}
+/* the OLS line is wide and sits under the two structural lines, so it still shows when it coincides with one of them */
+.l9s-ols{stroke:var(--ink-soft);stroke-opacity:.55;stroke-width:4;stroke-linecap:round;fill:none}
+.l9-cf{stroke:var(--c-key);stroke-width:1.75;fill:none}
+.l9-id{stroke:var(--green);stroke-width:1.75;fill:none}
+/* a few shifted curves: the consumption function moved by uᵢ, the identity moved by Iᵢ */
+.l9-sh{stroke-width:1;stroke-dasharray:3 3;fill:none}
+.l9-shc{stroke:var(--c-key);stroke-opacity:.5}
+.l9-shi{stroke:var(--green);stroke-opacity:.5}
+.l9-shk{stroke:var(--muted)}
+.l9-mark{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+
+/* translucent marks read weaker on the dark page */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .l9s-pts{stroke-opacity:.6}
+  :root:not([data-theme="light"]) .l9-shc,:root:not([data-theme="light"]) .l9-shi{stroke-opacity:.62}
+}
+:root[data-theme="dark"] .l9s-pts{stroke-opacity:.6}
+:root[data-theme="dark"] .l9-shc,:root[data-theme="dark"] .l9-shi{stroke-opacity:.62}

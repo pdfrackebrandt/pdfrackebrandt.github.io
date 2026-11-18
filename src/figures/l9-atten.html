@@ -1,0 +1,19 @@
+<figure class="nfig" data-nfig="l9-atten">
+  <div class="fig-controls nfig-bar">
+    <div class="nfig-seg" role="group" aria-label="Points shown">
+      <button type="button" class="nfig-opt" data-ghost="0" aria-pressed="true">Observed x</button>
+      <button type="button" class="nfig-opt" data-ghost="1" aria-pressed="false">Add the true x*</button>
+    </div>
+    <button type="button" class="btn nfig-new">New sample</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">error variance Var(e)</span><input type="range" min="0" max="4" step="0.1" value="1" data-k="se2"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+    <label class="nfig-range"><span class="nfig-name">sample size N</span><input type="range" min="0" max="6" step="1" value="3" data-k="n"><span class="nfig-val" aria-hidden="true">200</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 340" role="img" aria-label="Scatter of one simulated sample of y against the observed regressor x, which is the true regressor x star plus a measurement error e. As the variance of e grows the points smear sideways and the cloud flattens. Three lines pass through it: the dashed grey true line with slope beta 2, a thick purple line with the probability limit slope beta 2 times lambda, and the thin red OLS line fitted to this sample, which stays on the purple line and away from the true line however large N is. An option adds grey points at the true x star."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">λ = Var(x*) ÷ (Var(x*) + Var(e)) = 0.500
+plim β̂₂ = β₂λ = 0.750   true β₂ = 1.5
+this sample, N = 200: β̂₂ = 0.742   β̂₂ − β₂λ = −0.008
+More N pulls β̂₂ to β₂λ = 0.750, not to β₂ = 1.5.</p>
+  <figcaption>y = 1 + 1.5x* + u, but the regressor is recorded with error: x = x* + e, where x* ~ N(0, 1), u ~ N(0, 0.25) and e ~ N(0, Var(e)) are independent. Raise Var(e) and each point moves sideways, so the red OLS line flattens onto the purple line with slope β₂λ. Then raise N: the red line settles on the purple one and never returns to the dashed true line.</figcaption>
+</figure>

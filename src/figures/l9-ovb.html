@@ -1,0 +1,13 @@
+<figure class="nfig" data-nfig="l9-ovb">
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">effect of q, γ</span><input type="range" min="-1.5" max="1.5" step="0.1" value="1" data-k="b3"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+    <label class="nfig-range"><span class="nfig-name">ρ = Corr(x, q)</span><input type="range" min="-0.9" max="0.9" step="0.1" value="0.5" data-k="rho"><span class="nfig-val" aria-hidden="true">0.5</span></label>
+    <label class="nfig-range"><span class="nfig-name">sample size N</span><input type="range" min="0" max="6" step="1" value="2" data-k="n"><span class="nfig-val" aria-hidden="true">100</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 380" role="img" aria-label="Two histograms of the estimated slope on x over 2000 simulated samples. The blue one is the long regression of y on x and q and is centred on the true beta 2 = 1, marked by a dashed line. The red one is the short regression of y on x alone and is centred on beta 2 plus delta times gamma, marked by a red line; the shaded band and the arrow between the two lines are the bias delta gamma. As N grows both histograms narrow, each around its own line. Below, a two by two grid gives the sign of the bias by the signs of gamma and delta and highlights the current case."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">δ = Cov(x, q) ÷ Var(x) = 0.50   bias δγ = +0.50
+short slope →ₚ β₂ + δγ = 1.50   long slope →ₚ β₂ = 1
+2000 samples of N = 100:   short mean 1.504, sd 0.138   long mean 1.000, sd 0.118
+More N tightens the short slope around 1.50, above β₂ = 1. The bias does not shrink.</p>
+  <figcaption>The long model is y = β₁ + β₂x + γq + u with β₂ = 1, where x and q have variance 1 and correlation ρ, so the projection of q on x has slope δ = ρ. Each of 2000 samples fits the short regression of y on x (red) and the long one on x and q (blue). Raise N: the red histogram collapses on β₂ + δγ and the blue one on β₂. Flip the sign of γ or ρ and the bias changes side.</figcaption>
+</figure>
