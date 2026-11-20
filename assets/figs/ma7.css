@@ -31,10 +31,10 @@
 .nfig .ma7-trf{fill:var(--c-ask)}
 .nfig .ma7-trisk{fill:var(--c-flag)}
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .ma7-riskband{fill-opacity:.2}
+  :root:not([data-theme="light"]) .ma7-riskband{fill-opacity:.16}
   :root:not([data-theme="light"]) .ma7-plaus{fill-opacity:.1}
   :root:not([data-theme="light"]) .ma7-rug{fill-opacity:.55}
 }
-:root[data-theme="dark"] .ma7-riskband{fill-opacity:.2}
+:root[data-theme="dark"] .ma7-riskband{fill-opacity:.16}
 :root[data-theme="dark"] .ma7-plaus{fill-opacity:.1}
 :root[data-theme="dark"] .ma7-rug{fill-opacity:.55}
