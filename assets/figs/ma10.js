@@ -172,7 +172,8 @@
       if(!out) return;
       out.textContent='R = θ̄/(2 − N) = '+fmt(s.dep,3)+'   ';
       if(s.raw<=1) add(out,'p̄ = (θ̄ − RN)/(r(1 − N)) = '+fmt(s.pbar,3)+'   Π = p̄/2 = '+fmt(s.avg,3)+'   revenue rΠ = '+fmt(s.rev,3));
-      else warn(out,'p̄ ≥ 1: every banker borrows, Π = 0.5 and rΠ = r/2 = '+fmt(s.rev,3)+' < R, so the fund loses money');
+      else if(s.rev<s.dep-5e-4) warn(out,'p̄ ≥ 1: every banker borrows, Π = 0.5 and rΠ = r/2 = '+fmt(s.rev,3)+' < R, so the fund loses money');
+      else add(out,'p̄ = 1: every banker borrows, Π = 0.5 and rΠ = r/2 = '+fmt(s.rev,3)+' = R');
       add(out,'\nbanker at p = '+fmt(p,2)+': θ = θ̄/p = '+fmt(s.theta,2)+', owes r(1 − N) = '+fmt(s.owe,2)+' on success, ');
       if(s.vraw>=0) add(out,'expects θ̄ − p r(1 − N) = '+fmt(s.v,2)+(s.borrow?' ≥ ':' < ')+'RN = '+fmt(s.out,2)+(s.borrow?': borrows':': deposits'));
       else add(out,'θ < r(1 − N), so limited liability leaves it 0 < RN = '+fmt(s.out,2)+': deposits');
