@@ -18,7 +18,8 @@
   "tools": [
     {"name": "Rikuy", "text": "A LaTeX editor where you type straight onto the typeset page. TeX Live runs inside the browser, so there is nothing to install and no account. It works offline and opens and saves Word files.", "tags": ["Open source"], "status": "Live", "url": "https://rikuy.rackebrandt.pe/",
       "source": "https://github.com/pdfrackebrandt/rikuy", "agents": "https://rikuy.rackebrandt.pe/llms.txt", "path": "rikuy", "icon": "/assets/tools/rikuy.png"},
-    {"name": "Frontier", "text": "A research agent that works overnight and shows, as a map, how ideas in frontier research connect.", "tags": [], "status": "Coming soon", "icon": "/assets/tools/frontier.png"}
+    {"name": "Frontier", "text": "A research agent that works overnight and shows, as a map, how ideas in frontier research connect.", "tags": [], "status": "Coming soon", "icon": "/assets/tools/frontier.png"},
+    {"name": "Yachaywasi", "text": "Papers get checked before they get judged. Yachaywasi reruns the replication code and matches every number with the paper, tries to prove the main results in Lean, and has open models read a blinded copy.", "tags": [], "status": "Coming soon"}
   ],
   "list_collapsed": 10
 }
