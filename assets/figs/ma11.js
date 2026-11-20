@@ -448,8 +448,8 @@
     onClick(fig,'.nfig-reset',function(){ if(rm) rm.set(0.1); if(rn) rn.set(1); });
     /* N* = first best net worth: with B = 0 and R = r^k the Euler equation holds at c1 = TOT - N, c2 = r^k N */
     NSTAR=TOT*BETA/(1+BETA);
-    function at(N){ var o={sig:SIG0, alpha:1, beta:BETA, N:N, y:TOT-N, gam:false}, e=eqm(mu,o); e.loss=ceLoss(e.W,firstBest(o),o); e.N=N; return e; }
-    function solve(){ var i, N; path=[]; for(i=0;i<=60;i++){ N=NL+(NH-NL)*i/60; path.push(at(N)); } }
+    function eqAt(N){ var o={sig:SIG0, alpha:1, beta:BETA, N:N, y:TOT-N, gam:false}, e=eqm(mu,o); e.loss=ceLoss(e.W,firstBest(o),o); e.N=N; return e; }
+    function solve(){ var i, N; path=[]; for(i=0;i<=60;i++){ N=NL+(NH-NL)*i/60; path.push(eqAt(N)); } }
     function draw(){
       var lay, i, sp, vals, P, xt=[0.6,1,1.4,1.8,2.2];
       W=measure(svg); lay=grid(W,4); H=lay.H+8; frame(svg,W,H); Ps=[];
@@ -467,7 +467,7 @@
       mark();
     }
     function mark(){
-      var e=at(Ns), i, P, v;
+      var e=eqAt(Ns), i, P, v;
       for(i=0;i<4;i++){ P=Ps[i]; v=specs[i].f(e); P.mk.setAttribute('x1',C(P.sx(Ns))); P.mk.setAttribute('x2',C(P.sx(Ns))); at(P.dot,P.sx(Ns),P.sy(v)); }
       cur={mu:mu, n:Ns, y:TOT-Ns, r:e.R, spread:100*e.spread, wbar:e.w, f:100*e.F, lev:e.L, b:e.B, c1:e.c1, c2:e.c2, wloss:100*e.loss, nstar:NSTAR, corner:e.corner};
       if(api) api.changed();
