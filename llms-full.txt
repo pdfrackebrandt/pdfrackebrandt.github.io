@@ -4,7 +4,7 @@
 
 ## When regimes cycle
 
-Pedro F. Rackebrandt, 2026. Working paper. Topic: Regimes. Tags: Nonlinear dynamics, Political economy, V-Dem. Page: https://rackebrandt.pe/papers/when-regimes-cycle/
+Pedro F. Rackebrandt, 2026. Article. Topic: Regimes. Tags: Nonlinear dynamics, Political economy, V-Dem. Page: https://rackebrandt.pe/papers/when-regimes-cycle/
 
 Many countries swing between democracy and autocracy for decades. Why? I model two forces chasing each other. Young people organise against the rulers, who open up institutions to absorb them because that pays. Absorbing them drains the protest, so openness stops paying and the rulers close again. Then a new generation comes of age and the loop starts over; a cycle.
 
@@ -22,7 +22,7 @@ All three are statistically significant in V-Dem data on nearly every country fr
 
 ## How many tests was it really?
 
-Pedro F. Rackebrandt, Sebastian Winzker, 2026. Working paper. Topic: Finance. Tags: Deflated Sharpe, Quantitative Finance. Page: https://rackebrandt.pe/papers/how-many-tests/
+Pedro F. Rackebrandt, Sebastian Winzker, 2026. Article. Topic: Finance. Tags: Deflated Sharpe, Quantitative Finance. Page: https://rackebrandt.pe/papers/how-many-tests/
 
 Why does this matter? When you test thousands of trading rules, the best one will look good by chance. Cluster corrections that group similar rules can make noise look significant by undercounting the tests. A block bootstrap on the real grid keeps the correlations and shows the safer hurdle is the full nominal count.
 
@@ -30,7 +30,7 @@ We resample the 2,825 moving average rules together. On the DAX the effective in
 
 ## Reversed by our own replication
 
-Pedro F. Rackebrandt, 2026. Working paper. Topic: AI. Tags: Verification, Multi model. Page: https://rackebrandt.pe/papers/reversed-by-replication/
+Pedro F. Rackebrandt, 2026. Article. Topic: AI. Tags: Verification, Multi model. Page: https://rackebrandt.pe/papers/reversed-by-replication/
 
 Why does this matter? An automated auditor that checks research extractions is right only about a third of the time, yet a wrong extraction can still return a theorem. We registered three signals in advance that might catch the error, then tested them once on frontier models. Two reversed. Cross model disagreement is the one that held.
 

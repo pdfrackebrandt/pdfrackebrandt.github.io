@@ -102,8 +102,10 @@ def bibtex(p):
     first = re.sub(r'[^a-z]', '', p['title'].split()[0].lower()) or 'paper'
     key = 'rackebrandt%s%s' % (p['year'], first)
     authors = ' and '.join(last_first(a) for a in author_list(p))
+    # the label on the site is "Article"; for a citation the paper is still an unpublished manuscript
+    note = 'Working paper' if p['status'] == 'Article' else p['status']
     return ('@unpublished{%s,\n  title  = {%s},\n  author = {%s},\n  year   = {%s},\n  note   = {%s},\n  url    = {%s}\n}'
-            % (key, p['title'], authors, p['year'], p['status'], BASE + url_of(p)))
+            % (key, p['title'], authors, p['year'], note, BASE + url_of(p)))
 
 
 def tags_html(p):
@@ -837,7 +839,7 @@ def build_paper(p):
     bib_id = 'bib-' + p['slug']
     article = """<article class="paper-page">
     <header class="paper-header">
-      <p class="eyebrow">{status} &middot; {year}</p>
+      <p class="eyebrow status">{status} &middot; {year}</p>
       <h1>{title}</h1>
       <p class="authors">{who}</p>
       <p class="lede">{lede}</p>
