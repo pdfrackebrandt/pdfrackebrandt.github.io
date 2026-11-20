@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="ma12-run">
+  <div class="nfig-seg" role="group" aria-label="Banking arrangement">
+    <button type="button" class="nfig-opt" data-mode="bank" aria-pressed="true">Deposit contract</button>
+    <button type="button" class="nfig-opt" data-mode="suspend" aria-pressed="false">Suspension</button>
+    <button type="button" class="nfig-opt" data-mode="insure" aria-pressed="false">Deposit insurance</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">share impatient </span>t</span><input type="range" min="0.1" max="0.6" step="0.01" value="0.25" data-k="t"><span class="nfig-val" aria-hidden="true">0.25</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">long run return </span>R</span><input type="range" min="1.1" max="2.5" step="0.05" value="1.5" data-k="R"><span class="nfig-val" aria-hidden="true">1.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">relative risk aversion </span>γ</span><input type="range" min="1.1" max="6" step="0.05" value="2" data-k="gamma"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 330" role="group" aria-label="Payoff to one patient depositor against the fraction f of depositors who withdraw early. Green: waiting until period 2. Red: withdrawing in period 1. Under the deposit contract the green curve falls and crosses the flat red line at the purple tipping point f hat; past it everyone runs. The strip at the top shows where the patients' best response pushes f, with the equilibria marked. Drag the point to choose f; the buttons switch to suspension of convertibility and to deposit insurance."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">f = 0.25   wait: r₂(f) = 1.410   withdraw: c₁* = 1.181   best response: wait
+c₁* = 1.181, c₂* = 1.410   tipping point f̂ = 0.541   the bank is empty at T = 1 once f ≥ 1/c₁* = 0.847   equilibria: f = t and f = 1</p>
+  <figcaption>ρ = 0.95, the bank pays r₁ = c₁*. Drag the point to set f, the fraction that withdraws early (at least t, the impatient). Left of f̂ waiting pays more, so f falls back to t; right of f̂ withdrawing pays more, so everyone runs. Switch to suspension or to deposit insurance and the run equilibrium disappears.</figcaption>
+</figure>

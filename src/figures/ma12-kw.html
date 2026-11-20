@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="ma12-kw">
+  <div class="nfig-seg" role="group" aria-label="Deposit insurance">
+    <button type="button" class="nfig-opt" data-ins="0" aria-pressed="true">No insurance</button>
+    <button type="button" class="nfig-opt" data-ins="1" aria-pressed="false">Deposit insurance</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">bliss point </span>c̄</span><input type="range" min="1.06" max="1.3" step="0.01" value="1.16" data-k="cbar"><span class="nfig-val" aria-hidden="true">1.16</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">risky asset spread </span>ε</span><input type="range" min="0.045" max="0.15" step="0.005" value="0.08" data-k="eps"><span class="nfig-val" aria-hidden="true">0.080</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 290" role="group" aria-label="Kareken Wallace portfolio choice with R = 1.02 and theta = 1.06. Left: expected utility against the risky share mu, teal without insurance with an interior peak, orange with insurance rising to its peak. Right: consumption in the two states against mu: the good state rises; the bad state falls in teal without insurance but stays flat at R in orange with insurance; the dashed line is the bliss point c bar. Drag the point to choose mu."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">μ = 0.20, no insurance   c_L = 1.012, c_H = 1.044   E u × 100 = −1.86
+best μ without insurance 0.700, with insurance μ′ = 1.000   expected bailout at μ′: ½μ′(ε − (θ − R)) = 0.020</p>
+  <figcaption>R = 1.02, θ = 1.06. Drag the point along the curve of the chosen regime, or switch regimes. Without insurance the bad state pulls the teal curve down, so the household stops at an interior μ. With insurance the bad state pays R whatever μ, the orange curve keeps rising and the household goes all in. The insurer pays the difference in the bad state.</figcaption>
+</figure>

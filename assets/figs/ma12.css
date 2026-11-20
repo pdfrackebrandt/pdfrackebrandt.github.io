@@ -1,0 +1,61 @@
+/* Core Macroeconomics L12 figures, drawn by /assets/figs/ma12.js. Colours come from the site tokens, so dark mode follows.
+   Colour links with the note: red (--c-key) is c1*, the early withdrawal payoff; green (--c-ask) is c2* and r2(f), the
+   payoff from waiting; purple (--c-label) the tipping point f hat; orange (--c-flag) what insurance does (tau, mu');
+   teal (--c-teal) the uninsured risky share mu. */
+.nfig .ma12-it{font-style:italic}
+.nfig .ma12-te{fill:var(--c-key)}
+.nfig .ma12-tw{fill:var(--c-ask)}
+.nfig .ma12-tf{fill:var(--c-label);font-style:italic}
+.nfig .ma12-to{fill:var(--c-flag)}
+.nfig .ma12-tt{fill:var(--c-teal)}
+.nfig .ma12-tic{fill:var(--fig-blue)}
+.nfig .ma12-tdep{fill:var(--fig-blue)}
+/* the optimum */
+.ma12-res{fill:none;stroke:var(--ink-soft);stroke-width:1.75;stroke-linecap:round}
+.ma12-ic{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.ma12-ic0{fill:none;stroke:var(--faint);stroke-width:1.25;stroke-dasharray:5 4}
+.ma12-diag{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3}
+.ma12-g1{stroke:var(--c-key);stroke-width:1;stroke-dasharray:2 3}
+.ma12-g2{stroke:var(--c-ask);stroke-width:1;stroke-dasharray:2 3}
+.ma12-aut{fill:var(--paper);stroke:var(--ink-soft);stroke-width:1.5}
+.ma12-opt{fill:var(--ink);stroke:var(--paper);stroke-width:1.5}
+.nf-knob.ma12-kres{stroke:var(--ink-soft)}
+/* the run game: wait green, withdraw red, the tipping point purple */
+.ma12-wait{fill:none;stroke:var(--c-ask);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.ma12-early{fill:none;stroke:var(--c-key);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.ma12-dwait{fill:var(--c-ask);stroke:var(--paper);stroke-width:1.5}
+.ma12-dearly{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
+.ma12-owait{fill:var(--paper);stroke:var(--c-ask);stroke-width:1.5}
+.ma12-oearly{fill:var(--paper);stroke:var(--c-key);stroke-width:1.5}
+.ma12-fh{stroke:var(--c-label);stroke-width:1.5;stroke-dasharray:5 4}
+.ma12-imp{fill:var(--rule-soft);stroke:none}
+.ma12-trk{stroke:var(--rule);stroke-width:1}
+.ma12-chl,.ma12-chr{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ma12-chr{stroke:var(--c-key)}
+.ma12-eqd{fill:var(--ink);stroke:var(--paper);stroke-width:1.5}
+.ma12-unst{fill:var(--paper);stroke:var(--c-label);stroke-width:1.5}
+.nf-knob.ma12-kwait{stroke:var(--c-ask)}
+/* ex ante */
+.ma12-dep{fill:none;stroke:var(--fig-blue);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.ma12-gainarea{fill:var(--fig-blue);fill-opacity:.12;stroke:none}
+.ma12-pb{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:5 4}
+/* Kareken Wallace: uninsured teal, insured orange */
+.ma12-nins{fill:none;stroke:var(--c-teal);stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round}
+.ma12-ins{fill:none;stroke:var(--c-flag);stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round}
+.ma12-dim{stroke-opacity:.35;stroke-width:1.75}
+.ma12-ch{fill:none;stroke:var(--ink-soft);stroke-width:1.75;stroke-linecap:round}
+.ma12-bliss{stroke:var(--muted);stroke-width:1.25;stroke-dasharray:6 4}
+.ma12-bail{stroke:var(--c-flag);stroke-width:3;stroke-opacity:.45}
+.ma12-dnins{fill:var(--c-teal);stroke:var(--paper);stroke-width:1.5}
+.ma12-dins{fill:var(--c-flag);stroke:var(--paper);stroke-width:1.5}
+.ma12-dch{fill:var(--ink-soft);stroke:var(--paper);stroke-width:1.5}
+.nf-knob.ma12-knins{stroke:var(--c-teal)}
+.nf-knob.ma12-kins{stroke:var(--c-flag)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ma12-gainarea{fill-opacity:.2}
+  :root:not([data-theme="light"]) .ma12-dim{stroke-opacity:.5}
+  :root:not([data-theme="light"]) .ma12-bail{stroke-opacity:.65}
+}
+:root[data-theme="dark"] .ma12-gainarea{fill-opacity:.2}
+:root[data-theme="dark"] .ma12-dim{stroke-opacity:.5}
+:root[data-theme="dark"] .ma12-bail{stroke-opacity:.65}

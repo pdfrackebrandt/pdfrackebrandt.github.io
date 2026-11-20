@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="ma12-optimum">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+    <button type="button" class="btn ma12-go">Jump to the optimum</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">share impatient </span>t</span><input type="range" min="0.1" max="0.6" step="0.01" value="0.25" data-k="t"><span class="nfig-val" aria-hidden="true">0.25</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">long run return </span>R</span><input type="range" min="1.1" max="2.5" step="0.05" value="1.5" data-k="R"><span class="nfig-val" aria-hidden="true">1.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">patient discount factor </span>ρ</span><input type="range" min="0.6" max="1" step="0.01" value="0.95" data-k="rho"><span class="nfig-val" aria-hidden="true">0.95</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">relative risk aversion </span>γ</span><input type="range" min="0.5" max="6" step="0.05" value="2" data-k="gamma"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 340" role="group" aria-label="Diamond Dybvig allocations: impatient consumption c1 across, patient consumption c2 up. The dark straight line is the resource constraint, one minus t times c2 equals R times one minus t c1; it passes through autarky at the point 1, R, drawn as an open circle. The blue curve is the indifference curve through the planner's optimum, tangent to the line; the dashed diagonal is c2 equal to c1. A draggable point moves along the resource line, with the faint indifference curve through it."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">chosen c₁ = 1.000, c₂ = 1.500: autarky   u′(c₁) = 1.000 against ρR u′(c₂) = 0.633: give the impatient more
+optimum c₁* = 1.181, c₂* = 1.410, c₂*/c₁* = (ρR)^(1/γ) = 1.194   worth +1.09% of consumption over autarky</p>
+  <figcaption>Drag the point along the resource line, starting from autarky (1, R). The planner moves along the line until the indifference curve just touches it: there u′(c₁) = ρR u′(c₂), so 1 &lt; c₁* &lt; c₂* &lt; R. Move γ and ρ to see when the optimum sits above the diagonal c₂ = c₁, which is what lets a bank implement it.</figcaption>
+</figure>
