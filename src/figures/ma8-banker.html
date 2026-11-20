@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="ma8-banker">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+    <button type="button" class="btn ma8-tog" aria-pressed="false">Relax the condition by 0.05</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">banker net worth </span>N</span><input type="range" min="0" max="0.3" step="0.01" value="0.1" data-k="N"><span class="nfig-val" aria-hidden="true">0.10</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">deposit rate </span>R</span><input type="range" min="0.7" max="1.15" step="0.01" value="0.97" data-k="R"><span class="nfig-val" aria-hidden="true">0.97</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 340" role="img" aria-label="Deposits d across, the banker's period 2 payoff up. The dark line is his profit if he repays, R k N plus the spread times d. The red line is what he gets by defaulting, theta R k times N plus d, which rises faster. They cross at the cap d bar; the shaded band left of it is where depositors accept. The dot marks the banker's choice. With the relax button on, a dashed red line shows the default payoff lowered by 0.05, the cap moves right, and a teal bracket shows the extra profit, lambda times 0.05."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">repay line slope Rᵏ − R = 0.130, default line slope θRᵏ = 0.330
+cap d̄ = 0.385: the banker goes to the corner, the condition binds
+λ = 0.650</p>
+  <figcaption>The banker's choice at a given deposit rate R (Rᵏ = 1.1, θ = 0.3). Each deposit adds the spread Rᵏ − R to repaying but θRᵏ to defaulting, so past d̄ he would run and depositors refuse. Move R to Rᵏ to make the condition slack, move N to shift both lines, and relax the condition to see what λ measures.</figcaption>
+</figure>

@@ -1,0 +1,72 @@
+/* Core Macroeconomics L8 figures, drawn by /assets/figs/ma8.js. Colours come from the site tokens, so dark mode follows.
+   Colour links with the note: red (--c-key) is default and the no default cap, purple (--c-label) the banker's own funds
+   that depositors seize, green (--c-ask) the household side (deposit supply, d*), orange (--c-flag) the spread,
+   teal (--c-teal) the multiplier lambda; blue (--fig-blue) is the deposit rate R, deposits and the depositors' share. */
+.nfig .ma8-it{font-style:italic}
+.nfig .ma8-pick{font-weight:700}
+/* the period 2 pie */
+.ma8-dep{fill:var(--fig-blue);fill-opacity:.32;stroke:var(--fig-blue);stroke-width:1}
+.ma8-keep{fill:var(--ink-soft);fill-opacity:.12;stroke:var(--ink-soft);stroke-opacity:.55;stroke-width:1}
+.ma8-run{fill:var(--c-key);fill-opacity:.26;stroke:var(--c-key);stroke-width:1}
+.ma8-own{fill:var(--c-label);fill-opacity:.3;stroke:var(--c-label);stroke-width:1}
+.ma8-seize{stroke:var(--c-key);stroke-width:1.75;stroke-dasharray:6 4}
+.ma8-brk{fill:none;stroke:var(--c-label);stroke-width:1.5}
+.nfig .ma8-town{fill:var(--c-label)}
+.nfig .ma8-tdef{fill:var(--c-key)}
+.nfig .ma8-tsup{fill:var(--c-ask)}
+.nfig .ma8-tspr{fill:var(--c-flag)}
+.nfig .ma8-tlam{fill:var(--c-teal)}
+/* the banker's problem */
+.ma8-band{fill:var(--c-ask);fill-opacity:.08;stroke:none}
+.ma8-rep{stroke:var(--ink-soft);stroke-width:2;stroke-linecap:round}
+.ma8-def{stroke:var(--c-key);stroke-width:2;stroke-linecap:round}
+.ma8-relax{stroke-width:1.5;stroke-dasharray:6 4;stroke-opacity:.8}
+.ma8-opt{stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-opacity:.35}
+.ma8-lamb{fill:none;stroke:var(--c-teal);stroke-width:2}
+.ma8-guide{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3;fill:none}
+.ma8-arr{stroke:var(--muted);stroke-width:1.5;stroke-linecap:round}
+.ma8-arrh{fill:var(--muted);stroke:none}
+/* the deposit market */
+.ma8-sup{fill:none;stroke:var(--c-ask);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.ma8-dem{fill:none;stroke:var(--fig-blue);stroke-width:2.75;stroke-linejoin:round;stroke-linecap:round}
+.ma8-cap{fill:none;stroke:var(--c-key);stroke-width:1.5;stroke-dasharray:5 4}
+.ma8-capreg{fill:var(--c-key);fill-opacity:.06;stroke:none}
+.ma8-rk{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:6 4}
+.ma8-floor{stroke:var(--faint);stroke-width:1;stroke-dasharray:3 3}
+.ma8-spr{fill:none;stroke:var(--c-flag);stroke-width:2}
+.ma8-eq{fill:var(--ink);stroke:var(--paper);stroke-width:1.5}
+.ma8-open{fill:var(--paper);stroke:var(--c-ask);stroke-width:1.75}
+.ma8-openl{fill:var(--paper);stroke:var(--c-teal);stroke-width:1.75}
+.ma8-trial{stroke:var(--ink-soft);stroke-width:1.25;stroke-dasharray:2 3}
+.ma8-dseg{stroke:var(--fig-blue);stroke-width:5;stroke-linecap:round;stroke-opacity:.35}
+.ma8-darr{stroke:var(--fig-blue);stroke-width:2;stroke-linecap:round}
+.ma8-darrh{fill:var(--fig-blue);stroke:none}
+.ma8-psup{fill:var(--c-ask);stroke:var(--paper);stroke-width:1.5}
+.ma8-pdem{fill:var(--fig-blue);stroke:var(--paper);stroke-width:1.5}
+.nf-knob.ma8-knob{stroke:var(--ink-soft)}
+.nfig-bar .ma8-tog[aria-pressed="true"]{border-color:var(--c-teal);color:var(--c-teal)}
+/* equilibrium against N */
+.ma8-r{fill:none;stroke:var(--fig-blue);stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round}
+.ma8-dstar{fill:none;stroke:var(--c-ask);stroke-width:1.75;stroke-dasharray:6 4}
+.ma8-sprarea{fill:var(--c-flag);fill-opacity:.2;stroke:none}
+.ma8-lam{fill:none;stroke:var(--c-teal);stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round}
+.ma8-eqlam{fill:var(--c-teal);stroke:var(--paper);stroke-width:1.5}
+.ma8-nbar{stroke:var(--faint);stroke-width:1;stroke-dasharray:2 3}
+.ma8-cursor{stroke:var(--c-label);stroke-width:1.25;stroke-opacity:.7}
+/* translucent fills read weaker on the dark page, so they get a little more weight there */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ma8-dep{fill-opacity:.42}
+  :root:not([data-theme="light"]) .ma8-keep{fill-opacity:.18}
+  :root:not([data-theme="light"]) .ma8-run{fill-opacity:.34}
+  :root:not([data-theme="light"]) .ma8-own{fill-opacity:.4}
+  :root:not([data-theme="light"]) .ma8-band{fill-opacity:.12}
+  :root:not([data-theme="light"]) .ma8-capreg{fill-opacity:.1}
+  :root:not([data-theme="light"]) .ma8-sprarea{fill-opacity:.28}
+}
+:root[data-theme="dark"] .ma8-dep{fill-opacity:.42}
+:root[data-theme="dark"] .ma8-keep{fill-opacity:.18}
+:root[data-theme="dark"] .ma8-run{fill-opacity:.34}
+:root[data-theme="dark"] .ma8-own{fill-opacity:.4}
+:root[data-theme="dark"] .ma8-band{fill-opacity:.12}
+:root[data-theme="dark"] .ma8-capreg{fill-opacity:.1}
+:root[data-theme="dark"] .ma8-sprarea{fill-opacity:.28}

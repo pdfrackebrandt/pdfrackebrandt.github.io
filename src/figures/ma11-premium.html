@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="ma11-premium">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name">leverage L</span><input type="range" min="1" max="5" step="0.01" value="2" data-k="lev"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">monitoring cost </span>μ</span><input type="range" min="0" max="0.5" step="0.01" value="0.1" data-k="mu"><span class="nfig-val" aria-hidden="true">0.10</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">dispersion of log productivity </span>σ</span><input type="range" min="0.2" max="0.6" step="0.01" value="0.37" data-k="sigma"><span class="nfig-val" aria-hidden="true">0.37</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag" viewBox="0 0 520 600" role="group" aria-label="Two panels. Left: the banker's expected payoff L times one minus Gamma, in units of the return on its own net worth, against the cutoff omega bar, at the premium that makes the chosen leverage optimal; leverage comes from the mutual funds' zero profit condition. The dashed line at 1 is the payoff with no loan, and the red dot marks the top of the hump, the optimal cutoff. Right: the external finance premium, the return on capital over the deposit rate minus 1 in percent, against leverage L. The green curve s of L rises from zero at L equal to 1; the dashed curve is the baseline mu = 0.1 and sigma = 0.37; the open circle is the equilibrium with the households. Drag along the green curve or use the leverage slider."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">L = 2.00 needs the premium rᵏ/R = 1.0155 (+1.55%): ω̄ = 0.498, default F(ω̄) = 4.5%, loan rate Z = 1.034
+banker’s payoff L(1 − Γ) = 1.0116   equilibrium with the households (N = 1, y = 3.11): L = 2.010, premium 1.58%</p>
+  <figcaption>The optimal contract as a supply curve of funds. Pick a leverage on the right: the figure finds the premium at which the banker chooses exactly that leverage, and the left panel shows why, as the top of the banker's payoff hump at that premium. Raise μ and the curve steepens: each unit of leverage costs more. Set μ to 0 and the curve is flat at zero premium.</figcaption>
+</figure>

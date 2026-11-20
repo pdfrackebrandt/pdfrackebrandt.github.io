@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="ma10-revenue">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">gross </span>loan rate r</span><input type="range" min="1" max="6" step="0.05" value="3" data-k="r"><span class="nfig-val" aria-hidden="true">3.00</span></label>
+    <label class="nfig-range"><span class="nfig-name">deposit rate R</span><input type="range" min="0.5" max="1.5" step="0.01" value="0.8" data-k="dep"><span class="nfig-val" aria-hidden="true">0.80</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">banker </span>net worth N</span><input type="range" min="0.05" max="0.9" step="0.05" value="0.5" data-k="n"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 520" role="group" aria-label="Left: per unit lent against the loan rate r. The red dashed curve is Pi of r, the average success probability of borrowers, flat at one half while every banker borrows and then falling like one over r. The purple curve is revenue r times Pi of r: it rises while every banker borrows and is flat after that. The grey line is the cost R, and the faint purple dashed line is what revenue would be if the pool of borrowers stayed as it is at the chosen r. Right: the flat revenue level, theta bar minus R N over 2 times 1 minus N, falls with the deposit rate R while the cost R rises; they cross at R star equal to theta bar over 2 minus N."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">at r = 3.00: p̄ = 0.733, Π = 0.367, revenue rΠ = 1.100, cost R = 0.80: profit 0.300 per unit lent
+p̄ &lt; 1, so rΠ = (θ̄ − RN)/(2(1 − N)) = 1.100 for every r ≥ r₁ = 2.20
+zero profit with p̄ &lt; 1: R* = θ̄/(2 − N) = 1.000; at R = 0.80 revenue beats cost, so funds bid for deposits and R rises</p>
+  <figcaption>One mutual fund lending to every banker who wants to borrow (θ̄ = 1.5). Left: move r and compare the purple revenue with the dashed line that keeps today's pool; adverse selection eats exactly the extra revenue. Right: since revenue does not depend on r, zero profit is one equation in R alone. Move R and N to see where it holds.</figcaption>
+</figure>

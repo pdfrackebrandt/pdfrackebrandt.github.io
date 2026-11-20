@@ -1,0 +1,18 @@
+<figure class="nfig" data-nfig="ma11-mu">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+    <div class="nfig-seg" role="group" aria-label="How the monitoring loss is charged in the resource constraint">
+      <button type="button" class="nfig-opt" data-loss="g" aria-pressed="true">loss μG, the model</button>
+      <button type="button" class="nfig-opt" data-loss="gam" aria-pressed="false">loss μΓ, overstated</button>
+    </div>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">monitoring cost </span>μ</span><input type="range" min="0.02" max="0.5" step="0.01" value="0.1" data-k="mu"><span class="nfig-val" aria-hidden="true">0.10</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">relative risk aversion </span>α</span><input type="range" min="0.5" max="15" step="0.5" value="1" data-k="alpha"><span class="nfig-val" aria-hidden="true">1.0</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">dispersion of log productivity </span>σ</span><input type="range" min="0.2" max="0.8" step="0.01" value="0.37" data-k="sigma"><span class="nfig-val" aria-hidden="true">0.37</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag" viewBox="0 0 520 440" role="group" aria-label="Four small panels against the monitoring cost mu from 0 to 0.5, each the equilibrium of the two period model solved in the browser: the spread between the return on capital and the deposit rate in percentage points, the cutoff omega bar, leverage L, and the welfare loss in percent of consumption relative to mu = 0. A dotted vertical line and a dot mark the chosen mu. Click in a panel or use the slider to choose mu."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">μ = 0.10: R = 1.0238, spread 1.62 pp   ω̄ = 0.500 (4.5% default)   L = 2.010, B = 1.010
+c₁ = 2.100, c₂ = 2.086   monitoring burns 0.20% of output   welfare loss 0.071%</p>
+  <figcaption>The five equilibrium equations solved for each μ with σ = 0.37, y = 3.11, N = 1, β = 0.97 and the return on capital 1.04. The spread and the welfare loss rise with μ whatever the parameters. The cutoff falls. Leverage is a horse race between the dearer contract at a given deposit rate and the fall in the deposit rate: the last line of the readout splits its slope into the two. Raise α to make households save more when monitoring destroys output, and watch the leverage panel tilt.</figcaption>
+</figure>

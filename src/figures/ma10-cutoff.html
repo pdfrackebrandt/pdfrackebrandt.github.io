@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="ma10-cutoff">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+    <button type="button" class="btn ma10-toeq">Go to the equilibrium r</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">gross </span>loan rate r</span><input type="range" min="1" max="6" step="0.01" value="3" data-k="r"><span class="nfig-val" aria-hidden="true">3.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">banker </span>net worth N</span><input type="range" min="0.05" max="0.9" step="0.05" value="0.5" data-k="n"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 380" role="group" aria-label="Expected payoff of a banker against the success probability p of its project. The dotted line at theta bar is expected output, the same for every project. The blue line is the payoff from investing, theta bar minus p r times 1 minus N, floored at zero by limited liability; the dashed line is the payoff RN from depositing. They cross at the red cutoff p bar: bankers to its left, shaded red, borrow. A red triangle marks Pi, their average p. A draggable blue point probes one banker, and the orange bar above it is what that banker repays in expectation."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">R = θ̄/(2 − N) = 1.000   p̄ = (θ̄ − RN)/(r(1 − N)) = 0.667   Π = p̄/2 = 0.333   revenue rΠ = 1.000
+banker at p = 0.20: θ = θ̄/p = 7.50, owes r(1 − N) = 1.50 on success, expects θ̄ − p r(1 − N) = 1.20 ≥ RN = 0.50: borrows
+equilibrium loan rate at this N: r = 3.39 (β = 0.95, γ = 2, y = e = 1)</p>
+  <figcaption>Every project has expected output θ̄ = 1.5; the deposit rate is held at its equilibrium value R = θ̄/(2 − N). Drag the blue point to probe one banker: the orange bar is its expected repayment, which grows with p because it repays only on success. Raise r and the red region shrinks from the right: the safest borrowers leave first, Π falls, and revenue rΠ does not move.</figcaption>
+</figure>

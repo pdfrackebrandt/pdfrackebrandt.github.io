@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="ma8-split">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">banker net worth </span>N</span><input type="range" min="0" max="0.3" step="0.01" value="0.05" data-k="N"><span class="nfig-val" aria-hidden="true">0.05</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">deposits </span>d</span><input type="range" min="0" max="0.6" step="0.01" value="0.4" data-k="d"><span class="nfig-val" aria-hidden="true">0.40</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">deposit rate </span>R</span><input type="range" min="0.7" max="1.1" step="0.01" value="1" data-k="R"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 380" role="img" aria-label="Two stacked bars of the same height, the period 2 return on the bank's assets R k times N plus d. Left bar, the banker repays: depositors get R d at the bottom in blue, the banker keeps the profit pi on top in grey, and a purple bracket marks R k N, the return on his own funds. Right bar, the banker defaults: depositors seize one minus theta of the return on deposits in blue and one minus theta of the return on his own funds in purple, and the banker runs with theta R k times N plus d on top in red. A dashed red line across both bars marks what depositors can seize; the banker repays when R d lies below it."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">assets Rᵏ(N + d) = 0.495 = c₂ whatever R is: R only splits it
+repay: banker keeps π = 0.095   default: he runs with θRᵏ(N + d) = 0.149</p>
+  <figcaption>The period 2 pie, Rᵏ = 1.1 and θ = 0.3. If the banker repays, depositors are paid Rd first and he keeps the rest; both parts reach households, so c₂ is the whole bar. If he defaults he runs with the red share θ of everything and depositors seize the rest, including the purple part bought with his own funds. He repays when Rd sits below the dashed line.</figcaption>
+</figure>

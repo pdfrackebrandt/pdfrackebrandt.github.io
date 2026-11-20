@@ -1,0 +1,16 @@
+<figure class="nfig" data-nfig="ma7-yield">
+  <div class="nfig-seg" role="group" aria-label="Vertical scale">
+    <button type="button" class="nfig-opt" data-view="slope" aria-pressed="true">Zoom on the slope</button>
+    <button type="button" class="nfig-opt" data-view="level" aria-pressed="false">Level against the data</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">discount factor </span>β</span><input type="range" min="0.95" max="1.05" step="0.005" value="0.97" data-k="beta"><span class="nfig-val" aria-hidden="true">0.970</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">relative risk aversion </span>σ</span><input type="range" min="0.25" max="6" step="0.25" value="2" data-k="sigma"><span class="nfig-val" aria-hidden="true">2.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">autocorrelation of consumption growth </span>ρ</span><input type="range" min="-0.5" max="0.8" step="0.05" value="0.3" data-k="rho"><span class="nfig-val" aria-hidden="true">0.30</span></label>
+    <label class="nfig-range"><span class="nfig-name">news x, %<span class="vh">, expected growth next year above trend</span></span><input type="range" min="-3" max="3" step="0.25" value="0" data-k="news"><span class="nfig-val" aria-hidden="true">0.00</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 290" role="img" aria-label="The model yield curve: the yield per year on a j year bond, ln R j over j, for maturities 1 to 30 years, in blue, with a teal dot at the one year rate. The dashed orange line is the same yield without the variance term, so the shaded orange gap is the risk term. The dashed grey line is the flat curve with independent growth and no news. In the level view a black cross marks the T bill rate in the data, 0.8 percent."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">y1 = 3.05 impatience + 3.60 growth − 0.25 risk = 6.39%
+y30 = 3.05 impatience + 3.60 growth − 0.51 risk = 6.14%   slope y30 − y1 = −0.25 points</p>
+  <figcaption>Consumption growth is η + z with z = ρz₋₁ + ε, η = 1.8% and s.d. of ε 3.57%; x is expected growth next year above trend, which then fades at rate ρ. Move ρ to tilt the curve, x to put the economy in a recession or a boom, β and σ to move the level, and switch to the level view to compare with the data.</figcaption>
+</figure>

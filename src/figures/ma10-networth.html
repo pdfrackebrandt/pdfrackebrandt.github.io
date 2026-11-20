@@ -1,0 +1,14 @@
+<figure class="nfig" data-nfig="ma10-networth">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">banker </span>net worth N</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-k="n"><span class="nfig-val" aria-hidden="true">0.50</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">relative risk aversion </span>γ</span><input type="range" min="1" max="5" step="0.1" value="2" data-k="gamma"><span class="nfig-val" aria-hidden="true">2.0</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 470" role="group" aria-label="Left: the return on saving against banker net worth N. The blue curve is the deposit rate R equal to theta bar over 2 minus N, rising from theta bar over 2 at N equal 0 to theta bar at N equal 1; the green dashed line is the social return theta bar; the shaded wedge between them closes only at N equal 1. Right: investment against N, the market's e p bar in blue below the first best e p star in green dashed, meeting at N equal 1. A draggable blue point on the left curve chooses N."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">N = 0.50: R = θ̄/(2 − N) = 1.000 vs θ̄ = 1.5, wedge θ̄ − R = 0.500
+investment ep̄ = 0.591 vs ep* = 0.665, 11.1% short
+loan rate r = 2R/p̄ = 3.39, spread r/R = 2/p̄ = 3.39 (pure default compensation: the fund earns R)</p>
+  <figcaption>The general equilibrium of the note with θ̄ = 1.5, β = 0.95 and y = e = 1. Drag the blue point or move N: the deposit return and investment both rise with net worth and reach the first best only at N = 1. γ sets how strongly saving reacts to the low return.</figcaption>
+</figure>

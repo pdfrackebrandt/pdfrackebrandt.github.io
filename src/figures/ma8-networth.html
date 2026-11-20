@@ -1,0 +1,13 @@
+<figure class="nfig" data-nfig="ma8-networth">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">banker net worth </span>N</span><input type="range" min="0" max="0.3" step="0.005" value="0.1" data-k="N"><span class="nfig-val" aria-hidden="true">0.100</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">divertible share </span>θ</span><input type="range" min="0" max="0.6" step="0.01" value="0.3" data-k="theta"><span class="nfig-val" aria-hidden="true">0.30</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 560" role="group" aria-label="Equilibrium against banker net worth N, from 0 to 0.3. First panel: the deposit rate R in blue rises to R k, dashed, at the threshold N bar and stays there; the orange area between them is the spread. Second panel: equilibrium deposits in blue rise to meet the green dashed first best d star at N bar, then follow it down. Third panel: the multiplier lambda in teal falls from infinity at N = 0 to zero at N bar. A vertical line marks the chosen N; drag across any panel to move it."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">N = 0.100 &lt; N̄ = 0.178: binding
+R = 0.970, spread 0.130, d = 0.385 (first best 0.454), λ = 0.65</p>
+  <figcaption>Equilibrium of the model for every N (y = 1, β = 0.96, γ = 0.5, Rᵏ = 1.1). Below N̄ the no default condition binds: the spread is positive, deposits fall short of first best and λ is positive. Above N̄ the condition is slack and N no longer matters for R. Drag across the panels or use the slider; raise θ to push N̄ out.</figcaption>
+</figure>
