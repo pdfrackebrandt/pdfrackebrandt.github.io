@@ -797,7 +797,7 @@ def build_index():
 
     <section class="panel" id="tools" role="tabpanel" aria-labelledby="tab-tools">
       <h2 class="vh">Tools</h2>
-{tk}      <div class="tools">
+{tk}{ti}      <div class="tools">
 {tools}
       </div>
     </section>{notes_panel}
@@ -808,6 +808,8 @@ def build_index():
 </html>
 '''.format(name=escape(SITE['name']), bio=bio, socials=''.join(socials), np=len(PAPERS), nt=len(SITE['tools']),
            view=VIEW, list_on='true' if VIEW == 'list' else 'false', visual_on='true' if VIEW == 'visual' else 'false',
+           # one sentence above the cards: how the tools fit together
+           ti=('      <p class="tools-intro">%s</p>\n' % escape(SITE['tools_intro'])) if SITE.get('tools_intro') else '',
            tk=('      <div class="panel-head"><span></span><p class="kicker">%s</p></div>\n' % escape(SITE['tools_kicker'])) if SITE.get('tools_kicker') else '',
            cards=cards, index=indent(index_list(PAPERS), 4), tools=tools, notes_tab=notes_tab, notes_panel=notes_panel, owns=owns)
     return html
