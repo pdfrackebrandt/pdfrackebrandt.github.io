@@ -108,8 +108,13 @@ def bibtex(p):
             % (key, p['title'], authors, p['year'], note, BASE + url_of(p)))
 
 
+def status_class(p):
+    """Finished papers carry the site's green, work in progress a purple."""
+    return 'wip' if p['status'] == 'Work in progress' else 'live'
+
+
 def tags_html(p):
-    out = ['<span class="tag live">%s</span>' % escape(p['status'])]
+    out = ['<span class="tag %s">%s</span>' % (status_class(p), escape(p['status']))]
     out += ['<span class="tag">%s</span>' % escape(t) for t in p.get('tags', [])]
     return ''.join(out)
 
@@ -839,7 +844,7 @@ def build_paper(p):
     bib_id = 'bib-' + p['slug']
     article = """<article class="paper-page">
     <header class="paper-header">
-      <p class="eyebrow status">{status} &middot; {year}</p>
+      <p class="eyebrow status {scls}">{status} &middot; {year}</p>
       <h1>{title}</h1>
       <p class="authors">{who}</p>
       <p class="lede">{lede}</p>
@@ -856,7 +861,7 @@ def build_paper(p):
         <button class="btn" type="button" data-copy="{bib_id}">Copy BibTeX</button>
       </details>
     </footer>
-  </article>""".format(status=escape(p['status']), year=p['year'], title=escape(p['title']), who=who,
+  </article>""".format(status=escape(p['status']), scls=status_class(p), year=p['year'], title=escape(p['title']), who=who,
            lede=escape(p['summary']), actions='<span aria-hidden="true">&middot;</span>'.join(actions),
            lead=indent(lead, 4), fig=indent(fig, 4), body=indent(post.strip(), 6), tags=tags_html(p), bib_id=bib_id, bib=escape(bibtex(p)))
     return head('%s · %s' % (p['title'], SITE['name']), p['summary'], canonical, extra) + """

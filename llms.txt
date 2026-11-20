@@ -12,7 +12,7 @@ Aristotle and Polybius traced how constitutions decay and settled on the mixed r
 
 ## Research
 
-- [When regimes cycle](https://rackebrandt.pe/papers/when-regimes-cycle/): Article, 2026. Topic: Regimes. Why countries keep swinging between democracy and autocracy, and what starts and stops the swings.
+- [When regimes cycle](https://rackebrandt.pe/papers/when-regimes-cycle/): Work in progress, 2026. Topic: Regimes. Why countries keep swinging between democracy and autocracy, and what starts and stops the swings.
 - [How many tests was it really?](https://rackebrandt.pe/papers/how-many-tests/): Article, 2026. Topic: Finance. With Sebastian Winzker. How high the bar for a backtested trading rule should be once you count every rule you tried.
 - [Reversed by our own replication](https://rackebrandt.pe/papers/reversed-by-replication/): Article, 2026. Topic: AI. A registered replication in which two of three signals for catching LLM extraction errors reversed.
 

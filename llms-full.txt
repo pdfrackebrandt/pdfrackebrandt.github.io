@@ -4,7 +4,7 @@
 
 ## When regimes cycle
 
-Pedro F. Rackebrandt, 2026. Article. Topic: Regimes. Tags: Nonlinear dynamics, Political economy, V-Dem. Page: https://rackebrandt.pe/papers/when-regimes-cycle/
+Pedro F. Rackebrandt, 2026. Work in progress. Topic: Regimes. Tags: Nonlinear dynamics, Political economy, V-Dem. Page: https://rackebrandt.pe/papers/when-regimes-cycle/
 
 Many countries swing between democracy and autocracy for decades. Why? I model two forces chasing each other. Young people organise against the rulers, who open up institutions to absorb them because that pays. Absorbing them drains the protest, so openness stops paying and the rulers close again. Then a new generation comes of age and the loop starts over; a cycle.
 
