@@ -157,7 +157,7 @@
       x2=sx(v)+(v>=0?-6:6); y2=(sy(rfp)+sy(erp))/2+4;
       el.tp.setAttribute('text-anchor',v>=0?'end':'start');
       moveTo(el.tp,x2,y2);
-      el.tp.textContent=Math.abs(sy(rfp)-sy(erp))>6?'premium':'';
+      el.tp.textContent=Math.abs(sy(rfp)-sy(erp))>24?'premium':'';
       if(api) api.changed();
       if(!out) return;
       out.textContent='bust: Δln c = '+sg(100*st.gb,2)+'%, m '+fmt(dm,1)+'% above its mean   boom: Δln c = '+sg(100*st.gg,2)+'%, m '+fmt(dm,1)+'% below'+
@@ -240,14 +240,16 @@
       ly=clamp(sy(yJ)+15,top+12,bot-4); moveTo(el.ty,sx(J)-2,ly);
       lf=clamp(sy(nJ)-6,top+11,bot-4); if(Math.abs(lf-ly)<13) lf=ly-13; moveTo(el.tnr,sx(J)-2,lf);
       /* the benchmark's label sits at j = 3 on the side away from the yield curve */
-      yfl=sy(Y.flat); moveTo(el.tfl,sx(2.2),(sy(Y.y[2][1])>yfl+2 || sy(Y.nr[2][1])>yfl+2)&&yfl-top>16?yfl-6:yfl+14);
+      yfl=sy(Y.flat);
+      if(view==='level') moveTo(el.tfl,sx(11),yfl-7);
+      else moveTo(el.tfl,sx(2.2),(sy(Y.y[2][1])>yfl+2 || sy(Y.nr[2][1])>yfl+2)&&yfl-top>16?yfl-6:yfl+14);
       if(view==='level'){ cross(el.data,sx(1),sy(100*LRF_D)); moveTo(el.td,sx(1)+9,sy(100*LRF_D)+4); el.td.textContent='T bill, data 0.8%'; }
       else { el.data.setAttribute('d',''); el.td.textContent=''; }
       if(api) api.changed();
       if(!out) return;
       function line1(r,j,y){ return 'y'+j+' = '+fmt(100*r.imp,2)+' impatience + '+fmt(100*r.gro,2)+' growth '+(Math.abs(r.news)>1e-12?sg(100*r.news,2)+' news ':'')+MINUS+' '+fmt(100*r.risk,2)+' risk = '+fmt(y,2)+'%'; }
       out.textContent=line1(Y.r1,1,y1)+'\n'+line1(Y.rJ,J,yJ)+'   slope y30 '+MINUS+' y1 = '+sg(yJ-y1,2)+' points'+
-        (view==='level'?'\nT bill in the data 0.80%: the model short rate is '+fmt(y1-100*LRF_D,2)+' points too high':'');
+        (view==='level'?'\nT bill in the data 0.80%: the model one year rate is '+fmt(Math.abs(y1-100*LRF_D),2)+' points '+(y1>=100*LRF_D?'above':'below')+' it':'');
     }
     api=NF.api({
       get:function(){
@@ -367,7 +369,7 @@
         el.f.setAttribute('r',4.5); at(el.f,sx(100*SC),sy(ve));
       } else {
         el.o.setAttribute('r',0); el.f.setAttribute('r',0);
-        for(i=0;i<Q.zs.length;i++) S('circle',{r:2.4,'class':'ma7-rug',cx:R(sx(clamp(100*Q.zs[i],-10,10))),cy:R(sy(100*(M.w(Q.zs[i])/M.w0-1)))},el.rug);
+        for(i=0;i<Q.zs.length;i++) if(Math.abs(Q.zs[i])<=0.1) S('circle',{r:2.4,'class':'ma7-rug',cx:R(sx(100*Q.zs[i])),cy:R(sy(100*(M.w(Q.zs[i])/M.w0-1)))},el.rug);
       }
       moveTo(el.tl,sx(-9.6),sy(0)+(Q.top[4][1]<0?-6:14));
       el.tt.textContent='σ = '+fmt(sig,1);
@@ -414,62 +416,77 @@
     if(rsg) sig=rsg.v();
     if(rb) beta=rb.v();
     if(rs) sc=rs.v();
-    function rfOf(sg2,s){ return -Math.log(beta)+sg2*ETA-sg2*sg2*s*s/2; }
+    function rfOf(x,s){ return -Math.log(beta)+x*ETA-x*x*s*s/2; }
+    /* the tree has a finite price only if beta G < 1, G = E e^((1-sigma) g); otherwise the premium is not defined */
+    function finite(x,s){ return Math.log(beta)+(1-x)*ETA+(1-x)*(1-x)*s*s/2<0; }
     function state(){
       var s=sc/100, prem=sig*s*s, rf=rfOf(sig,s), need=LP_D/(s*s), bneed=Math.exp(sig*ETA-sig*sig*s*s/2-LRF_D);
       return {s:s, prem:prem, rf:rf, need:need, rfneed:rfOf(need,s), bneed:bneed, imp:-Math.log(beta), gro:sig*ETA, prec:sig*sig*s*s/2,
-              peak:ETA/(s*s), G:Math.exp((1-sig)*ETA+(1-sig)*(1-sig)*s*s/2)};
+              fin:finite(sig,s), G:Math.exp((1-sig)*ETA+(1-sig)*(1-sig)*s*s/2)};
     }
     function draw(){
       var L;
       W=measure(svg); L=two(W,W>=600?200:176); H=L.H; frame(svg,W,H);
-      P1=box(svg,L.b1,[0,SM],[0,10],{xt:[0,10,20,30,40,50],yt:[0,2,4,6,8,10],zero:true,xl:'risk aversion σ',yl:'equity premium, %',yf:pctTick});
-      P2=box(svg,L.b2,[0,SM],[-20,30],{xt:[0,10,20,30,40,50],yt:[-20,-10,0,10,20,30],zero:true,xl:'risk aversion σ',yl:'safe rate, %',yf:pctTick});
+      P1=box(svg,L.b1,[0,SM],[0,10],{xt:[0,10,20,30,40,50],yt:[0,2,4,6,8,10],zero:true,xl:'risk aversion σ',yf:pctTick});
+      P2=box(svg,L.b2,[0,SM],[-20,30],{xt:[0,10,20,30,40,50],yt:[-20,-10,0,10,20,30],zero:true,xl:'risk aversion σ',yf:pctTick});
+      text(svg,L.b1.x-36,L.b1.y-11,'log equity premium σs², %','nf-title ma7-tprem');
+      text(svg,L.b2.x-36,L.b2.y-11,'log safe rate, %','nf-title ma7-trf');
       [P1,P2].forEach(function(P){ S('rect',{'class':'ma7-plaus',x:R(P.sx(1)),y:P.b.y,width:R(P.sx(5)-P.sx(1)),height:P.b.h},P.gc); });
       text(svg,P1.sx(5)+4,P1.b.y+P1.b.h-6,'plausible σ','nf-title nf-halo');
-      el.dl1=line(P1.gc,P1.sx(0),P1.sy(100*LP_D),P1.sx(SM),P1.sy(100*LP_D),'ma7-dataline');
-      el.dl2=line(P2.gc,P2.sx(0),P2.sy(100*LRF_D),P2.sx(SM),P2.sy(100*LRF_D),'ma7-dataline');
-      text(svg,P1.sx(SM)-4,P1.sy(100*LP_D)-6,'data 5.95','nf-lab nf-halo','end');
-      el.td2=text(svg,P2.sx(SM)-4,P2.sy(100*LRF_D)+14,'data 0.80','nf-lab nf-halo','end');
+      line(P1.gc,P1.sx(0),P1.sy(100*LP_D),P1.sx(SM),P1.sy(100*LP_D),'ma7-dataline');
+      line(P2.gc,P2.sx(0),P2.sy(100*LRF_D),P2.sx(SM),P2.sy(100*LRF_D),'ma7-dataline');
+      text(svg,P1.sx(31),P1.sy(100*LP_D)-6,'data 5.95%','nf-lab nf-halo','middle');
+      text(svg,P2.sx(SM)-4,P2.sy(100*LRF_D)+14,'data 0.80%','nf-lab nf-halo','end');
       el.need=line(P1.gc,0,0,0,0,'ma7-guide');
-      el.tneed=text(svg,0,0,'','nf-lab nf-halo','end');
+      el.tneed=text(svg,0,0,'','nf-lab nf-halo');
       el.pr=S('path',{'class':'ma7-prem ma7-thick'},P1.gc);
+      el.prx=S('path',{'class':'ma7-prem ma7-nofin'},P1.gc);
+      el.tx=text(svg,0,0,'','nf-title nf-halo');
       el.dp=S('circle',{r:4.5,'class':'ma7-dprem'},P1.gc);
       el.band=S('path',{'class':'ma7-riskband'},P2.gc);
       el.nop=S('path',{'class':'ma7-norisk'},P2.gc);
       el.rf=S('path',{'class':'ma7-rf ma7-thick'},P2.gc);
       el.drf=S('circle',{r:4.5,'class':'ma7-drf'},P2.gc);
-      el.tpr=text(svg,0,0,'σs²','nf-lab nf-halo ma7-tprem');
-      el.trf=text(svg,0,0,'safe rate','nf-lab nf-halo ma7-trf');
-      el.tnp=text(svg,0,0,'−ln β + ση','nf-lab nf-halo ma7-trisk');
+      el.tnp=text(svg,0,0,'−ln β + ση','nf-lab nf-halo ma7-trisk','end');
+      el.tpc=text(svg,0,0,'precaution','nf-lab nf-halo ma7-trisk','middle');
       paint();
     }
     function paint(){
-      var q=state(), s=q.s, i, x, pp=[], rr=[], nn=[], sx1=P1.sx, sy1=P1.sy, sx2=P2.sx, sy2=P2.sy, xl, xr, xn;
-      for(i=0;i<=200;i++){ x=SM*i/200; pp.push([x,100*x*s*s]); rr.push([x,100*rfOf(x,s)]); nn.push([x,100*(-Math.log(beta)+x*ETA)]); }
-      el.pr.setAttribute('d',curve(P1,pp));
+      var q=state(), s=q.s, i, x, pa='', pb='', rr=[], nn=[], sx1=P1.sx, sy1=P1.sy, sx2=P2.sx, sy2=P2.sy, xn, last=null, fx=null, f, pt, xp;
+      /* the premium line, solid where the tree has a finite price and faint where it has none */
+      for(i=0;i<=400;i++){
+        x=SM*i/400; f=finite(x,s); pt=R(sx1(x))+','+R(sy1(Math.min(100*x*s*s,12)));
+        if(f){ pa+=(last===true?'L':'M')+pt; } else { pb+=(last===false?'L':'M')+pt; if(fx===null) fx=x; }
+        last=f;
+      }
+      el.pr.setAttribute('d',pa); el.prx.setAttribute('d',pb);
+      /* label the faint part where it starts, below and right of the rising line */
+      if(fx!==null && fx>0 && fx*s*s<0.09 && sx1(fx)+92<P1.b.x+P1.b.w){ el.tx.textContent='no finite price'; moveTo(el.tx,sx1(fx)+6,sy1(100*fx*s*s)+15); }
+      else el.tx.textContent='';
       at(el.dp,sx1(sig),sy1(Math.min(100*q.prem,10.6)));
-      if(q.need<=SM){ setLine(el.need,sx1(q.need),sy1(0),sx1(q.need),sy1(100*LP_D)); el.tneed.textContent='σ = '+fmt(q.need,1); moveTo(el.tneed,sx1(q.need)-4,sy1(100*LP_D)+14); }
-      else { setLine(el.need,0,0,0,0); el.tneed.textContent=''; }
-      if(q.need<=SM && Math.abs(sx1(q.need)-(P1.b.x+P1.b.w))<70) el.tneed.textContent='';
+      if(q.need<=SM){
+        setLine(el.need,sx1(q.need),sy1(0),sx1(q.need),sy1(100*LP_D)); el.tneed.textContent='σ = '+fmt(q.need,1);
+        if(q.need>SM*0.6){ el.tneed.setAttribute('text-anchor','end'); moveTo(el.tneed,sx1(q.need)-5,sy1(100*LP_D)+15); }
+        else { el.tneed.setAttribute('text-anchor','start'); moveTo(el.tneed,sx1(q.need)+5,sy1(100*LP_D)+15); }
+      } else { setLine(el.need,0,0,0,0); el.tneed.textContent=''; }
+      for(i=0;i<=200;i++){ x=SM*i/200; rr.push([x,100*rfOf(x,s)]); nn.push([x,100*(-Math.log(beta)+x*ETA)]); }
       el.band.setAttribute('d',band(P2,nn,rr));
       el.nop.setAttribute('d',curve(P2,nn));
       el.rf.setAttribute('d',curve(P2,rr));
       at(el.drf,sx2(sig),sy2(clamp(100*q.rf,-21,31)));
-      /* the premium line's label where it leaves the box or near its right end */
-      xl=Math.min(SM*0.55,0.05/(s*s)); el.tpr.setAttribute('text-anchor','end'); moveTo(el.tpr,sx1(xl)-5,sy1(100*xl*s*s)-7);
-      xr=Math.min(q.peak*0.55,SM*0.3); moveTo(el.trf,sx2(xr)+2,sy2(100*rfOf(xr,s))+15);
       xn=Math.min(SM*0.55,(0.28+Math.log(beta))/ETA); moveTo(el.tnp,sx2(xn)-6,sy2(100*(-Math.log(beta)+xn*ETA))-6);
-      el.tnp.setAttribute('text-anchor','end');
+      /* the precautionary band's label in its widest visible part */
+      xp=SM*0.78; moveTo(el.tpc,sx2(xp),sy2(8)+4);
+      el.tpc.textContent=rfOf(xp,s)<0.02 && -Math.log(beta)+xp*ETA>0.14?'precaution':'';
       if(api) api.changed();
       if(!out) return;
       out.textContent='σ = '+fmt(sig,1)+': premium σs² = '+fmt(100*q.prem,2)+'% (data 5.95%)   safe rate '+fmt(100*q.imp,2)+' + '+fmt(100*q.gro,2)+' '+MINUS+' '+fmt(100*q.prec,2)+' = '+fmt(100*q.rf,2)+'% (data 0.80%)'+
         '\nthe premium needs σ = '+fmt(q.need,1)+', and there the safe rate is '+fmt(100*q.rfneed,1)+'%   the safe rate at σ = '+fmt(sig,1)+' needs β = '+fmt(q.bneed,3)+
         '\nequity return s.d. in the model ≈ s = '+fmt(sc,2)+'% (data 16.54%)';
-      if(beta*q.G>=1){ var sp=document.createElement('span'); sp.className='nf-warn'; sp.textContent='\nβG ≥ 1 at this σ: the tree has no finite price (p/d = βG/(1 '+MINUS+' βG))'; out.appendChild(sp); }
+      if(!q.fin){ var sp=document.createElement('span'); sp.className='nf-warn'; sp.textContent='\nβG = '+fmt(beta*q.G,3)+' ≥ 1: at this σ and β the tree has no finite price, so there is no premium to speak of'; out.appendChild(sp); }
     }
     api=NF.api({
-      get:function(){ var q=state(); return {sigma:sig, beta:beta, s:sc, prem:100*q.prem, rf:100*q.rf, need:q.need, bneed:q.bneed, rfneed:100*q.rfneed, imp:100*q.imp, gro:100*q.gro, prec:100*q.prec}; },
+      get:function(){ var q=state(); return {sigma:sig, beta:beta, s:sc, prem:100*q.prem, rf:100*q.rf, need:q.need, bneed:q.bneed, rfneed:100*q.rfneed, imp:100*q.imp, gro:100*q.gro, prec:100*q.prec, fin:q.fin?1:0, bg:beta*q.G}; },
       set:function(o){
         if('sigma' in o && rsg) rsg.set(+o.sigma);
         if('beta' in o && rb) rb.set(+o.beta);

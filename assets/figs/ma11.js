@@ -158,12 +158,12 @@
       ph=Math.round(clamp(W*0.4,150,220)); pb=Math.round(clamp(W*0.15,58,84)); top=30;
       for(i=1;i<=200;i++){ w=XM*i/200; fmax=Math.max(fmax,phi((Math.log(w)+sig*sig/2)/sig)/(w*sig)); }
       rows=W<520?3:1;
-      bar.y=top+ph+42+pb+44; bar.h=14;
+      bar.y=top+ph+54+pb+44; bar.h=14;
       H=bar.y+bar.h+rows*17+12;
       frame(svg,W,H);
       PA=box(svg,{x:mL,y:top,w:W-mL-14,h:ph},[0,XM],[0,YM],{xt:ticks(0,XM,W<420?4:6),yt:ticks(0,YM,4),title:'payoff per unit of (N + B)rᵏ',tin:mL-6});
       text(svg,PA.b.x+PA.b.w,PA.b.y+PA.b.h+30,'productivity ω','nf-title','end');
-      PB=box(svg,{x:mL,y:top+ph+42,w:W-mL-14,h:pb},[0,XM],[0,fmax*1.12],{xt:ticks(0,XM,W<420?4:6),yt:[0],noxl:true,title:'density of ω, mean 1',tin:mL-6});
+      PB=box(svg,{x:mL,y:top+ph+54,w:W-mL-14,h:pb},[0,XM],[0,fmax*1.12],{xt:ticks(0,XM,W<420?4:6),yt:[0],noxl:true,title:'density of ω, mean 1',tin:mL-6});
       bar.x=mL; bar.w=W-mL-14;
       el.wedge=S('path',{'class':'ma11-loss'},PA.gc);
       line(PA.gc,PA.sx(0),PA.sy(0),PA.sx(XM),PA.sy(XM),'ma11-out');
@@ -177,9 +177,9 @@
       el.tout=text(svg,0,0,'output ω','nf-lab nf-halo ma11-small','end');
       el.tlend=text(svg,0,0,'lenders','nf-lab nf-halo ma11-tlend','end');
       el.tbank=text(svg,0,0,'banker','nf-lab nf-halo ma11-tbank','end');
-      el.tloss=text(svg,0,0,'μω burned','nf-lab nf-halo ma11-tloss');
-      el.tcut=text(svg,0,0,'ω̄','nf-lab nf-halo ma11-tcut ma11-it','middle');
-      el.tdef=text(svg,0,0,'','nf-lab nf-halo ma11-tcut');
+      el.tloss=text(svg,0,0,'μω burned','nf-lab nf-halo ma11-tloss','end');
+      el.tcut=text(svg,0,0,'ω̄','nf-lab nf-halo ma11-tcut ma11-it');
+      el.tdef=text(svg,0,0,'','nf-lab ma11-tcut','end');
       el.bb=S('rect',{'class':'ma11-fbank',y:bar.y,height:bar.h},svg);
       el.bl=S('rect',{'class':'ma11-flend',y:bar.y,height:bar.h},svg);
       el.bm=S('rect',{'class':'ma11-floss',y:bar.y,height:bar.h},svg);
@@ -218,12 +218,13 @@
       w=wb+0.55*(Math.min(XM,wb+YM)-wb);
       if(sx(w)+64<PA.b.x+PA.b.w){ el.tbank.setAttribute('text-anchor','start'); moveTo(el.tbank,sx(w)+8,sy(w-wb)+6); }
       else { el.tbank.setAttribute('text-anchor','end'); moveTo(el.tbank,sx(w)-8,sy(w-wb)-2); }
-      moveTo(el.tloss,sx(wb)+6,sy(wb*(1-mu/2))+4);
-      el.tloss.textContent=mu>0.04 && wb>0.25?'μω burned':'';
-      moveTo(el.tcut,sx(wb),PA.b.y-8);
-      el.tdef.textContent='F(ω̄) = '+pc(p.F,1);
-      if(PB.sx(wb)>PB.b.x+PB.b.w*0.62){ el.tdef.setAttribute('text-anchor','end'); moveTo(el.tdef,PB.sx(wb)-6,PB.b.y+12); }
-      else { el.tdef.setAttribute('text-anchor','start'); moveTo(el.tdef,PB.sx(wb)+6,PB.b.y+12); }
+      /* the burned wedge is labelled above the diagonal, just left of the cutoff */
+      moveTo(el.tloss,sx(wb*0.62)-4,sy(wb*0.62)-7);
+      el.tloss.textContent=mu>0.04 && sx(wb)-PA.b.x>70?'μω burned':'';
+      if(sx(wb)>PA.b.x+PA.b.w-40){ el.tcut.setAttribute('text-anchor','end'); moveTo(el.tcut,sx(wb)-5,PA.b.y+12); }
+      else { el.tcut.setAttribute('text-anchor','start'); moveTo(el.tcut,sx(wb)+5,PA.b.y+12); }
+      el.tdef.textContent='default F(ω̄) = '+pc(p.F,1);
+      moveTo(el.tdef,PB.b.x+PB.b.w,PB.b.y-8);
       el.bb.setAttribute('x',R(x0)); el.bb.setAttribute('width',R(Math.max(0,bank*bar.w)));
       el.bl.setAttribute('x',R(x0+bank*bar.w)); el.bl.setAttribute('width',R(Math.max(0,lend*bar.w)));
       el.bm.setAttribute('x',R(x0+(bank+lend)*bar.w)); el.bm.setAttribute('width',R(Math.max(mug>0?1:0,mug*bar.w)));
@@ -291,6 +292,7 @@
       if(refS) S('path',{d:curve(PR,refS),'class':'ma11-prem ma11-ref'},PR.gc);
       S('path',{d:curve(PR,curveS),'class':'ma11-prem'},PR.gc);
       el.eq=S('circle',{r:4.5,'class':'ma11-eqc'},PR.gc);
+      el.teq=text(svg,0,0,'equilibrium','nf-lab nf-halo ma11-small');
       el.ts=text(svg,0,0,'s(L)','nf-lab nf-halo ma11-tprem ma11-it');
       el.tr=text(svg,0,0,refS?'μ = 0.1, σ = 0.37':'','nf-lab nf-halo ma11-small');
       el.gl=S('g',null,svg);
@@ -315,6 +317,8 @@
       text(g,P.sx(w)+6,P.b.y+12,'ω̄ = '+fmt(w,3),'nf-lab nf-halo ma11-tcut');
       /* right: the knob on s(L) and the equilibrium with the households */
       at(el.eq,PR.sx(eq.L),PR.sy(100*eq.prem));
+      moveTo(el.teq,PR.sx(eq.L)+8,PR.sy(100*eq.prem)+14);
+      el.teq.textContent=Math.abs(PR.sx(eq.L)-PR.sx(lev))>40 && PR.sy(100*eq.prem)>PR.b.y+10?'equilibrium':'';
       a=curveS[curveS.length-1];
       if(a[1]>PR.yd[1]){ for(i=curveS.length-1;i>0 && curveS[i][1]>PR.yd[1]*0.9;i--); i=curveS[i]; } else i=a;
       moveTo(el.ts,Math.min(PR.sx(i[0])+6,PR.b.x+PR.b.w-30),PR.sy(i[1])-8);
@@ -385,7 +389,7 @@
     }
     function draw(){
       var lay, i, sp, vals, P;
-      W=measure(svg); lay=grid(W,4); H=lay.H+22; frame(svg,W,H); Ps=[];
+      W=measure(svg); lay=grid(W,4); H=lay.H+8; frame(svg,W,H); Ps=[];
       for(i=0;i<4;i++){
         sp=specs[i]; vals=path.map(sp.f);
         P=box(svg,lay.boxes[i],[0,MX],span(vals,0.12,sp.z),{xt:[0,0.1,0.2,0.3,0.4,0.5],ny:3,title:sp.t,tin:lay.mL-6});
@@ -448,7 +452,7 @@
     function solve(){ var i, N; path=[]; for(i=0;i<=60;i++){ N=NL+(NH-NL)*i/60; path.push(at(N)); } }
     function draw(){
       var lay, i, sp, vals, P, xt=[0.6,1,1.4,1.8,2.2];
-      W=measure(svg); lay=grid(W,4); H=lay.H+22; frame(svg,W,H); Ps=[];
+      W=measure(svg); lay=grid(W,4); H=lay.H+8; frame(svg,W,H); Ps=[];
       for(i=0;i<4;i++){
         sp=specs[i]; vals=path.map(sp.f);
         P=box(svg,lay.boxes[i],[NL,NH],span(vals,0.12,sp.z),{xt:xt,ny:3,title:sp.t,tin:lay.mL-6});

@@ -10,6 +10,7 @@
 .ma7-m{fill:var(--c-label);stroke:none}
 .ma7-ret{fill:var(--fig-blue);fill-opacity:.75;stroke:none}
 .ma7-prem{fill:none;stroke:var(--c-key);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ma7-nofin{stroke-width:1.5;stroke-opacity:.45;stroke-dasharray:4 4}
 .ma7-dprem{fill:var(--c-key);stroke:var(--paper);stroke-width:1.5}
 .ma7-rf{fill:none;stroke:var(--c-teal);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .ma7-rfline{stroke:var(--c-teal);stroke-width:1.25;stroke-dasharray:5 4}
