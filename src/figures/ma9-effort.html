@@ -1,0 +1,13 @@
+<figure class="nfig" data-nfig="ma9-effort">
+  <div class="fig-controls nfig-bar">
+    <button type="button" class="btn nfig-reset">Reset</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">deposits </span>d</span><input type="range" min="0.5" max="1.3" step="0.05" value="1" data-k="d"><span class="nfig-val" aria-hidden="true">1.00</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">return on bad securities </span>Rᵇ</span><input type="range" min="0.75" max="0.95" step="0.01" value="0.8" data-k="rb"><span class="nfig-val" aria-hidden="true">0.80</span></label>
+  </div>
+  <svg class="nfig-plot nfig-drag2" viewBox="0 0 520 440" role="group" aria-label="Top: effort against net worth N, the red curve with hidden effort and the dashed teal line first best effort. Bottom: the spread between the good and the bad state repayment, in purple. The green vertical line is the threshold N bar; to its left, shaded, the bad state cash constraint binds. Drag the point or click to choose N."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">N̄ = (R − Rᵇ)d/Rᵇ = 0.375   N = 0.100: abnormal times, the bad state cash constraint binds
+fund gets 0.880 if bad, 1.214 if good: spread 0.334   p = 0.659   e = 0.218 &lt; eᶠᴮ = 0.385</p>
+  <figcaption>Effort and the spread against net worth, holding d and R = 1.1 fixed (λ = 1, a = 0.55, b = 0.5, Rᵍ = 1.5). Drag N. Move d to see leverage raise first best effort and the threshold together; lower Rᵇ and the threshold rises past the same bank's N.</figcaption>
+</figure>

@@ -1,0 +1,15 @@
+<figure class="nfig" data-nfig="ma9-cash">
+  <div class="nfig-seg" role="group" aria-label="What the bank promises the fund">
+    <button type="button" class="nfig-opt" data-mode="fixed" aria-pressed="true">Promise R in both states</button>
+    <button type="button" class="nfig-opt" data-mode="contract" aria-pressed="false">Optimal contract</button>
+  </div>
+  <div class="nfig-sliders">
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">banker's </span>net worth N</span><input type="range" min="0" max="0.6" step="0.005" value="0.1" data-k="n"><span class="nfig-val" aria-hidden="true">0.100</span></label>
+    <label class="nfig-range"><span class="nfig-name"><span class="vh">probability of good securities </span>p</span><input type="range" min="0.5" max="0.95" step="0.01" value="0.8" data-k="p"><span class="nfig-val" aria-hidden="true">0.80</span></label>
+  </div>
+  <svg class="nfig-plot" viewBox="0 0 520 300" role="img" aria-label="Three bars. The first two show the bank's cash in the good and the bad state, split into what is paid to the fund in grey, the fund's extra take in the good state in purple, and what the banker keeps in red. A dashed line marks the promise Rd. When the bad state cash falls short of the promise, the gap shows in orange. The third bar is the banker's stake in success, n g minus n b, against the full upside drawn dashed."></svg>
+  <p class="fig-note nfig-read" aria-live="polite">bad state: cash Rᵇ(N + d) = 0.880 against Rd = 1.100: short 0.220, so the cash constraint binds
+promise R in both states: the banker would keep −0.220 in the bad state, which limited liability rules out
+stake nᵍ − nᵇ = 0.550 − (−0.220) = 0.770, so e = λb × stake = 0.385</p>
+  <figcaption>One contract at a given probability p of good securities (d = 1, Rᵍ = 1.5, Rᵇ = 0.8, R = 1.1, λb = 0.5). Move N and switch between promising R in both states and the optimal contract. Below N̄ = 0.375 the promise breaks the bad state cash constraint; the optimal contract hands the fund all bad state cash and a cut of the upside, and the banker's stake in success shrinks. Here p is held fixed to isolate the accounting; further down effort sets p.</figcaption>
+</figure>
