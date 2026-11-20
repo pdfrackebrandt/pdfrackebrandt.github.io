@@ -120,7 +120,7 @@ main{padding-block:clamp(14px,2.5vw,24px) clamp(48px,7vw,80px)}
 .paper-body > p{font-size:var(--step-0);line-height:1.6;color:var(--ink-soft)}
 .paper-tags{display:flex;flex-wrap:wrap;align-items:center;gap:7px 9px;margin-top:2px}
 .tag{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.02em;color:var(--muted);border:1px solid var(--rule);padding:2px 8px}
-.tag.live{color:var(--signal);border-color:color-mix(in srgb,var(--signal) 35%,transparent)}
+.tag.live{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent)}
 .go{font-family:var(--f-mono);font-size:.75rem;color:var(--link);margin-left:auto;padding:6px 0}
 .go:hover{color:var(--accent)}
 
@@ -248,6 +248,7 @@ a.tool-fig:hover img{transform:scale(1.04)}
 @media (min-width:960px) and (min-height:700px){.paper-page > .page-fig{position:sticky;top:24px}}
 .paper-header{display:flex;flex-direction:column;gap:10px}
 .eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--signal)}
+.eyebrow.status{color:var(--green)}
 .paper-page h1{font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.1}
 .authors{color:var(--muted)}
 .lede{font-size:1.0625rem;line-height:1.55;color:var(--ink);margin-top:4px}
